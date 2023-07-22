@@ -1,0 +1,11 @@
+{
+  "id": "maxi-mol.mousedrag",
+  "name": "Mouse Drag",
+  "version": "0.1.0",
+  "authors": "Maxi Mol",
+  "description": "Tool which allows dragging creatures in campaign using your mouse.",
+  "requirements": [],
+  "requirements_names": [],
+  "tags": ["Tools"],
+  "checksum_override_version": false
+}

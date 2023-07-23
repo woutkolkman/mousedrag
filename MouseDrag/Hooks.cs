@@ -30,6 +30,7 @@ namespace MouseDrag
             orig(self);
 
             bool stop = false;
+            Vector2 mousePos = (Vector2)Input.mousePosition + self.cameras[0]?.pos ?? new Vector2();
 
             //game is paused
             if (self.GamePaused || self.pauseUpdate || !self.processActive || self.pauseMenu != null)
@@ -53,40 +54,45 @@ namespace MouseDrag
                 return;
             }
 
-            Vector2 mousePos = (Vector2)Input.mousePosition + self.cameras[0]?.pos ?? new Vector2();
+            //object should not be dragged any longer
+            bool ShouldRelease(PhysicalObject obj)
+            {
+                //object is being deleted
+                if (obj?.bodyChunks == null || obj.slatedForDeletetion)
+                    return true;
 
-            //get chunk to drag
-            if (dragChunk == null) {
-                float dist = float.MaxValue;
+                //object is a creature, and is entering a shortcut
+                if (obj is Creature && (obj as Creature).enteringShortCut != null)
+                    return true;
+                return false;
+            }
 
-                for (int i = 0; i < room.physicalObjects.Length; i++) {
-                    for (int j = 0; j < room.physicalObjects[i].Count; j++) {
-                        PhysicalObject obj = room.physicalObjects[i][j];
+            //check object chunks for closest to mousepointer
+            float closest = float.MaxValue;
+            void closestChunk(PhysicalObject obj)
+            {
+                if (ShouldRelease(obj))
+                    return;
 
-                        //object is being deleted
-                        if (obj?.bodyChunks == null || obj.slatedForDeletetion)
-                            continue;
-
-                        //object is a creature, and is entering a shortcut
-                        if (obj is Creature && (obj as Creature).enteringShortCut != null)
-                            continue;
-
-                        for (int k = 0; k < obj.bodyChunks.Length; k++)
-                        {
-                            if (Custom.DistLess(mousePos, obj.bodyChunks[k].pos, Mathf.Min(obj.bodyChunks[k].rad + 10f, dist)))
-                            {
-                                dist = Vector2.Distance(mousePos, room.physicalObjects[i][j].bodyChunks[k].pos);
-                                dragChunk = room.physicalObjects[i][j].bodyChunks[k];
-                                dragOffset = dragChunk.pos - mousePos;
-                            }
-                        }
-                    }
+                for (int k = 0; k < obj.bodyChunks.Length; k++)
+                {
+                    if (!Custom.DistLess(mousePos, obj.bodyChunks[k].pos, Mathf.Min(obj.bodyChunks[k].rad + 10f, closest)))
+                        continue;
+                    closest = Vector2.Distance(mousePos, obj.bodyChunks[k].pos);
+                    dragChunk = obj.bodyChunks[k];
+                    dragOffset = dragChunk.pos - mousePos;
                 }
+            }
 
-            //drag chunk
+            //search all objects for closest chunk
+            if (dragChunk == null) {
+                for (int i = 0; i < room.physicalObjects.Length; i++)
+                    for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                        closestChunk(room.physicalObjects[i][j]);
+
+            //drag this chunk
             } else {
-                if (dragChunk.owner?.slatedForDeletetion != false ||
-                    (dragChunk.owner is Creature && (dragChunk.owner as Creature).enteringShortCut != null)) {
+                if (ShouldRelease(dragChunk.owner)) {
                     dragChunk = null;
                 } else {
                     dragChunk.vel += mousePos + dragOffset - dragChunk.pos;

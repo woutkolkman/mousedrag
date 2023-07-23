@@ -14,9 +14,9 @@ namespace MouseDrag
         public static new ManualLogSource Logger { get; private set; } = null;
 
         //reference metadata
-        public string GUID;
-        public string Name;
-        public string Version;
+        public static string GUID;
+        public static string Name;
+        public static string Version;
 
         private static bool IsEnabled = false;
 

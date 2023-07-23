@@ -12,15 +12,11 @@ namespace MouseDrag
         public static void DragObject(RainWorldGame game)
         {
             bool stop = false;
-            bool alreadyDragging = game.IsArenaSession;
+            bool alreadyDragging = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
             Vector2 mousePos = (Vector2)Input.mousePosition + game.cameras[0]?.pos ?? new Vector2();
 
             //game is paused
             if (game.GamePaused || game.pauseUpdate || !game.processActive || game.pauseMenu != null)
-                stop = true;
-
-            //only active when dev tools is active, not active in arena
-            if (!game.devToolsActive)
                 stop = true;
 
             //room unavailable

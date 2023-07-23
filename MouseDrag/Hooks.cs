@@ -6,6 +6,9 @@ namespace MouseDrag
     {
         public static void Apply()
         {
+            //initialize options
+            On.RainWorld.OnModsInit += RainWorldOnModsInitHook;
+
             //at tickrate
             On.RainWorldGame.Update += RainWorldGameUpdateHook;
 
@@ -20,10 +23,23 @@ namespace MouseDrag
         }
 
 
+        //initialize options
+        static void RainWorldOnModsInitHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
+        {
+            orig(self);
+            MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
+        }
+
+
         //at tickrate
         static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
         {
             orig(self);
+
+            //only active when dev tools is active
+            if (!self.devToolsActive)
+                return;
+
             Tools.DragObject(self);
         }
 
@@ -35,10 +51,12 @@ namespace MouseDrag
             if (self.GamePaused || self.pauseUpdate || !self.processActive || self.pauseMenu != null)
                 return;
 
-            /*if (Options.deleteKey?.Value != null && Input.GetKeyDown(Options.deleteKey.Value))
-            {
+            //only active when dev tools is active
+            if (!self.devToolsActive)
+                return;
 
-            }*/
+            if (Options.deleteKey?.Value != null && Input.GetKeyDown(Options.deleteKey.Value))
+                Tools.DeleteObject();
         }
     }
 }

@@ -5,17 +5,20 @@ namespace MouseDrag
 {
     public class Options : OptionInterface
     {
-        public static Configurable<KeyCode> deleteOneKey, pauseOneKey, pauseAllCreaturesKey, unpauseAllKey;
+        public static Configurable<KeyCode> pauseOneKey, pauseAllCreaturesKey, unpauseAllKey;
+        public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<bool> forceMouseVisible;
 
 
         public Options()
         {
-            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Keybind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("Keybind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
             pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to pause all creatures except Player and SlugNPC.", null, "", "Pause all creatures"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.O, new ConfigurableInfo("Keybind to unpause all objects/creatures.", null, "", "Unpause all"));
-            forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer visible in-game when Dev Tools is active.", null, "", "Force mouse visible"));
+            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Keybind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
+            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
+            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("Keybind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
+            forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when Dev Tools is active.", null, "", "Force mouse visible"));
         }
 
 
@@ -32,10 +35,12 @@ namespace MouseDrag
 
             float x = 192;
             float y = startHeight;
-            AddKeybinder(deleteOneKey, new Vector2(x, y -= 40f));
-            AddKeybinder(pauseOneKey, new Vector2(x, y -= 50f));
+            AddKeybinder(pauseOneKey, new Vector2(x, y -= 30f));
             AddKeybinder(pauseAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeybinder(unpauseAllKey, new Vector2(x, y -= 50f));
+            AddKeybinder(deleteOneKey, new Vector2(x, y -= 50f));
+            AddKeybinder(deleteAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddKeybinder(deleteAllObjectsKey, new Vector2(x, y -= 50f));
             AddCheckbox(forceMouseVisible, new Vector2(x + 38f, y -= 40f));
         }
 

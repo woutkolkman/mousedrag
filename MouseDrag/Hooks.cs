@@ -70,6 +70,12 @@ namespace MouseDrag
 
             if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value))
                 Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+
+            if (Options.deleteAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.deleteAllCreaturesKey.Value))
+                Tools.DeleteObjects(self.RealizedPlayerFollowedByCamera?.room, true);
+
+            if (Options.deleteAllObjectsKey?.Value != null && Input.GetKeyDown(Options.deleteAllObjectsKey.Value))
+                Tools.DeleteObjects(self.RealizedPlayerFollowedByCamera?.room, false);
         }
     }
 }

@@ -83,9 +83,10 @@ namespace MouseDrag
         }
 
 
-        public static void DeleteObject()
+        public static void DeleteObject(PhysicalObject obj = null)
         {
-            PhysicalObject obj = dragChunk?.owner;
+            if (obj == null)
+                obj = dragChunk?.owner;
             if (obj == null)
                 return;
 
@@ -114,6 +115,7 @@ namespace MouseDrag
         }
 
 
+        //pause/unpause objects
         private static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
         public static bool pauseAllCreatures = false;
         public static bool IsObjectPaused(UpdatableAndDeletable uad)
@@ -140,6 +142,17 @@ namespace MouseDrag
         {
             pausedObjects.Clear();
             pauseAllCreatures = false;
+        }
+
+
+        //delete all objects from room
+        public static void DeleteObjects(Room room, bool onlyCreatures)
+        {
+            for (int i = 0; i < room?.physicalObjects?.Length; i++)
+                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures) && 
+                        !(room.physicalObjects[i][j] is Player))
+                        DeleteObject(room.physicalObjects[i][j]);
         }
     }
 }

@@ -1,9 +1,9 @@
-Tool which allows dragging creatures in campaign using your mouse. Also includes options to pause and delete individual creatures and objects.
+Tool which allows dragging creatures in campaign using your mouse. Also includes options to pause and delete individual creatures and objects. Requires Dev Tools. 
 
-Source code is here: https://github.com/woutkolkman/mousedrag
+Source code is here: https://github.com/woutkolkman/mousedrag 
 
 [h3]Known bugs[/h3]
-- Pausing a deer while you're on it will make you slide off and be unable to move.
+- Pausing a deer while you're on it will make you slide off and be unable to move. 
 
 [h3]Reporting[/h3]
 Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 

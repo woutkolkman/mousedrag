@@ -41,6 +41,7 @@ namespace MouseDrag
                 return;
 
             Tools.DragObject(self);
+            Cursor.visible = true; //windows cursor visible
         }
 
 

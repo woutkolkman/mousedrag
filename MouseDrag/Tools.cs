@@ -115,10 +115,13 @@ namespace MouseDrag
 
 
         private static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
+        public static bool pauseAllCreatures = false;
         public static bool IsObjectPaused(UpdatableAndDeletable uad)
         {
             if (!(uad is PhysicalObject))
                 return false;
+            if (pauseAllCreatures && uad is Creature && !(uad is Player))
+                return true;
             return pausedObjects.Contains(uad as PhysicalObject);
         }
         public static void TogglePauseObject()
@@ -132,6 +135,11 @@ namespace MouseDrag
             } else {
                 pausedObjects.Add(c);
             }
+        }
+        public static void UnpauseAll()
+        {
+            pausedObjects.Clear();
+            pauseAllCreatures = false;
         }
     }
 }

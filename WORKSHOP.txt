@@ -1,0 +1,2 @@
+[h3]Known bugs[/h3]
+- Pausing a deer while you're on it will make you slide off and be unable to move.

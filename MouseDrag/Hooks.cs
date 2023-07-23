@@ -41,7 +41,10 @@ namespace MouseDrag
                 return;
 
             Tools.DragObject(self);
-            Cursor.visible = true; //windows cursor visible
+
+            //windows cursor visible
+            if (Options.forceMouseVisible?.Value != false)
+                Cursor.visible = true;
         }
 
 
@@ -52,6 +55,9 @@ namespace MouseDrag
             if (self.GamePaused || self.pauseUpdate || !self.processActive || self.pauseMenu != null)
                 return;
 
+            if (Options.unpauseAllKey?.Value != null && Input.GetKeyDown(Options.unpauseAllKey.Value))
+                Tools.UnpauseAll();
+
             //only active when dev tools is active
             if (!self.devToolsActive)
                 return;
@@ -61,6 +67,9 @@ namespace MouseDrag
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Tools.TogglePauseObject();
+
+            if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value))
+                Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
         }
     }
 }

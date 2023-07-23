@@ -114,23 +114,23 @@ namespace MouseDrag
         }
 
 
-        private static List<Creature> pausedCreatures = new List<Creature>();
-        public static bool IsCreaturePaused(UpdatableAndDeletable uad)
+        private static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
+        public static bool IsObjectPaused(UpdatableAndDeletable uad)
         {
-            if (!(uad is Creature))
+            if (!(uad is PhysicalObject))
                 return false;
-            return pausedCreatures.Contains(uad as Creature);
+            return pausedObjects.Contains(uad as PhysicalObject);
         }
-        public static void TogglePauseCreature()
+        public static void TogglePauseObject()
         {
-            if (!(dragChunk?.owner is Creature))
+            if (!(dragChunk?.owner is PhysicalObject))
                 return;
-            Creature c = dragChunk.owner as Creature;
+            PhysicalObject c = dragChunk.owner as PhysicalObject;
 
-            if (pausedCreatures.Contains(c)) {
-                pausedCreatures.Remove(c);
+            if (pausedObjects.Contains(c)) {
+                pausedObjects.Remove(c);
             } else {
-                pausedCreatures.Add(c);
+                pausedObjects.Add(c);
             }
         }
     }

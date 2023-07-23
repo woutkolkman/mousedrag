@@ -60,7 +60,7 @@ namespace MouseDrag
                 Tools.DeleteObject();
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
-                Tools.TogglePauseCreature();
+                Tools.TogglePauseObject();
         }
     }
 }

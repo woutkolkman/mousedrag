@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Options.cs" />
+    <Compile Include="Patches.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,6 +50,10 @@
     </Reference>
     <Reference Include="HOOKS-Assembly-CSharp">
       <HintPath>..\..\references\HOOKS-Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\references\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
       <HintPath>..\..\references\MonoMod.RuntimeDetour.dll</HintPath>

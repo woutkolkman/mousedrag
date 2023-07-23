@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using RWCustom;
 
 namespace MouseDrag
@@ -109,6 +111,27 @@ namespace MouseDrag
 
             if (!(obj is Player)) //Jolly Co-op's Destoy kills player
                 obj.Destroy(); //prevent realizing after hibernation
+        }
+
+
+        private static List<Creature> pausedCreatures = new List<Creature>();
+        public static bool IsCreaturePaused(UpdatableAndDeletable uad)
+        {
+            if (!(uad is Creature))
+                return false;
+            return pausedCreatures.Contains(uad as Creature);
+        }
+        public static void TogglePauseCreature()
+        {
+            if (!(dragChunk?.owner is Creature))
+                return;
+            Creature c = dragChunk.owner as Creature;
+
+            if (pausedCreatures.Contains(c)) {
+                pausedCreatures.Remove(c);
+            } else {
+                pausedCreatures.Add(c);
+            }
         }
     }
 }

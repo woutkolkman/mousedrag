@@ -56,8 +56,11 @@ namespace MouseDrag
             if (!self.devToolsActive)
                 return;
 
-            if (Options.deleteKey?.Value != null && Input.GetKeyDown(Options.deleteKey.Value))
+            if (Options.deleteOneKey?.Value != null && Input.GetKeyDown(Options.deleteOneKey.Value))
                 Tools.DeleteObject();
+
+            if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
+                Tools.TogglePauseCreature();
         }
     }
 }

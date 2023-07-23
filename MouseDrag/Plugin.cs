@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Logging;
 using System.Security.Permissions;
 #pragma warning disable CS0618
@@ -29,6 +30,7 @@ namespace MouseDrag
 
             Logger = base.Logger;
             Hooks.Apply();
+            Patches.Apply();
 
             GUID = Info.Metadata.GUID;
             Name = Info.Metadata.Name;
@@ -45,6 +47,7 @@ namespace MouseDrag
             IsEnabled = false;
 
             Hooks.Unapply();
+            Patches.Unapply();
 
             Plugin.Logger.LogInfo("OnDisable called");
         }

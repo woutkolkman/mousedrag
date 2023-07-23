@@ -5,12 +5,13 @@ namespace MouseDrag
 {
     public class Options : OptionInterface
     {
-        public static Configurable<KeyCode> deleteKey;
+        public static Configurable<KeyCode> deleteOneKey, pauseOneKey;
 
 
         public Options()
         {
-            deleteKey = config.Bind("deleteKey", KeyCode.None, new ConfigurableInfo("Keybind to delete the object which you're currently dragging.", null, "", "Delete"));
+            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Keybind to delete the object which you're currently dragging.", null, "", "Delete"));
+            pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("Keybind to pause the creature which you're currently dragging.", null, "", "Pause"));
         }
 
 
@@ -27,7 +28,8 @@ namespace MouseDrag
 
             float x = 192;
             float y = startHeight;
-            AddKeybinder(deleteKey, new Vector2(x, y -= 40f));
+            AddKeybinder(deleteOneKey, new Vector2(x, y -= 40f));
+            AddKeybinder(pauseOneKey, new Vector2(x, y -= 50f));
         }
 
 

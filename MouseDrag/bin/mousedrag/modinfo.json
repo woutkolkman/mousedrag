@@ -3,7 +3,7 @@
   "name": "Mouse Drag",
   "version": "0.1.0",
   "authors": "Maxi Mol",
-  "description": "Tool which allows dragging creatures in campaign using your mouse.",
+  "description": "Tool which allows dragging creatures in story using your mouse. Enable Dev Tools with 'o' before use.",
   "requirements": ["devtools"],
   "requirements_names": ["Dev Tools"],
   "tags": ["Tools"],

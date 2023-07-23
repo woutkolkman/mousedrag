@@ -1,3 +1,4 @@
+[h3]Description[/h3]
 Tool which allows dragging creatures in story using your mouse. Enable Dev Tools with 'o' before use. Also includes options to pause and delete individual creatures and objects. Requires Dev Tools. 
 
 Source code is here: https://github.com/woutkolkman/mousedrag 

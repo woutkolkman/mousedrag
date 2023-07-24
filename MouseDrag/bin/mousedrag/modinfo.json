@@ -3,7 +3,7 @@
   "name": "Mouse Drag",
   "version": "0.1.1",
   "authors": "Maxi Mol",
-  "description": "Tool which allows dragging creatures in story using your mouse. Enable Dev Tools with 'o' before use.",
+  "description": "Tool which allows dragging/pausing/deleting creatures in story-mode using your mouse.",
   "requirements": [],
   "requirements_names": [],
   "tags": ["Tools"],

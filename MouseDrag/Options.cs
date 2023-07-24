@@ -22,11 +22,11 @@ namespace MouseDrag
 
         public Options()
         {
-            activateType = config.Bind("activateType", defaultValue: ActivateTypes.DevToolsActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met.", null, "", "Active when"));
+            activateType = config.Bind("activateType", defaultValue: ActivateTypes.DevToolsActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active in sandbox.", null, "", "Active when"));
             activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("Keybind to activate controls when \"KeyBind\" is selected.", null, "", "Keybind"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("Keybind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
-            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to pause all creatures except Player and SlugNPC.", null, "", "Pause all creatures"));
-            unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("Keybind to unpause all objects/creatures.", null, "", "Unpause all"));
+            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to pause/unpause all creatures except Player and SlugNPC.\nIndividually paused creatures remain paused.", null, "", "Pause all creatures"));
+            unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("Keybind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
             deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Keybind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
             deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
             deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("Keybind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));

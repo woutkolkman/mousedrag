@@ -1,11 +1,11 @@
 {
   "id": "maxi-mol.mousedrag",
   "name": "Mouse Drag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": "Maxi Mol",
   "description": "Tool which allows dragging creatures in story using your mouse. Enable Dev Tools with 'o' before use.",
-  "requirements": ["devtools"],
-  "requirements_names": ["Dev Tools"],
+  "requirements": [],
+  "requirements_names": [],
   "tags": ["Tools"],
   "checksum_override_version": false
 }

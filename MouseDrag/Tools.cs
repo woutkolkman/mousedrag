@@ -27,7 +27,7 @@ namespace MouseDrag
             }
             prevPaused = paused;
 
-            //set activated controls, keybind is checked in RainWorldGameRawUpdateHook
+            //set activated controls, key bind is checked in RainWorldGameRawUpdateHook
             if (activeType == Options.ActivateTypes.DevToolsActive)
                 activated = game.devToolsActive;
             if (activeType == Options.ActivateTypes.AlwaysOn)

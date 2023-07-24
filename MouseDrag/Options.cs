@@ -23,13 +23,13 @@ namespace MouseDrag
         public Options()
         {
             activateType = config.Bind("activateType", defaultValue: ActivateTypes.DevToolsActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active in sandbox.", null, "", "Active when"));
-            activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("Keybind to activate controls when \"KeyBind\" is selected.", null, "", "Keybind"));
-            pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("Keybind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
-            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to pause/unpause all creatures except Player and SlugNPC.\nIndividually paused creatures remain paused.", null, "", "Pause all creatures"));
-            unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("Keybind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
-            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Keybind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
-            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Keybind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
-            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("Keybind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
+            activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("Key bind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "Key bind"));
+            pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("Key bind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
+            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Key bind to pause/unpause all creatures except Player and SlugNPC.\nIndividually paused creatures remain paused.", null, "", "Pause all creatures"));
+            unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("Key bind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
+            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Key bind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
+            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Key bind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
+            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("Key bind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
         }
 
@@ -102,7 +102,7 @@ namespace MouseDrag
             if (c == null)
                 c = Menu.MenuColorEffect.rgbMediumGrey;
 
-            OpKeyBinder keybinder = new OpKeyBinder(option, pos, new Vector2(100f, 30f), false)
+            OpKeyBinder keyBinder = new OpKeyBinder(option, pos, new Vector2(100f, 30f), false)
             {
                 description = option.info.description,
                 colorEdge = (Color)c
@@ -116,7 +116,7 @@ namespace MouseDrag
 
             Tabs[0].AddItems(new UIelement[]
             {
-                keybinder,
+                keyBinder,
                 label
             });
         }

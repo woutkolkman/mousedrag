@@ -7,15 +7,48 @@ namespace MouseDrag
 {
     static class Tools
     {
+        public static Options.ActivateTypes activeType = Options.ActivateTypes.DevToolsActive;
+        public static bool activated = false; //true --> all tools are available
         private static BodyChunk dragChunk;
         private static Vector2 dragOffset;
+
+
+        private static bool prevActivated = false, prevPaused = true;
+        public static void UpdateActivated(RainWorldGame game)
+        {
+            bool paused = (game.GamePaused || game.pauseUpdate || !game.processActive || game.pauseMenu != null);
+
+            //read activeType from config when game is unpaused
+            if (!paused && prevPaused && Options.activateType?.Value != null) {
+                foreach (Options.ActivateTypes val in Enum.GetValues(typeof(Options.ActivateTypes)))
+                    if (String.Equals(Options.activateType.Value, val.ToString()))
+                        activeType = val;
+                Plugin.Logger.LogDebug("CheckActivated, activeType: " + activeType.ToString());
+            }
+            prevPaused = paused;
+
+            //set activated controls, keybind is checked in RainWorldGameRawUpdateHook
+            if (activeType == Options.ActivateTypes.DevToolsActive)
+                activated = game.devToolsActive;
+            if (activeType == Options.ActivateTypes.AlwaysOn)
+                activated = true;
+
+            //if sandbox is active, always enable (because mouse drag is also active)
+            activated |= (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
+
+            if (activated != prevActivated)
+                Plugin.Logger.LogDebug("CheckActivated, activated: " + activated);
+            prevActivated = activated;
+        }
 
 
         public static void DragObject(RainWorldGame game)
         {
             bool stop = false;
-            bool alreadyDragging = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
             Vector2 mousePos = (Vector2)Input.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+
+            //if sandbox is active, do not move objects (because sandbox mouse already does that)
+            bool alreadyDragging = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
 
             //game is paused
             if (game.GamePaused || game.pauseUpdate || !game.processActive || game.pauseMenu != null)
@@ -28,6 +61,10 @@ namespace MouseDrag
 
             //left mouse button not pressed
             if (!Input.GetMouseButton(0))
+                stop = true;
+
+            //dragchunk not in this room
+            if (dragChunk?.owner?.room != room)
                 stop = true;
 
             if (stop) {

@@ -36,8 +36,9 @@ namespace MouseDrag
         {
             orig(self);
 
-            //only active when dev tools is active
-            if (!self.devToolsActive)
+            Tools.UpdateActivated(self);
+
+            if (!Tools.activated)
                 return;
 
             Tools.DragObject(self);
@@ -55,11 +56,16 @@ namespace MouseDrag
             if (self.GamePaused || self.pauseUpdate || !self.processActive || self.pauseMenu != null)
                 return;
 
+            //other checks are found in Tools.UpdateActivated
+            if (Tools.activeType == Options.ActivateTypes.KeyBindPressed)
+                if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
+                    Tools.activated = !Tools.activated;
+
+            //always active, so unpause together with deactivate dev tools works
             if (Options.unpauseAllKey?.Value != null && Input.GetKeyDown(Options.unpauseAllKey.Value))
                 Tools.UnpauseAll();
 
-            //only active when dev tools is active
-            if (!self.devToolsActive)
+            if (!Tools.activated)
                 return;
 
             if (Options.deleteOneKey?.Value != null && Input.GetKeyDown(Options.deleteOneKey.Value))

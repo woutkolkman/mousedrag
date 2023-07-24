@@ -24,7 +24,7 @@ namespace MouseDrag
             //original code:
             //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag)
             //resulting code will be:
-            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsCreaturePaused(updatableAndDeletable))
+            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsObjectPaused(updatableAndDeletable))
 
             ILCursor c = new ILCursor(il);
 
@@ -40,7 +40,7 @@ namespace MouseDrag
                 return;
             }
 
-            //get skip instruction to call if creature is paused
+            //get skip instruction to call if object is paused
             ILLabel skipCond = c.Prev.Operand as ILLabel;
 
             //insert condition
@@ -50,7 +50,7 @@ namespace MouseDrag
                 return Tools.IsObjectPaused(obj);
             });
 
-            //if value is true, don't update creature
+            //if value is true, don't update object
             c.Emit(OpCodes.Brtrue_S, skipCond);
 
             Plugin.Logger.LogInfo("RoomUpdateIL success");

@@ -22,7 +22,7 @@ namespace MouseDrag
                 stop = true;
 
             //room unavailable
-            Room room = game.RealizedPlayerFollowedByCamera?.room;
+            Room room = game.cameras[0]?.room;
             if (room?.physicalObjects == null)
                 stop = true;
 

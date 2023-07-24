@@ -19,7 +19,7 @@ namespace MouseDrag
 
         public static void Unapply()
         {
-			//TODO
+            //TODO
         }
 
 
@@ -72,10 +72,10 @@ namespace MouseDrag
                 Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
 
             if (Options.deleteAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.deleteAllCreaturesKey.Value))
-                Tools.DeleteObjects(self.RealizedPlayerFollowedByCamera?.room, true);
+                Tools.DeleteObjects(self.cameras[0]?.room, true);
 
             if (Options.deleteAllObjectsKey?.Value != null && Input.GetKeyDown(Options.deleteAllObjectsKey.Value))
-                Tools.DeleteObjects(self.RealizedPlayerFollowedByCamera?.room, false);
+                Tools.DeleteObjects(self.cameras[0]?.room, false);
         }
     }
 }

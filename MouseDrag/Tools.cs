@@ -47,9 +47,6 @@ namespace MouseDrag
             bool stop = false;
             Vector2 mousePos = (Vector2)Input.mousePosition + game.cameras[0]?.pos ?? new Vector2();
 
-            //if sandbox is active, do not move objects (because sandbox mouse already does that)
-            bool alreadyDragging = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
-
             //game is paused
             if (game.GamePaused || game.pauseUpdate || !game.processActive || game.pauseMenu != null)
                 stop = true;
@@ -63,9 +60,9 @@ namespace MouseDrag
             if (!Input.GetMouseButton(0))
                 stop = true;
 
-            //dragchunk not in this room
+            /*//dragchunk not in this room
             if (dragChunk?.owner?.room != room)
-                stop = true;
+                stop = true;*/
 
             if (stop) {
                 dragChunk = null;
@@ -109,12 +106,13 @@ namespace MouseDrag
                         closestChunk(room.physicalObjects[i][j]);
 
             //drag this chunk
-            } else if (dragChunk != null && !alreadyDragging) {
+            } else if (dragChunk != null) {
                 if (ShouldRelease(dragChunk.owner)) {
                     dragChunk = null;
-                } else {
+                } else { //might overwrite sandbox mouse
                     dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
+                    dragChunk.lastPos = dragChunk.pos;
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> activateKey;
         public static Configurable<KeyCode> pauseOneKey, pauseAllCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
-        public static Configurable<bool> forceMouseVisible;
+        public static Configurable<bool> forceMouseVisible, releaseGraspsPaused;
 
         public enum ActivateTypes
         {
@@ -31,6 +31,7 @@ namespace MouseDrag
             deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Key bind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
             deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("Key bind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
+            releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps are released.", null, "", "Pausing releases grasps"));
         }
 
 
@@ -56,6 +57,7 @@ namespace MouseDrag
             AddKeyBinder(deleteAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllObjectsKey, new Vector2(x, y -= 50f));
             AddCheckbox(forceMouseVisible, new Vector2(x + 38f, y -= 40f));
+            AddCheckbox(releaseGraspsPaused, new Vector2(x + 38f, y -= 40f));
         }
 
 

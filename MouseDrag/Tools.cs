@@ -122,10 +122,18 @@ namespace MouseDrag
         {
             if (obj == null)
                 obj = dragChunk?.owner;
-            if (obj == null)
-                return;
 
-            if (obj.grabbedBy != null)
+            ReleaseAllGrasps(obj);
+
+            obj?.RemoveFromRoom();
+            obj?.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
+
+            if (!(obj is Player)) //Jolly Co-op's Destoy kills player
+                obj?.Destroy(); //prevent realizing after hibernation
+        }
+        public static void ReleaseAllGrasps(PhysicalObject obj)
+        {
+            if (obj?.grabbedBy != null)
                 for (int i = obj.grabbedBy.Count - 1; i >= 0; i--)
                     obj.grabbedBy[i]?.Release();
 
@@ -141,12 +149,17 @@ namespace MouseDrag
 
                 (obj as Creature).LoseAllGrasps();
             }
+        }
 
-            obj.RemoveFromRoom();
-            obj.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
 
-            if (!(obj is Player)) //Jolly Co-op's Destoy kills player
-                obj.Destroy(); //prevent realizing after hibernation
+        //delete all objects from room
+        public static void DeleteObjects(Room room, bool onlyCreatures)
+        {
+            for (int i = 0; i < room?.physicalObjects?.Length; i++)
+                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures) && 
+                        !(room.physicalObjects[i][j] is Player))
+                        DeleteObject(room.physicalObjects[i][j]);
         }
 
 
@@ -157,9 +170,15 @@ namespace MouseDrag
         {
             if (!(uad is PhysicalObject))
                 return false;
-            if (pauseAllCreatures && uad is Creature && !(uad is Player))
-                return true;
-            return pausedObjects.Contains(uad as PhysicalObject);
+            bool shouldPause = pausedObjects.Contains(uad as PhysicalObject);
+
+            if (uad is Creature) {
+                shouldPause |= (pauseAllCreatures && !(uad is Player));
+
+                if (shouldPause && Options.releaseGraspsPaused?.Value != false)
+                    ReleaseAllGrasps(uad as Creature);
+            }
+            return shouldPause;
         }
         public static void TogglePauseObject()
         {
@@ -177,17 +196,6 @@ namespace MouseDrag
         {
             pausedObjects.Clear();
             pauseAllCreatures = false;
-        }
-
-
-        //delete all objects from room
-        public static void DeleteObjects(Room room, bool onlyCreatures)
-        {
-            for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures) && 
-                        !(room.physicalObjects[i][j] is Player))
-                        DeleteObject(room.physicalObjects[i][j]);
         }
     }
 }

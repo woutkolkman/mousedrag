@@ -30,7 +30,7 @@ namespace MouseDrag
             //set activated controls, key bind is checked in RainWorldGameRawUpdateHook
             if (activeType == Options.ActivateTypes.DevToolsActive)
                 activated = game.devToolsActive;
-            if (activeType == Options.ActivateTypes.AlwaysOn)
+            if (activeType == Options.ActivateTypes.AlwaysActive)
                 activated = true;
 
             //if sandbox is active, always enable (because mouse drag is also active)
@@ -112,7 +112,7 @@ namespace MouseDrag
                 } else { //might overwrite sandbox mouse
                     dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
-                    dragChunk.lastPos = dragChunk.pos;
+                    dragChunk.lastPos = dragChunk.pos; //reduces visual bugs
                 }
             }
         }

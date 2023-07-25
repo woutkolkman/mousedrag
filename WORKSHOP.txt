@@ -4,8 +4,7 @@ Tool which allows dragging creatures in story-mode using your mouse, also known 
 Source code is here: https://github.com/woutkolkman/mousedrag 
 
 [h3]Known bugs[/h3]
-- Pausing a deer while you're on it will make you slide off and be unable to move. 
-- Grabbed creatures fall to the ground until grabber is unpaused. 
+- Pausing a deer while you're on it will make you slide off. You need to jump to be able to move again. 
 
 [h3]Reporting[/h3]
 Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 

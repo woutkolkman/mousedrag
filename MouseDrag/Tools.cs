@@ -100,17 +100,18 @@ namespace MouseDrag
             }
 
             //search all objects for closest chunk
-            if (dragChunk == null) {
+            if (dragChunk == null)
                 for (int i = 0; i < room.physicalObjects.Length; i++)
                     for (int j = 0; j < room.physicalObjects[i].Count; j++)
                         closestChunk(room.physicalObjects[i][j]);
 
             //drag this chunk
-            } else if (dragChunk != null) {
+            if (dragChunk != null) {
                 if (ShouldRelease(dragChunk.owner)) {
                     dragChunk = null;
-                } else { //might overwrite sandbox mouse
-                    dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
+                } else { //might affect sandbox mouse
+                    if (!IsObjectPaused(dragChunk.owner)) //do not launch creature
+                        dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
                     if (Options.updateLastPos?.Value != false)
                         dragChunk.lastPos = dragChunk.pos; //reduces visual bugs

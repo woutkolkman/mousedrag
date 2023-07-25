@@ -60,9 +60,9 @@ namespace MouseDrag
             if (!Input.GetMouseButton(0))
                 stop = true;
 
-            /*//dragchunk not in this room
-            if (dragChunk?.owner?.room != room)
-                stop = true;*/
+            //dragchunk not in this room
+            if (dragChunk?.owner?.room != null && dragChunk.owner.room != room)
+                stop = true;
 
             if (stop) {
                 dragChunk = null;

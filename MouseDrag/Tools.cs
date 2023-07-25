@@ -112,7 +112,8 @@ namespace MouseDrag
                 } else { //might overwrite sandbox mouse
                     dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
-                    dragChunk.lastPos = dragChunk.pos; //reduces visual bugs
+                    if (Options.updateLastPos?.Value != false)
+                        dragChunk.lastPos = dragChunk.pos; //reduces visual bugs
                 }
             }
         }

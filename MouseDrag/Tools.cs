@@ -110,8 +110,9 @@ namespace MouseDrag
                 if (ShouldRelease(dragChunk.owner)) {
                     dragChunk = null;
                 } else { //might affect sandbox mouse
-                    if (!IsObjectPaused(dragChunk.owner)) //do not launch creature
-                        dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
+                    dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
+                    if (IsObjectPaused(dragChunk.owner)) //do not launch creature after pause
+                        dragChunk.vel = new Vector2();
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
                     if (Options.updateLastPos?.Value != false)
                         dragChunk.lastPos = dragChunk.pos; //reduces visual bugs

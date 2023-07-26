@@ -68,20 +68,29 @@ namespace MouseDrag
             if (!Tools.activated)
                 return;
 
-            if (Options.deleteOneKey?.Value != null && Input.GetKeyDown(Options.deleteOneKey.Value))
-                Tools.DeleteObject();
-
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Tools.TogglePauseObject();
 
             if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value))
                 Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
 
+            if (Options.deleteOneKey?.Value != null && Input.GetKeyDown(Options.deleteOneKey.Value))
+                Tools.DeleteObject();
+
             if (Options.deleteAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.deleteAllCreaturesKey.Value))
                 Tools.DeleteObjects(self.cameras[0]?.room, true);
 
             if (Options.deleteAllObjectsKey?.Value != null && Input.GetKeyDown(Options.deleteAllObjectsKey.Value))
                 Tools.DeleteObjects(self.cameras[0]?.room, false);
+
+            if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value))
+                Tools.KillCreature();
+
+            if (Options.reviveOneKey?.Value != null && Input.GetKeyDown(Options.reviveOneKey.Value))
+                Tools.ReviveCreature();
+
+            if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
+                Tools.DuplicateObject();
         }
     }
 }

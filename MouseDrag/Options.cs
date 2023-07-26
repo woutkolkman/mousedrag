@@ -11,6 +11,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> pauseOneKey, pauseAllCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<bool> forceMouseVisible, releaseGraspsPaused, updateLastPos;
+        public static Configurable<KeyCode> killOneKey, reviveOneKey, duplicateOneKey;
 
         public enum ActivateTypes
         {
@@ -33,6 +34,9 @@ namespace MouseDrag
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
+            killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("Kill the creature which you're currently dragging.", null, "", "Kill"));
+            reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
+            duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
         }
 
 
@@ -47,10 +51,10 @@ namespace MouseDrag
             };
             AddTitle();
 
-            float x = 192;
+            float x = 65;
             float y = startHeight;
-            AddComboBox(activateType, new Vector2(190, y - 27f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
-            AddKeyBinder(activateKey, new Vector2(x + 140f, y -= 30f));
+            AddComboBox(activateType, new Vector2(190f, y - 27f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
+            AddKeyBinder(activateKey, new Vector2(330f, y -= 30f));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= 100f));
             AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= 50f));
@@ -60,6 +64,12 @@ namespace MouseDrag
             AddCheckbox(forceMouseVisible, new Vector2(x + 38f, y -= 40f));
             AddCheckbox(releaseGraspsPaused, new Vector2(x + 38f, y -= 40f));
             AddCheckbox(updateLastPos, new Vector2(x + 38f, y -= 40f));
+
+            x += 300;
+            y = startHeight - 30f;
+            AddKeyBinder(killOneKey, new Vector2(x, y -= 100f));
+            AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
         }
 
 

@@ -166,6 +166,44 @@ namespace MouseDrag
         }
 
 
+        public static void DuplicateObject(PhysicalObject obj = null)
+        {
+            if (obj == null)
+                obj = dragChunk?.owner;
+            if (obj?.room?.abstractRoom == null)
+                return;
+
+            WorldCoordinate coord = obj.room.GetWorldCoordinate(obj.firstChunk?.pos ?? new Vector2());
+            AbstractPhysicalObject oldApo = obj?.abstractPhysicalObject ?? (obj as Creature)?.abstractCreature;
+            AbstractPhysicalObject newApo = null;
+
+            if (oldApo == null)
+                return;
+
+            if (obj is Player && !(obj as Player).isNPC) {
+                Plugin.Logger.LogWarning("DuplicateObject, prevent exception when trying to duplicate player");
+                return;
+            }
+
+            if (obj is Creature) {
+                newApo = new AbstractCreature(oldApo.world, (obj as Creature).Template, null, coord, oldApo.ID);
+
+            } else {
+                try {
+                    newApo = SaveState.AbstractPhysicalObjectFromString(oldApo.world, oldApo.ToString());
+                } catch (Exception ex) {
+                    Plugin.Logger.LogWarning("DuplicateObject exception: " + ex.ToString());
+                    return;
+                }
+                newApo.pos = coord;
+            }
+
+            Plugin.Logger.LogDebug("DuplicateObject, AddEntity " + newApo.type + " at " + coord.SaveToString());
+            obj.room.abstractRoom.AddEntity(newApo);
+            newApo.RealizeInRoom(); //actually places object/creature
+        }
+
+
         //pause/unpause objects
         private static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
         public static bool pauseAllCreatures = false;

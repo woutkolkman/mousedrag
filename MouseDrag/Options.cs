@@ -24,13 +24,13 @@ namespace MouseDrag
         public Options()
         {
             activateType = config.Bind("activateType", defaultValue: ActivateTypes.AlwaysActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active in sandbox.", null, "", "Active when"));
-            activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("Key bind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "Key bind"));
-            pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("Key bind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
-            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Key bind to pause/unpause all creatures except Player and SlugNPC.\nIndividually paused creatures remain paused.", null, "", "Pause all creatures"));
-            unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("Key bind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
-            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("Key bind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
-            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("Key bind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
-            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("Key bind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
+            activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
+            pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
+            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC.\nIndividually paused creatures remain paused.", null, "", "Pause all creatures"));
+            unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
+            deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
+            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
+            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));

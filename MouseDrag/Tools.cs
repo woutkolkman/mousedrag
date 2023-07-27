@@ -9,8 +9,8 @@ namespace MouseDrag
     {
         public static Options.ActivateTypes activeType = Options.ActivateTypes.DevToolsActive;
         public static bool activated = false; //true --> all tools are available
-        private static BodyChunk dragChunk;
-        private static Vector2 dragOffset;
+        public static BodyChunk dragChunk;
+        public static Vector2 dragOffset;
 
 
         private static bool prevActivated = false, prevPaused = true;

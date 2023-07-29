@@ -180,14 +180,15 @@ namespace MouseDrag
             if (oldApo == null)
                 return;
 
-            if (obj is Player && !(obj as Player).isNPC) {
-                Plugin.Logger.LogWarning("DuplicateObject, prevent exception when trying to duplicate player");
-                return;
-            }
-
             if (obj is Creature) {
                 newApo = new AbstractCreature(oldApo.world, (obj as Creature).Template, null, coord, oldApo.ID);
                 (newApo as AbstractCreature).state = (oldApo as AbstractCreature).state;
+
+                //prevents exception when duplicating player
+                if (obj is Player && (obj as Player).playerState != null && !(obj as Player).isNPC) {
+                    PlayerState ps = (obj as Player).playerState;
+                    (newApo as AbstractCreature).state = new PlayerState(newApo as AbstractCreature, ps.playerNumber, ps.slugcatCharacter, false);
+                }
 
             } else {
                 try {

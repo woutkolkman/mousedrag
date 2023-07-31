@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
@@ -185,7 +186,7 @@ namespace MouseDrag
             if (obj is Creature) {
                 EntityID id = Options.copyID?.Value == false ? obj.room.game.GetNewID() : oldApo.ID;
                 newApo = new AbstractCreature(oldApo.world, (obj as Creature).Template, null, coord, id);
-                (newApo as AbstractCreature).state = (oldApo as AbstractCreature).state;
+                (newApo as AbstractCreature).state.LoadFromString(Regex.Split((oldApo as AbstractCreature).state.ToString(), "<cB>"));
 
                 //prevents exception when duplicating player
                 if (obj is Player && (obj as Player).playerState != null && !(obj as Player).isNPC) {

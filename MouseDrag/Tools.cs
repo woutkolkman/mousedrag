@@ -198,25 +198,7 @@ namespace MouseDrag
 
                     //specials
                     if (oldApo is SeedCob.AbstractSeedCob) //popcorn plant
-                    {
-                        newApo = new SeedCob.AbstractSeedCob(
-                            oldApo.world, null, coord, oldApo.ID, 
-                            obj.room.abstractRoom.index, -1, dead: (oldApo as SeedCob.AbstractSeedCob).dead, null
-                        );
-                        (newApo as AbstractConsumable).isConsumed = (oldApo as AbstractConsumable).isConsumed;
-                        obj.room.abstractRoom.entities.Add(newApo);
-                        newApo.Realize();
-
-                        string[] duplicateArrayFields = {"seedPositions", "seedsPopped", "leaves"};
-                        string[] copyFields = {"totalSprites", "stalkSegments", "cobSegments", "placedPos", "rootPos", "rootDir", "cobDir", "stalkLength", "open"};
-                        FieldInfo[] seedCobObjectFields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-                        foreach (FieldInfo fi in seedCobObjectFields) {
-                            if (duplicateArrayFields.Any(s => fi.Name.Contains(s)))
-                                fi.SetValue(newApo.realizedObject, (fi.GetValue(obj) as Array).Clone());
-                            if (copyFields.Any(s => fi.Name.Contains(s)))
-                                fi.SetValue(newApo.realizedObject, fi.GetValue(obj));
-                        }
-                    }
+                        newApo = DuplicateObjectSeedCob(oldApo, newApo);
 
                     //TODO oracles
 
@@ -230,6 +212,31 @@ namespace MouseDrag
             Plugin.Logger.LogDebug("DuplicateObject, AddEntity " + newApo.type + " at " + coord.SaveToString());
             obj.room.abstractRoom.AddEntity(newApo);
             newApo.RealizeInRoom(); //actually places object/creature
+        }
+
+
+        //popcorn plants are not as easy to duplicate because of the way they are added to rooms
+        private static AbstractPhysicalObject DuplicateObjectSeedCob(AbstractPhysicalObject oldApo, AbstractPhysicalObject newApo)
+        {
+            newApo = new SeedCob.AbstractSeedCob(
+                oldApo.world, null, oldApo.pos, oldApo.ID,
+                oldApo.realizedObject.room.abstractRoom.index, -1, dead: (oldApo as SeedCob.AbstractSeedCob).dead, null
+            );
+            (newApo as AbstractConsumable).isConsumed = (oldApo as AbstractConsumable).isConsumed;
+            oldApo.realizedObject.room.abstractRoom.entities.Add(newApo);
+            newApo.Realize();
+
+            string[] duplicateArrayFields = { "seedPositions", "seedsPopped", "leaves" };
+            string[] copyFields = { "totalSprites", "stalkSegments", "cobSegments", "placedPos", "rootPos", "rootDir", "cobDir", "stalkLength", "open" };
+            FieldInfo[] seedCobObjectFields = oldApo.realizedObject.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+            foreach (FieldInfo fi in seedCobObjectFields)
+            {
+                if (duplicateArrayFields.Any(s => fi.Name.Contains(s)))
+                    fi.SetValue(newApo.realizedObject, (fi.GetValue(oldApo.realizedObject) as Array).Clone());
+                if (copyFields.Any(s => fi.Name.Contains(s)))
+                    fi.SetValue(newApo.realizedObject, fi.GetValue(oldApo.realizedObject));
+            }
+            return newApo;
         }
 
 

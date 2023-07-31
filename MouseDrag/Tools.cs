@@ -321,6 +321,13 @@ namespace MouseDrag
                 (ac.state as HealthState).health = 1f;
             ac.state.alive = true;
             (obj as Creature).dead = false;
+
+            //try to exit game over mode
+            if (Options.exitGameOverMode?.Value != false && 
+                obj is Player && !(obj as Player).isNPC && 
+                obj?.room?.game?.cameras?.Length > 0 && 
+                obj.room.game.cameras[0]?.hud?.textPrompt != null)
+                obj.room.game.cameras[0].hud.textPrompt.gameOverMode = false;
         }
 
 

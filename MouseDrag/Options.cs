@@ -12,7 +12,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<bool> forceMouseVisible, releaseGraspsPaused, updateLastPos;
         public static Configurable<KeyCode> killOneKey, reviveOneKey, duplicateOneKey;
-        public static Configurable<bool> copyID;
+        public static Configurable<bool> copyID, exitGameOverMode;
 
         public enum ActivateTypes
         {
@@ -39,6 +39,7 @@ namespace MouseDrag
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
             copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact duplicate of the previous object.", null, "", "Copy ID duplicate"));
+            exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
         }
 
 
@@ -73,6 +74,7 @@ namespace MouseDrag
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
             AddCheckbox(copyID, new Vector2(x + 38f, y -= 40f));
+            AddCheckbox(exitGameOverMode, new Vector2(x + 38f, y -= 40f));
         }
 
 

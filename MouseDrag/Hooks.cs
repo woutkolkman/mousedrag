@@ -102,8 +102,11 @@ namespace MouseDrag
         static void RainWorldGameCtorHook(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
         {
             orig(self, manager);
+
             Tools.UnpauseAll();
-            Plugin.Logger.LogDebug("RainWorldGameCtorHook, UnpauseAll called");
+            if (Tools.activeType == Options.ActivateTypes.KeyBindPressed)
+                Tools.activated = false;
+            Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
         }
     }
 }

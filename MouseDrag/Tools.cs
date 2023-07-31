@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 using RWCustom;
@@ -170,7 +172,7 @@ namespace MouseDrag
         {
             if (obj == null)
                 obj = dragChunk?.owner;
-            if (obj?.room?.abstractRoom == null)
+            if (obj?.room?.abstractRoom == null || obj.room.game == null)
                 return;
 
             WorldCoordinate coord = obj.room.GetWorldCoordinate(obj.firstChunk?.pos ?? new Vector2());
@@ -193,6 +195,31 @@ namespace MouseDrag
             } else {
                 try {
                     newApo = SaveState.AbstractPhysicalObjectFromString(oldApo.world, oldApo.ToString());
+
+                    //specials
+                    if (oldApo is SeedCob.AbstractSeedCob) //popcorn plant
+                    {
+                        newApo = new SeedCob.AbstractSeedCob(
+                            oldApo.world, null, coord, oldApo.ID, 
+                            obj.room.abstractRoom.index, -1, dead: (oldApo as SeedCob.AbstractSeedCob).dead, null
+                        );
+                        (newApo as AbstractConsumable).isConsumed = (oldApo as AbstractConsumable).isConsumed;
+                        obj.room.abstractRoom.entities.Add(newApo);
+                        newApo.Realize();
+
+                        string[] duplicateArrayFields = {"seedPositions", "seedsPopped", "leaves"};
+                        string[] copyFields = {"totalSprites", "stalkSegments", "cobSegments", "placedPos", "rootPos", "rootDir", "cobDir", "stalkLength", "open"};
+                        FieldInfo[] seedCobObjectFields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+                        foreach (FieldInfo fi in seedCobObjectFields) {
+                            if (duplicateArrayFields.Any(s => fi.Name.Contains(s)))
+                                fi.SetValue(newApo.realizedObject, (fi.GetValue(obj) as Array).Clone());
+                            if (copyFields.Any(s => fi.Name.Contains(s)))
+                                fi.SetValue(newApo.realizedObject, fi.GetValue(obj));
+                        }
+                    }
+
+                    //TODO oracles
+
                 } catch (Exception ex) {
                     Plugin.Logger.LogWarning("DuplicateObject exception: " + ex.ToString());
                     return;

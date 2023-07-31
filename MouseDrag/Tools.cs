@@ -199,8 +199,8 @@ namespace MouseDrag
                     //specials
                     if (oldApo is SeedCob.AbstractSeedCob) //popcorn plant
                         newApo = DuplicateObjectSeedCob(oldApo, newApo);
-
-                    //TODO oracles
+                    if (obj is Oracle) //iterator
+                        newApo.realizedObject = new Oracle(newApo, obj.room);
 
                 } catch (Exception ex) {
                     Plugin.Logger.LogWarning("DuplicateObject exception: " + ex.ToString());

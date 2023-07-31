@@ -19,7 +19,7 @@ namespace MouseDrag
         private static bool prevActivated = false, prevPaused = true;
         public static void UpdateActivated(RainWorldGame game)
         {
-            bool paused = (game.GamePaused || game.pauseUpdate || !game.processActive || game.pauseMenu != null);
+            bool paused = (game.GamePaused || game.pauseUpdate || !game.processActive);
 
             //read activeType from config when game is unpaused
             if (!paused && prevPaused && Options.activateType?.Value != null) {
@@ -51,7 +51,7 @@ namespace MouseDrag
             Vector2 mousePos = (Vector2)Input.mousePosition + game.cameras[0]?.pos ?? new Vector2();
 
             //game is paused
-            if (game.GamePaused || game.pauseUpdate || !game.processActive || game.pauseMenu != null)
+            if (game.GamePaused || game.pauseUpdate || !game.processActive)
                 stop = true;
 
             //room unavailable

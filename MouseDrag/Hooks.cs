@@ -14,6 +14,9 @@ namespace MouseDrag
 
             //at framerate
             On.RainWorldGame.RawUpdate += RainWorldGameRawUpdateHook;
+
+            //at new game
+            On.RainWorldGame.ctor += RainWorldGameCtorHook;
         }
 
 
@@ -53,7 +56,8 @@ namespace MouseDrag
         static void RainWorldGameRawUpdateHook(On.RainWorldGame.orig_RawUpdate orig, RainWorldGame self, float dt)
         {
             orig(self, dt);
-            if (self.GamePaused || self.pauseUpdate || !self.processActive || self.pauseMenu != null)
+
+            if (self.GamePaused || self.pauseUpdate || !self.processActive)
                 return;
 
             //other checks are found in Tools.UpdateActivated
@@ -91,6 +95,15 @@ namespace MouseDrag
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
                 Tools.DuplicateObject();
+        }
+
+
+        //at new game
+        static void RainWorldGameCtorHook(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
+        {
+            orig(self, manager);
+            Tools.UnpauseAll();
+            Plugin.Logger.LogDebug("RainWorldGameCtorHook, UnpauseAll called");
         }
     }
 }

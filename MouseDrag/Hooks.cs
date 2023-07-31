@@ -104,8 +104,7 @@ namespace MouseDrag
             orig(self, manager);
 
             Tools.UnpauseAll();
-            if (Tools.activeType == Options.ActivateTypes.KeyBindPressed)
-                Tools.activated = false;
+            Tools.activated = false;
             Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
         }
     }

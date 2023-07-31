@@ -4,7 +4,6 @@ Tool which allows dragging creatures in story-mode using your mouse, also known 
 Source code is here: https://github.com/woutkolkman/mousedrag 
 
 [h3]Known issues/bugs[/h3]
-- You cannot duplicate certain objects because of the way they are added to rooms. 
 - Pausing a deer while you're on it will make you slide off. You need to jump to be able to move again. 
 
 [h3]Reporting[/h3]

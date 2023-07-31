@@ -12,6 +12,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<bool> forceMouseVisible, releaseGraspsPaused, updateLastPos;
         public static Configurable<KeyCode> killOneKey, reviveOneKey, duplicateOneKey;
+        public static Configurable<bool> copyID;
 
         public enum ActivateTypes
         {
@@ -37,6 +38,7 @@ namespace MouseDrag
             killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("Kill the creature which you're currently dragging.", null, "", "Kill"));
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
+            copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact duplicate of the previous object.", null, "", "Copy ID duplicate"));
         }
 
 
@@ -70,6 +72,7 @@ namespace MouseDrag
             AddKeyBinder(killOneKey, new Vector2(x, y -= 100f));
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
+            AddCheckbox(copyID, new Vector2(x + 38f, y -= 40f));
         }
 
 

@@ -183,7 +183,8 @@ namespace MouseDrag
                 return;
 
             if (obj is Creature) {
-                newApo = new AbstractCreature(oldApo.world, (obj as Creature).Template, null, coord, oldApo.ID);
+                EntityID id = Options.copyID?.Value == false ? obj.room.game.GetNewID() : oldApo.ID;
+                newApo = new AbstractCreature(oldApo.world, (obj as Creature).Template, null, coord, id);
                 (newApo as AbstractCreature).state = (oldApo as AbstractCreature).state;
 
                 //prevents exception when duplicating player
@@ -201,6 +202,10 @@ namespace MouseDrag
                         newApo = DuplicateObjectSeedCob(oldApo, newApo);
                     if (obj is Oracle) //iterator
                         newApo.realizedObject = new Oracle(newApo, obj.room);
+
+                    //must get new id?
+                    if (Options.copyID?.Value == false)
+                        newApo.ID = obj.room.game.GetNewID();
 
                 } catch (Exception ex) {
                     Plugin.Logger.LogWarning("DuplicateObject exception: " + ex.ToString());

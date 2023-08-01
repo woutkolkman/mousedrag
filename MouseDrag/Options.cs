@@ -10,10 +10,9 @@ namespace MouseDrag
         public static Configurable<KeyCode> activateKey;
         public static Configurable<KeyCode> pauseOneKey, pauseAllCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
-        public static Configurable<bool> forceMouseVisible, releaseGraspsPaused, updateLastPos;
+        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused;
         public static Configurable<KeyCode> killOneKey, reviveOneKey, duplicateOneKey;
-        public static Configurable<bool> copyID, exitGameOverMode;
-        public static Configurable<bool> exceptSlugNPC;
+        public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC;
 
         public enum ActivateTypes
         {
@@ -34,11 +33,12 @@ namespace MouseDrag
             deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
             deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
+            undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
-            updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
             killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("Kill the creature which you're currently dragging.", null, "", "Kill"));
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
+            updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
             copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact duplicate of the previous object.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/delete slugpups when pausing/deleting all creatures.", null, "", "Except SlugNPC"));
@@ -67,14 +67,15 @@ namespace MouseDrag
             AddKeyBinder(deleteAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllObjectsKey, new Vector2(x, y -= 50f));
             AddCheckbox(forceMouseVisible, new Vector2(x + 38f, y -= 40f));
+            AddCheckbox(undoMouseVisible, new Vector2(x + 38f, y -= 40f));
             AddCheckbox(releaseGraspsPaused, new Vector2(x + 38f, y -= 40f));
-            AddCheckbox(updateLastPos, new Vector2(x + 38f, y -= 40f));
 
             x += 300;
             y = startHeight - 30f;
             AddKeyBinder(killOneKey, new Vector2(x, y -= 100f));
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
+            AddCheckbox(updateLastPos, new Vector2(x + 38f, y -= 40f));
             AddCheckbox(copyID, new Vector2(x + 38f, y -= 40f));
             AddCheckbox(exitGameOverMode, new Vector2(x + 38f, y -= 40f));
             AddCheckbox(exceptSlugNPC, new Vector2(x + 38f, y -= 40f));

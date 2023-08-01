@@ -189,7 +189,8 @@ namespace MouseDrag
             if (obj is Creature) {
                 EntityID id = Options.copyID?.Value == false ? obj.room.game.GetNewID() : oldApo.ID;
                 newApo = new AbstractCreature(oldApo.world, (obj as Creature).Template, null, coord, id);
-                (newApo as AbstractCreature).state.LoadFromString(Regex.Split((oldApo as AbstractCreature).state.ToString(), "<cB>"));
+                if ((oldApo as AbstractCreature)?.state != null)
+                    (newApo as AbstractCreature).state?.LoadFromString(Regex.Split((oldApo as AbstractCreature).state.ToString(), "<cB>"));
 
                 //prevents exception when duplicating player
                 if (obj is Player && (obj as Player).playerState != null && !(obj as Player).isNPC) {

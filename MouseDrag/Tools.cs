@@ -166,9 +166,10 @@ namespace MouseDrag
         {
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures) && 
-                        !(room.physicalObjects[i][j] is Player))
-                        DeleteObject(room.physicalObjects[i][j]);
+                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
+                        if (!(room.physicalObjects[i][j] is Player && //don't delete when: creature is player and player is not SlugNPC (optional)
+                            (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
+                            DeleteObject(room.physicalObjects[i][j]);
         }
 
 
@@ -260,7 +261,9 @@ namespace MouseDrag
             bool shouldPause = pausedObjects.Contains(uad as PhysicalObject);
 
             if (uad is Creature) {
-                shouldPause |= (pauseAllCreatures && !(uad is Player));
+                shouldPause |= (pauseAllCreatures && !( //don't pause when: creature is player and player is not SlugNPC (optional)
+                    uad is Player && (Options.exceptSlugNPC?.Value != false || !(uad as Player).isNPC)
+                ));
 
                 if (shouldPause && Options.releaseGraspsPaused?.Value != false)
                     ReleaseAllGrasps(uad as Creature);

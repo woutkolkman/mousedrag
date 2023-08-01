@@ -8,11 +8,12 @@ namespace MouseDrag
     {
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
+        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused;
+        public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC;
         public static Configurable<KeyCode> pauseOneKey, pauseAllCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
-        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused;
         public static Configurable<KeyCode> killOneKey, reviveOneKey, duplicateOneKey;
-        public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC;
+        public int curTab;
 
         public enum ActivateTypes
         {
@@ -26,22 +27,22 @@ namespace MouseDrag
         {
             activateType = config.Bind("activateType", defaultValue: ActivateTypes.AlwaysActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active in sandbox.", null, "", "Active when"));
             activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
+            forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
+            undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
+            releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
+            updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
+            copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact duplicate of the previous object.", null, "", "Copy ID duplicate"));
+            exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
+            exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/delete slugpups when pausing/deleting all creatures.", null, "", "Except SlugNPC"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause/unpause"));
             pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC.\nIndividually paused creatures remain paused.", null, "", "Pause all creatures"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
             deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
             deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
             deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
-            forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
-            undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
-            releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("Kill the creature which you're currently dragging.", null, "", "Kill"));
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
-            updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
-            copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact duplicate of the previous object.", null, "", "Copy ID duplicate"));
-            exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
-            exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/delete slugpups when pausing/deleting all creatures.", null, "", "Except SlugNPC"));
         }
 
 
@@ -52,33 +53,45 @@ namespace MouseDrag
             base.Initialize();
             Tabs = new OpTab[]
             {
-                new OpTab(this, "Options")
+                new OpTab(this, "General"),
+                new OpTab(this, "KeyBinds")
             };
-            AddTitle();
 
-            float x = 65;
+            /**************** General ****************/
+            curTab = 0;
+            AddTitle();
+            float x = 90;
             float y = startHeight;
             AddComboBox(activateType, new Vector2(190f, y - 27f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
-            AddKeyBinder(activateKey, new Vector2(330f, y -= 30f));
-            AddKeyBinder(pauseOneKey, new Vector2(x, y -= 100f));
+            AddKeyBinder(activateKey, new Vector2(330f, y - 30f));
+            AddCheckbox(forceMouseVisible, new Vector2(x, y -= 100f));
+            AddCheckbox(undoMouseVisible, new Vector2(x, y -= 40f));
+            AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= 40f));
+
+            x += 250;
+            y = startHeight;
+            AddCheckbox(updateLastPos, new Vector2(x, y -= 100f));
+            AddCheckbox(copyID, new Vector2(x, y -= 40f));
+            AddCheckbox(exitGameOverMode, new Vector2(x, y -= 40f));
+            AddCheckbox(exceptSlugNPC, new Vector2(x, y -= 40f));
+
+            /**************** KeyBinds ****************/
+            curTab++;
+            AddTitle();
+            x = 65;
+            y = startHeight;
+            AddKeyBinder(pauseOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllObjectsKey, new Vector2(x, y -= 50f));
-            AddCheckbox(forceMouseVisible, new Vector2(x + 38f, y -= 40f));
-            AddCheckbox(undoMouseVisible, new Vector2(x + 38f, y -= 40f));
-            AddCheckbox(releaseGraspsPaused, new Vector2(x + 38f, y -= 40f));
 
             x += 300;
-            y = startHeight - 30f;
-            AddKeyBinder(killOneKey, new Vector2(x, y -= 100f));
+            y = startHeight;
+            AddKeyBinder(killOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
-            AddCheckbox(updateLastPos, new Vector2(x + 38f, y -= 40f));
-            AddCheckbox(copyID, new Vector2(x + 38f, y -= 40f));
-            AddCheckbox(exitGameOverMode, new Vector2(x + 38f, y -= 40f));
-            AddCheckbox(exceptSlugNPC, new Vector2(x + 38f, y -= 40f));
         }
 
 
@@ -87,7 +100,7 @@ namespace MouseDrag
             OpLabel title = new OpLabel(new Vector2(150f, 560f), new Vector2(300f, 30f), Plugin.Name, bigText: true);
             OpLabel version = new OpLabel(new Vector2(150f, 540f), new Vector2(300f, 30f), $"Version {Plugin.Version}");
 
-            Tabs[0].AddItems(new UIelement[]
+            Tabs[curTab].AddItems(new UIelement[]
             {
                 title,
                 version
@@ -112,7 +125,7 @@ namespace MouseDrag
                 color = (Color)c
             };
 
-            Tabs[0].AddItems(new UIelement[]
+            Tabs[curTab].AddItems(new UIelement[]
             {
                 checkbox,
                 label
@@ -137,7 +150,7 @@ namespace MouseDrag
                 color = (Color)c
             };
 
-            Tabs[0].AddItems(new UIelement[]
+            Tabs[curTab].AddItems(new UIelement[]
             {
                 keyBinder,
                 label
@@ -172,7 +185,7 @@ namespace MouseDrag
             label.alignment = alH;
             label.verticalAlignment = OpLabel.LabelVAlignment.Center;
 
-            Tabs[0].AddItems(new UIelement[]
+            Tabs[curTab].AddItems(new UIelement[]
             {
                 box,
                 label

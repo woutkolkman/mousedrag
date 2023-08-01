@@ -75,6 +75,9 @@ namespace MouseDrag
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Tools.TogglePauseObject();
 
+            if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
+                Tools.PauseObjects(self.cameras[0]?.room, true);
+
             if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
                 Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
                 Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);

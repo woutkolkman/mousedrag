@@ -298,6 +298,17 @@ namespace MouseDrag
             pauseAllCreatures = false;
             Plugin.Logger.LogDebug("UnpauseAll");
         }
+        public static void PauseObjects(Room room, bool onlyCreatures)
+        {
+            Plugin.Logger.LogDebug("PauseObjects, pause " + (onlyCreatures ? "creatures" : "objects") + " in room");
+            for (int i = 0; i < room?.physicalObjects?.Length; i++)
+                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
+                        if (!(room.physicalObjects[i][j] is Player && //don't pause when: creature is player and player is not SlugNPC (optional)
+                            (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
+                            if (!pausedObjects.Contains(room.physicalObjects[i][j]))
+                                pausedObjects.Add(room.physicalObjects[i][j]);
+        }
 
 
         public static void KillCreature(PhysicalObject obj = null)

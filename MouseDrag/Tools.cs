@@ -131,6 +131,9 @@ namespace MouseDrag
 
             ReleaseAllGrasps(obj);
 
+            if (obj is Oracle) //prevent loitering sprites
+                obj.Destroy();
+
             obj?.RemoveFromRoom();
             obj?.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
 

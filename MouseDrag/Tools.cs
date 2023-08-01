@@ -167,6 +167,7 @@ namespace MouseDrag
         //delete all objects from room
         public static void DeleteObjects(Room room, bool onlyCreatures)
         {
+            Plugin.Logger.LogDebug("DeleteObjects, delete " + (onlyCreatures ? "creatures" : "objects") + " in room");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
@@ -243,8 +244,7 @@ namespace MouseDrag
             string[] duplicateArrayFields = { "seedPositions", "seedsPopped", "leaves" };
             string[] copyFields = { "totalSprites", "stalkSegments", "cobSegments", "placedPos", "rootPos", "rootDir", "cobDir", "stalkLength", "open" };
             FieldInfo[] seedCobObjectFields = oldApo.realizedObject.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
-            foreach (FieldInfo fi in seedCobObjectFields)
-            {
+            foreach (FieldInfo fi in seedCobObjectFields) {
                 if (duplicateArrayFields.Any(s => fi.Name.Contains(s)))
                     fi.SetValue(newApo.realizedObject, (fi.GetValue(oldApo.realizedObject) as Array).Clone());
                 if (copyFields.Any(s => fi.Name.Contains(s)))
@@ -296,6 +296,7 @@ namespace MouseDrag
         {
             pausedObjects.Clear();
             pauseAllCreatures = false;
+            Plugin.Logger.LogDebug("UnpauseAll");
         }
 
 
@@ -315,6 +316,7 @@ namespace MouseDrag
         //kill all creatures in room
         public static void KillCreatures(Room room)
         {
+            Plugin.Logger.LogDebug("KillCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature) && 
@@ -351,6 +353,7 @@ namespace MouseDrag
         //revive all creatures in room
         public static void ReviveCreatures(Room room)
         {
+            Plugin.Logger.LogDebug("ReviveCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature))

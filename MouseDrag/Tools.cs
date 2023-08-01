@@ -48,7 +48,7 @@ namespace MouseDrag
         public static void DragObject(RainWorldGame game)
         {
             bool stop = false;
-            Vector2 mousePos = (Vector2)Input.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+            Vector2 mousePos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
 
             //game is paused
             if (game.GamePaused || game.pauseUpdate || !game.processActive)

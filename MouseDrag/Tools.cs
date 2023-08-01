@@ -264,6 +264,13 @@ namespace MouseDrag
                 if (shouldPause && Options.releaseGraspsPaused?.Value != false)
                     ReleaseAllGrasps(uad as Creature);
             }
+
+            //update physicalobject at least once
+            if (shouldPause && (uad as PhysicalObject).abstractPhysicalObject?.timeSpentHere == 0) {
+                (uad as PhysicalObject).abstractPhysicalObject.timeSpentHere++;
+                Plugin.Logger.LogDebug("IsObjectPaused, updating object " + (uad as PhysicalObject).abstractPhysicalObject.ID.ToString() + " once before pausing");
+                return false;
+            }
             return shouldPause;
         }
         public static void TogglePauseObject()

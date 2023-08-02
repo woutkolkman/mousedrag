@@ -39,9 +39,9 @@ namespace MouseDrag
         {
             orig(self);
 
-            Tools.UpdateActivated(self);
+            State.UpdateActivated(self);
 
-            if (!Tools.activated)
+            if (!State.activated)
                 return;
 
             Tools.DragObject(self);
@@ -61,15 +61,15 @@ namespace MouseDrag
                 return;
 
             //other checks are found in Tools.UpdateActivated
-            if (Tools.activeType == Options.ActivateTypes.KeyBindPressed)
+            if (State.activeType == Options.ActivateTypes.KeyBindPressed)
                 if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
-                    Tools.activated = !Tools.activated;
+                    State.activated = !State.activated;
 
             //always active, so unpause together with deactivate dev tools works
             if (Options.unpauseAllKey?.Value != null && Input.GetKeyDown(Options.unpauseAllKey.Value))
                 Tools.UnpauseAll();
 
-            if (!Tools.activated)
+            if (!State.activated)
                 return;
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
@@ -109,7 +109,7 @@ namespace MouseDrag
             orig(self, manager);
 
             Tools.UnpauseAll();
-            Tools.activated = false;
+            State.activated = false;
             Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
         }
     }

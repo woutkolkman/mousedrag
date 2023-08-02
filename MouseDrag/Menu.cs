@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using RWCustom;
 
@@ -15,7 +16,7 @@ namespace MouseDrag
             menu?.Update(game);
 
             if (shouldOpen && menu == null)
-                menu = new RadialMenu();
+                menu = new RadialMenu(game);
             shouldOpen = false;
 
             if (menu?.closed == true) {
@@ -37,36 +38,62 @@ namespace MouseDrag
 
     public class RadialMenu {
         public bool closed = false; //signal MenuStarter to destroy this
+        public Vector2 pos;
+        public float rad = 80f;
+        private bool mousePressed = false;
+        public float? angle = null;
+        public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
 
 
-        public RadialMenu()
+        public RadialMenu(RainWorldGame game)
         {
+            Vector2 mouse = mousePos(game);
+            pos = mouse;
+
             Plugin.Logger.LogDebug("RadialMenu opened");
         }
 
 
-        public void Update(RainWorldGame game)
+        //return true when item is clicked on
+        public bool Update(RainWorldGame game)
         {
-            Vector2 mousePos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+            Vector2 mouse = mousePos(game);
+            Vector2 angleVect = (mouse - pos).normalized;
+
+            if (game.GamePaused || game.pauseUpdate || !game.processActive)
+                closed = true;
+
+            if (angleVect == Vector2.zero) {
+                angle = null;
+            } else if (!Custom.DistLess(pos, mouse, rad)) {
+                angle = null;
+            } else {
+                angle = Custom.VecToDeg(angleVect);
+                if (angle < 0)
+                    angle += 360f;
+            }
+
+            if (!mousePressed)
+                return false;
+            mousePressed = false;
+
+            if (angle == null) {
+                Plugin.Logger.LogDebug("angle null");
+                closed = true;
+                return false;
+            } else {
+                Plugin.Logger.LogDebug("angle: " + angle);
+                return true;
+            }
         }
 
 
         public void RawUpdate(RainWorldGame game)
         {
             if (Input.GetMouseButtonDown(0))
-                closed = true;
-        }
-
-
-        public void InitiateSprites()
-        {
-
-        }
-
-
-        public void DrawSprites()
-        {
-
+                mousePressed = true;
+            if (Input.GetMouseButtonDown(1))
+                pos = mousePos(game);
         }
 
 

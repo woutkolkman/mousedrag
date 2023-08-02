@@ -45,6 +45,7 @@ namespace MouseDrag
                 return;
 
             Tools.DragObject(self);
+            MenuStarter.Update(self);
 
             //windows cursor visible
             if (Options.forceMouseVisible?.Value != false)
@@ -71,6 +72,8 @@ namespace MouseDrag
 
             if (!State.activated)
                 return;
+
+            MenuStarter.RawUpdate(self);
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Tools.TogglePauseObject();

@@ -10,8 +10,13 @@ namespace MouseDrag
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
         public static bool followsObject = false;
         public static bool prevFollowsObject = false;
-        public static string[] followIconNames = { "Kill_Slugcat", "Kill_Jetfish", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
-        public static string[] generalIconNames = { "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
+
+        //add-on mods can insert strings in this array to add options to the menu
+        public static List<string> followIconNames = new List<string>() { "Kill_Slugcat", "Kill_Jetfish", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
+        public static List<string> generalIconNames = new List<string>() { "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
+
+        //add-on mods need to hook the Update() function, and do an action when pressedIdx is their ID
+        public static int pressedIdx = -1;
 
 
         public static void Update(RainWorldGame game)
@@ -31,7 +36,7 @@ namespace MouseDrag
             if (menu == null)
                 return;
 
-            int pressedIdx = menu.Update(game);
+            pressedIdx = menu.Update(game);
 
             //switch slots
             bool followsObject = menu.followChunk != null;

@@ -34,7 +34,7 @@ namespace MouseDrag
         ~RadialMenu() { Destroy(); }
 
 
-        public void LoadSlots(string[] iconNames)
+        public void LoadSlots(List<string> iconNames)
         {
             ClearSlots();
             foreach (string iconName in iconNames)

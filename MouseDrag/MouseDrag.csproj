@@ -38,7 +38,8 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Menu.cs" />
+    <Compile Include="MenuStarter.cs" />
+    <Compile Include="RadialMenu.cs" />
     <Compile Include="Tools.Delete.cs" />
     <Compile Include="Tools.Drag.cs" />
     <Compile Include="Tools.Duplicate.cs" />

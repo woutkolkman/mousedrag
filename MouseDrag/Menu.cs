@@ -53,6 +53,7 @@ namespace MouseDrag
         {
             menuPos = mousePos(game);
             followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
+            displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
 
             container = new FContainer();
             Futile.stage.AddChild(container);
@@ -73,8 +74,13 @@ namespace MouseDrag
         //return true when item is clicked on
         public int Update(RainWorldGame game)
         {
-            if (followChunk != null)
+            if (followChunk != null) {
                 menuPos = followChunk.pos - followOffset;
+
+                if (Tools.ShouldRelease(followChunk?.owner) ||
+                    followChunk?.owner?.room != game.cameras[0]?.room)
+                    closed = true;
+            }
 
             displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
             container.MoveToFront(); //also refreshes container
@@ -142,6 +148,7 @@ namespace MouseDrag
             public TriangleMesh background;
             public Vector2 curPos;
             public Color curColor;
+            public FSprite icon = null;
             Color hoverColor = new Color(1f, 1f, 1f, 0.4f);
             Color noneColor = new Color(0f, 0f, 0f, 0.2f);
 
@@ -165,7 +172,9 @@ namespace MouseDrag
                 }
 
                 background = new TriangleMesh("Futile_White", list.ToArray(), true, false);
+                icon = new FSprite("pixel", true);
                 container.AddChild(background);
+                container.AddChild(icon);
             }
 
 
@@ -179,13 +188,15 @@ namespace MouseDrag
                 curColor = Color.Lerp(curColor, hover ? hoverColor : noneColor, 0.1f);
                 background.color = curColor;
 
-                curPos = Vector2.Lerp(curPos, menu.displayPos, 0.3f); //TODO, should actually use timestacker
+                curPos = Vector2.Lerp(curPos, menu.displayPos, 0.4f); //TODO, should actually use timestacker
 
                 for (int i = 0; i < 10; i++) { //this for-loop is heavily adapted from beastmaster
                     float angle = Mathf.Lerp(start, end, (float)i / 9f);
-                    background.vertices[i] = menu.displayPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
-                    background.vertices[i + 10] = menu.displayPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);
+                    background.vertices[i] = curPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
+                    background.vertices[i + 10] = curPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);
                 }
+
+                icon.SetPosition(curPos + (Custom.RotateAroundOrigo(Vector2.up, Mathf.Lerp(start, end, 0.5f)) * Mathf.Lerp(menu.inRad, menu.outRad, 0.5f)));
             }
         }
     }

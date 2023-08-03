@@ -91,7 +91,7 @@ namespace MouseDrag
 
 
         //object should not be dragged any longer
-        private static bool ShouldRelease(PhysicalObject obj)
+        public static bool ShouldRelease(PhysicalObject obj)
         {
             //object is being deleted
             if (obj?.bodyChunks == null || obj.slatedForDeletetion)

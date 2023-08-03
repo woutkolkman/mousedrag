@@ -117,7 +117,7 @@ namespace MouseDrag
         {
             if (Input.GetMouseButtonDown(0))
                 mousePressed = true;
-            if (Input.GetMouseButtonDown(1)) {
+            if (Input.GetMouseButton(1)) {
                 menuPos = mousePos(game);
                 followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
             }

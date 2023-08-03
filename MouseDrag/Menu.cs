@@ -146,7 +146,7 @@ namespace MouseDrag
             {
                 List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
 
-                for (int i = 0; i < 9; i++) {
+                for (int i = 0; i < 9; i++) { //this for-loop is heavily adapted from beastmaster
                     list.Add(new TriangleMesh.Triangle(i, i + 1, i + 10));
                     list.Add(new TriangleMesh.Triangle(i + 10, i + 10 + 1, i + 1));
                 }
@@ -167,8 +167,7 @@ namespace MouseDrag
 
                 background.color = hover ? hoverColor : noneColor;
 
-                for (int i = 0; i < 10; i++)
-                {
+                for (int i = 0; i < 10; i++) { //this for-loop is heavily adapted from beastmaster
                     float angle = Mathf.Lerp(start, end, (float)i / 9f);
                     background.vertices[i] = menu.displayPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
                     background.vertices[i + 10] = menu.displayPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);

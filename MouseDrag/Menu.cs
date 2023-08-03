@@ -38,53 +38,74 @@ namespace MouseDrag
 
     public class RadialMenu {
         public bool closed = false; //signal MenuStarter to destroy this
-        public Vector2 pos;
-        public float rad = 80f;
+        public Vector2 menuPos, displayPos;
+        public float outRad = 60f;
+        public float inRad = 20f;
         private bool mousePressed = false;
-        public float? angle = null;
         public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+        public List<Slot> slots = new List<Slot>();
+        public FContainer container = null;
 
 
         public RadialMenu(RainWorldGame game)
         {
-            Vector2 mouse = mousePos(game);
-            pos = mouse;
+            menuPos = mousePos(game);
+
+            container = new FContainer();
+            Futile.stage.AddChild(container);
+            container.MoveToFront();
+
+            slots.Add(new Slot(this));
+            slots.Add(new Slot(this));
+            slots.Add(new Slot(this));
+            slots.Add(new Slot(this));
+            slots.Add(new Slot(this));
+            foreach (Slot s in slots)
+                s.InitiateSprites(container);
 
             Plugin.Logger.LogDebug("RadialMenu opened");
         }
 
 
         //return true when item is clicked on
-        public bool Update(RainWorldGame game)
+        public int Update(RainWorldGame game)
         {
+            displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
+            container.MoveToFront(); //also refreshes container
             Vector2 mouse = mousePos(game);
-            Vector2 angleVect = (mouse - pos).normalized;
+            Vector2 angleVect = (mouse - menuPos).normalized;
 
             if (game.GamePaused || game.pauseUpdate || !game.processActive)
                 closed = true;
 
-            if (angleVect == Vector2.zero) {
-                angle = null;
-            } else if (!Custom.DistLess(pos, mouse, rad)) {
-                angle = null;
-            } else {
+            float? angle = null;
+            if (angleVect != Vector2.zero && 
+                Custom.DistLess(menuPos, mouse, outRad) && 
+                !Custom.DistLess(menuPos, mouse, inRad)) {
                 angle = Custom.VecToDeg(angleVect);
                 if (angle < 0)
                     angle += 360f;
             }
 
+            int selected = -1;
+            if (angle != null && slots.Count > 0)
+                selected = (int)(angle.Value / (360 / (slots.Count > 0 ? slots.Count : 1)));
+
+            for (int i = 0; i < slots.Count; i++)
+                slots[i].hover = i == selected;
+
             if (!mousePressed)
-                return false;
+                return -1;
             mousePressed = false;
 
-            if (angle == null) {
-                Plugin.Logger.LogDebug("angle null");
+            if (selected < 0) {
+                Plugin.Logger.LogDebug("none selected");
                 closed = true;
-                return false;
+
             } else {
-                Plugin.Logger.LogDebug("angle: " + angle);
-                return true;
+                Plugin.Logger.LogDebug("slot: " + selected);
             }
+            return selected;
         }
 
 
@@ -93,13 +114,66 @@ namespace MouseDrag
             if (Input.GetMouseButtonDown(0))
                 mousePressed = true;
             if (Input.GetMouseButtonDown(1))
-                pos = mousePos(game);
+                menuPos = mousePos(game);
+            for (int i = 0; i < slots.Count; i++)
+                slots[i].DrawSprites(container);
         }
 
 
         public void Destroy()
         {
+            container.RemoveFromContainer();
             Plugin.Logger.LogDebug("RadialMenu closed");
+        }
+
+
+        public class Slot
+        {
+            public bool hover;
+            public RadialMenu menu;
+            public TriangleMesh background;
+            Color hoverColor = new Color(1f, 1f, 1f, 0.4f);
+            Color noneColor = new Color(0f, 0f, 0f, 0.2f);
+
+
+            public Slot(RadialMenu menu)
+            {
+                this.menu = menu;
+            }
+
+
+            public void InitiateSprites(FContainer container)
+            {
+                List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
+
+                for (int i = 0; i < 9; i++) {
+                    list.Add(new TriangleMesh.Triangle(i, i + 1, i + 10));
+                    list.Add(new TriangleMesh.Triangle(i + 10, i + 10 + 1, i + 1));
+                }
+
+                background = new TriangleMesh("Futile_White", list.ToArray(), true, false);
+                background.color = new Color(0f, 0f, 0f, 0.2f);
+
+                container.AddChild(background);
+            }
+
+
+            public void DrawSprites(FContainer container)
+            {
+                float slotDegrees = (float)(360 / menu.slots.Count);
+                int slotIndex = menu.slots.IndexOf(this);
+                float start = slotDegrees * slotIndex;
+                float end = slotDegrees + start;
+
+                background.color = hover ? hoverColor : noneColor;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    float angle = Mathf.Lerp(start, end, (float)i / 9f);
+                    background.vertices[i] = menu.displayPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
+                    background.vertices[i + 10] = menu.displayPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);
+                }
+            }
         }
     }
 }

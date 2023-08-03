@@ -40,12 +40,12 @@ namespace MouseDrag
             orig(self);
 
             State.UpdateActivated(self);
+            MenuStarter.Update(self);
 
             if (!State.activated)
                 return;
 
             Tools.DragObject(self);
-            MenuStarter.Update(self);
 
             //windows cursor visible
             if (Options.forceMouseVisible?.Value != false)
@@ -61,6 +61,8 @@ namespace MouseDrag
             if (self.GamePaused || self.pauseUpdate || !self.processActive)
                 return;
 
+            MenuStarter.RawUpdate(self);
+
             //other checks are found in Tools.UpdateActivated
             if (State.activeType == Options.ActivateTypes.KeyBindPressed)
                 if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
@@ -72,8 +74,6 @@ namespace MouseDrag
 
             if (!State.activated)
                 return;
-
-            MenuStarter.RawUpdate(self);
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Tools.TogglePauseObject();

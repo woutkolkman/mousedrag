@@ -17,14 +17,14 @@ namespace MouseDrag
         public static void Update(RainWorldGame game)
         {
             bool reloadSlots = false;
-            if (shouldOpen && menu == null) {
+            if (shouldOpen && menu == null && State.activated) {
                 menu = new RadialMenu(game);
                 reloadSlots = true;
             }
             shouldOpen = false;
 
-            if (menu?.closed == true) {
-                menu.Destroy();
+            if (menu?.closed == true || !State.activated) {
+                menu?.Destroy();
                 menu = null;
             }
 

@@ -45,11 +45,14 @@ namespace MouseDrag
         public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
         public List<Slot> slots = new List<Slot>();
         public FContainer container = null;
+        public BodyChunk followChunk = null;
+        public Vector2 followOffset = new Vector2();
 
 
         public RadialMenu(RainWorldGame game)
         {
             menuPos = mousePos(game);
+            followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
 
             container = new FContainer();
             Futile.stage.AddChild(container);
@@ -70,6 +73,9 @@ namespace MouseDrag
         //return true when item is clicked on
         public int Update(RainWorldGame game)
         {
+            if (followChunk != null)
+                menuPos = followChunk.pos - followOffset;
+
             displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
             container.MoveToFront(); //also refreshes container
             Vector2 mouse = mousePos(game);
@@ -113,8 +119,10 @@ namespace MouseDrag
         {
             if (Input.GetMouseButtonDown(0))
                 mousePressed = true;
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)) {
                 menuPos = mousePos(game);
+                followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
+            }
             for (int i = 0; i < slots.Count; i++)
                 slots[i].DrawSprites(container);
         }
@@ -132,6 +140,8 @@ namespace MouseDrag
             public bool hover;
             public RadialMenu menu;
             public TriangleMesh background;
+            public Vector2 curPos;
+            public Color curColor;
             Color hoverColor = new Color(1f, 1f, 1f, 0.4f);
             Color noneColor = new Color(0f, 0f, 0f, 0.2f);
 
@@ -144,6 +154,9 @@ namespace MouseDrag
 
             public void InitiateSprites(FContainer container)
             {
+                curPos = menu.displayPos;
+                curColor = noneColor;
+
                 List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
 
                 for (int i = 0; i < 9; i++) { //this for-loop is heavily adapted from beastmaster
@@ -152,8 +165,6 @@ namespace MouseDrag
                 }
 
                 background = new TriangleMesh("Futile_White", list.ToArray(), true, false);
-                background.color = new Color(0f, 0f, 0f, 0.2f);
-
                 container.AddChild(background);
             }
 
@@ -165,7 +176,10 @@ namespace MouseDrag
                 float start = slotDegrees * slotIndex;
                 float end = slotDegrees + start;
 
-                background.color = hover ? hoverColor : noneColor;
+                curColor = Color.Lerp(curColor, hover ? hoverColor : noneColor, 0.1f);
+                background.color = curColor;
+
+                curPos = Vector2.Lerp(curPos, menu.displayPos, 0.3f); //TODO, should actually use timestacker
 
                 for (int i = 0; i < 10; i++) { //this for-loop is heavily adapted from beastmaster
                     float angle = Mathf.Lerp(start, end, (float)i / 9f);

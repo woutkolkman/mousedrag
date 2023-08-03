@@ -59,15 +59,36 @@ namespace MouseDrag
             Futile.stage.AddChild(container);
             container.MoveToFront();
 
-            slots.Add(new Slot(this));
-            slots.Add(new Slot(this));
-            slots.Add(new Slot(this));
-            slots.Add(new Slot(this));
-            slots.Add(new Slot(this));
-            foreach (Slot s in slots)
-                s.InitiateSprites(container);
+            AddSlot(container);
+            AddSlot(container);
+            AddSlot(container);
+            AddSlot(container);
 
             Plugin.Logger.LogDebug("RadialMenu opened");
+        }
+        ~RadialMenu() { Destroy(); }
+
+
+        public void AddSlot(FContainer container)
+        {
+            Slot s = new Slot(this);
+            slots.Add(s);
+            s.InitiateSprites(container);
+        }
+
+
+        public void ClearSlot(int i)
+        {
+            slots[i]?.Destroy();
+            slots.RemoveAt(i);
+        }
+
+
+        public void ClearSlots()
+        {
+            for (int i = 0; i < slots.Count; i++)
+                slots[i]?.Destroy();
+            slots.Clear();
         }
 
 
@@ -136,7 +157,8 @@ namespace MouseDrag
 
         public void Destroy()
         {
-            container.RemoveFromContainer();
+            ClearSlots();
+            container?.RemoveFromContainer();
             Plugin.Logger.LogDebug("RadialMenu closed");
         }
 
@@ -157,6 +179,7 @@ namespace MouseDrag
             {
                 this.menu = menu;
             }
+            ~Slot() { Destroy(); }
 
 
             public void InitiateSprites(FContainer container)
@@ -197,6 +220,13 @@ namespace MouseDrag
                 }
 
                 icon.SetPosition(curPos + (Custom.RotateAroundOrigo(Vector2.up, Mathf.Lerp(start, end, 0.5f)) * Mathf.Lerp(menu.inRad, menu.outRad, 0.5f)));
+            }
+
+
+            public void Destroy()
+            {
+                icon?.RemoveFromContainer();
+                background?.RemoveFromContainer();
             }
         }
     }

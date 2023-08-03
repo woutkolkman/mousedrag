@@ -10,12 +10,17 @@ namespace MouseDrag
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
         public static bool followsObject = false;
         public static bool prevFollowsObject = false;
+        public static string[] followIconNames = { "Kill_Slugcat", "Kill_Jetfish", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
+        public static string[] generalIconNames = { "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
 
 
         public static void Update(RainWorldGame game)
         {
-            if (shouldOpen && menu == null)
+            bool reloadSlots = false;
+            if (shouldOpen && menu == null) {
                 menu = new RadialMenu(game);
+                reloadSlots = true;
+            }
             shouldOpen = false;
 
             if (menu?.closed == true) {
@@ -30,11 +35,11 @@ namespace MouseDrag
 
             //switch slots
             bool followsObject = menu.followChunk != null;
-            if (followsObject && !prevFollowsObject) {
-                //TODO switch sprites & reload slots
+            if (followsObject && (!prevFollowsObject || reloadSlots)) {
+                menu.LoadSlots(followIconNames);
             }
-            if (!followsObject && prevFollowsObject) {
-                //TODO switch sprites & reload slots
+            if (!followsObject && (prevFollowsObject || reloadSlots)) {
+                menu.LoadSlots(generalIconNames);
             }
             prevFollowsObject = followsObject;
 

@@ -29,15 +29,25 @@ namespace MouseDrag
             container.MoveToFront();
 
             //dummy (not needed but makes menu visible if no slots are configured)
-            AddSlot(container);
+            AddSlot();
         }
         ~RadialMenu() { Destroy(); }
 
 
-        public void AddSlot(FContainer container)
+        public void LoadSlots(string[] iconNames)
+        {
+            ClearSlots();
+            foreach (string iconName in iconNames)
+                AddSlot(iconName);
+        }
+
+
+        public void AddSlot(string iconName = "")
         {
             Slot s = new Slot(this);
             slots.Add(s);
+            if (!string.IsNullOrEmpty(iconName))
+                s.iconName = iconName;
             s.InitiateSprites(container);
         }
 
@@ -131,6 +141,7 @@ namespace MouseDrag
             public Vector2 curPos;
             public Color curColor;
             public FSprite icon = null;
+            public string iconName = "pixel";
             Color hoverColor = new Color(1f, 1f, 1f, 0.4f);
             Color noneColor = new Color(0f, 0f, 0f, 0.2f);
 
@@ -155,7 +166,7 @@ namespace MouseDrag
                 }
 
                 background = new TriangleMesh("Futile_White", list.ToArray(), true, false);
-                icon = new FSprite("pixel", true);
+                icon = new FSprite(iconName, true);
                 container.AddChild(background);
                 container.AddChild(icon);
             }

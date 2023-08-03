@@ -9,12 +9,12 @@ namespace MouseDrag
     {
         public static RadialMenu menu = null;
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
+        public static bool followsObject = false;
+        public static bool prevFollowsObject = false;
 
 
         public static void Update(RainWorldGame game)
         {
-            menu?.Update(game);
-
             if (shouldOpen && menu == null)
                 menu = new RadialMenu(game);
             shouldOpen = false;
@@ -22,6 +22,46 @@ namespace MouseDrag
             if (menu?.closed == true) {
                 menu.Destroy();
                 menu = null;
+            }
+
+            if (menu == null)
+                return;
+
+            int pressedIdx = menu.Update(game);
+
+            //switch slots
+            bool followsObject = menu.followChunk != null;
+            if (followsObject && !prevFollowsObject) {
+                //TODO switch sprites & reload slots
+            }
+            if (!followsObject && prevFollowsObject) {
+                //TODO switch sprites & reload slots
+            }
+            prevFollowsObject = followsObject;
+
+            //run commands
+            if (followsObject) {
+                switch (pressedIdx)
+                {
+                    case 0: Tools.TogglePauseObject(menu.followChunk?.owner); break; //pauseOneKey
+                    case 1: Tools.KillCreature(menu.followChunk?.owner); break; //killOneKey
+                    case 2: Tools.ReviveCreature(menu.followChunk?.owner); break; //reviveOneKey
+                    case 3: Tools.DuplicateObject(menu.followChunk?.owner); break; //duplicateOneKey
+                    case 4: Tools.DeleteObject(menu.followChunk?.owner); break; //deleteOneKey
+                }
+            } else {
+                switch (pressedIdx)
+                {
+                    case 0: Tools.PauseObjects(game.cameras[0]?.room, true); break; //pauseRoomCreaturesKey
+                    case 1: {
+                            Tools.pauseAllCreatures = !Tools.pauseAllCreatures; //pauseAllCreaturesKey
+                            Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+                            break;
+                        };
+                    case 2: Tools.UnpauseAll(); break; //unpauseAllKey
+                    case 3: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
+                    case 4: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
+                }
             }
         }
 
@@ -59,12 +99,8 @@ namespace MouseDrag
             Futile.stage.AddChild(container);
             container.MoveToFront();
 
+            //dummy (not needed but makes menu visible if no slots are configured)
             AddSlot(container);
-            AddSlot(container);
-            AddSlot(container);
-            AddSlot(container);
-
-            Plugin.Logger.LogDebug("RadialMenu opened");
         }
         ~RadialMenu() { Destroy(); }
 
@@ -131,13 +167,9 @@ namespace MouseDrag
                 return -1;
             mousePressed = false;
 
-            if (selected < 0) {
-                Plugin.Logger.LogDebug("none selected");
+            //close menu if mouse is pressed outside of menu
+            if (selected < 0 && !Custom.DistLess(menuPos, mouse, inRad))
                 closed = true;
-
-            } else {
-                Plugin.Logger.LogDebug("slot: " + selected);
-            }
             return selected;
         }
 
@@ -159,7 +191,6 @@ namespace MouseDrag
         {
             ClearSlots();
             container?.RemoveFromContainer();
-            Plugin.Logger.LogDebug("RadialMenu closed");
         }
 
 

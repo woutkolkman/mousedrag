@@ -33,11 +33,13 @@ namespace MouseDrag
         }
 
 
-        public static void TogglePauseObject()
+        public static void TogglePauseObject(PhysicalObject obj = null)
         {
-            if (!(dragChunk?.owner is PhysicalObject))
+            if (obj == null)
+                obj = dragChunk?.owner;
+            if (!(obj is PhysicalObject))
                 return;
-            PhysicalObject c = dragChunk.owner as PhysicalObject;
+            PhysicalObject c = obj as PhysicalObject;
 
             if (pausedObjects.Contains(c)) {
                 pausedObjects.Remove(c);

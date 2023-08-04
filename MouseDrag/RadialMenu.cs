@@ -17,6 +17,7 @@ namespace MouseDrag
         public FContainer container = null;
         public BodyChunk followChunk = null;
         public Vector2 followOffset = new Vector2();
+        public bool snapToChunk = true;
 
 
         public RadialMenu(RainWorldGame game)
@@ -75,6 +76,8 @@ namespace MouseDrag
         public int Update(RainWorldGame game)
         {
             if (followChunk != null) {
+                if (snapToChunk)
+                    followOffset = new Vector2();
                 if (Options.menuFollows?.Value != false)
                     menuPos = followChunk.pos - followOffset;
                 crosshair.enabled = Options.menuFollows?.Value ?? true;

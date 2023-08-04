@@ -15,7 +15,7 @@ namespace MouseDrag
         public List<Slot> slots = new List<Slot>();
         public Crosshair crosshair = null;
         public FContainer container = null;
-        public BodyChunk followChunk = null;
+        public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
         public bool snapToChunk = true;
 
@@ -75,6 +75,7 @@ namespace MouseDrag
         //return index when item is clicked on
         public int Update(RainWorldGame game)
         {
+            prevFollowChunk = followChunk;
             if (followChunk != null) {
                 if (snapToChunk)
                     followOffset = new Vector2();

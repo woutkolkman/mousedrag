@@ -11,6 +11,7 @@ namespace MouseDrag
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
         public static bool followsObject = false;
         public static bool prevFollowsObject = false;
+        public static bool reloadSlots = false;
 
         //add-on mods can insert strings in this array to add options to the menu
         public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragDuplicate", "mousedragDelete" };
@@ -22,7 +23,6 @@ namespace MouseDrag
 
         public static void Update(RainWorldGame game)
         {
-            bool reloadSlots = false;
             if (shouldOpen && menu == null && State.activated) {
                 menu = new RadialMenu(game);
                 reloadSlots = true;
@@ -37,17 +37,25 @@ namespace MouseDrag
             if (menu == null)
                 return;
 
+            //reload slots if followchunk changed
+            reloadSlots |= menu.prevFollowChunk != menu.followChunk;
+
             pressedIdx = menu.Update(game);
 
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject && (!prevFollowsObject || reloadSlots)) {
+                followIconNames[0] = Tools.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause";
                 menu.LoadSlots(followIconNames);
             }
             if (!followsObject && (prevFollowsObject || reloadSlots)) {
                 menu.LoadSlots(generalIconNames);
             }
             prevFollowsObject = followsObject;
+            reloadSlots = false;
+
+            //reload slots if command is executed
+            reloadSlots |= pressedIdx >= 0;
 
             //run commands
             if (followsObject) {

@@ -15,7 +15,7 @@ namespace MouseDrag
 
         //add-on mods can insert strings in this array to add options to the menu
         public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragDuplicate", "mousedragDelete" };
-        public static List<string> generalIconNames = new List<string>() { "mousedragPauseCreatures", "mousedragPlayAll", "mousedragDeleteCreatures", "mousedragDeleteAll" };
+        public static List<string> generalIconNames = new List<string>() { "mousedragPauseCreatures", "mousedragPlayAll", "mousedragKillCreatures", "mousedragReviveCreatures", "mousedragDeleteCreatures", "mousedragDeleteAll" };
 
         //add-on mods need to hook the Update() function, and do an action when pressedIdx is their ID
         public static int pressedIdx = -1;
@@ -72,8 +72,10 @@ namespace MouseDrag
                 {
                     case 0: Tools.PauseObjects(game.cameras[0]?.room, true); break; //pauseRoomCreaturesKey
                     case 1: Tools.UnpauseAll(); break; //unpauseAllKey
-                    case 2: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
-                    case 3: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
+                    case 2: Tools.KillCreatures(game.cameras[0]?.room); break;
+                    case 3: Tools.ReviveCreatures(game.cameras[0]?.room); break;
+                    case 4: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
+                    case 5: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
                 }
             }
         }

@@ -6,7 +6,7 @@ namespace MouseDrag
     {
         public static void Apply()
         {
-            //initialize options
+            //initialize options & load sprites
             On.RainWorld.OnModsInit += RainWorldOnModsInitHook;
 
             //at tickrate
@@ -26,11 +26,12 @@ namespace MouseDrag
         }
 
 
-        //initialize options
+        //initialize options & load sprites
         static void RainWorldOnModsInitHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
         {
             orig(self);
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
+            MenuStarter.LoadSprites();
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using RWCustom;
+using System;
+using System.IO;
 
 namespace MouseDrag
 {
@@ -12,8 +13,8 @@ namespace MouseDrag
         public static bool prevFollowsObject = false;
 
         //add-on mods can insert strings in this array to add options to the menu
-        public static List<string> followIconNames = new List<string>() { "Kill_Slugcat", "Kill_Jetfish", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
-        public static List<string> generalIconNames = new List<string>() { "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat", "Kill_Slugcat" };
+        public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragDuplicate", "mousedragDelete" };
+        public static List<string> generalIconNames = new List<string>() { "mousedragPauseCreatures", "mousedragPlayAll", "mousedragDeleteCreatures", "mousedragDeleteAll" };
 
         //add-on mods need to hook the Update() function, and do an action when pressedIdx is their ID
         public static int pressedIdx = -1;
@@ -62,14 +63,9 @@ namespace MouseDrag
                 switch (pressedIdx)
                 {
                     case 0: Tools.PauseObjects(game.cameras[0]?.room, true); break; //pauseRoomCreaturesKey
-                    case 1: {
-                            Tools.pauseAllCreatures = !Tools.pauseAllCreatures; //pauseAllCreaturesKey
-                            Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
-                            break;
-                        };
-                    case 2: Tools.UnpauseAll(); break; //unpauseAllKey
-                    case 3: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
-                    case 4: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
+                    case 1: Tools.UnpauseAll(); break; //unpauseAllKey
+                    case 2: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
+                    case 3: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
                 }
             }
         }
@@ -81,6 +77,17 @@ namespace MouseDrag
 
             if (Input.GetMouseButtonDown(1))
                 shouldOpen = true;
+        }
+
+
+        public static void LoadSprites()
+        {
+            try {
+                Futile.atlasManager.LoadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");
+            } catch (Exception ex) {
+                Plugin.Logger.LogError("LoadSprites exception: " + ex.ToString());
+            }
+            Plugin.Logger.LogDebug("LoadSprites called");
         }
     }
 }

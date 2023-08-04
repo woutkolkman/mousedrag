@@ -1,5 +1,5 @@
 [h3]Description[/h3]
-Tool which allows dragging creatures in story-mode using your mouse, also known as the Sandbox Mouse. Includes options to pause, delete, duplicate, kill & revive individual creatures, players and objects. Press right mouse button on a creature or the background to open one of two radial menus. 
+Tool which allows dragging creatures in story-mode using your mouse, also known as the Sandbox Mouse. Includes options to pause, delete, duplicate, kill & revive individual creatures, players and objects. Press right mouse button on an object or the background to open one of two radial menus. 
 
 Credits:
 - Fyre & Noir for the BeastMaster menu trianglemesh code 

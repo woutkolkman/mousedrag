@@ -13,6 +13,7 @@ namespace MouseDrag
         private bool mousePressed = false;
         public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
         public List<Slot> slots = new List<Slot>();
+        public Crosshair crosshair = null;
         public FContainer container = null;
         public BodyChunk followChunk = null;
         public Vector2 followOffset = new Vector2();
@@ -27,6 +28,9 @@ namespace MouseDrag
             container = new FContainer();
             Futile.stage.AddChild(container);
             container.MoveToFront();
+
+            crosshair = new Crosshair(this);
+            crosshair.InitiateSprites(container);
 
             //dummy (not needed but makes menu visible if no slots are configured)
             AddSlot();
@@ -104,6 +108,7 @@ namespace MouseDrag
                 slots[i].hover = i == selected;
                 slots[i].Update();
             }
+            crosshair.Update();
 
             if (!mousePressed)
                 return -1;
@@ -132,12 +137,14 @@ namespace MouseDrag
         {
             for (int i = 0; i < slots.Count; i++)
                 slots[i].DrawSprites(container, timeStacker);
+            crosshair.DrawSprites(container, timeStacker);
         }
 
 
         public void Destroy()
         {
             ClearSlots();
+            crosshair?.Destroy();
             container?.RemoveFromContainer();
         }
 
@@ -214,6 +221,63 @@ namespace MouseDrag
             {
                 icon?.RemoveFromContainer();
                 background?.RemoveFromContainer();
+            }
+        }
+
+
+        public class Crosshair
+        {
+            public RadialMenu menu;
+            public Vector2 curPos, prevPos;
+            private bool visible;
+            public float radius = 16f;
+            public float scale = 0.5f;
+            public FSprite[] icons = new FSprite[4];
+
+
+            public Crosshair(RadialMenu menu)
+            {
+                this.menu = menu;
+                prevPos = menu.displayPos;
+                curPos = menu.displayPos;
+            }
+            ~Crosshair() { Destroy(); }
+
+
+            public void Update()
+            {
+                prevPos = curPos;
+                curPos = menu.displayPos;
+                visible = menu.followChunk != null;
+            }
+
+
+            public void InitiateSprites(FContainer container)
+            {
+                for (int i = 0; i < icons.Length; i++)
+                {
+                    icons[i] = new FSprite("mousedragArrow", true);
+                    container.AddChild(icons[i]);
+                }
+            }
+
+
+            public void DrawSprites(FContainer container, float timeStacker)
+            {
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
+                for (int i = 0; i < icons.Length; i++) {
+                    icons[i].isVisible = visible;
+                    icons[i].SetPosition(tsPos + (Custom.RotateAroundOrigo(Vector2.up, 90f * i) * radius));
+                    icons[i].rotation = 90f * i;
+                    icons[i].scale = scale;
+                }
+            }
+
+
+            public void Destroy()
+            {
+                for (int i = 0; i < icons.Length; i++)
+                    icons[i].RemoveFromContainer();
             }
         }
     }

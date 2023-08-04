@@ -77,6 +77,7 @@ namespace MouseDrag
             if (followChunk != null) {
                 if (Options.menuFollows?.Value != false)
                     menuPos = followChunk.pos - followOffset;
+                crosshair.enabled = Options.menuFollows?.Value ?? true;
 
                 if (Tools.ShouldRelease(followChunk?.owner) ||
                     followChunk?.owner?.room != game.cameras[0]?.room)
@@ -229,7 +230,9 @@ namespace MouseDrag
         {
             public RadialMenu menu;
             public Vector2 curPos, prevPos;
+            public bool enabled = true;
             private bool visible;
+            private int rotation = 0;
             public float radius = 16f;
             public float scale = 0.5f;
             public FSprite[] icons = new FSprite[4];
@@ -248,7 +251,8 @@ namespace MouseDrag
             {
                 prevPos = curPos;
                 curPos = menu.displayPos;
-                visible = menu.followChunk != null;
+                visible = menu.followChunk != null && enabled;
+                rotation++;
             }
 
 
@@ -265,10 +269,11 @@ namespace MouseDrag
             public void DrawSprites(FContainer container, float timeStacker)
             {
                 Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
+                float tsRotation = Mathf.Lerp(rotation - 1, rotation, timeStacker) % 360f;
                 for (int i = 0; i < icons.Length; i++) {
                     icons[i].isVisible = visible;
-                    icons[i].SetPosition(tsPos + (Custom.RotateAroundOrigo(Vector2.up, 90f * i) * radius));
-                    icons[i].rotation = 90f * i;
+                    icons[i].SetPosition(tsPos + (Custom.RotateAroundOrigo(Vector2.up, 90f * i + tsRotation) * radius));
+                    icons[i].rotation = 90f * i + tsRotation;
                     icons[i].scale = scale;
                 }
             }

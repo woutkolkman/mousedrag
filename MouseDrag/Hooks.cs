@@ -15,6 +15,9 @@ namespace MouseDrag
             //at framerate
             On.RainWorldGame.RawUpdate += RainWorldGameRawUpdateHook;
 
+            //draw menu graphics with timestacker
+            On.RainWorldGame.GrafUpdate += RainWorldGameGrafUpdateHook;
+
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
         }
@@ -31,7 +34,7 @@ namespace MouseDrag
         {
             orig(self);
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
-            MenuStarter.LoadSprites();
+            MenuManager.LoadSprites();
         }
 
 
@@ -41,7 +44,7 @@ namespace MouseDrag
             orig(self);
 
             State.UpdateActivated(self);
-            MenuStarter.Update(self);
+            MenuManager.Update(self);
 
             if (!State.activated)
                 return;
@@ -62,7 +65,7 @@ namespace MouseDrag
             if (self.GamePaused || self.pauseUpdate || !self.processActive)
                 return;
 
-            MenuStarter.RawUpdate(self);
+            MenuManager.RawUpdate(self);
 
             //other checks are found in Tools.UpdateActivated
             if (State.activeType == Options.ActivateTypes.KeyBindPressed)
@@ -104,6 +107,14 @@ namespace MouseDrag
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
                 Tools.DuplicateObject();
+        }
+
+
+        //draw menu graphics with timestacker
+        static void RainWorldGameGrafUpdateHook(On.RainWorldGame.orig_GrafUpdate orig, RainWorldGame self, float timeStacker)
+        {
+            orig(self, timeStacker);
+            MenuManager.DrawSprites(timeStacker);
         }
 
 

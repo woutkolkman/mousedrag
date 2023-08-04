@@ -67,7 +67,7 @@ namespace MouseDrag
         }
 
 
-        //return true when item is clicked on
+        //return index when item is clicked on
         public int Update(RainWorldGame game)
         {
             if (followChunk != null) {
@@ -99,8 +99,10 @@ namespace MouseDrag
             if (angle != null && slots.Count > 0)
                 selected = (int)(angle.Value / (360 / (slots.Count > 0 ? slots.Count : 1)));
 
-            for (int i = 0; i < slots.Count; i++)
+            for (int i = 0; i < slots.Count; i++) {
                 slots[i].hover = i == selected;
+                slots[i].Update();
+            }
 
             if (!mousePressed)
                 return -1;
@@ -121,8 +123,13 @@ namespace MouseDrag
                 menuPos = mousePos(game);
                 followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
             }
+        }
+
+
+        public void DrawSprites(float timeStacker)
+        {
             for (int i = 0; i < slots.Count; i++)
-                slots[i].DrawSprites(container);
+                slots[i].DrawSprites(container, timeStacker);
         }
 
 
@@ -138,7 +145,7 @@ namespace MouseDrag
             public bool hover;
             public RadialMenu menu;
             public TriangleMesh background;
-            public Vector2 curPos;
+            public Vector2 curPos, prevPos;
             public Color curColor;
             public FSprite icon = null;
             public string iconName = "pixel";
@@ -149,15 +156,22 @@ namespace MouseDrag
             public Slot(RadialMenu menu)
             {
                 this.menu = menu;
+                prevPos = menu.displayPos;
+                curPos = menu.displayPos;
+                curColor = noneColor;
             }
             ~Slot() { Destroy(); }
 
 
+            public void Update()
+            {
+                prevPos = curPos;
+                curPos = menu.displayPos;
+            }
+
+
             public void InitiateSprites(FContainer container)
             {
-                curPos = menu.displayPos;
-                curColor = noneColor;
-
                 List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
 
                 for (int i = 0; i < 9; i++) { //this for-loop is heavily adapted from beastmaster
@@ -172,7 +186,7 @@ namespace MouseDrag
             }
 
 
-            public void DrawSprites(FContainer container)
+            public void DrawSprites(FContainer container, float timeStacker)
             {
                 float slotDegrees = (float)(360 / menu.slots.Count);
                 int slotIndex = menu.slots.IndexOf(this);
@@ -182,15 +196,15 @@ namespace MouseDrag
                 curColor = Color.Lerp(curColor, hover ? hoverColor : noneColor, 0.1f);
                 background.color = curColor;
 
-                curPos = Vector2.Lerp(curPos, menu.displayPos, 0.4f); //TODO, should actually use timestacker
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
 
                 for (int i = 0; i < 10; i++) { //this for-loop is heavily adapted from beastmaster
                     float angle = Mathf.Lerp(start, end, (float)i / 9f);
-                    background.vertices[i] = curPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
-                    background.vertices[i + 10] = curPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);
+                    background.vertices[i] = tsPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
+                    background.vertices[i + 10] = tsPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);
                 }
 
-                icon.SetPosition(curPos + (Custom.RotateAroundOrigo(Vector2.up, Mathf.Lerp(start, end, 0.5f)) * Mathf.Lerp(menu.inRad, menu.outRad, 0.5f)));
+                icon.SetPosition(tsPos + (Custom.RotateAroundOrigo(Vector2.up, Mathf.Lerp(start, end, 0.5f)) * Mathf.Lerp(menu.inRad, menu.outRad, 0.5f)));
             }
 
 

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace MouseDrag
 {
-    public static class MenuStarter
+    public static class MenuManager
     {
         public static RadialMenu menu = null;
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
@@ -77,6 +77,12 @@ namespace MouseDrag
 
             if (Input.GetMouseButtonDown(1))
                 shouldOpen = true;
+        }
+
+
+        public static void DrawSprites(float timeStacker)
+        {
+            menu?.DrawSprites(timeStacker);
         }
 
 

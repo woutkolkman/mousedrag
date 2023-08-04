@@ -71,7 +71,8 @@ namespace MouseDrag
         public int Update(RainWorldGame game)
         {
             if (followChunk != null) {
-                menuPos = followChunk.pos - followOffset;
+                if (Options.menuFollows?.Value != false)
+                    menuPos = followChunk.pos - followOffset;
 
                 if (Tools.ShouldRelease(followChunk?.owner) ||
                     followChunk?.owner?.room != game.cameras[0]?.room)
@@ -119,7 +120,8 @@ namespace MouseDrag
         {
             if (Input.GetMouseButtonDown(0))
                 mousePressed = true;
-            if (Input.GetMouseButton(1)) {
+            if ((Input.GetMouseButton(1) && Options.menuRMB?.Value == true) || 
+                (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))) {
                 menuPos = mousePos(game);
                 followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
             }

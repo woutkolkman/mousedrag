@@ -75,7 +75,8 @@ namespace MouseDrag
         {
             menu?.RawUpdate(game);
 
-            if (Input.GetMouseButtonDown(1))
+            if ((Input.GetMouseButtonDown(1) && Options.menuRMB?.Value == true) || 
+                (Options.menuOpen?.Value != null && Input.GetKeyDown(Options.menuOpen.Value)))
                 shouldOpen = true;
         }
 

@@ -9,7 +9,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDelete.png":
+"mousedragCrosshair.png":
 {
 	"frame": {"x":18,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -18,7 +18,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDeleteAll.png":
+"mousedragDelete.png":
 {
 	"frame": {"x":36,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -27,7 +27,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDeleteCreatures.png":
+"mousedragDeleteAll.png":
 {
 	"frame": {"x":54,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -36,7 +36,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDeleteRoom.png":
+"mousedragDeleteCreatures.png":
 {
 	"frame": {"x":72,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -45,7 +45,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDuplicate.png":
+"mousedragDeleteRoom.png":
 {
 	"frame": {"x":90,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -54,7 +54,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragKill.png":
+"mousedragDuplicate.png":
 {
 	"frame": {"x":108,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -63,7 +63,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragKillAll.png":
+"mousedragHeart.png":
 {
 	"frame": {"x":126,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragKillCreatures.png":
+"mousedragHeartAll.png":
 {
 	"frame": {"x":144,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragKillRoom.png":
+"mousedragHeartCreatures.png":
 {
 	"frame": {"x":162,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -90,7 +90,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragPause.png":
+"mousedragHeartRoom.png":
 {
 	"frame": {"x":180,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -99,7 +99,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragPauseAll.png":
+"mousedragKill.png":
 {
 	"frame": {"x":198,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -108,7 +108,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragPauseCreatures.png":
+"mousedragKillAll.png":
 {
 	"frame": {"x":216,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -117,7 +117,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragPauseRoom.png":
+"mousedragKillCreatures.png":
 {
 	"frame": {"x":234,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -126,9 +126,90 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"mousedragKillRoom.png":
+{
+	"frame": {"x":0,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragMinus.png":
+{
+	"frame": {"x":18,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragMinusAll.png":
+{
+	"frame": {"x":36,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragMinusCreatures.png":
+{
+	"frame": {"x":54,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragMinusRoom.png":
+{
+	"frame": {"x":72,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPause.png":
+{
+	"frame": {"x":90,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPauseAll.png":
+{
+	"frame": {"x":108,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPauseCreatures.png":
+{
+	"frame": {"x":126,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPauseRoom.png":
+{
+	"frame": {"x":144,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "mousedragPlay.png":
 {
-	"frame": {"x":252,"y":0,"w":18,"h":18},
+	"frame": {"x":162,"y":18,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -137,7 +218,7 @@
 },
 "mousedragPlayAll.png":
 {
-	"frame": {"x":270,"y":0,"w":18,"h":18},
+	"frame": {"x":180,"y":18,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -146,7 +227,7 @@
 },
 "mousedragPlayCreatures.png":
 {
-	"frame": {"x":288,"y":0,"w":18,"h":18},
+	"frame": {"x":198,"y":18,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -155,7 +236,7 @@
 },
 "mousedragPlayPause.png":
 {
-	"frame": {"x":306,"y":0,"w":18,"h":18},
+	"frame": {"x":216,"y":18,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -164,7 +245,43 @@
 },
 "mousedragPlayRoom.png":
 {
-	"frame": {"x":324,"y":0,"w":18,"h":18},
+	"frame": {"x":234,"y":18,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPlus.png":
+{
+	"frame": {"x":0,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPlusAll.png":
+{
+	"frame": {"x":18,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPlusCreatures.png":
+{
+	"frame": {"x":36,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragPlusRoom.png":
+{
+	"frame": {"x":54,"y":36,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -173,7 +290,7 @@
 },
 "mousedragRevive.png":
 {
-	"frame": {"x":342,"y":0,"w":18,"h":18},
+	"frame": {"x":72,"y":36,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -182,7 +299,7 @@
 },
 "mousedragReviveAll.png":
 {
-	"frame": {"x":360,"y":0,"w":18,"h":18},
+	"frame": {"x":90,"y":36,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -191,7 +308,7 @@
 },
 "mousedragReviveCreatures.png":
 {
-	"frame": {"x":378,"y":0,"w":18,"h":18},
+	"frame": {"x":108,"y":36,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -200,7 +317,43 @@
 },
 "mousedragReviveRoom.png":
 {
-	"frame": {"x":396,"y":0,"w":18,"h":18},
+	"frame": {"x":126,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragUnheart.png":
+{
+	"frame": {"x":144,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragUnheartAll.png":
+{
+	"frame": {"x":162,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragUnheartCreatures.png":
+{
+	"frame": {"x":180,"y":36,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragUnheartRoom.png":
+{
+	"frame": {"x":198,"y":36,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -212,8 +365,8 @@
 	"version": "1.0",
 	"image": "mousedrag.png",
 	"format": "RGBA8888",
-	"size": {"w":414,"h":18},
+	"size": {"w":252,"h":54},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:5690f6b380f319f80305eaacb7c2e3c9:16915fab71ce3968a8d092781cec53a9:be538780073871c978a7b9c49ce14dca$"
+	"smartupdate": "$TexturePacker:SmartUpdate:fea52c0ecbdc9594cab14767bd95c126:0de7be668fc870e9ec64444350d06459:be538780073871c978a7b9c49ce14dca$"
 }
 }

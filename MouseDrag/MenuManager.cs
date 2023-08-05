@@ -14,7 +14,7 @@ namespace MouseDrag
         public static bool reloadSlots = false;
 
         //add-on mods can insert strings in this array to add options to the menu
-        public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragDuplicate", "mousedragDelete" };
+        public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragHeart", "mousedragDuplicate", "mousedragDelete" };
         public static List<string> generalIconNames = new List<string>() { "mousedragPauseCreatures", "mousedragPlayAll", "mousedragKillCreatures", "mousedragReviveCreatures", "mousedragDeleteCreatures", "mousedragDeleteAll" };
 
         //add-on mods need to hook the Update() function, and do an action when pressedIdx is their ID
@@ -64,16 +64,17 @@ namespace MouseDrag
                     case 0: Tools.TogglePauseObject(menu.followChunk?.owner); break; //pauseOneKey
                     case 1: Tools.KillCreature(menu.followChunk?.owner); break; //killOneKey
                     case 2: Tools.ReviveCreature(menu.followChunk?.owner); break; //reviveOneKey
-                    case 3: Tools.DuplicateObject(menu.followChunk?.owner); break; //duplicateOneKey
-                    case 4: Tools.DeleteObject(menu.followChunk?.owner); break; //deleteOneKey
+                    case 3: Tools.TameCreature(game, menu.followChunk?.owner); break; //tameOneKey
+                    case 4: Tools.DuplicateObject(menu.followChunk?.owner); break; //duplicateOneKey
+                    case 5: Tools.DeleteObject(menu.followChunk?.owner); break; //deleteOneKey
                 }
             } else {
                 switch (pressedIdx)
                 {
                     case 0: Tools.PauseObjects(game.cameras[0]?.room, true); break; //pauseRoomCreaturesKey
                     case 1: Tools.UnpauseAll(); break; //unpauseAllKey
-                    case 2: Tools.KillCreatures(game.cameras[0]?.room); break;
-                    case 3: Tools.ReviveCreatures(game.cameras[0]?.room); break;
+                    case 2: Tools.KillCreatures(game.cameras[0]?.room); break; //killAllCreaturesKey
+                    case 3: Tools.ReviveCreatures(game.cameras[0]?.room); break; //reviveAllCreaturesKey
                     case 4: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
                     case 5: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
                 }

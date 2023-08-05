@@ -57,5 +57,41 @@ namespace MouseDrag
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     TameCreature(game, room.physicalObjects[i][j]);
         }
+
+
+        //clear relationships of creature
+        public static void ClearRelationships(PhysicalObject obj = null)
+        {
+            if (obj == null)
+                obj = dragChunk?.owner;
+            if (!(obj is Creature))
+                return;
+
+            AbstractCreature creature = (obj as Creature).abstractCreature;
+            ArtificialIntelligence ai = creature?.abstractAI?.RealAI;
+
+            if (ai is IUseARelationshipTracker) {
+                int count = creature.state?.socialMemory?.relationShips?.Count ?? 0;
+                creature.state?.socialMemory?.relationShips?.Clear();
+                Plugin.Logger.LogDebug("ClearRelationships, cleared " + count + " relationships");
+
+                /*if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
+                    ai.friendTracker = null;
+                    Plugin.Logger.LogDebug("ClearRelationships, deleted friendTracker");
+                }*/
+            }
+        }
+
+
+        //clear all relationships of all creatures in room
+        public static void ClearRelationships(Room room)
+        {
+            Plugin.Logger.LogDebug("ClearRelationships");
+            for (int i = 0; i < room?.physicalObjects?.Length; i++)
+                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                    if (!(room.physicalObjects[i][j] is Player && //don't clear when: creature is player and player is not SlugNPC (optional)
+                        (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
+                        ClearRelationships(room.physicalObjects[i][j]);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, pauseAllCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
-        public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey;
+        public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> duplicateOneKey, menuOpen;
         public int curTab;
 
@@ -48,16 +48,18 @@ namespace MouseDrag
             pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.\nIndividually (un)paused creatures remain paused.", null, "", "Pause all creatures"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
             deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
-            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
-            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
-            killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("Kill the creature which you're currently dragging.", null, "", "Kill"));
+            deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete creatures in room"));
+            deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete objects in room"));
+            killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill the creature which you're currently dragging.", null, "", "Kill"));
             killAllCreaturesKey = config.Bind("killAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill all creatures in current room except Player and SlugNPC.", null, "", "Kill creatures in room"));
-            reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
+            reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
             reviveAllCreaturesKey = config.Bind("reviveAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal creatures in room"));
 
-            tameOneKey = config.Bind("tameOneKey", KeyCode.None, new ConfigurableInfo("Tame the creature which you're currently dragging.", null, "", "Tame"));
+            tameOneKey = config.Bind("tameOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
             tameAllCreaturesKey = config.Bind("tameAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame creatures in room"));
-            duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
+            clearRelOneKey = config.Bind("clearRelOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the creature which you're currently dragging.", null, "", "Clear relationships"));
+            clearRelAllKey = config.Bind("clearRelAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.", null, "", "Clear relationships in room"));
+            duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
             menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background.", null, "", "Open menu"));
         }
 
@@ -98,9 +100,9 @@ namespace MouseDrag
             /**************** KeyBinds ****************/
             curTab++;
             AddTitle();
-            x = 65;
-            y = startHeight;
-            AddKeyBinder(pauseOneKey, new Vector2(x, y -= 50f));
+            x = 40;
+            y = startHeight - 30f;
+            AddKeyBinder(pauseOneKey, new Vector2(x, y));
             AddKeyBinder(pauseRoomCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= 50f));
@@ -112,10 +114,12 @@ namespace MouseDrag
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(reviveAllCreaturesKey, new Vector2(x, y -= 50f));
 
-            x += 300;
-            y = startHeight;
-            AddKeyBinder(tameOneKey, new Vector2(x, y -= 50f));
+            x += 280;
+            y = startHeight - 30f;
+            AddKeyBinder(tameOneKey, new Vector2(x, y));
             AddKeyBinder(tameAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(clearRelOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(clearRelAllKey, new Vector2(x, y -= 50f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(menuOpen, new Vector2(x, y -= 50f));
         }

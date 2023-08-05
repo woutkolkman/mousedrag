@@ -117,6 +117,12 @@ namespace MouseDrag
             if (Options.tameAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.tameAllCreaturesKey.Value))
                 Tools.TameCreatures(self, self.cameras[0]?.room);
 
+            if (Options.clearRelOneKey?.Value != null && Input.GetKeyDown(Options.clearRelOneKey.Value))
+                Tools.ClearRelationships();
+
+            if (Options.clearRelAllKey?.Value != null && Input.GetKeyDown(Options.clearRelAllKey.Value))
+                Tools.ClearRelationships(self.cameras[0]?.room);
+
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
                 Tools.DuplicateObject();
         }

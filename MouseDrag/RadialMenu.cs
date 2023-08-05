@@ -89,7 +89,6 @@ namespace MouseDrag
             }
 
             displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
-            container.MoveToFront(); //also refreshes container
             Vector2 mouse = mousePos(game);
             Vector2 angleVect = (mouse - menuPos).normalized;
 
@@ -143,6 +142,7 @@ namespace MouseDrag
             for (int i = 0; i < slots.Count; i++)
                 slots[i].DrawSprites(container, timeStacker);
             crosshair.DrawSprites(container, timeStacker);
+            container.MoveToFront(); //also refreshes container
         }
 
 

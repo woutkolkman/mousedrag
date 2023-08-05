@@ -21,8 +21,8 @@
             Plugin.Logger.LogDebug("KillCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if ((room.physicalObjects[i][j] is Creature) && 
-                        !(room.physicalObjects[i][j] is Player))
+                    if (!(room.physicalObjects[i][j] is Player && //don't kill when: creature is player and player is not SlugNPC (optional)
+                        (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
                         KillCreature(room.physicalObjects[i][j]);
         }
 
@@ -58,8 +58,7 @@
             Plugin.Logger.LogDebug("ReviveCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if ((room.physicalObjects[i][j] is Creature))
-                        ReviveCreature(room.physicalObjects[i][j]);
+                    ReviveCreature(room.physicalObjects[i][j]);
         }
     }
 }

@@ -102,8 +102,20 @@ namespace MouseDrag
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value))
                 Tools.KillCreature();
 
+            if (Options.killAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.killAllCreaturesKey.Value))
+                Tools.KillCreatures(self.cameras[0]?.room);
+
             if (Options.reviveOneKey?.Value != null && Input.GetKeyDown(Options.reviveOneKey.Value))
                 Tools.ReviveCreature();
+
+            if (Options.reviveAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.reviveAllCreaturesKey.Value))
+                Tools.ReviveCreatures(self.cameras[0]?.room);
+
+            if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
+                Tools.TameCreature(self);
+
+            if (Options.tameAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.tameAllCreaturesKey.Value))
+                Tools.TameCreatures(self, self.cameras[0]?.room);
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
                 Tools.DuplicateObject();

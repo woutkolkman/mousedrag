@@ -10,10 +10,12 @@ namespace MouseDrag
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused;
         public static Configurable<bool> menuRMB, menuFollows;
-        public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC;
+        public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, pauseAllCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
-        public static Configurable<KeyCode> killOneKey, reviveOneKey, duplicateOneKey, menuOpen;
+        public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
+        public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey;
+        public static Configurable<KeyCode> duplicateOneKey, menuOpen;
         public int curTab;
 
         public enum ActivateTypes
@@ -28,15 +30,18 @@ namespace MouseDrag
         {
             activateType = config.Bind("activateType", defaultValue: ActivateTypes.AlwaysActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active in sandbox.", null, "", "Active when"));
             activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
+
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             menuRMB = config.Bind("menuRMB", defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
             menuFollows = config.Bind("menuFollows", defaultValue: true, new ConfigurableInfo("If checked, menu follows the target creature/object on which actions are performed.", null, "", "Menu follows target"));
+
             updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
             copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
-            exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/delete slugpups when pausing/deleting all creatures.", null, "", "Except SlugNPC"));
+            exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/delete/kill slugpups when pausing/deleting/killing all creatures.", null, "", "Except SlugNPC"));
+            tameIncreasesRep = config.Bind("tameIncreasesRep", defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
 
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind("pauseRoomCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures in room"));
@@ -46,7 +51,12 @@ namespace MouseDrag
             deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete all creatures"));
             deleteAllObjectsKey = config.Bind("deleteAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all objects/creatures in current room except Player and SlugNPC.", null, "", "Delete all"));
             killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("Kill the creature which you're currently dragging.", null, "", "Kill"));
+            killAllCreaturesKey = config.Bind("killAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill all creatures in current room except Player and SlugNPC.", null, "", "Kill creatures in room"));
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("Revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
+            reviveAllCreaturesKey = config.Bind("reviveAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal creatures in room"));
+
+            tameOneKey = config.Bind("tameOneKey", KeyCode.None, new ConfigurableInfo("Tame the creature which you're currently dragging.", null, "", "Tame"));
+            tameAllCreaturesKey = config.Bind("tameAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame creatures in room"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("Duplicate the object/creature which you're currently dragging.", null, "", "Duplicate"));
             menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background.", null, "", "Open menu"));
         }
@@ -83,6 +93,7 @@ namespace MouseDrag
             AddCheckbox(copyID, new Vector2(x, y -= 40f));
             AddCheckbox(exitGameOverMode, new Vector2(x, y -= 40f));
             AddCheckbox(exceptSlugNPC, new Vector2(x, y -= 40f));
+            AddCheckbox(tameIncreasesRep, new Vector2(x, y -= 40f));
 
             /**************** KeyBinds ****************/
             curTab++;
@@ -96,11 +107,15 @@ namespace MouseDrag
             AddKeyBinder(deleteOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllObjectsKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(killOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(killAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(reviveAllCreaturesKey, new Vector2(x, y -= 50f));
 
             x += 300;
             y = startHeight;
-            AddKeyBinder(killOneKey, new Vector2(x, y -= 50f));
-            AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(tameOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(tameAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(menuOpen, new Vector2(x, y -= 50f));
         }

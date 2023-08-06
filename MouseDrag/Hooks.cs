@@ -39,6 +39,8 @@ namespace MouseDrag
 
 
         //at tickrate
+        public static int duplicateHoldCount = 0;
+        public static int duplicateHoldMin = 40;
         static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
         {
             orig(self);
@@ -50,6 +52,15 @@ namespace MouseDrag
                 return;
 
             Tools.DragObject(self);
+
+            //rapidly duplicate after one second feature
+            if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
+                if (duplicateHoldCount >= duplicateHoldMin)
+                    Tools.DuplicateObject();
+                duplicateHoldCount++;
+            } else {
+                duplicateHoldCount = 0;
+            }
 
             //windows cursor visible
             if (Options.forceMouseVisible?.Value != false)

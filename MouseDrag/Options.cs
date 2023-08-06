@@ -11,9 +11,10 @@ namespace MouseDrag
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused;
         public static Configurable<bool> menuRMB, menuFollows;
         public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
-        public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, pauseAllCreaturesKey, unpauseAllKey;
+        public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
+        public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> duplicateOneKey, menuOpen;
         public int curTab;
@@ -45,7 +46,6 @@ namespace MouseDrag
 
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind("pauseRoomCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures in room"));
-            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.\nIndividually (un)paused creatures remain paused.", null, "", "Pause all creatures"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
             deleteOneKey = config.Bind("deleteOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete the object/creature which you're currently dragging.", null, "", "Delete"));
             deleteAllCreaturesKey = config.Bind("deleteAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to delete all creatures in current room except Player and SlugNPC.", null, "", "Delete creatures in room"));
@@ -55,6 +55,8 @@ namespace MouseDrag
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
             reviveAllCreaturesKey = config.Bind("reviveAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal creatures in room"));
 
+            pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.\nIndividually (un)paused creatures remain paused.", null, "", "Pause all creatures"));
+            pauseAllObjectsKey = config.Bind("pauseAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all objects except creatures, including objects that still need to spawn.\nIndividually (un)paused objects remain paused.", null, "", "Pause all objects"));
             tameOneKey = config.Bind("tameOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
             tameAllCreaturesKey = config.Bind("tameAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame creatures in room"));
             clearRelOneKey = config.Bind("clearRelOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the creature which you're currently dragging.", null, "", "Clear relationships"));
@@ -104,7 +106,6 @@ namespace MouseDrag
             y = startHeight - 30f;
             AddKeyBinder(pauseOneKey, new Vector2(x, y));
             AddKeyBinder(pauseRoomCreaturesKey, new Vector2(x, y -= 50f));
-            AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(deleteAllCreaturesKey, new Vector2(x, y -= 50f));
@@ -116,7 +117,9 @@ namespace MouseDrag
 
             x += 280;
             y = startHeight - 30f;
-            AddKeyBinder(tameOneKey, new Vector2(x, y));
+            AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y));
+            AddKeyBinder(pauseAllObjectsKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(tameOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(tameAllCreaturesKey, new Vector2(x, y -= 50f));
             AddKeyBinder(clearRelOneKey, new Vector2(x, y -= 50f));
             AddKeyBinder(clearRelAllKey, new Vector2(x, y -= 50f));

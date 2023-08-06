@@ -6,6 +6,7 @@ namespace MouseDrag
     {
         private static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
         public static bool pauseAllCreatures = false;
+        public static bool pauseAllObjects = false;
 
 
         public static bool IsObjectPaused(UpdatableAndDeletable uad)
@@ -15,12 +16,14 @@ namespace MouseDrag
             bool shouldPause = pausedObjects.Contains(uad as PhysicalObject);
 
             if (uad is Creature) {
-                shouldPause |= (pauseAllCreatures && !( //don't pause when: creature is player and player is not SlugNPC (optional)
+                shouldPause |= pauseAllCreatures && !( //don't pause when: creature is player and player is not SlugNPC (optional)
                     uad is Player && (Options.exceptSlugNPC?.Value != false || !(uad as Player).isNPC)
-                ));
+                );
 
                 if (shouldPause && Options.releaseGraspsPaused?.Value != false)
                     ReleaseAllGrasps(uad as Creature);
+            } else {
+                shouldPause |= pauseAllObjects;
             }
 
             //update physicalobject at least once
@@ -53,6 +56,7 @@ namespace MouseDrag
         {
             pausedObjects.Clear();
             pauseAllCreatures = false;
+            pauseAllObjects = false;
             Plugin.Logger.LogDebug("UnpauseAll");
         }
 

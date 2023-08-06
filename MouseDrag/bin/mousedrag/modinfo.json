@@ -1,7 +1,7 @@
 {
   "id": "maxi-mol.mousedrag",
   "name": "Mouse Drag",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "authors": "Maxi Mol",
   "description": "Tool which allows dragging/pausing/deleting creatures and objects outside sandbox-mode using your mouse.",
   "requirements": [],

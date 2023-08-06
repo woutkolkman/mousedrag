@@ -85,11 +85,6 @@ namespace MouseDrag
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
                 Tools.PauseObjects(self.cameras[0]?.room, true);
 
-            if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
-                Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
-                Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
-            }
-
             if (Options.deleteOneKey?.Value != null && Input.GetKeyDown(Options.deleteOneKey.Value))
                 Tools.DeleteObject();
 
@@ -110,6 +105,16 @@ namespace MouseDrag
 
             if (Options.reviveAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.reviveAllCreaturesKey.Value))
                 Tools.ReviveCreatures(self.cameras[0]?.room);
+
+            if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
+                Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+                Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+            }
+
+            if (Options.pauseAllObjectsKey?.Value != null && Input.GetKeyDown(Options.pauseAllObjectsKey.Value)) {
+                Tools.pauseAllObjects = !Tools.pauseAllObjects;
+                Plugin.Logger.LogDebug("pauseAllObjects: " + Tools.pauseAllObjects);
+            }
 
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tools.TameCreature(self);

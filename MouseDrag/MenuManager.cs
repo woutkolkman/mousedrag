@@ -62,7 +62,7 @@ namespace MouseDrag
                 switch (pressedIdx)
                 {
                     case 0: Tools.TogglePauseObject(menu.followChunk?.owner); break; //pauseOneKey
-                    case 1: Tools.KillCreature(menu.followChunk?.owner); break; //killOneKey
+                    case 1: Tools.KillCreature(game, menu.followChunk?.owner); break; //killOneKey
                     case 2: Tools.ReviveCreature(menu.followChunk?.owner); break; //reviveOneKey
                     case 3: Tools.TameCreature(game, menu.followChunk?.owner); break; //tameOneKey
                     case 4: Tools.DuplicateObject(menu.followChunk?.owner); break; //duplicateOneKey
@@ -73,7 +73,7 @@ namespace MouseDrag
                 {
                     case 0: Tools.PauseObjects(game.cameras[0]?.room, true); break; //pauseRoomCreaturesKey
                     case 1: Tools.UnpauseAll(); break; //unpauseAllKey
-                    case 2: Tools.KillCreatures(game.cameras[0]?.room); break; //killAllCreaturesKey
+                    case 2: Tools.KillCreatures(game, game.cameras[0]?.room); break; //killAllCreaturesKey
                     case 3: Tools.ReviveCreatures(game.cameras[0]?.room); break; //reviveAllCreaturesKey
                     case 4: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
                     case 5: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey

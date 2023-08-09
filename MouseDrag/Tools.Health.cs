@@ -2,12 +2,14 @@
 {
     static partial class Tools
     {
-        public static void KillCreature(PhysicalObject obj = null)
+        public static void KillCreature(RainWorldGame game, PhysicalObject obj = null)
         {
             if (obj == null)
                 obj = dragChunk?.owner;
             if (!(obj is Creature))
                 return;
+            if (Options.lineageKill?.Value == true && game?.Players?.Count > 0)
+                (obj as Creature).SetKillTag(game.Players[0]);
 
             (obj as Creature).Die();
             if ((obj as Creature).abstractCreature?.state is HealthState)
@@ -16,14 +18,14 @@
 
 
         //kill all creatures in room
-        public static void KillCreatures(Room room)
+        public static void KillCreatures(RainWorldGame game, Room room)
         {
             Plugin.Logger.LogDebug("KillCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if (!(room.physicalObjects[i][j] is Player && //don't kill when: creature is player and player is not SlugNPC (optional)
                         (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
-                        KillCreature(room.physicalObjects[i][j]);
+                        KillCreature(game, room.physicalObjects[i][j]);
         }
 
 

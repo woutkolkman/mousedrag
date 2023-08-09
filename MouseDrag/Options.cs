@@ -9,7 +9,7 @@ namespace MouseDrag
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> menuRMB, menuFollows;
-        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused;
+        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
         public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<KeyCode> menuOpen, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
@@ -38,6 +38,7 @@ namespace MouseDrag
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
+            lineageKill = config.Bind("lineageKill", defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDeleting creatures without killing them does not affect lineage.", null, "", "Lineage when killed"));
 
             updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
             copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
@@ -91,6 +92,7 @@ namespace MouseDrag
             AddCheckbox(forceMouseVisible, new Vector2(x, y -= 40f));
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= 40f));
             AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= 40f));
+            AddCheckbox(lineageKill, new Vector2(x, y -= 40f));
 
             x += 250;
             y = startHeight;

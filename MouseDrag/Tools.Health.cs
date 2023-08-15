@@ -8,8 +8,8 @@
                 obj = dragChunk?.owner;
             if (!(obj is Creature))
                 return;
-            if (Options.lineageKill?.Value == true && game?.Players?.Count > 0)
-                (obj as Creature).SetKillTag(game.Players[0]);
+            if (Options.lineageKill?.Value == true && game?.FirstAlivePlayer != null)
+                (obj as Creature).SetKillTag(game.FirstAlivePlayer);
 
             (obj as Creature).Die();
             if ((obj as Creature).abstractCreature?.state is HealthState)

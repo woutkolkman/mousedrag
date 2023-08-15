@@ -9,10 +9,10 @@ namespace MouseDrag
         {
             if (obj == null)
                 obj = dragChunk?.owner;
-            if (!(obj is Creature) || game?.Players == null || game.world == null || game.Players.Count <= 0)
+            if (!(obj is Creature) || game.world == null)
                 return;
 
-            AbstractCreature player = game.Players[0];
+            AbstractCreature player = game?.FirstAlivePlayer;
             AbstractCreature creature = (obj as Creature).abstractCreature;
             if (!(player?.realizedCreature is Player) || creature == null)
                 return;

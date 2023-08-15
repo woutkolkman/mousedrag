@@ -12,6 +12,9 @@
             if (obj is Oracle) //prevent loitering sprites
                 obj.Destroy();
 
+            if (obj is SporePlant) //prevent beehive crashing game
+                (obj as SporePlant).stalk?.Destroy();
+
             obj?.RemoveFromRoom();
             obj?.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
 

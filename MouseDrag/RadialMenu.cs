@@ -73,7 +73,7 @@ namespace MouseDrag
 
 
         //return index when item is clicked on
-        public int Update(RainWorldGame game)
+        public Slot Update(RainWorldGame game)
         {
             prevFollowChunk = followChunk;
             if (followChunk != null) {
@@ -108,20 +108,23 @@ namespace MouseDrag
             if (angle != null && slots.Count > 0)
                 selected = (int)(angle.Value / (360 / (slots.Count > 0 ? slots.Count : 1)));
 
+            Slot selectedSlot = null;
             for (int i = 0; i < slots.Count; i++) {
                 slots[i].hover = i == selected;
                 slots[i].Update();
+                if (i == selected)
+                    selectedSlot = slots[i];
             }
             crosshair.Update();
 
             if (!mousePressed)
-                return -1;
+                return null;
             mousePressed = false;
 
             //close menu if mouse is pressed outside of menu
             if (selected < 0 && !Custom.DistLess(menuPos, mouse, inRad))
                 closed = true;
-            return selected;
+            return selectedSlot;
         }
 
 

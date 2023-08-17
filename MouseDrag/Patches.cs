@@ -19,6 +19,7 @@ namespace MouseDrag
         }
 
 
+        //pauses creatures and objects
         static void RoomUpdateIL(ILContext il)
         {
             //original code:

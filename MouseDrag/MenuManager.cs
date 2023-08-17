@@ -17,9 +17,6 @@ namespace MouseDrag
         public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragHeart", "mousedragDuplicate", "mousedragDelete" };
         public static List<string> generalIconNames = new List<string>() { "mousedragPauseCreatures", "mousedragPlayAll", "mousedragKillCreatures", "mousedragReviveCreatures", "mousedragDeleteCreatures", "mousedragDeleteAll" };
 
-        //add-on mods need to hook the Update() function, and do an action when pressedIdx is their ID
-        public static int pressedIdx = -1;
-
 
         public static void Update(RainWorldGame game)
         {
@@ -40,7 +37,8 @@ namespace MouseDrag
             //reload slots if followchunk changed
             reloadSlots |= menu.prevFollowChunk != menu.followChunk;
 
-            pressedIdx = menu.Update(game);
+            RadialMenu.Slot slot = menu.Update(game);
+            string pressedSprite = slot?.iconName;
 
             //switch slots
             bool followsObject = menu.followChunk != null;
@@ -55,28 +53,40 @@ namespace MouseDrag
             reloadSlots = false;
 
             //reload slots if command is executed
-            reloadSlots |= pressedIdx >= 0;
+            reloadSlots |= !String.IsNullOrEmpty(pressedSprite);
 
             //run commands
+            if (String.IsNullOrEmpty(pressedSprite))
+                return;
+            RunCommand(game, pressedSprite);
+        }
+
+
+        //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
+        public static void RunCommand(RainWorldGame game, string spriteName)
+        {
+            bool followsObject = menu.followChunk != null;
+
             if (followsObject) {
-                switch (pressedIdx)
+                switch (spriteName)
                 {
-                    case 0: Tools.TogglePauseObject(menu.followChunk?.owner); break; //pauseOneKey
-                    case 1: Tools.KillCreature(game, menu.followChunk?.owner); break; //killOneKey
-                    case 2: Tools.ReviveCreature(menu.followChunk?.owner); break; //reviveOneKey
-                    case 3: Tools.TameCreature(game, menu.followChunk?.owner); break; //tameOneKey
-                    case 4: Tools.DuplicateObject(menu.followChunk?.owner); break; //duplicateOneKey
-                    case 5: Tools.DeleteObject(menu.followChunk?.owner); break; //deleteOneKey
+                    case "mousedragPause":
+                    case "mousedragPlay":       Tools.TogglePauseObject(menu.followChunk?.owner); break;
+                    case "mousedragKill":       Tools.KillCreature(game, menu.followChunk?.owner); break;
+                    case "mousedragRevive":     Tools.ReviveCreature(menu.followChunk?.owner); break;
+                    case "mousedragHeart":      Tools.TameCreature(game, menu.followChunk?.owner); break;
+                    case "mousedragDuplicate":  Tools.DuplicateObject(menu.followChunk?.owner); break;
+                    case "mousedragDelete":     Tools.DeleteObject(menu.followChunk?.owner); break;
                 }
             } else {
-                switch (pressedIdx)
+                switch (spriteName)
                 {
-                    case 0: Tools.PauseObjects(game.cameras[0]?.room, true); break; //pauseRoomCreaturesKey
-                    case 1: Tools.UnpauseAll(); break; //unpauseAllKey
-                    case 2: Tools.KillCreatures(game, game.cameras[0]?.room); break; //killAllCreaturesKey
-                    case 3: Tools.ReviveCreatures(game.cameras[0]?.room); break; //reviveAllCreaturesKey
-                    case 4: Tools.DeleteObjects(game.cameras[0]?.room, true); break; //deleteAllCreaturesKey
-                    case 5: Tools.DeleteObjects(game.cameras[0]?.room, false); break; //deleteAllObjectsKey
+                    case "mousedragPauseCreatures":     Tools.PauseObjects(game.cameras[0]?.room, true); break;
+                    case "mousedragPlayAll":            Tools.UnpauseAll(); break;
+                    case "mousedragKillCreatures":      Tools.KillCreatures(game, game.cameras[0]?.room); break;
+                    case "mousedragReviveCreatures":    Tools.ReviveCreatures(game.cameras[0]?.room); break;
+                    case "mousedragDeleteCreatures":    Tools.DeleteObjects(game.cameras[0]?.room, true); break;
+                    case "mousedragDeleteAll":          Tools.DeleteObjects(game.cameras[0]?.room, false); break;
                 }
             }
         }

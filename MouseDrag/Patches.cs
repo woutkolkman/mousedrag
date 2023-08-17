@@ -8,7 +8,7 @@ namespace MouseDrag
     {
         public static void Apply()
         {
-            //allows spearmaster to swallow any item if both hands are full
+            //pauses creatures and objects
             IL.Room.Update += RoomUpdateIL;
         }
 

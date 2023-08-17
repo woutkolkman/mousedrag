@@ -39,7 +39,7 @@ namespace MouseDrag
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
-                ReloadSprites();
+                ReloadIconNames();
                 menu.LoadSlots(iconNames);
             }
             prevFollowsObject = followsObject;
@@ -58,9 +58,8 @@ namespace MouseDrag
         //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
         public static void RunCommand(RainWorldGame game, string spriteName)
         {
-            bool followsObject = menu.followChunk != null;
-
-            if (followsObject) {
+            if (menu.followChunk != null) {
+                //menu follows object
                 switch (spriteName)
                 {
                     case "mousedragPause":
@@ -71,7 +70,9 @@ namespace MouseDrag
                     case "mousedragDuplicate":  Tools.DuplicateObject(menu.followChunk?.owner); break;
                     case "mousedragDelete":     Tools.DeleteObject(menu.followChunk?.owner); break;
                 }
+
             } else {
+                //menu on background
                 switch (spriteName)
                 {
                     case "mousedragPauseCreatures":     Tools.PauseObjects(game.cameras[0]?.room, true); break;
@@ -85,8 +86,8 @@ namespace MouseDrag
         }
 
 
-        //add-on mods need to hook the ReloadSprites() function, and insert their sprite names in iconNames afterwards
-        public static void ReloadSprites()
+        //add-on mods need to hook the ReloadIconNames() function, and insert their sprite names in iconNames afterwards
+        public static void ReloadIconNames()
         {
             iconNames.Clear();
 

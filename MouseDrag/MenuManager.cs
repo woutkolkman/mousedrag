@@ -9,13 +9,9 @@ namespace MouseDrag
     {
         public static RadialMenu menu = null;
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
-        public static bool followsObject = false;
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
-
-        //add-on mods can insert strings in this array to add options to the menu
-        public static List<string> followIconNames = new List<string>() { "mousedragPause", "mousedragKill", "mousedragRevive", "mousedragHeart", "mousedragDuplicate", "mousedragDelete" };
-        public static List<string> generalIconNames = new List<string>() { "mousedragPauseCreatures", "mousedragPlayAll", "mousedragKillCreatures", "mousedragReviveCreatures", "mousedragDeleteCreatures", "mousedragDeleteAll" };
+        public static List<string> iconNames = new List<string>(){};
 
 
         public static void Update(RainWorldGame game)
@@ -42,12 +38,9 @@ namespace MouseDrag
 
             //switch slots
             bool followsObject = menu.followChunk != null;
-            if (followsObject && (!prevFollowsObject || reloadSlots)) {
-                followIconNames[0] = Tools.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause";
-                menu.LoadSlots(followIconNames);
-            }
-            if (!followsObject && (prevFollowsObject || reloadSlots)) {
-                menu.LoadSlots(generalIconNames);
+            if (followsObject ^ prevFollowsObject || reloadSlots) {
+                ReloadSprites();
+                menu.LoadSlots(iconNames);
             }
             prevFollowsObject = followsObject;
             reloadSlots = false;
@@ -88,6 +81,32 @@ namespace MouseDrag
                     case "mousedragDeleteCreatures":    Tools.DeleteObjects(game.cameras[0]?.room, true); break;
                     case "mousedragDeleteAll":          Tools.DeleteObjects(game.cameras[0]?.room, false); break;
                 }
+            }
+        }
+
+
+        //add-on mods need to hook the ReloadSprites() function, and insert their sprite names in iconNames afterwards
+        public static void ReloadSprites()
+        {
+            iconNames.Clear();
+
+            if (menu.followChunk != null) {
+                //menu follows object
+                iconNames.Add(Tools.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause");
+                iconNames.Add("mousedragKill");
+                iconNames.Add("mousedragRevive");
+                iconNames.Add("mousedragHeart");
+                iconNames.Add("mousedragDuplicate");
+                iconNames.Add("mousedragDelete");
+
+            } else {
+                //menu on background
+                iconNames.Add("mousedragPauseCreatures");
+                iconNames.Add("mousedragPlayAll");
+                iconNames.Add("mousedragKillCreatures");
+                iconNames.Add("mousedragReviveCreatures");
+                iconNames.Add("mousedragDeleteCreatures");
+                iconNames.Add("mousedragDeleteAll");
             }
         }
 

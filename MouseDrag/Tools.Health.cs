@@ -62,5 +62,60 @@
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     ReviveCreature(room.physicalObjects[i][j]);
         }
+
+
+        public static void TriggerObject(PhysicalObject obj = null)
+        {
+            if (obj == null)
+                obj = dragChunk?.owner;
+
+            if (obj is SeedCob)
+                (obj as SeedCob).Open();
+
+            if (obj is SporePlant)
+                (obj as SporePlant).BeeTrigger();
+
+            if (obj is FlareBomb)
+                (obj as FlareBomb).HitWall();
+
+            if (obj is ScavengerBomb)
+                (obj as ScavengerBomb).InitiateBurn();
+
+            if (obj is ExplosiveSpear)
+                (obj as ExplosiveSpear).Ignite();
+        }
+
+
+        public static void ResetObject(PhysicalObject obj = null)
+        {
+            if (obj == null)
+                obj = dragChunk?.owner;
+
+            if (obj is SeedCob && (obj as SeedCob).AbstractCob != null) {
+                (obj as SeedCob).open = 0f;
+                (obj as SeedCob).canBeHitByWeapons = true;
+                (obj as SeedCob).freezingCounter = 0f;
+                (obj as SeedCob).seedPopCounter = -1;
+                (obj as SeedCob).seedsPopped = new bool[(obj as SeedCob).seedPositions.Length];
+                (obj as SeedCob).AbstractCob.dead = false;
+                (obj as SeedCob).AbstractCob.opened = false;
+
+                //makes seedcob return next cycle
+                (obj as SeedCob).AbstractCob.isConsumed = false;
+                if ((obj as SeedCob).AbstractCob.world?.game?.session is StoryGameSession) {
+                    ((obj as SeedCob).AbstractCob.world.game.session as StoryGameSession).saveState?.ReportConsumedItem(
+                        (obj as SeedCob).AbstractCob.world,
+                        false,
+                        (obj as SeedCob).AbstractCob.originRoom,
+                        (obj as SeedCob).AbstractCob.placedObjectIndex,
+                        0
+                    );
+                }
+                //NOTE: might have effect on this seedcob in the future, because it technically cannot be consumed twice in same cycle
+            }
+
+            if (obj is SporePlant)
+                (obj as SporePlant).Used = false;
+        }
     }
 }

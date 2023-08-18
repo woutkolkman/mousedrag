@@ -64,8 +64,14 @@ namespace MouseDrag
                 {
                     case "mousedragPause":
                     case "mousedragPlay":       Tools.TogglePauseObject(menu.followChunk?.owner); break;
-                    case "mousedragKill":       Tools.KillCreature(game, menu.followChunk?.owner); break;
-                    case "mousedragRevive":     Tools.ReviveCreature(menu.followChunk?.owner); break;
+                    case "mousedragKill":
+                        Tools.KillCreature(game, menu.followChunk?.owner);
+                        Tools.TriggerObject(menu.followChunk?.owner);
+                        break;
+                    case "mousedragRevive":
+                        Tools.ReviveCreature(menu.followChunk?.owner);
+                        Tools.ResetObject(menu.followChunk?.owner);
+                        break;
                     case "mousedragHeart":      Tools.TameCreature(game, menu.followChunk?.owner); break;
                     case "mousedragDuplicate":  Tools.DuplicateObject(menu.followChunk?.owner); break;
                     case "mousedragDelete":     Tools.DeleteObject(menu.followChunk?.owner); break;

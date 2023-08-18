@@ -22,9 +22,11 @@ namespace MouseDrag
 
         public RadialMenu(RainWorldGame game)
         {
-            menuPos = mousePos(game);
-            followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
-            displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
+            if (game != null) {
+                menuPos = mousePos(game);
+                followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
+                displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
+            }
 
             container = new FContainer();
             Futile.stage.AddChild(container);

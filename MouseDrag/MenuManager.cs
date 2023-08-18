@@ -39,7 +39,7 @@ namespace MouseDrag
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
-                ReloadIconNames();
+                ReloadIconNames(followsObject);
                 menu.LoadSlots(iconNames);
             }
             prevFollowsObject = followsObject;
@@ -51,14 +51,14 @@ namespace MouseDrag
             //run commands
             if (String.IsNullOrEmpty(pressedSprite))
                 return;
-            RunCommand(game, pressedSprite);
+            RunCommand(game, pressedSprite, followsObject);
         }
 
 
         //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
-        public static void RunCommand(RainWorldGame game, string spriteName)
+        public static void RunCommand(RainWorldGame game, string spriteName, bool followsObject)
         {
-            if (menu.followChunk != null) {
+            if (followsObject) {
                 //menu follows object
                 switch (spriteName)
                 {
@@ -87,11 +87,11 @@ namespace MouseDrag
 
 
         //add-on mods need to hook the ReloadIconNames() function, and insert their sprite names in iconNames afterwards
-        public static void ReloadIconNames()
+        public static List<string> ReloadIconNames(bool followsObject)
         {
             iconNames.Clear();
 
-            if (menu.followChunk != null) {
+            if (followsObject) {
                 //menu follows object
                 iconNames.Add(Tools.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause");
                 iconNames.Add("mousedragKill");
@@ -109,6 +109,8 @@ namespace MouseDrag
                 iconNames.Add("mousedragDeleteCreatures");
                 iconNames.Add("mousedragDeleteAll");
             }
+
+            return iconNames;
         }
 
 

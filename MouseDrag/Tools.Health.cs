@@ -45,6 +45,12 @@
             ac.state.alive = true;
             (obj as Creature).dead = false;
 
+            if (obj is Hazer) {
+                (obj as Hazer).inkLeft = 1f;
+                (obj as Hazer).hasSprayed = false;
+                (obj as Hazer).clds = 0;
+            }
+
             //try to exit game over mode
             if (Options.exitGameOverMode?.Value != false && 
                 obj is Player && !(obj as Player).isNPC && 
@@ -91,6 +97,10 @@
 
             if (obj is BubbleGrass && (obj as BubbleGrass).AbstrBubbleGrass != null)
                 (obj as BubbleGrass).AbstrBubbleGrass.oxygenLeft = 0f;
+
+            if (obj is JokeRifle && obj.grabbedBy?.Count > 0)
+                (obj as JokeRifle).Use(false);
+            //TODO?, JokeRifle firing without grabber generates exceptions (and you cannot aim, and you have infinite ammo)
 
             if (obj is MoreSlugcats.ElectricSpear)
                 (obj as MoreSlugcats.ElectricSpear).Zap();
@@ -163,7 +173,7 @@
                 }
                 //NOTE: might have effect on this seedcob in the future, because it technically cannot be consumed twice in same cycle
             }
-            //TODO, reset consumed state of other types (food)?
+            //TODO?, reset consumed state of other types (food)? makes items re-appear next cycle
 
             if (obj is SporePlant)
                 (obj as SporePlant).Used = false;
@@ -187,6 +197,9 @@
 
             if (obj is BubbleGrass && (obj as BubbleGrass).AbstrBubbleGrass != null)
                 (obj as BubbleGrass).AbstrBubbleGrass.oxygenLeft = 1f;
+
+            if (obj is JokeRifle)
+                (obj as JokeRifle).ReloadRifle(new Rock(null, obj.room?.world));
 
             if (obj is MoreSlugcats.ElectricSpear)
                 (obj as MoreSlugcats.ElectricSpear).Recharge();

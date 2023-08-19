@@ -92,6 +92,9 @@
             if (obj is JellyFish)
                 (obj as JellyFish).bites = 1;
 
+            if (obj is SlimeMold)
+                (obj as SlimeMold).bites = 1;
+
             if (obj is WaterNut)
                 (obj as WaterNut).Swell();
 
@@ -119,6 +122,18 @@
 
             if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
                 (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 1;
+
+            if (obj is Oracle)
+            {
+                if (obj.room?.game?.GetStorySession?.saveState?.deathPersistentSaveData != null) {
+                    if ((obj as Oracle).ID == Oracle.OracleID.SS || 
+                        (obj as Oracle).ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.CL)
+                        obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripPebbles = true;
+                    if ((obj as Oracle).ID == Oracle.OracleID.SL)
+                        obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripMoon = true;
+                }
+                (obj as Oracle).health = 0f;
+            }
 
             //============== single use ==============
 
@@ -187,6 +202,9 @@
             if (obj is JellyFish)
                 (obj as JellyFish).bites = 3;
 
+            if (obj is SlimeMold)
+                (obj as SlimeMold).bites = 3;
+
             if (obj is SwollenWaterNut) {
                 WaterNut wn = new WaterNut(obj.abstractPhysicalObject);
                 wn.AbstrNut.swollen = false;
@@ -220,6 +238,24 @@
 
             if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
                 (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 3;
+
+            if (obj is Oracle)
+            {
+                if (obj.room?.game?.GetStorySession?.saveState?.deathPersistentSaveData != null) {
+                    if ((obj as Oracle).ID == Oracle.OracleID.SS || 
+                        (obj as Oracle).ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.CL)
+                        obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripPebbles = false;
+                    if ((obj as Oracle).ID == Oracle.OracleID.SL) {
+                        obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripMoon = false;
+                        if (obj.room.game.GetStorySession.saveState.miscWorldSaveData?.SLOracleState?.neuronsLeft <= 0)
+                            obj.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.neuronsLeft++;
+                    }
+                }
+                (obj as Oracle).health = 1f;
+                if ((obj as Oracle).ID == Oracle.OracleID.SL &&
+                    (obj as Oracle).mySwarmers?.Count <= 0)
+                    (obj as Oracle).SetUpSwarmers();
+            }
         }
     }
 }

@@ -87,8 +87,11 @@
             if (obj is MoreSlugcats.GooieDuck)
                 (obj as MoreSlugcats.GooieDuck).bites = 1;
 
-            if (obj is MoreSlugcats.EnergyCell)
+            if (obj is MoreSlugcats.EnergyCell) {
+                if ((obj as MoreSlugcats.EnergyCell).usingTime > 0f)
+                    (obj as MoreSlugcats.EnergyCell).Explode();
                 (obj as MoreSlugcats.EnergyCell).Use(true);
+            }
 
             //============== single use ==============
 
@@ -141,6 +144,7 @@
                 }
                 //NOTE: might have effect on this seedcob in the future, because it technically cannot be consumed twice in same cycle
             }
+            //TODO, reset consumed state of other types (food)?
 
             if (obj is SporePlant)
                 (obj as SporePlant).Used = false;

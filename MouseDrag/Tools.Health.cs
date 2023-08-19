@@ -93,6 +93,9 @@
                 (obj as MoreSlugcats.EnergyCell).Use(true);
             }
 
+            if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
+                (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 1;
+
             //============== single use ==============
 
             if (obj is Weapon) {
@@ -166,8 +169,16 @@
             if (obj is MoreSlugcats.GooieDuck)
                 (obj as MoreSlugcats.GooieDuck).bites = 6;
 
-            if (obj is MoreSlugcats.EnergyCell)
-                (obj as MoreSlugcats.EnergyCell).recharging = 1f;
+            if (obj is MoreSlugcats.EnergyCell) {
+                if ((obj as MoreSlugcats.EnergyCell).usingTime > 0f) {
+                    (obj as MoreSlugcats.EnergyCell).usingTime = 1f;
+                } else {
+                    (obj as MoreSlugcats.EnergyCell).recharging = 1f;
+                }
+            }
+
+            if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
+                (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 3;
         }
     }
 }

@@ -68,12 +68,23 @@
         {
             if (obj == null)
                 obj = dragChunk?.owner;
+            if (obj is Creature || obj == null)
+                return;
 
             if (obj is SeedCob)
                 (obj as SeedCob).Open();
 
             if (obj is SporePlant)
                 (obj as SporePlant).BeeTrigger();
+
+            if (obj is DangleFruit)
+                (obj as DangleFruit).bites = 1;
+
+            if (obj is KarmaFlower)
+                (obj as KarmaFlower).bites = 1;
+
+            if (obj is JellyFish)
+                (obj as JellyFish).bites = 1;
 
             if (obj is WaterNut)
                 (obj as WaterNut).Swell();
@@ -86,6 +97,9 @@
 
             if (obj is MoreSlugcats.GooieDuck)
                 (obj as MoreSlugcats.GooieDuck).bites = 1;
+
+            if (obj is MoreSlugcats.GlowWeed)
+                (obj as MoreSlugcats.GlowWeed).bites = 1;
 
             if (obj is MoreSlugcats.EnergyCell) {
                 if ((obj as MoreSlugcats.EnergyCell).usingTime > 0f)
@@ -124,6 +138,8 @@
         {
             if (obj == null)
                 obj = dragChunk?.owner;
+            if (obj is Creature || obj == null)
+                return;
 
             if (obj is SeedCob && (obj as SeedCob).AbstractCob != null) {
                 (obj as SeedCob).open = 0f;
@@ -152,6 +168,15 @@
             if (obj is SporePlant)
                 (obj as SporePlant).Used = false;
 
+            if (obj is DangleFruit)
+                (obj as DangleFruit).bites = 3;
+
+            if (obj is KarmaFlower)
+                (obj as KarmaFlower).bites = 4;
+
+            if (obj is JellyFish)
+                (obj as JellyFish).bites = 3;
+
             if (obj is SwollenWaterNut) {
                 WaterNut wn = new WaterNut(obj.abstractPhysicalObject);
                 wn.AbstrNut.swollen = false;
@@ -168,6 +193,9 @@
 
             if (obj is MoreSlugcats.GooieDuck)
                 (obj as MoreSlugcats.GooieDuck).bites = 6;
+
+            if (obj is MoreSlugcats.GlowWeed)
+                (obj as MoreSlugcats.GlowWeed).bites = 3;
 
             if (obj is MoreSlugcats.EnergyCell) {
                 if ((obj as MoreSlugcats.EnergyCell).usingTime > 0f) {

@@ -75,8 +75,20 @@
             if (obj is SporePlant)
                 (obj as SporePlant).BeeTrigger();
 
+            if (obj is WaterNut)
+                (obj as WaterNut).Swell();
+
+            if (obj is BubbleGrass && (obj as BubbleGrass).AbstrBubbleGrass != null)
+                (obj as BubbleGrass).AbstrBubbleGrass.oxygenLeft = 0f;
+
             if (obj is MoreSlugcats.ElectricSpear)
                 (obj as MoreSlugcats.ElectricSpear).Zap();
+
+            if (obj is MoreSlugcats.GooieDuck)
+                (obj as MoreSlugcats.GooieDuck).bites = 1;
+
+            if (obj is MoreSlugcats.EnergyCell)
+                (obj as MoreSlugcats.EnergyCell).Use(true);
 
             //============== single use ==============
 
@@ -91,11 +103,14 @@
             if (obj is ExplosiveSpear)
                 (obj as ExplosiveSpear).Ignite();
 
+            if (obj is FirecrackerPlant)
+                (obj as FirecrackerPlant).Ignite();
+
             if (obj is MoreSlugcats.SingularityBomb)
                 (obj as MoreSlugcats.SingularityBomb).ignited = true;
 
-            if (obj is FirecrackerPlant)
-                (obj as FirecrackerPlant).Ignite();
+            if (obj is MoreSlugcats.FireEgg)
+                (obj as MoreSlugcats.FireEgg).activeCounter = 1;
         }
 
 
@@ -130,8 +145,25 @@
             if (obj is SporePlant)
                 (obj as SporePlant).Used = false;
 
+            if (obj is SwollenWaterNut) {
+                WaterNut wn = new WaterNut(obj.abstractPhysicalObject);
+                wn.AbstrNut.swollen = false;
+                obj.room?.AddObject(wn);
+                wn.firstChunk.HardSetPosition(obj.firstChunk.pos);
+                obj.Destroy();
+            }
+
+            if (obj is BubbleGrass && (obj as BubbleGrass).AbstrBubbleGrass != null)
+                (obj as BubbleGrass).AbstrBubbleGrass.oxygenLeft = 1f;
+
             if (obj is MoreSlugcats.ElectricSpear)
                 (obj as MoreSlugcats.ElectricSpear).Recharge();
+
+            if (obj is MoreSlugcats.GooieDuck)
+                (obj as MoreSlugcats.GooieDuck).bites = 6;
+
+            if (obj is MoreSlugcats.EnergyCell)
+                (obj as MoreSlugcats.EnergyCell).recharging = 1f;
         }
     }
 }

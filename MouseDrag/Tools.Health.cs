@@ -75,14 +75,27 @@
             if (obj is SporePlant)
                 (obj as SporePlant).BeeTrigger();
 
-            if (obj is FlareBomb)
-                (obj as FlareBomb).HitWall();
+            if (obj is MoreSlugcats.ElectricSpear)
+                (obj as MoreSlugcats.ElectricSpear).Zap();
+
+            //============== single use ==============
+
+            if (obj is Weapon) {
+                (obj as Weapon).HitWall();
+                (obj as Weapon).HitByWeapon(obj as Weapon);
+            }
 
             if (obj is ScavengerBomb)
                 (obj as ScavengerBomb).InitiateBurn();
 
             if (obj is ExplosiveSpear)
                 (obj as ExplosiveSpear).Ignite();
+
+            if (obj is MoreSlugcats.SingularityBomb)
+                (obj as MoreSlugcats.SingularityBomb).ignited = true;
+
+            if (obj is FirecrackerPlant)
+                (obj as FirecrackerPlant).Ignite();
         }
 
 
@@ -116,6 +129,9 @@
 
             if (obj is SporePlant)
                 (obj as SporePlant).Used = false;
+
+            if (obj is MoreSlugcats.ElectricSpear)
+                (obj as MoreSlugcats.ElectricSpear).Recharge();
         }
     }
 }

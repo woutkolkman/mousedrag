@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using RWCustom;
+using System;
+using System.Collections.Generic;
 
 namespace MouseDrag
 {
@@ -24,8 +26,11 @@ namespace MouseDrag
                 stop = true;
 
             //left mouse button not pressed
-            if (!Input.GetMouseButton(0))
+            if (!Input.GetMouseButton(0)) {
+                if (Options.throwWithMouse?.Value != false)
+                    TryThrow(game, dragChunk?.owner);
                 stop = true;
+            }
 
             //dragchunk not in this room
             if (dragChunk?.owner?.room != null && dragChunk.owner.room != room)
@@ -125,6 +130,68 @@ namespace MouseDrag
                 }
 
                 (obj as Creature).LoseAllGrasps();
+            }
+        }
+
+
+        //try throwing object in the direction of mouse movement
+        public static void TryThrow(RainWorldGame game, PhysicalObject obj = null)
+        {
+            if (obj == null) {
+                obj = dragChunk?.owner;
+                if (obj is Weapon)
+                    dragChunk = null; //force release object from drag
+            }
+            if (!(obj is Weapon))
+                return;
+
+            Weapon weapon = obj as Weapon;
+            if (weapon.abstractPhysicalObject == null || weapon.firstChunk == null)
+                return;
+
+            //throw this weapon if mouse moved fast enough
+            if (Custom.Dist(weapon.firstChunk.lastPos, weapon.firstChunk.pos) < 40f)
+                return;
+
+            Creature thrower = game?.FirstAlivePlayer?.realizedCreature;
+            bool deleteCreatureAfter = false;
+
+            //temporary creature that receives a force on bodychunk
+            if (thrower == null || Options.throwAsPlayer?.Value != true) {
+                CreatureTemplate ct = new CreatureTemplate(CreatureTemplate.Type.Fly, null, new List<TileTypeResistance>(), new List<TileConnectionResistance>(), new CreatureTemplate.Relationship());
+                AbstractCreature ac = new AbstractCreature(null, ct, null, weapon.abstractPhysicalObject.pos, new EntityID());
+                ac.state = new NoHealthState(ac);
+                thrower = new Fly(ac, weapon.abstractPhysicalObject.world);
+                deleteCreatureAfter = true;
+            }
+
+            Vector2 dir = weapon.firstChunk.vel.normalized;
+
+            //snap to horizontal/vertical
+            if (Math.Abs(dir.x) < 0.2f)
+                dir.x = 0f;
+            if (Math.Abs(dir.x) > 0.8f)
+                dir.x = dir.x > 0 ? 1f : -1f;
+            if (Math.Abs(dir.y) < 0.2f)
+                dir.y = 0f;
+            if (Math.Abs(dir.y) > 0.8f)
+                dir.y = dir.y > 0 ? 1f : -1f;
+
+            IntVector2 throwDir = new IntVector2(Math.Sign(dir.x), Math.Sign(dir.y));
+            float force = 2f;
+
+            //activate bombs etc.
+            weapon.Thrown(thrower, weapon.firstChunk.pos, null, throwDir, force, false);
+            weapon.changeDirCounter = 0; //don't change direction afterwards
+
+            //set correct angles
+            weapon.firstChunk.vel = dir * 40f * force;
+            weapon.setRotation = new Vector2?(dir);
+
+            //delete temporary creature
+            if (deleteCreatureAfter) {
+                thrower.Destroy();
+                weapon.thrownBy = null;
             }
         }
     }

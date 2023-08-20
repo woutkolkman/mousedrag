@@ -168,14 +168,16 @@ namespace MouseDrag
             Vector2 dir = weapon.firstChunk.vel.normalized;
 
             //snap to horizontal/vertical
-            if (Math.Abs(dir.x) < 0.2f)
-                dir.x = 0f;
-            if (Math.Abs(dir.x) > 0.8f)
-                dir.x = dir.x > 0 ? 1f : -1f;
-            if (Math.Abs(dir.y) < 0.2f)
-                dir.y = 0f;
-            if (Math.Abs(dir.y) > 0.8f)
-                dir.y = dir.y > 0 ? 1f : -1f;
+            if (weapon is Spear) {
+                if (Math.Abs(dir.x) < 0.2f)
+                    dir.x = 0f;
+                if (Math.Abs(dir.x) > 0.8f)
+                    dir.x = dir.x > 0 ? 1f : -1f;
+                if (Math.Abs(dir.y) < 0.2f)
+                    dir.y = 0f;
+                if (Math.Abs(dir.y) > 0.8f)
+                    dir.y = dir.y > 0 ? 1f : -1f;
+            }
 
             IntVector2 throwDir = new IntVector2(Math.Sign(dir.x), Math.Sign(dir.y));
             float force = 2f;

@@ -60,6 +60,16 @@ namespace MouseDrag
                         //reduces visual bugs
                         dragChunk.lastPos = dragChunk.pos;
                     }
+
+                    //pull spears from walls
+                    if (dragChunk.owner is Weapon &&
+                        (dragChunk.owner as Weapon).mode != Weapon.Mode.Free &&
+                        Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 20f) {
+                        if (dragChunk.owner is Spear) //prevent spear leaving invisible beams behind
+                            (dragChunk.owner as Spear).resetHorizontalBeamState();
+                        (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);
+                        dragChunk.owner.AllGraspsLetGoOfThisObject(true);
+                    }
                 }
             }
         }
@@ -177,6 +187,9 @@ namespace MouseDrag
                     dir.y = 0f;
                 if (Math.Abs(dir.y) > 0.8f)
                     dir.y = dir.y > 0 ? 1f : -1f;
+
+                //prevent spear leaving invisible beams behind
+                (dragChunk.owner as Spear).resetHorizontalBeamState();
             }
 
             IntVector2 throwDir = new IntVector2(Math.Sign(dir.x), Math.Sign(dir.y));

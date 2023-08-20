@@ -15,6 +15,9 @@
             if (obj is SporePlant) //prevent beehive crashing game
                 (obj as SporePlant).stalk?.Destroy();
 
+            if (obj is Spear) //prevent spear leaving invisible beams behind
+                (obj as Spear).resetHorizontalBeamState();
+
             obj?.RemoveFromRoom();
             obj?.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
 

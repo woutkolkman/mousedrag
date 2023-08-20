@@ -10,7 +10,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> menuRMB, menuFollows;
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
-        public static Configurable<bool> updateLastPos, copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
+        public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<KeyCode> menuOpen, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> deleteOneKey, deleteAllCreaturesKey, deleteAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey;
@@ -40,7 +40,6 @@ namespace MouseDrag
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind("lineageKill", defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDeleting creatures without killing them does not affect lineage.", null, "", "Lineage when killed"));
 
-            updateLastPos = config.Bind("updateLastPos", defaultValue: true, new ConfigurableInfo("Reduces visual bugs when object is paused, but slightly affects drag behavior.", null, "", "Update BodyChunk.lastPos"));
             copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/delete/kill slugpups when pausing/deleting/killing all creatures.", null, "", "Except SlugNPC"));
@@ -96,8 +95,7 @@ namespace MouseDrag
 
             x += 250;
             y = startHeight;
-            AddCheckbox(updateLastPos, new Vector2(x, y -= 100f));
-            AddCheckbox(copyID, new Vector2(x, y -= 40f));
+            AddCheckbox(copyID, new Vector2(x, y -= 100f));
             AddCheckbox(exitGameOverMode, new Vector2(x, y -= 40f));
             AddCheckbox(exceptSlugNPC, new Vector2(x, y -= 40f));
             AddCheckbox(tameIncreasesRep, new Vector2(x, y -= 40f));

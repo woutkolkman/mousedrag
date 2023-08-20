@@ -46,11 +46,15 @@ namespace MouseDrag
                     dragChunk = null;
                 } else { //might affect sandbox mouse
                     dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
-                    if (IsObjectPaused(dragChunk.owner)) //do not launch creature after pause
-                        dragChunk.vel = new Vector2();
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
-                    if (Options.updateLastPos?.Value != false)
-                        dragChunk.lastPos = dragChunk.pos; //reduces visual bugs
+
+                    if (IsObjectPaused(dragChunk.owner)) {
+                        //do not launch creature after pause
+                        dragChunk.vel = new Vector2();
+
+                        //reduces visual bugs
+                        dragChunk.lastPos = dragChunk.pos;
+                    }
                 }
             }
         }

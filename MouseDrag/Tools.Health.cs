@@ -132,7 +132,14 @@
                     if ((obj as Oracle).ID == Oracle.OracleID.SL)
                         obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripMoon = true;
                 }
-                (obj as Oracle).health = 0f;
+                if ((obj as Oracle).ID != MoreSlugcats.MoreSlugcatsEnums.OracleID.ST)
+                    (obj as Oracle).health = 0f;
+
+                //remember kids, cheating is bad
+                //advance phase challenge #70
+                if ((obj as Oracle).ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.ST && 
+                    (obj as Oracle).oracleBehavior is MoreSlugcats.STOracleBehavior)
+                    ((obj as Oracle).oracleBehavior as MoreSlugcats.STOracleBehavior).AdvancePhase();
             }
 
             //============== single use ==============
@@ -251,10 +258,17 @@
                             obj.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.neuronsLeft++;
                     }
                 }
-                (obj as Oracle).health = 1f;
+                if ((obj as Oracle).ID != MoreSlugcats.MoreSlugcatsEnums.OracleID.ST)
+                    (obj as Oracle).health = 1f;
                 if ((obj as Oracle).ID == Oracle.OracleID.SL &&
                     (obj as Oracle).mySwarmers?.Count <= 0)
                     (obj as Oracle).SetUpSwarmers();
+
+                /*//reset challenge #70
+                if ((obj as Oracle).ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.ST && 
+                    (obj as Oracle).oracleBehavior is MoreSlugcats.STOracleBehavior) {
+                    ((obj as Oracle).oracleBehavior as MoreSlugcats.STOracleBehavior).curPhase = MoreSlugcats.STOracleBehavior.Phase.Inactive;
+                }*/ //TODO?, bugs, or just restart the challenge
             }
         }
     }

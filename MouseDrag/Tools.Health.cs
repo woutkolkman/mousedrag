@@ -181,6 +181,7 @@
                 (obj as SeedCob).seedsPopped = new bool[(obj as SeedCob).seedPositions.Length];
                 (obj as SeedCob).AbstractCob.dead = false;
                 (obj as SeedCob).AbstractCob.opened = false;
+                (obj as SeedCob).AbstractCob.spawnedUtility = false;
 
                 //makes seedcob return next cycle
                 (obj as SeedCob).AbstractCob.isConsumed = false;

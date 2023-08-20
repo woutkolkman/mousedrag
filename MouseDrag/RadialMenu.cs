@@ -81,9 +81,10 @@ namespace MouseDrag
             if (followChunk != null) {
                 if (snapToChunk)
                     followOffset = new Vector2();
-                if (Options.menuFollows?.Value != false)
+                bool followTarget = Options.menuFollows?.Value != false || Input.GetMouseButton(1);
+                if (followTarget)
                     menuPos = followChunk.pos - followOffset;
-                crosshair.enabled = Options.menuFollows?.Value ?? true;
+                crosshair.enabled = followTarget;
 
                 if (Tools.ShouldRelease(followChunk?.owner) ||
                     followChunk?.owner?.room != game.cameras[0]?.room)
@@ -136,8 +137,9 @@ namespace MouseDrag
                 mousePressed = true;
             if ((Input.GetMouseButton(1) && Options.menuRMB?.Value == true) || 
                 (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))) {
-                menuPos = mousePos(game);
-                followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
+                followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, mousePos(game), ref followOffset);
+                if (followChunk == null)
+                    menuPos = mousePos(game);
             }
         }
 

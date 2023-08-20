@@ -147,20 +147,28 @@ namespace MouseDrag
         //try throwing object in the direction of mouse movement
         public static void TryThrow(RainWorldGame game, PhysicalObject obj = null)
         {
-            if (obj == null) {
+            if (obj == null)
                 obj = dragChunk?.owner;
-                if (obj is Weapon)
-                    dragChunk = null; //force release object from drag
-            }
+            if (obj?.firstChunk == null)
+                return;
+
+            //throw only if mouse moved fast enough
+            if (Custom.Dist(obj.firstChunk.lastPos, obj.firstChunk.pos) < 40f)
+                return;
+
+            //force release object from drag
+            //useful if keybind is used in the future
+            if (obj is Weapon && obj == dragChunk?.owner)
+                dragChunk = null;
+
+            //vulture grub is special
+            if (obj is VultureGrub)
+                (obj as VultureGrub).InitiateSignalCountDown();
+
             if (!(obj is Weapon))
                 return;
-
             Weapon weapon = obj as Weapon;
-            if (weapon.abstractPhysicalObject == null || weapon.firstChunk == null)
-                return;
-
-            //throw this weapon if mouse moved fast enough
-            if (Custom.Dist(weapon.firstChunk.lastPos, weapon.firstChunk.pos) < 40f)
+            if (weapon.abstractPhysicalObject == null)
                 return;
 
             Creature thrower = game?.FirstAlivePlayer?.realizedCreature;
@@ -189,7 +197,7 @@ namespace MouseDrag
                     dir.y = dir.y > 0 ? 1f : -1f;
 
                 //prevent spear leaving invisible beams behind
-                (dragChunk.owner as Spear).resetHorizontalBeamState();
+                (weapon as Spear).resetHorizontalBeamState();
             }
 
             IntVector2 throwDir = new IntVector2(Math.Sign(dir.x), Math.Sign(dir.y));

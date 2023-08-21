@@ -10,16 +10,7 @@ namespace MouseDrag
 
         public static void UpdateObjectStunned(UpdatableAndDeletable uad)
         {
-            if (!(uad is PhysicalObject))
-                return;
-
-            bool shouldStun = stunnedObjects.Contains(uad as PhysicalObject);
-
-            shouldStun |= stunAll && !( //don't stun when: creature is player and player is not SlugNPC (optional)
-                uad is Player && (Options.exceptSlugNPC?.Value != false || !(uad as Player).isNPC)
-            );
-
-            if (!shouldStun)
+            if (!IsObjectStunned(uad))
                 return;
 
             if (uad is Oracle)
@@ -30,7 +21,24 @@ namespace MouseDrag
 
             //DLL cannot be stunned, so deafen those
             if (uad is DaddyLongLegs)
-                (uad as DaddyLongLegs).Deafen(40);
+                (uad as DaddyLongLegs).Deafen(20);
+        }
+
+
+        public static bool IsObjectStunned(UpdatableAndDeletable uad)
+        {
+            if (!(uad is PhysicalObject))
+                return false;
+            if (!(uad is Oracle) && !(uad is Creature))
+                return false;
+
+            bool shouldStun = stunnedObjects.Contains(uad as PhysicalObject);
+
+            shouldStun |= stunAll && !( //not stunned when: creature is player and player is not SlugNPC (optional)
+                uad is Player && (Options.exceptSlugNPC?.Value != false || !(uad as Player).isNPC)
+            );
+
+            return shouldStun;
         }
 
 

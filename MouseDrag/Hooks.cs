@@ -87,6 +87,9 @@ namespace MouseDrag
             if (Options.unpauseAllKey?.Value != null && Input.GetKeyDown(Options.unpauseAllKey.Value))
                 Tools.UnpauseAll();
 
+            if (Options.unstunAllKey?.Value != null && Input.GetKeyDown(Options.unstunAllKey.Value))
+                Tools.UnstunAll();
+
             if (!State.activated)
                 return;
 
@@ -151,9 +154,6 @@ namespace MouseDrag
 
             if (Options.stunRoomKey?.Value != null && Input.GetKeyDown(Options.stunRoomKey.Value))
                 Tools.StunObjects(self.cameras[0]?.room);
-
-            if (Options.unstunAllKey?.Value != null && Input.GetKeyDown(Options.unstunAllKey.Value))
-                Tools.UnstunAll();
 
             if (Options.stunAllKey?.Value != null && Input.GetKeyDown(Options.stunAllKey.Value)) {
                 Tools.stunAll = !Tools.stunAll;

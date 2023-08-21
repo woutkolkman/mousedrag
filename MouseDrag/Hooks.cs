@@ -145,6 +145,20 @@ namespace MouseDrag
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
                 Tools.DuplicateObject();
+
+            if (Options.stunOneKey?.Value != null && Input.GetKeyDown(Options.stunOneKey.Value))
+                Tools.ToggleStunObject();
+
+            if (Options.stunRoomKey?.Value != null && Input.GetKeyDown(Options.stunRoomKey.Value))
+                Tools.StunObjects(self.cameras[0]?.room);
+
+            if (Options.unstunAllKey?.Value != null && Input.GetKeyDown(Options.unstunAllKey.Value))
+                Tools.UnstunAll();
+
+            if (Options.stunAllKey?.Value != null && Input.GetKeyDown(Options.stunAllKey.Value)) {
+                Tools.stunAll = !Tools.stunAll;
+                Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
+            }
         }
 
 
@@ -162,6 +176,7 @@ namespace MouseDrag
             orig(self, manager);
 
             Tools.UnpauseAll();
+            Tools.UnstunAll();
             State.activated = false;
             Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
         }

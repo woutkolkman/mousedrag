@@ -40,7 +40,7 @@
   <ItemGroup>
     <Compile Include="MenuManager.cs" />
     <Compile Include="RadialMenu.cs" />
-    <Compile Include="Tools.Delete.cs" />
+    <Compile Include="Tools.Destroy.cs" />
     <Compile Include="Tools.Drag.cs" />
     <Compile Include="Tools.Duplicate.cs" />
     <Compile Include="Tools.Health.cs" />

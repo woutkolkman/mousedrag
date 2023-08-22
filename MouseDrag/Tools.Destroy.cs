@@ -2,7 +2,7 @@
 {
     static partial class Tools
     {
-        public static void DeleteObject(PhysicalObject obj = null)
+        public static void DestroyObject(PhysicalObject obj = null)
         {
             if (obj == null)
                 obj = dragChunk?.owner;
@@ -26,16 +26,16 @@
         }
 
 
-        //delete all objects from room
-        public static void DeleteObjects(Room room, bool onlyCreatures)
+        //destroy all objects in room
+        public static void DestroyObjects(Room room, bool onlyCreatures)
         {
-            Plugin.Logger.LogDebug("DeleteObjects, delete " + (onlyCreatures ? "creatures" : "objects") + " in room");
+            Plugin.Logger.LogDebug("DestroyObjects, destroy " + (onlyCreatures ? "creatures" : "objects") + " in room");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
-                        if (!(room.physicalObjects[i][j] is Player && //don't delete when: creature is player and player is not SlugNPC (optional)
+                        if (!(room.physicalObjects[i][j] is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
-                            DeleteObject(room.physicalObjects[i][j]);
+                            DestroyObject(room.physicalObjects[i][j]);
         }
     }
 }

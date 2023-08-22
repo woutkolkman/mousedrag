@@ -99,14 +99,14 @@ namespace MouseDrag
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
                 Tools.PauseObjects(self.cameras[0]?.room, true);
 
-            if (Options.deleteOneKey?.Value != null && Input.GetKeyDown(Options.deleteOneKey.Value))
-                Tools.DeleteObject();
+            if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
+                Tools.DestroyObject();
 
-            if (Options.deleteAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.deleteAllCreaturesKey.Value))
-                Tools.DeleteObjects(self.cameras[0]?.room, true);
+            if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
+                Tools.DestroyObjects(self.cameras[0]?.room, true);
 
-            if (Options.deleteAllObjectsKey?.Value != null && Input.GetKeyDown(Options.deleteAllObjectsKey.Value))
-                Tools.DeleteObjects(self.cameras[0]?.room, false);
+            if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
+                Tools.DestroyObjects(self.cameras[0]?.room, false);
 
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
                 Tools.KillCreature(self);

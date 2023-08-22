@@ -74,7 +74,7 @@ namespace MouseDrag
                         break;
                     case "mousedragHeart":      Tools.TameCreature(game, menu.followChunk?.owner); break;
                     case "mousedragDuplicate":  Tools.DuplicateObject(menu.followChunk?.owner); break;
-                    case "mousedragDelete":     Tools.DeleteObject(menu.followChunk?.owner); break;
+                    case "mousedragDestroy":    Tools.DestroyObject(menu.followChunk?.owner); break;
                 }
 
             } else {
@@ -85,8 +85,8 @@ namespace MouseDrag
                     case "mousedragPlayAll":            Tools.UnpauseAll(); break;
                     case "mousedragKillCreatures":      Tools.KillCreatures(game, game.cameras[0]?.room); break;
                     case "mousedragReviveCreatures":    Tools.ReviveCreatures(game.cameras[0]?.room); break;
-                    case "mousedragDeleteCreatures":    Tools.DeleteObjects(game.cameras[0]?.room, true); break;
-                    case "mousedragDeleteAll":          Tools.DeleteObjects(game.cameras[0]?.room, false); break;
+                    case "mousedragDestroyCreatures":   Tools.DestroyObjects(game.cameras[0]?.room, true); break;
+                    case "mousedragDestroyAll":         Tools.DestroyObjects(game.cameras[0]?.room, false); break;
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace MouseDrag
                 iconNames.Add("mousedragRevive");
                 iconNames.Add("mousedragHeart");
                 iconNames.Add("mousedragDuplicate");
-                iconNames.Add("mousedragDelete");
+                iconNames.Add("mousedragDestroy");
 
             } else {
                 //menu on background
@@ -112,8 +112,8 @@ namespace MouseDrag
                 iconNames.Add("mousedragPlayAll");
                 iconNames.Add("mousedragKillCreatures");
                 iconNames.Add("mousedragReviveCreatures");
-                iconNames.Add("mousedragDeleteCreatures");
-                iconNames.Add("mousedragDeleteAll");
+                iconNames.Add("mousedragDestroyCreatures");
+                iconNames.Add("mousedragDestroyAll");
             }
 
             return iconNames;

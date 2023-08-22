@@ -3,7 +3,7 @@
   "name": "Mouse Drag",
   "version": "0.2.3",
   "authors": "Maxi Mol",
-  "description": "Tool which allows dragging/pausing/deleting creatures and objects outside sandbox-mode using your mouse.",
+  "description": "Tool which allows dragging/pausing/destroying creatures and objects\noutside sandbox-mode using your mouse.",
   "requirements": [],
   "requirements_names": [],
   "tags": ["Tools"],

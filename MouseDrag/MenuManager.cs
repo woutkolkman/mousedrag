@@ -87,6 +87,11 @@ namespace MouseDrag
                     case "mousedragReviveCreatures":    Tools.ReviveCreatures(game.cameras[0]?.room); break;
                     case "mousedragDestroyCreatures":   Tools.DestroyObjects(game.cameras[0]?.room, true); break;
                     case "mousedragDestroyAll":         Tools.DestroyObjects(game.cameras[0]?.room, false); break;
+                    case "mousedragPauseGlobal":
+                    case "mousedragPlayGlobal":
+                        Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+                        Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+                        break;
                 }
             }
         }
@@ -99,21 +104,35 @@ namespace MouseDrag
 
             if (followsObject) {
                 //menu follows object
-                iconNames.Add(Tools.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause");
-                iconNames.Add("mousedragKill");
-                iconNames.Add("mousedragRevive");
-                iconNames.Add("mousedragHeart");
-                iconNames.Add("mousedragDuplicate");
-                iconNames.Add("mousedragDestroy");
+                if (Options.pauseOneMenu?.Value != false)
+                    iconNames.Add(Tools.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause");
+                if (Options.killOneMenu?.Value != false)
+                    iconNames.Add("mousedragKill");
+                if (Options.reviveOneMenu?.Value != false)
+                    iconNames.Add("mousedragRevive");
+                if (Options.tameOneMenu?.Value != false)
+                    iconNames.Add("mousedragHeart");
+                if (Options.duplicateOneMenu?.Value != false)
+                    iconNames.Add("mousedragDuplicate");
+                if (Options.destroyOneMenu?.Value != false)
+                    iconNames.Add("mousedragDestroy");
 
             } else {
                 //menu on background
-                iconNames.Add("mousedragPauseCreatures");
-                iconNames.Add("mousedragPlayAll");
-                iconNames.Add("mousedragKillCreatures");
-                iconNames.Add("mousedragReviveCreatures");
-                iconNames.Add("mousedragDestroyCreatures");
-                iconNames.Add("mousedragDestroyAll");
+                if (Options.pauseRoomCreaturesMenu?.Value != false)
+                    iconNames.Add("mousedragPauseCreatures");
+                if (Options.pauseAllCreaturesMenu?.Value != false)
+                    iconNames.Add(Tools.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal");
+                if (Options.unpauseAllMenu?.Value != false)
+                    iconNames.Add("mousedragPlayAll");
+                if (Options.killAllCreaturesMenu?.Value != false)
+                    iconNames.Add("mousedragKillCreatures");
+                if (Options.reviveAllCreaturesMenu?.Value != false)
+                    iconNames.Add("mousedragReviveCreatures");
+                if (Options.destroyAllCreaturesMenu?.Value != false)
+                    iconNames.Add("mousedragDestroyCreatures");
+                if (Options.destroyAllObjectsMenu?.Value != false)
+                    iconNames.Add("mousedragDestroyAll");
             }
 
             return iconNames;

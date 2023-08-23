@@ -16,8 +16,13 @@ namespace MouseDrag
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
-        public static Configurable<KeyCode> duplicateOneKey;
-        public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
+        public static Configurable<KeyCode> duplicateOneKey, stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
+        public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
+        public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu;
+        public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
+        public static Configurable<bool> pauseAllCreaturesMenu;
+        public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
+        public static Configurable<bool> duplicateOneMenu, stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public int curTab;
 
         public enum ActivateTypes
@@ -49,15 +54,15 @@ namespace MouseDrag
 
             menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
-            pauseRoomCreaturesKey = config.Bind("pauseRoomCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures in room"));
+            pauseRoomCreaturesKey = config.Bind("pauseRoomCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
             destroyOneKey = config.Bind("destroyOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy the object/creature which you're currently dragging.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy"));
-            destroyAllCreaturesKey = config.Bind("destroyAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy creatures in\nroom"));
-            destroyAllObjectsKey = config.Bind("destroyAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy objects in room"));
+            destroyAllCreaturesKey = config.Bind("destroyAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy creatures\nin room"));
+            destroyAllObjectsKey = config.Bind("destroyAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy objects\nin room"));
             killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill the creature which you're currently dragging.", null, "", "Kill"));
-            killAllCreaturesKey = config.Bind("killAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill all creatures in current room except Player and SlugNPC.", null, "", "Kill creatures in room"));
+            killAllCreaturesKey = config.Bind("killAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill all creatures in current room except Player and SlugNPC.", null, "", "Kill creatures\nin room"));
             reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
-            reviveAllCreaturesKey = config.Bind("reviveAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal creatures\nin room"));
+            reviveAllCreaturesKey = config.Bind("reviveAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal\ncreatures\nin room"));
 
             pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.\nIndividually (un)paused creatures remain paused.", null, "", "Pause all creatures"));
             pauseAllObjectsKey = config.Bind("pauseAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all objects except creatures, including objects that still need to spawn.\nIndividually (un)paused objects remain paused.", null, "", "Pause all objects"));
@@ -70,6 +75,28 @@ namespace MouseDrag
             stunRoomKey = config.Bind("stunRoomKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun all objects/creatures except Player and SlugNPC, only currently in this room.\nAllows unstunning individual objects/creatures.", null, "", "Stun in room"));
             unstunAllKey = config.Bind("unstunAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unstun all objects/creatures, including individually stunned objects/creatures.", null, "", "Unstun all"));
             stunAllKey = config.Bind("stunAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun all objects/creatures except Player and SlugNPC, including objects/creatures that still need to spawn.\nIndividually (un)stunned objects/creatures remain stunned.", null, "", "Stun all"));
+
+            pauseOneMenu = config.Bind("pauseOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            pauseRoomCreaturesMenu = config.Bind("pauseRoomCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            unpauseAllMenu = config.Bind("unpauseAllMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            destroyOneMenu = config.Bind("destroyOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            destroyAllCreaturesMenu = config.Bind("destroyAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            destroyAllObjectsMenu = config.Bind("destroyAllObjectsMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            killOneMenu = config.Bind("killOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            killAllCreaturesMenu = config.Bind("killAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            reviveOneMenu = config.Bind("reviveOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            reviveAllCreaturesMenu = config.Bind("reviveAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+
+            pauseAllCreaturesMenu = config.Bind("pauseAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            tameAllCreaturesMenu = config.Bind("tameAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            clearRelOneMenu = config.Bind("clearRelOneMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            clearRelAllMenu = config.Bind("clearRelAllMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            stunOneMenu = config.Bind("stunOneMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            stunRoomMenu = config.Bind("stunRoomMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            unstunAllMenu = config.Bind("unstunAllMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            stunAllMenu = config.Bind("stunAllMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
         }
 
 
@@ -110,33 +137,73 @@ namespace MouseDrag
 
             /**************** KeyBinds ****************/
             curTab++;
-            x = 40;
+            x = 70;
             y = 600f;
             AddKeyBinder(menuOpen, new Vector2(x, y -= 50f));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
+            AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(pauseRoomCreaturesKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseCreatures");
+            AddCheckbox(pauseRoomCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPlayAll");
+            AddCheckbox(unpauseAllMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroy");
+            AddCheckbox(destroyOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyCreatures");
+            AddCheckbox(destroyAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyAllObjectsKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
+            AddCheckbox(destroyAllObjectsMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(killOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKill");
+            AddCheckbox(killOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(killAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKillCreatures");
+            AddCheckbox(killAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragRevive");
+            AddCheckbox(reviveOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(reviveAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragReviveCreatures");
+            AddCheckbox(reviveAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
 
-            x += 280;
+            x += 300;
             y = 600f;
             AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
+            AddCheckbox(pauseAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(pauseAllObjectsKey, new Vector2(x, y -= 50f));
             AddKeyBinder(tameOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
+            AddCheckbox(tameOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tameAllCreaturesKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeartCreatures");
+            AddCheckbox(tameAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(clearRelOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnheart");
+            AddCheckbox(clearRelOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(clearRelAllKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnheartCreatures");
+            AddCheckbox(clearRelAllMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDuplicate");
+            AddCheckbox(duplicateOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(stunOneKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStun");
+            AddCheckbox(stunOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(stunRoomKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStunAll");
+            AddCheckbox(stunRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(unstunAllKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnstunAll");
+            AddCheckbox(unstunAllMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(stunAllKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStunGlobal");
+            AddCheckbox(stunAllMenu, new Vector2(x - 56f, y + 3f));
         }
 
 
@@ -149,6 +216,15 @@ namespace MouseDrag
             {
                 title,
                 version
+            });
+        }
+
+
+        private void AddIcon(Vector2 pos, string iconName)
+        {
+            Tabs[curTab].AddItems(new UIelement[]
+            {
+                new OpImage(pos, iconName)
             });
         }
 

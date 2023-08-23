@@ -99,15 +99,6 @@ namespace MouseDrag
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
                 Tools.PauseObjects(self.cameras[0]?.room, true);
 
-            if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
-                Tools.DestroyObject();
-
-            if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
-                Tools.DestroyObjects(self.cameras[0]?.room, true);
-
-            if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
-                Tools.DestroyObjects(self.cameras[0]?.room, false);
-
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
                 Tools.KillCreature(self);
                 Tools.TriggerObject();
@@ -159,6 +150,16 @@ namespace MouseDrag
                 Tools.stunAll = !Tools.stunAll;
                 Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
             }
+
+            //destroy last, so other keybinds are executed first if keybinds are using the same key
+            if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
+                Tools.DestroyObject();
+
+            if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
+                Tools.DestroyObjects(self.cameras[0]?.room, true);
+
+            if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
+                Tools.DestroyObjects(self.cameras[0]?.room, false);
         }
 
 

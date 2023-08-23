@@ -20,8 +20,8 @@ namespace MouseDrag
                 (uad as Creature).Stun(40);
 
             //DLL cannot be stunned, so deafen those
-            if (uad is DaddyLongLegs)
-                (uad as DaddyLongLegs).Deafen(20);
+            if (uad is DaddyLongLegs && (uad as DaddyLongLegs).deaf < 100)
+                (uad as DaddyLongLegs).Deafen(10);
         }
 
 

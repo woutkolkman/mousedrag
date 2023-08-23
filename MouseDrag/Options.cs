@@ -66,10 +66,10 @@ namespace MouseDrag
             clearRelOneKey = config.Bind("clearRelOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the creature which you're currently dragging.", null, "", "Clear relationships"));
             clearRelAllKey = config.Bind("clearRelAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.", null, "", "Clear relationships\nin room"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object/creature which you're currently dragging. Hold button to repeat.", null, "", "Duplicate"));
-            stunOneKey = config.Bind("stunOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun the object/creature which you're currently dragging.", null, "", "Stun"));
+            stunOneKey = config.Bind("stunOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun the object/creature which you're currently dragging.", null, "", "Stun"));
             stunRoomKey = config.Bind("stunRoomKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun all objects/creatures except Player and SlugNPC, only currently in this room.\nAllows unstunning individual objects/creatures.", null, "", "Stun in room"));
             unstunAllKey = config.Bind("unstunAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unstun all objects/creatures, including individually stunned objects/creatures.", null, "", "Unstun all"));
-            stunAllKey = config.Bind("stunAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun all objects/creatures except Player and SlugNPC, including objects/creatures that still need to spawn.\nIndividually (un)stunned objects/creatures remain stunned.", null, "", "Stun all"));
+            stunAllKey = config.Bind("stunAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun all objects/creatures except Player and SlugNPC, including objects/creatures that still need to spawn.\nIndividually (un)stunned objects/creatures remain stunned.", null, "", "Stun all"));
         }
 
 

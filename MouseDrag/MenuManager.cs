@@ -101,8 +101,15 @@ namespace MouseDrag
                     case "mousedragDestroyAll":         Tools.DestroyObjects(game.cameras[0]?.room, false); break;
                     case "mousedragPauseGlobal":
                     case "mousedragPlayGlobal":
-                        Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
-                        Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+                        if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllObjectsMenu?.Value != false) {
+                            Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+                            Tools.pauseAllObjects = Tools.pauseAllCreatures;
+                        } else if (Options.pauseAllCreaturesMenu?.Value != false) {
+                            Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+                        } else if (Options.pauseAllObjectsMenu?.Value != false) {
+                            Tools.pauseAllObjects = !Tools.pauseAllObjects;
+                        }
+                        Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures + ", pauseAllObjects: " + Tools.pauseAllObjects);
                         break;
                 }
             }
@@ -137,8 +144,11 @@ namespace MouseDrag
                 //menu on background
                 if (Options.pauseRoomCreaturesMenu?.Value != false)
                     iconNames.Add("mousedragPauseCreatures");
-                if (Options.pauseAllCreaturesMenu?.Value != false)
+                if (Options.pauseAllCreaturesMenu?.Value != false) {
                     iconNames.Add(Tools.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal");
+                } else if (Options.pauseAllObjectsMenu?.Value != false) {
+                    iconNames.Add(Tools.pauseAllObjects ? "mousedragPlayGlobal" : "mousedragPauseGlobal");
+                }
                 if (Options.unpauseAllMenu?.Value != false)
                     iconNames.Add("mousedragPlayAll");
                 if (Options.stunRoomMenu?.Value != false)

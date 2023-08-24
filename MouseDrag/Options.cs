@@ -19,7 +19,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
-        public static Configurable<bool> pauseAllCreaturesMenu;
+        public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
         public static Configurable<bool> duplicateOneMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
@@ -78,27 +78,28 @@ namespace MouseDrag
             destroyAllCreaturesKey = config.Bind("destroyAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy creatures\nin room"));
             destroyAllObjectsKey = config.Bind("destroyAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy objects\nin room"));
 
-            pauseOneMenu = config.Bind("pauseOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            pauseRoomCreaturesMenu = config.Bind("pauseRoomCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            unpauseAllMenu = config.Bind("unpauseAllMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            pauseAllCreaturesMenu = config.Bind("pauseAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            killOneMenu = config.Bind("killOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            killAllCreaturesMenu = config.Bind("killAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            reviveOneMenu = config.Bind("reviveOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            reviveAllCreaturesMenu = config.Bind("reviveAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            pauseOneMenu = config.Bind("pauseOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            pauseRoomCreaturesMenu = config.Bind("pauseRoomCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            unpauseAllMenu = config.Bind("unpauseAllMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            pauseAllCreaturesMenu = config.Bind("pauseAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            pauseAllObjectsMenu = config.Bind("pauseAllObjectsMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            killOneMenu = config.Bind("killOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            killAllCreaturesMenu = config.Bind("killAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            reviveOneMenu = config.Bind("reviveOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            reviveAllCreaturesMenu = config.Bind("reviveAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
-            tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            tameAllCreaturesMenu = config.Bind("tameAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            clearRelOneMenu = config.Bind("clearRelOneMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            clearRelAllMenu = config.Bind("clearRelAllMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            stunOneMenu = config.Bind("stunOneMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            stunRoomMenu = config.Bind("stunRoomMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            unstunAllMenu = config.Bind("unstunAllMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            stunAllMenu = config.Bind("stunAllMenu", defaultValue: false, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            destroyOneMenu = config.Bind("destroyOneMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            destroyAllCreaturesMenu = config.Bind("destroyAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
-            destroyAllObjectsMenu = config.Bind("destroyAllObjectsMenu", defaultValue: true, new ConfigurableInfo("Add option to menu.", null, "", ""));
+            tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            tameAllCreaturesMenu = config.Bind("tameAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            clearRelOneMenu = config.Bind("clearRelOneMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            clearRelAllMenu = config.Bind("clearRelAllMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            stunOneMenu = config.Bind("stunOneMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            stunRoomMenu = config.Bind("stunRoomMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            unstunAllMenu = config.Bind("unstunAllMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            stunAllMenu = config.Bind("stunAllMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            destroyOneMenu = config.Bind("destroyOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            destroyAllCreaturesMenu = config.Bind("destroyAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            destroyAllObjectsMenu = config.Bind("destroyAllObjectsMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
         }
 
 
@@ -155,6 +156,8 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
             AddCheckbox(pauseAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(pauseAllObjectsKey, new Vector2(x, y -= 50f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
+            AddCheckbox(pauseAllObjectsMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(killOneKey, new Vector2(x, y -= 50f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKill");
             AddCheckbox(killOneMenu, new Vector2(x - 56f, y + 3f));

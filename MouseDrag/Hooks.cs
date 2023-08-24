@@ -99,6 +99,16 @@ namespace MouseDrag
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
                 Tools.PauseObjects(self.cameras[0]?.room, true);
 
+            if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
+                Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+                Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+            }
+
+            if (Options.pauseAllObjectsKey?.Value != null && Input.GetKeyDown(Options.pauseAllObjectsKey.Value)) {
+                Tools.pauseAllObjects = !Tools.pauseAllObjects;
+                Plugin.Logger.LogDebug("pauseAllObjects: " + Tools.pauseAllObjects);
+            }
+
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
                 Tools.KillCreature(self);
                 Tools.TriggerObject();
@@ -115,15 +125,8 @@ namespace MouseDrag
             if (Options.reviveAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.reviveAllCreaturesKey.Value))
                 Tools.ReviveCreatures(self.cameras[0]?.room);
 
-            if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
-                Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
-                Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
-            }
-
-            if (Options.pauseAllObjectsKey?.Value != null && Input.GetKeyDown(Options.pauseAllObjectsKey.Value)) {
-                Tools.pauseAllObjects = !Tools.pauseAllObjects;
-                Plugin.Logger.LogDebug("pauseAllObjects: " + Tools.pauseAllObjects);
-            }
+            if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
+                Tools.DuplicateObject();
 
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tools.TameCreature(self);
@@ -137,9 +140,6 @@ namespace MouseDrag
             if (Options.clearRelAllKey?.Value != null && Input.GetKeyDown(Options.clearRelAllKey.Value))
                 Tools.ClearRelationships(self.cameras[0]?.room);
 
-            if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
-                Tools.DuplicateObject();
-
             if (Options.stunOneKey?.Value != null && Input.GetKeyDown(Options.stunOneKey.Value))
                 Tools.ToggleStunObject();
 
@@ -151,7 +151,6 @@ namespace MouseDrag
                 Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
             }
 
-            //destroy last, so other keybinds are executed first if keybinds are using the same key
             if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
                 Tools.DestroyObject();
 

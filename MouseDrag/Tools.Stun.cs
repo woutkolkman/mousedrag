@@ -64,13 +64,15 @@ namespace MouseDrag
         {
             stunnedObjects.Clear();
             stunAll = false;
-            Plugin.Logger.LogDebug("UnstunAll");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("UnstunAll");
         }
 
 
         public static void StunObjects(Room room)
         {
-            Plugin.Logger.LogDebug("StunObjects, stun all in room");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("StunObjects, stun all in room");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Oracle) || (room.physicalObjects[i][j] is Creature))

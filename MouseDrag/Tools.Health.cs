@@ -20,7 +20,8 @@
         //kill all creatures in room
         public static void KillCreatures(RainWorldGame game, Room room)
         {
-            Plugin.Logger.LogDebug("KillCreatures");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("KillCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if (!(room.physicalObjects[i][j] is Player && //don't kill when: creature is player and player is not SlugNPC (optional)
@@ -63,7 +64,8 @@
         //revive all creatures in room
         public static void ReviveCreatures(Room room)
         {
-            Plugin.Logger.LogDebug("ReviveCreatures");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("ReviveCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     ReviveCreature(room.physicalObjects[i][j]);

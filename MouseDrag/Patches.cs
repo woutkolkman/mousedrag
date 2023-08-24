@@ -55,7 +55,8 @@ namespace MouseDrag
             //if value is true, don't update object
             c.Emit(OpCodes.Brtrue_S, skipCond);
 
-            Plugin.Logger.LogInfo("RoomUpdateIL success");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RoomUpdateIL success");
         }
     }
 }

@@ -55,7 +55,8 @@ namespace MouseDrag
                 newApo.pos = coord;
             }
 
-            Plugin.Logger.LogDebug("DuplicateObject, AddEntity " + newApo.type + " at " + coord.SaveToString());
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("DuplicateObject, AddEntity " + newApo.type + " at " + coord.SaveToString());
             obj.room.abstractRoom.AddEntity(newApo);
             newApo.RealizeInRoom(); //actually places object/creature
         }

@@ -20,7 +20,8 @@ namespace MouseDrag
                 foreach (Options.ActivateTypes val in Enum.GetValues(typeof(Options.ActivateTypes)))
                     if (String.Equals(Options.activateType.Value, val.ToString()))
                         activeType = val;
-                Plugin.Logger.LogDebug("CheckActivated, activeType: " + activeType.ToString());
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("CheckActivated, activeType: " + activeType.ToString());
             }
             prevPaused = paused;
 
@@ -35,7 +36,8 @@ namespace MouseDrag
 
             if (activated != prevActivated)
             {
-                Plugin.Logger.LogDebug("CheckActivated, activated: " + activated);
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("CheckActivated, activated: " + activated);
                 if (!activated && Options.undoMouseVisible?.Value == true)
                     Cursor.visible = false;
             }

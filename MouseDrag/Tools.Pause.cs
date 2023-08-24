@@ -29,7 +29,8 @@ namespace MouseDrag
             //update physicalobject at least once
             if (shouldPause && (uad as PhysicalObject).abstractPhysicalObject?.timeSpentHere == 0) {
                 (uad as PhysicalObject).abstractPhysicalObject.timeSpentHere++;
-                Plugin.Logger.LogDebug("IsObjectPaused, updating object " + (uad as PhysicalObject).abstractPhysicalObject.ID.ToString() + " once before pausing");
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("IsObjectPaused, updating object " + (uad as PhysicalObject).abstractPhysicalObject.ID.ToString() + " once before pausing");
                 return false;
             }
             return shouldPause;
@@ -57,13 +58,15 @@ namespace MouseDrag
             pausedObjects.Clear();
             pauseAllCreatures = false;
             pauseAllObjects = false;
-            Plugin.Logger.LogDebug("UnpauseAll");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("UnpauseAll");
         }
 
 
         public static void PauseObjects(Room room, bool onlyCreatures)
         {
-            Plugin.Logger.LogDebug("PauseObjects, pause " + (onlyCreatures ? "creatures" : "objects") + " in room");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("PauseObjects, pause " + (onlyCreatures ? "creatures" : "objects") + " in room");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))

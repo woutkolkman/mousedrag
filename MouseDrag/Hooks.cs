@@ -101,12 +101,14 @@ namespace MouseDrag
 
             if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
                 Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
-                Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
             }
 
             if (Options.pauseAllObjectsKey?.Value != null && Input.GetKeyDown(Options.pauseAllObjectsKey.Value)) {
                 Tools.pauseAllObjects = !Tools.pauseAllObjects;
-                Plugin.Logger.LogDebug("pauseAllObjects: " + Tools.pauseAllObjects);
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("pauseAllObjects: " + Tools.pauseAllObjects);
             }
 
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
@@ -148,7 +150,8 @@ namespace MouseDrag
 
             if (Options.stunAllKey?.Value != null && Input.GetKeyDown(Options.stunAllKey.Value)) {
                 Tools.stunAll = !Tools.stunAll;
-                Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
             }
 
             if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
@@ -178,7 +181,8 @@ namespace MouseDrag
             Tools.UnpauseAll();
             Tools.UnstunAll();
             State.activated = false;
-            Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
         }
     }
 }

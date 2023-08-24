@@ -36,14 +36,16 @@ namespace MouseDrag
                             (player.state as PlayerState).playerNumber, 
                             0.03f, 0.15f, 0.2f
                         );
-                    Plugin.Logger.LogDebug("TameCreature, SocialMemory.Relationship data set: like=" + rel.like + ", tempLike=" + rel.tempLike + ", know=" + rel.know);
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogDebug("TameCreature, SocialMemory.Relationship data set: like=" + rel.like + ", tempLike=" + rel.tempLike + ", know=" + rel.know);
                 }
 
                 if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
                     ai.friendTracker.friend = player.realizedCreature;
                     if (ai.friendTracker.friendRel == null)
                         ai.friendTracker.friendRel = rel;
-                    Plugin.Logger.LogDebug("TameCreature, FriendTracker data set");
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogDebug("TameCreature, FriendTracker data set");
                 }
             }
         }
@@ -52,7 +54,8 @@ namespace MouseDrag
         //tame all creatures in room
         public static void TameCreatures(RainWorldGame game, Room room)
         {
-            Plugin.Logger.LogDebug("TameCreatures");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("TameCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     TameCreature(game, room.physicalObjects[i][j]);
@@ -73,11 +76,13 @@ namespace MouseDrag
             if (ai is IUseARelationshipTracker) {
                 int count = creature.state?.socialMemory?.relationShips?.Count ?? 0;
                 creature.state?.socialMemory?.relationShips?.Clear();
-                Plugin.Logger.LogDebug("ClearRelationships, cleared " + count + " relationships");
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("ClearRelationships, cleared " + count + " relationships");
 
                 /*if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
                     ai.friendTracker = null;
-                    Plugin.Logger.LogDebug("ClearRelationships, deleted friendTracker");
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogDebug("ClearRelationships, deleted friendTracker");
                 }*/
             }
         }
@@ -86,7 +91,8 @@ namespace MouseDrag
         //clear all relationships of all creatures in room
         public static void ClearRelationships(Room room)
         {
-            Plugin.Logger.LogDebug("ClearRelationships");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("ClearRelationships");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if (!(room.physicalObjects[i][j] is Player && //don't clear when: creature is player and player is not SlugNPC (optional)

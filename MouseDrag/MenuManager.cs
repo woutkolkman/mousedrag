@@ -91,7 +91,8 @@ namespace MouseDrag
                     case "mousedragStunGlobal":
                     case "mousedragUnstunGlobal":
                         Tools.stunAll = !Tools.stunAll;
-                        Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
+                        if (Options.logDebug?.Value != false)
+                            Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
                         break;
                     case "mousedragKillCreatures":      Tools.KillCreatures(game, game.cameras[0]?.room); break;
                     case "mousedragReviveCreatures":    Tools.ReviveCreatures(game.cameras[0]?.room); break;
@@ -109,7 +110,8 @@ namespace MouseDrag
                         } else if (Options.pauseAllObjectsMenu?.Value != false) {
                             Tools.pauseAllObjects = !Tools.pauseAllObjects;
                         }
-                        Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures + ", pauseAllObjects: " + Tools.pauseAllObjects);
+                        if (Options.logDebug?.Value != false)
+                            Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures + ", pauseAllObjects: " + Tools.pauseAllObjects);
                         break;
                 }
             }
@@ -201,7 +203,8 @@ namespace MouseDrag
             } catch (Exception ex) {
                 Plugin.Logger.LogError("LoadSprites exception: " + ex.ToString());
             }
-            Plugin.Logger.LogDebug("LoadSprites called");
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("LoadSprites called");
         }
     }
 }

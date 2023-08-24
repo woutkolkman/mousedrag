@@ -19,14 +19,14 @@ namespace MouseDrag
         public static string Name;
         public static string Version;
 
-        private static bool IsEnabled = false;
+        private static bool isEnabled = false;
 
 
         //called when mod is loaded, subscribe functions to methods of the game
         public void OnEnable()
         {
-            if (IsEnabled) return;
-            IsEnabled = true;
+            if (isEnabled) return;
+            isEnabled = true;
 
             Logger = base.Logger;
             Hooks.Apply();
@@ -43,8 +43,8 @@ namespace MouseDrag
         //called when mod is unloaded
         public void OnDisable()
         {
-            if (!IsEnabled) return;
-            IsEnabled = false;
+            if (!isEnabled) return;
+            isEnabled = false;
 
             Hooks.Unapply();
             Patches.Unapply();

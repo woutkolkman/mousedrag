@@ -10,6 +10,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> menuRMB, menuFollows;
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
+        public static Configurable<bool> logDebug;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
         public static Configurable<KeyCode> menuOpen, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
@@ -46,6 +47,7 @@ namespace MouseDrag
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind("lineageKill", defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
+            logDebug = config.Bind("logDebug", defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
 
             copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
@@ -128,6 +130,7 @@ namespace MouseDrag
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= 40f));
             AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= 40f));
             AddCheckbox(lineageKill, new Vector2(x, y -= 40f));
+            AddCheckbox(logDebug, new Vector2(x, y -= 40f));
 
             x += 250;
             y = startHeight;

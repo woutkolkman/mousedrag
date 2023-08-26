@@ -64,7 +64,7 @@ namespace MouseDrag
                     //pull spears from walls & grasps
                     if (dragChunk.owner is Weapon &&
                         (dragChunk.owner as Weapon).mode != Weapon.Mode.Free &&
-                        Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 20f) {
+                        Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
                         if (dragChunk.owner is Spear) //prevent spear leaving invisible beams behind
                             (dragChunk.owner as Spear).resetHorizontalBeamState();
                         (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);

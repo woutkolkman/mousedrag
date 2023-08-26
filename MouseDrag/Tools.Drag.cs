@@ -61,7 +61,7 @@ namespace MouseDrag
                         dragChunk.lastPos = dragChunk.pos;
                     }
 
-                    //pull spears from walls
+                    //pull spears from walls & grasps
                     if (dragChunk.owner is Weapon &&
                         (dragChunk.owner as Weapon).mode != Weapon.Mode.Free &&
                         Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 20f) {
@@ -156,7 +156,11 @@ namespace MouseDrag
             if (Custom.Dist(obj.firstChunk.lastPos, obj.firstChunk.pos) < 40f)
                 return;
 
-            //force release object from drag
+            //don't throw if item is grabbed
+            if (obj.grabbedBy?.Count > 0)
+                return;
+
+            //force release object from mouse drag
             //useful if keybind is used in the future
             if (obj is Weapon && obj == dragChunk?.owner)
                 dragChunk = null;

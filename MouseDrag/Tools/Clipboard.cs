@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 namespace MouseDrag
 {
@@ -16,6 +16,11 @@ namespace MouseDrag
                 return;
 
             cutObjects.Add(obj.abstractPhysicalObject);
+
+            //store player stomach object
+            if (obj is Player && (obj as Player).playerState != null)
+                (obj as Player).playerState.swallowedItem = (obj as Player).objectInStomach?.ToString();
+
             Tools.DestroyObject(obj);
         }
 
@@ -34,6 +39,16 @@ namespace MouseDrag
             apo.Abstractize(pos);
             room.abstractRoom.AddEntity(apo);
             apo.RealizeInRoom();
+
+            //restore player stomach object
+            if (apo.realizedObject is Player) {
+                if (String.IsNullOrEmpty((apo.realizedObject as Player).playerState?.swallowedItem)) {
+                    (apo.realizedObject as Player).objectInStomach = null;
+                } else {
+                    (apo.realizedObject as Player).objectInStomach = SaveState.AbstractPhysicalObjectFromString(apo.world, (apo.realizedObject as Player).playerState.swallowedItem);
+                    (apo.realizedObject as Player).playerState.swallowedItem = "";
+                }
+            }
         }
     }
 }

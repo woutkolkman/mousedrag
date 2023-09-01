@@ -23,6 +23,7 @@ namespace MouseDrag
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
         public static Configurable<bool> duplicateOneMenu;
+        public static Configurable<bool> clipboardMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu;
@@ -90,6 +91,7 @@ namespace MouseDrag
             reviveOneMenu = config.Bind("reviveOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             reviveAllCreaturesMenu = config.Bind("reviveAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            clipboardMenu = config.Bind("clipboardMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.\nCut/paste AbstractPhysicalObjects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.", null, "", ""));
 
             tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameAllCreaturesMenu = config.Bind("tameAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -176,6 +178,9 @@ namespace MouseDrag
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= 50f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDuplicate");
             AddCheckbox(duplicateOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckbox(clipboardMenu, new Vector2(x - 56f, (y -= 50f) + 3f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
+            AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
 
             x += 300;
             y = 600f;

@@ -77,6 +77,7 @@ namespace MouseDrag
                     case "mousedragHeart":      Tools.TameCreature(game, menu.followChunk?.owner); break;
                     case "mousedragUnheart":    Tools.ClearRelationships(menu.followChunk?.owner); break;
                     case "mousedragDuplicate":  Tools.DuplicateObject(menu.followChunk?.owner); break;
+                    case "mousedragCut":        Clipboard.CutObject(menu.followChunk?.owner); break;
                     case "mousedragDestroy":    Tools.DestroyObject(menu.followChunk?.owner); break;
                 }
 
@@ -98,6 +99,10 @@ namespace MouseDrag
                     case "mousedragReviveCreatures":    Tools.ReviveCreatures(game.cameras[0]?.room); break;
                     case "mousedragHeartCreatures":     Tools.TameCreatures(game, game.cameras[0]?.room); break;
                     case "mousedragUnheartCreatures":   Tools.ClearRelationships(game.cameras[0]?.room); break;
+                    case "mousedragPaste":
+                        if (game.cameras[0]?.room != null)
+                            Clipboard.PasteObject(game, game.cameras[0].room, game.cameras[0].room.ToWorldCoordinate(menu.menuPos));
+                        break;
                     case "mousedragDestroyCreatures":   Tools.DestroyObjects(game.cameras[0]?.room, true); break;
                     case "mousedragDestroyAll":         Tools.DestroyObjects(game.cameras[0]?.room, false); break;
                     case "mousedragPauseGlobal":
@@ -139,6 +144,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragUnheart");
                 if (Options.duplicateOneMenu?.Value != false)
                     iconNames.Add("mousedragDuplicate");
+                if (Options.clipboardMenu?.Value != false)
+                    iconNames.Add("mousedragCut");
                 if (Options.destroyOneMenu?.Value != false)
                     iconNames.Add("mousedragDestroy");
 
@@ -167,6 +174,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragHeartCreatures");
                 if (Options.clearRelAllMenu?.Value != false)
                     iconNames.Add("mousedragUnheartCreatures");
+                if (Options.clipboardMenu?.Value != false)
+                    iconNames.Add("mousedragPaste");
                 if (Options.destroyAllCreaturesMenu?.Value != false)
                     iconNames.Add("mousedragDestroyCreatures");
                 if (Options.destroyAllObjectsMenu?.Value != false)

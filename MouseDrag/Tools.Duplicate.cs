@@ -40,7 +40,7 @@ namespace MouseDrag
 
                     //specials
                     if (oldApo is SeedCob.AbstractSeedCob) //popcorn plant
-                        newApo = DuplicateObjectSeedCob(oldApo, newApo);
+                        newApo = DuplicateObjectSeedCob(oldApo);
                     if (obj is Oracle) //iterator
                         newApo.realizedObject = new Oracle(newApo, obj.room);
 
@@ -63,9 +63,9 @@ namespace MouseDrag
 
 
         //popcorn plants are not as easy to duplicate because of the way they are added to rooms
-        private static AbstractPhysicalObject DuplicateObjectSeedCob(AbstractPhysicalObject oldApo, AbstractPhysicalObject newApo)
+        private static AbstractPhysicalObject DuplicateObjectSeedCob(AbstractPhysicalObject oldApo)
         {
-            newApo = new SeedCob.AbstractSeedCob(
+            AbstractPhysicalObject newApo = new SeedCob.AbstractSeedCob(
                 oldApo.world, null, oldApo.pos, oldApo.ID,
                 oldApo.realizedObject.room.abstractRoom.index, -1, dead: (oldApo as SeedCob.AbstractSeedCob).dead, null
             );

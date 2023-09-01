@@ -4,7 +4,7 @@ namespace MouseDrag
 {
     static partial class Tools
     {
-        private static List<PhysicalObject> stunnedObjects = new List<PhysicalObject>();
+        public static List<PhysicalObject> stunnedObjects = new List<PhysicalObject>();
         public static bool stunAll = false;
 
 

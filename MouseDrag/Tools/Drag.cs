@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MouseDrag
 {
-    static partial class Tools
+    static class Drag
     {
         public static BodyChunk dragChunk; //owner is reference to the physicalobject which is dragged
         public static Vector2 dragOffset;
@@ -53,7 +53,7 @@ namespace MouseDrag
                     dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
                     dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
 
-                    if (IsObjectPaused(dragChunk.owner)) {
+                    if (Pause.IsObjectPaused(dragChunk.owner)) {
                         //do not launch creature after pause
                         dragChunk.vel = new Vector2();
 
@@ -120,27 +120,6 @@ namespace MouseDrag
             if (obj is Creature && (obj as Creature).enteringShortCut != null)
                 return true;
             return false;
-        }
-
-
-        public static void ReleaseAllGrasps(PhysicalObject obj)
-        {
-            if (obj?.grabbedBy != null)
-                for (int i = obj.grabbedBy.Count - 1; i >= 0; i--)
-                    obj.grabbedBy[i]?.Release();
-
-            if (obj is Creature)
-            {
-                if (obj is Player) {
-                    //drop slugcats
-                    (obj as Player).slugOnBack?.DropSlug();
-                    (obj as Player).onBack?.slugOnBack?.DropSlug();
-                    (obj as Player).slugOnBack = null;
-                    (obj as Player).onBack = null;
-                }
-
-                (obj as Creature).LoseAllGrasps();
-            }
         }
 
 

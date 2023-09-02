@@ -48,8 +48,8 @@ namespace MouseDrag
             c.Emit(OpCodes.Ldloc, 10); //push updatableAndDeletable local var on stack
             c.EmitDelegate<Func<UpdatableAndDeletable, bool>>(obj =>
             {
-                Tools.UpdateObjectStunned(obj);
-                return Tools.IsObjectPaused(obj);
+                Stun.UpdateObjectStunned(obj);
+                return Pause.IsObjectPaused(obj);
             });
 
             //if value is true, don't update object

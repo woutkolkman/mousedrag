@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace MouseDrag
 {
-    static partial class Tools
+    static class Duplicate
     {
         public static void DuplicateObject(PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
             if (obj?.room?.abstractRoom == null || obj.room.game == null)
                 return;
 

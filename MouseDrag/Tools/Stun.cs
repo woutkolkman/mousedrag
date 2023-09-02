@@ -2,7 +2,7 @@
 
 namespace MouseDrag
 {
-    static partial class Tools
+    static class Stun
     {
         public static List<PhysicalObject> stunnedObjects = new List<PhysicalObject>();
         public static bool stunAll = false;
@@ -45,7 +45,7 @@ namespace MouseDrag
         public static void ToggleStunObject(PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
             if (!(obj is PhysicalObject))
                 return;
             PhysicalObject c = obj as PhysicalObject;

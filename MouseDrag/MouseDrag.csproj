@@ -41,19 +41,19 @@
     <Compile Include="MenuManager.cs" />
     <Compile Include="RadialMenu.cs" />
     <Compile Include="Tools\Clipboard.cs" />
-    <Compile Include="Tools.Destroy.cs" />
-    <Compile Include="Tools.Drag.cs" />
-    <Compile Include="Tools.Duplicate.cs" />
-    <Compile Include="Tools.Health.cs" />
+    <Compile Include="Tools\Destroy.cs" />
+    <Compile Include="Tools\Drag.cs" />
+    <Compile Include="Tools\Duplicate.cs" />
+    <Compile Include="Tools\Health.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Patches.cs" />
-    <Compile Include="Tools.Pause.cs" />
+    <Compile Include="Tools\Pause.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="State.cs" />
-    <Compile Include="Tools.Stun.cs" />
-    <Compile Include="Tools.Tame.cs" />
+    <Compile Include="Tools\Stun.cs" />
+    <Compile Include="Tools\Tame.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

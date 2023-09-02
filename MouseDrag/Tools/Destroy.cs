@@ -1,13 +1,13 @@
 ﻿namespace MouseDrag
 {
-    static partial class Tools
+    static class Destroy
     {
         public static void DestroyObject(PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
 
-            ReleaseAllGrasps(obj);
+            Destroy.ReleaseAllGrasps(obj);
 
             if (obj is Oracle) //prevent loitering sprites
                 obj.Destroy();
@@ -40,6 +40,26 @@
                         if (!(room.physicalObjects[i][j] is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
                             DestroyObject(room.physicalObjects[i][j]);
+        }
+
+
+        public static void ReleaseAllGrasps(PhysicalObject obj)
+        {
+            if (obj?.grabbedBy != null)
+                for (int i = obj.grabbedBy.Count - 1; i >= 0; i--)
+                    obj.grabbedBy[i]?.Release();
+
+            if (obj is Creature) {
+                if (obj is Player) {
+                    //drop slugcats
+                    (obj as Player).slugOnBack?.DropSlug();
+                    (obj as Player).onBack?.slugOnBack?.DropSlug();
+                    (obj as Player).slugOnBack = null;
+                    (obj as Player).onBack = null;
+                }
+
+                (obj as Creature).LoseAllGrasps();
+            }
         }
     }
 }

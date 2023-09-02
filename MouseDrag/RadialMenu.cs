@@ -24,7 +24,7 @@ namespace MouseDrag
         {
             if (game != null) {
                 menuPos = mousePos(game);
-                followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
+                followChunk = Drag.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
                 displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
             }
 
@@ -86,7 +86,7 @@ namespace MouseDrag
                     menuPos = followChunk.pos - followOffset;
                 crosshair.enabled = followTarget;
 
-                if (Tools.ShouldRelease(followChunk?.owner) ||
+                if (Drag.ShouldRelease(followChunk?.owner) ||
                     followChunk?.owner?.room != game.cameras[0]?.room)
                     closed = true;
             }
@@ -137,7 +137,7 @@ namespace MouseDrag
                 mousePressed = true;
             if ((Input.GetMouseButton(1) && Options.menuRMB?.Value == true) || 
                 (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))) {
-                followChunk = Tools.GetClosestChunk(game.cameras[0]?.room, mousePos(game), ref followOffset);
+                followChunk = Drag.GetClosestChunk(game.cameras[0]?.room, mousePos(game), ref followOffset);
                 if (followChunk == null)
                     menuPos = mousePos(game);
             }

@@ -2,7 +2,7 @@
 
 namespace MouseDrag
 {
-    static partial class Tools
+    static class Pause
     {
         public static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
         public static bool pauseAllCreatures = false;
@@ -21,7 +21,7 @@ namespace MouseDrag
                 );
 
                 if (shouldPause && Options.releaseGraspsPaused?.Value != false)
-                    ReleaseAllGrasps(uad as Creature);
+                    Destroy.ReleaseAllGrasps(uad as Creature);
             } else {
                 shouldPause |= pauseAllObjects;
             }
@@ -40,7 +40,7 @@ namespace MouseDrag
         public static void TogglePauseObject(PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
             if (!(obj is PhysicalObject))
                 return;
             PhysicalObject c = obj as PhysicalObject;

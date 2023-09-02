@@ -11,7 +11,7 @@ namespace MouseDrag
         public static void CutObject(PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = Tools.dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
             if (obj?.room?.game == null || obj.abstractPhysicalObject == null)
                 return;
 
@@ -32,7 +32,7 @@ namespace MouseDrag
             if (obj is Player && (obj as Player).playerState != null)
                 (obj as Player).playerState.swallowedItem = (obj as Player).objectInStomach?.ToString();
 
-            Tools.DestroyObject(obj);
+            Destroy.DestroyObject(obj);
         }
 
 

@@ -51,12 +51,12 @@ namespace MouseDrag
             if (!State.activated)
                 return;
 
-            Tools.DragObject(self);
+            Drag.DragObject(self);
 
             //rapidly duplicate after one second feature
             if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
                 if (duplicateHoldCount >= duplicateHoldMin)
-                    Tools.DuplicateObject();
+                    Duplicate.DuplicateObject();
                 duplicateHoldCount++;
             } else {
                 duplicateHoldCount = 0;
@@ -85,83 +85,83 @@ namespace MouseDrag
 
             //always active, so unpause together with deactivate dev tools works
             if (Options.unpauseAllKey?.Value != null && Input.GetKeyDown(Options.unpauseAllKey.Value))
-                Tools.UnpauseAll();
+                Pause.UnpauseAll();
 
             if (Options.unstunAllKey?.Value != null && Input.GetKeyDown(Options.unstunAllKey.Value))
-                Tools.UnstunAll();
+                Stun.UnstunAll();
 
             if (!State.activated)
                 return;
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
-                Tools.TogglePauseObject();
+                Pause.TogglePauseObject();
 
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
-                Tools.PauseObjects(self.cameras[0]?.room, true);
+                Pause.PauseObjects(self.cameras[0]?.room, true);
 
             if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
-                Tools.pauseAllCreatures = !Tools.pauseAllCreatures;
+                Pause.pauseAllCreatures = !Pause.pauseAllCreatures;
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("pauseAllCreatures: " + Tools.pauseAllCreatures);
+                    Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures);
             }
 
             if (Options.pauseAllObjectsKey?.Value != null && Input.GetKeyDown(Options.pauseAllObjectsKey.Value)) {
-                Tools.pauseAllObjects = !Tools.pauseAllObjects;
+                Pause.pauseAllObjects = !Pause.pauseAllObjects;
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("pauseAllObjects: " + Tools.pauseAllObjects);
+                    Plugin.Logger.LogDebug("pauseAllObjects: " + Pause.pauseAllObjects);
             }
 
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
-                Tools.KillCreature(self);
-                Tools.TriggerObject();
+                Health.KillCreature(self);
+                Health.TriggerObject();
             }
 
             if (Options.killAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.killAllCreaturesKey.Value))
-                Tools.KillCreatures(self, self.cameras[0]?.room);
+                Health.KillCreatures(self, self.cameras[0]?.room);
 
             if (Options.reviveOneKey?.Value != null && Input.GetKeyDown(Options.reviveOneKey.Value)) {
-                Tools.ReviveCreature();
-                Tools.ResetObject();
+                Health.ReviveCreature();
+                Health.ResetObject();
             }
 
             if (Options.reviveAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.reviveAllCreaturesKey.Value))
-                Tools.ReviveCreatures(self.cameras[0]?.room);
+                Health.ReviveCreatures(self.cameras[0]?.room);
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
-                Tools.DuplicateObject();
+                Duplicate.DuplicateObject();
 
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
-                Tools.TameCreature(self);
+                Tame.TameCreature(self);
 
             if (Options.tameAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.tameAllCreaturesKey.Value))
-                Tools.TameCreatures(self, self.cameras[0]?.room);
+                Tame.TameCreatures(self, self.cameras[0]?.room);
 
             if (Options.clearRelOneKey?.Value != null && Input.GetKeyDown(Options.clearRelOneKey.Value))
-                Tools.ClearRelationships();
+                Tame.ClearRelationships();
 
             if (Options.clearRelAllKey?.Value != null && Input.GetKeyDown(Options.clearRelAllKey.Value))
-                Tools.ClearRelationships(self.cameras[0]?.room);
+                Tame.ClearRelationships(self.cameras[0]?.room);
 
             if (Options.stunOneKey?.Value != null && Input.GetKeyDown(Options.stunOneKey.Value))
-                Tools.ToggleStunObject();
+                Stun.ToggleStunObject();
 
             if (Options.stunRoomKey?.Value != null && Input.GetKeyDown(Options.stunRoomKey.Value))
-                Tools.StunObjects(self.cameras[0]?.room);
+                Stun.StunObjects(self.cameras[0]?.room);
 
             if (Options.stunAllKey?.Value != null && Input.GetKeyDown(Options.stunAllKey.Value)) {
-                Tools.stunAll = !Tools.stunAll;
+                Stun.stunAll = !Stun.stunAll;
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("stunAll: " + Tools.stunAll);
+                    Plugin.Logger.LogDebug("stunAll: " + Stun.stunAll);
             }
 
             if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
-                Tools.DestroyObject();
+                Destroy.DestroyObject();
 
             if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
-                Tools.DestroyObjects(self.cameras[0]?.room, true);
+                Destroy.DestroyObjects(self.cameras[0]?.room, true);
 
             if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
-                Tools.DestroyObjects(self.cameras[0]?.room, false);
+                Destroy.DestroyObjects(self.cameras[0]?.room, false);
         }
 
 
@@ -178,8 +178,8 @@ namespace MouseDrag
         {
             orig(self, manager);
 
-            Tools.UnpauseAll();
-            Tools.UnstunAll();
+            Pause.UnpauseAll();
+            Stun.UnstunAll();
             State.activated = false;
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");

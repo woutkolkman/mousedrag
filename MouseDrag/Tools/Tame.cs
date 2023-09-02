@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace MouseDrag
+﻿namespace MouseDrag
 {
-    static partial class Tools
+    static class Tame
     {
         //code from Pokéballs
         public static void TameCreature(RainWorldGame game, PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
             if (!(obj is Creature) || game.world == null)
                 return;
 
@@ -66,7 +64,7 @@ namespace MouseDrag
         public static void ClearRelationships(PhysicalObject obj = null)
         {
             if (obj == null)
-                obj = dragChunk?.owner;
+                obj = Drag.dragChunk?.owner;
             if (!(obj is Creature))
                 return;
 

@@ -193,8 +193,7 @@ namespace MouseDrag
             //if editing in sandbox, disable open menu with right mouse button
             bool inSandboxAndEditing = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.playMode == false;
 
-            if ((Input.GetMouseButtonDown(1) && Options.menuRMB?.Value == true && !inSandboxAndEditing) || 
-                (Options.menuOpen?.Value != null && Input.GetKeyDown(Options.menuOpen.Value)))
+            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing))
                 shouldOpen = true;
         }
 

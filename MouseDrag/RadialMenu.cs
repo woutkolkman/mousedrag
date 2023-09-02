@@ -18,6 +18,10 @@ namespace MouseDrag
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
         public bool snapToChunk = true;
+        public static bool menuButtonPressed(bool noRMB = false) => (
+            (Input.GetMouseButton(1) && Options.menuRMB?.Value == true && !noRMB) ||
+            (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))
+        );
 
 
         public RadialMenu(RainWorldGame game)
@@ -81,7 +85,7 @@ namespace MouseDrag
             if (followChunk != null) {
                 if (snapToChunk)
                     followOffset = new Vector2();
-                bool followTarget = Options.menuFollows?.Value != false || Input.GetMouseButton(1);
+                bool followTarget = Options.menuFollows?.Value != false || menuButtonPressed();
                 if (followTarget)
                     menuPos = followChunk.pos - followOffset;
                 crosshair.enabled = followTarget;
@@ -135,8 +139,7 @@ namespace MouseDrag
         {
             if (Input.GetMouseButtonDown(0))
                 mousePressed = true;
-            if ((Input.GetMouseButton(1) && Options.menuRMB?.Value == true) || 
-                (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))) {
+            if (menuButtonPressed()) {
                 followChunk = Drag.GetClosestChunk(game.cameras[0]?.room, mousePos(game), ref followOffset);
                 if (followChunk == null)
                     menuPos = mousePos(game);

@@ -15,6 +15,9 @@ namespace MouseDrag
             if (obj?.room?.game == null || obj.abstractPhysicalObject == null)
                 return;
 
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("CutObject: " + obj.abstractPhysicalObject);
+
             cutObjects.Add(obj.abstractPhysicalObject);
 
             //specials
@@ -29,9 +32,6 @@ namespace MouseDrag
             if (obj is Player && (obj as Player).playerState != null)
                 (obj as Player).playerState.swallowedItem = (obj as Player).objectInStomach?.ToString();
 
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("CutObject: " + obj.abstractPhysicalObject);
-
             Tools.DestroyObject(obj);
         }
 
@@ -44,6 +44,10 @@ namespace MouseDrag
                 return;
 
             AbstractPhysicalObject apo = cutObjects.Pop();
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("PasteObject: " + apo?.ToString());
+
             apo.pos = pos;
             apo.world = room.world;
             (apo as AbstractCreature)?.abstractAI?.NewWorld(room.world);
@@ -79,9 +83,6 @@ namespace MouseDrag
                     (apo.realizedObject as Player).playerState.swallowedItem = "";
                 }
             }
-
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("PasteObject: " + apo?.ToString());
         }
     }
 }

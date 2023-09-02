@@ -17,9 +17,20 @@ namespace MouseDrag
 
             cutObjects.Add(obj.abstractPhysicalObject);
 
+            //specials
+            if (obj is Oracle) {
+                //cannot destroy, or game crashes on paste (result: loitering sprites when cut)
+                obj.RemoveFromRoom();
+                obj.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject);
+                return;
+            }
+
             //store player stomach object
             if (obj is Player && (obj as Player).playerState != null)
                 (obj as Player).playerState.swallowedItem = (obj as Player).objectInStomach?.ToString();
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("CutObject: " + obj.abstractPhysicalObject);
 
             Tools.DestroyObject(obj);
         }
@@ -27,7 +38,7 @@ namespace MouseDrag
 
         public static void PasteObject(RainWorldGame game, Room room, WorldCoordinate pos)
         {
-            if (room?.world == null || room?.abstractRoom == null)
+            if (room?.world == null || room?.abstractRoom == null || game == null)
                 return;
             if (cutObjects.Count <= 0)
                 return;
@@ -36,7 +47,26 @@ namespace MouseDrag
             apo.pos = pos;
             apo.world = room.world;
             (apo as AbstractCreature)?.abstractAI?.NewWorld(room.world);
-            apo.Abstractize(pos);
+
+            //prevents many warnings/exceptions with creatures by reinstantiating realizedObject
+            if (apo is AbstractCreature)
+                apo.Abstractize(pos);
+
+            //undelete
+            if (apo.realizedObject != null) {
+                apo.realizedObject.slatedForDeletetion = false;
+                apo.realizedObject.room = room;
+            }
+
+            //specials
+            if (apo.realizedObject is Oracle) {
+                Oracle o = apo.realizedObject as Oracle;
+                if (o.myScreen != null)
+                    o.myScreen.room = room;
+                if (o.oracleBehavior != null && game.FirstAlivePlayer?.realizedCreature is Player)
+                    o.oracleBehavior.player = game.FirstAlivePlayer?.realizedCreature as Player;
+            }
+
             room.abstractRoom.AddEntity(apo);
             apo.RealizeInRoom();
 
@@ -49,6 +79,9 @@ namespace MouseDrag
                     (apo.realizedObject as Player).playerState.swallowedItem = "";
                 }
             }
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("PasteObject: " + apo?.ToString());
         }
     }
 }

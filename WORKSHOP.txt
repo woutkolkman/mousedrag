@@ -9,6 +9,8 @@ Source code is here: https://github.com/woutkolkman/mousedrag
 
 [h3]Known issues/bugs[/h3]
 - Pausing a deer while you're on it will make you slide off. You need to jump to be able to move again. 
+- Cut/pasting Players with creatures in their stomach (Hazer) can freeze the game, and won't restore the creature. 
+- Cut/pasting Oracles (iterator puppets) has a VERY HIGH chance of crashing the game. On top of that, their positions are hardcoded. 
 
 [h3]Reporting[/h3]
 Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 

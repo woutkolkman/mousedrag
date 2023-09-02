@@ -20,6 +20,7 @@ namespace MouseDrag
         public bool snapToChunk = true;
         public static bool menuButtonPressed(bool noRMB = false) => (
             (Input.GetMouseButton(1) && Options.menuRMB?.Value == true && !noRMB) ||
+            (Input.GetMouseButton(2) && Options.menuMMB?.Value == true) ||
             (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))
         );
 

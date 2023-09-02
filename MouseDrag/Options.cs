@@ -8,7 +8,7 @@ namespace MouseDrag
     {
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
-        public static Configurable<bool> menuRMB, menuFollows;
+        public static Configurable<bool> menuRMB, menuMMB, menuFollows;
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
         public static Configurable<bool> deactivateEveryRestart, logDebug;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
@@ -43,6 +43,7 @@ namespace MouseDrag
             activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
 
             menuRMB = config.Bind("menuRMB", defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
+            menuMMB = config.Bind("menuMMB", defaultValue: false, new ConfigurableInfo("Middle mouse button opens menu on object or background.", null, "", "MMB opens menu"));
             menuFollows = config.Bind("menuFollows", defaultValue: true, new ConfigurableInfo("If checked, menu follows the target creature/object on which actions are performed.", null, "", "Menu follows target"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
@@ -128,6 +129,7 @@ namespace MouseDrag
             AddKeyBinder(activateKey, new Vector2(330f, y - 30f));
 
             AddCheckbox(menuRMB, new Vector2(x, y -= 100f));
+            AddCheckbox(menuMMB, new Vector2(x, y -= 40f));
             AddCheckbox(menuFollows, new Vector2(x, y -= 40f));
             AddCheckbox(forceMouseVisible, new Vector2(x, y -= 40f));
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= 40f));

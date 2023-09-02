@@ -12,6 +12,8 @@ Source code is here: https://github.com/woutkolkman/mousedrag
 - Cut/pasting Players with creatures in their stomach (Hazer) can freeze the game, and won't restore the creature. 
 - When cut/pasting objects, many objects will ignore the new position and spawn back on their old position in a new room. This is determined by how the object is programmed. 
 - Cut/pasting Oracles (iterator puppets) has a VERY HIGH chance of crashing the game. 
+- Cut/pasting creatures might not preserve their relationships (when warping). 
+- Pasting Garbage Worms in rooms where they cannot be might crash the game. 
 
 [h3]Reporting[/h3]
 Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 

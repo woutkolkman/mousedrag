@@ -12,8 +12,11 @@
             if (obj is Oracle) //prevent loitering sprites
                 obj.Destroy();
 
-            if (obj is SporePlant) //prevent beehive crashing game
-                (obj as SporePlant).stalk?.Destroy();
+            //prevent beehive crashing game
+            if (obj is SporePlant && (obj as SporePlant).stalk != null) {
+                (obj as SporePlant).stalk.sporePlant = null;
+                (obj as SporePlant).stalk = null;
+            }
 
             if (obj is Spear) //prevent spear leaving invisible beams behind
                 (obj as Spear).resetHorizontalBeamState();

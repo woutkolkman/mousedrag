@@ -180,7 +180,8 @@ namespace MouseDrag
 
             Pause.UnpauseAll();
             Stun.UnstunAll();
-            State.activated = false;
+            if (Options.deactivateEveryRestart?.Value != false)
+                State.activated = false;
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
         }

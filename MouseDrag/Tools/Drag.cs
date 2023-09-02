@@ -9,12 +9,14 @@ namespace MouseDrag
     {
         public static BodyChunk dragChunk; //owner is reference to the physicalobject which is dragged
         public static Vector2 dragOffset;
+        private static Vector2 dampingPos; //only used when velocityDrag == true
 
 
         public static void DragObject(RainWorldGame game)
         {
             bool stop = false;
             Vector2 mousePos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+            dampingPos = Vector2.Lerp(dampingPos, mousePos, 0.3f);
 
             //game is paused
             if (game.GamePaused || game.pauseUpdate || !game.processActive)
@@ -54,11 +56,15 @@ namespace MouseDrag
                 return;
             }
 
-            //might affect sandbox mouse
-            dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
-            dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
+            bool paused = Pause.IsObjectPaused(dragChunk.owner);
+            bool isWeaponAndNotFree = dragChunk.owner is Weapon && (dragChunk.owner as Weapon).mode != Weapon.Mode.Free;
 
-            if (Pause.IsObjectPaused(dragChunk.owner)) {
+            //this drag functionality might (be) affect(ed by) sandbox mouse
+            dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
+            if (Options.velocityDrag?.Value != true || paused || isWeaponAndNotFree)
+                dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
+
+            if (paused) {
                 //do not launch creature after pause
                 dragChunk.vel = new Vector2();
 
@@ -66,10 +72,12 @@ namespace MouseDrag
                 dragChunk.lastPos = dragChunk.pos;
             }
 
+            //velocity drag with BodyChunk at center of mousePos
+            if (Options.velocityDrag?.Value == true)
+                dragChunk.vel = (dampingPos - dragChunk.pos) / 2f;
+
             //pull spears from walls & grasps
-            if (dragChunk.owner is Weapon &&
-                (dragChunk.owner as Weapon).mode != Weapon.Mode.Free &&
-                Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
+            if (isWeaponAndNotFree && Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
                 if (dragChunk.owner is Spear) //prevent spear leaving invisible beams behind
                     (dragChunk.owner as Spear).resetHorizontalBeamState();
                 (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);

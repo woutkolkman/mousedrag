@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MouseDrag
 {
-    static class State
+    public static class State
     {
         public static Options.ActivateTypes activeType = Options.ActivateTypes.DevToolsActive;
         public static bool activated = false; //true --> all tools are available

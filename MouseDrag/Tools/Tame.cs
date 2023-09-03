@@ -1,6 +1,6 @@
 ﻿namespace MouseDrag
 {
-    static class Tame
+    public static class Tame
     {
         //code from Pokéballs
         public static void TameCreature(RainWorldGame game, PhysicalObject obj = null)

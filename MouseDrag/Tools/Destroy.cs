@@ -1,6 +1,6 @@
 ﻿namespace MouseDrag
 {
-    static class Destroy
+    public static class Destroy
     {
         public static void DestroyObject(PhysicalObject obj = null)
         {

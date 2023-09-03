@@ -2,7 +2,7 @@
 
 namespace MouseDrag
 {
-    static class Pause
+    public static class Pause
     {
         public static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
         public static bool pauseAllCreatures = false;

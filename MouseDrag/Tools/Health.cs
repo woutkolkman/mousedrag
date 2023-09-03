@@ -1,6 +1,6 @@
 ﻿namespace MouseDrag
 {
-    static class Health
+    public static class Health
     {
         public static void KillCreature(RainWorldGame game, PhysicalObject obj = null)
         {

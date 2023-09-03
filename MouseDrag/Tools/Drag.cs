@@ -5,11 +5,12 @@ using System.Collections.Generic;
 
 namespace MouseDrag
 {
-    static class Drag
+    public static class Drag
     {
         public static BodyChunk dragChunk; //owner is reference to the physicalobject which is dragged
         public static Vector2 dragOffset;
         private static Vector2 dampingPos; //only used when velocityDrag == true
+        public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
 
 
         public static void DragObject(RainWorldGame game)
@@ -73,8 +74,15 @@ namespace MouseDrag
             }
 
             //velocity drag with BodyChunk at center of mousePos
-            if (Options.velocityDrag?.Value == true)
+            if (Options.velocityDrag?.Value == true) {
                 dragChunk.vel = (dampingPos - dragChunk.pos) / 2f;
+
+                //reduce max speed of player
+                if (dragChunk.owner is Player && (!(dragChunk.owner as Player).isNPC || Options.exceptSlugNPC?.Value != false)) {
+                    dragChunk.vel.x = Mathf.Clamp(dragChunk.vel.x, -maxVelocityPlayer, maxVelocityPlayer);
+                    dragChunk.vel.y = Mathf.Clamp(dragChunk.vel.y, -maxVelocityPlayer, maxVelocityPlayer);
+                }
+            }
 
             //pull spears from walls & grasps
             if (isWeaponAndNotFree && Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {

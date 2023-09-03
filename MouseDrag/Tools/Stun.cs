@@ -2,7 +2,7 @@
 
 namespace MouseDrag
 {
-    static class Stun
+    public static class Stun
     {
         public static List<PhysicalObject> stunnedObjects = new List<PhysicalObject>();
         public static bool stunAll = false;

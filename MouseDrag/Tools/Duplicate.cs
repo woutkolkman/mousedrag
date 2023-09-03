@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MouseDrag
 {
-    static class Duplicate
+    public static class Duplicate
     {
         public static void DuplicateObject(PhysicalObject obj = null)
         {

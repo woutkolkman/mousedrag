@@ -3,7 +3,7 @@ using System;
 
 namespace MouseDrag
 {
-    static class Clipboard
+    public static class Clipboard
     {
         public static List<AbstractPhysicalObject> cutObjects = new List<AbstractPhysicalObject>();
 

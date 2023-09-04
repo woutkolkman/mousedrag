@@ -85,10 +85,12 @@ namespace MouseDrag
             }
 
             //pull spears from walls & grasps
-            if (isWeaponAndNotFree && Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
-                if (dragChunk.owner is Spear) //prevent spear leaving invisible beams behind
-                    (dragChunk.owner as Spear).resetHorizontalBeamState();
-                (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);
+            if (Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
+                if (isWeaponAndNotFree) {
+                    if (dragChunk.owner is Spear) //prevent spear leaving invisible beams behind
+                        (dragChunk.owner as Spear).resetHorizontalBeamState();
+                    (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);
+                }
                 dragChunk.owner.AllGraspsLetGoOfThisObject(true);
             }
         }

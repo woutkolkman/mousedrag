@@ -1,4 +1,6 @@
-﻿namespace MouseDrag
+﻿using UnityEngine;
+
+namespace MouseDrag
 {
     public static class Health
     {
@@ -8,12 +10,21 @@
                 obj = Drag.dragChunk?.owner;
             if (!(obj is Creature))
                 return;
+
+            //lineage kill option
             if (Options.lineageKill?.Value == true && game?.FirstAlivePlayer != null)
                 (obj as Creature).SetKillTag(game.FirstAlivePlayer);
 
             (obj as Creature).Die();
             if ((obj as Creature).abstractCreature?.state is HealthState)
                 ((obj as Creature).abstractCreature.state as HealthState).health = 0f;
+
+            //drop mask option
+            if (Options.killReleasesMask?.Value == true) {
+                if (obj is Scavenger && (obj as Scavenger).Elite)
+                    (obj as Scavenger).Violence(obj.firstChunk, null, obj.firstChunk, null, Creature.DamageType.Stab, 0f, 0f);
+                (obj as Vulture)?.DropMask(new Vector2());
+            }
         }
 
 

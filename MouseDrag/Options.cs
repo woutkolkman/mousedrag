@@ -12,7 +12,7 @@ namespace MouseDrag
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
         public static Configurable<bool> deactivateEveryRestart, logDebug;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
-        public static Configurable<bool> velocityDrag;
+        public static Configurable<bool> velocityDrag, killReleasesMask;
         public static Configurable<KeyCode> menuOpen, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
@@ -48,7 +48,7 @@ namespace MouseDrag
             menuFollows = config.Bind("menuFollows", defaultValue: true, new ConfigurableInfo("If checked, menu follows the target creature/object on which actions are performed.", null, "", "Menu follows target"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
-            releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: true, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
+            releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind("lineageKill", defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
             deactivateEveryRestart = config.Bind("deactivateEveryRestart", defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
             logDebug = config.Bind("logDebug", defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
@@ -60,6 +60,7 @@ namespace MouseDrag
             throwWithMouse = config.Bind("throwWithMouse", defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction.", null, "", "Throw with mouse"));
             throwAsPlayer = config.Bind("throwAsPlayer", defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
             velocityDrag = config.Bind("velocityDrag", defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
+            killReleasesMask = config.Bind("killReleasesMask", defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
 
             menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
@@ -149,6 +150,7 @@ namespace MouseDrag
             AddCheckbox(throwWithMouse, new Vector2(x, y -= 40f));
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= 40f));
             AddCheckbox(velocityDrag, new Vector2(x, y -= 40f));
+            AddCheckbox(killReleasesMask, new Vector2(x, y -= 40f));
 
             /**************** KeyBinds ****************/
             curTab++;

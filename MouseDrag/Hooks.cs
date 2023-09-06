@@ -130,6 +130,22 @@ namespace MouseDrag
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
                 Duplicate.DuplicateObject();
 
+            if (Options.clipboardCtrlXCV?.Value == true) {
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) {
+                    if (Input.GetKeyDown(KeyCode.X))
+                        Clipboard.CutObject();
+                    if (Input.GetKeyDown(KeyCode.C))
+                        Clipboard.CopyObject();
+                    if (Input.GetKeyDown(KeyCode.V) && self.cameras[0]?.room != null) {
+                        Clipboard.PasteObject(
+                            self, 
+                            self.cameras[0].room, 
+                            self.cameras[0].room.ToWorldCoordinate((Vector2)Futile.mousePosition + self.cameras[0].pos)
+                        );
+                    }
+                }
+            }
+
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tame.TameCreature(self);
 

@@ -24,7 +24,7 @@ namespace MouseDrag
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
         public static Configurable<bool> duplicateOneMenu;
-        public static Configurable<bool> clipboardMenu;
+        public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu;
@@ -68,9 +68,9 @@ namespace MouseDrag
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
             pauseAllCreaturesKey = config.Bind("pauseAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.\nIndividually (un)paused creatures remain paused.", null, "", "Pause all creatures"));
             pauseAllObjectsKey = config.Bind("pauseAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all objects except creatures, including objects that still need to spawn.\nIndividually (un)paused objects remain paused.", null, "", "Pause all objects"));
-            killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill the creature which you're currently dragging.", null, "", "Kill"));
+            killOneKey = config.Bind("killOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill the creature which you're currently dragging. Can also trigger objects like bombs.", null, "", "Kill"));
             killAllCreaturesKey = config.Bind("killAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to kill all creatures in current room except Player and SlugNPC.", null, "", "Kill creatures\nin room"));
-            reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging.", null, "", "Revive/heal"));
+            reviveOneKey = config.Bind("reviveOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging. Can also reset objects like popcorn plants.", null, "", "Revive/heal"));
             reviveAllCreaturesKey = config.Bind("reviveAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal\ncreatures\nin room"));
             duplicateOneKey = config.Bind("duplicateOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object/creature which you're currently dragging. Hold button to repeat.", null, "", "Duplicate"));
 
@@ -97,6 +97,7 @@ namespace MouseDrag
             reviveAllCreaturesMenu = config.Bind("reviveAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             clipboardMenu = config.Bind("clipboardMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.\nCut/paste AbstractPhysicalObjects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.", null, "", ""));
+            clipboardCtrlXCV = config.Bind("clipboardCtrlXCV", defaultValue: false, new ConfigurableInfo("Using Control + X/C/V will cut, copy or paste the object/creature which you're currently dragging.", null, "", "Ctrl + X/C/V"));
 
             tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameAllCreaturesMenu = config.Bind("tameAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -156,7 +157,7 @@ namespace MouseDrag
             curTab++;
             x = 70;
             y = 600f;
-            AddKeyBinder(menuOpen, new Vector2(x, y -= 50f));
+            AddKeyBinder(menuOpen, new Vector2(x, y -= 40f));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= 50f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
@@ -190,10 +191,11 @@ namespace MouseDrag
             AddCheckbox(clipboardMenu, new Vector2(x - 56f, (y -= 50f) + 3f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
             AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
+            AddCheckbox(clipboardCtrlXCV, new Vector2(x + 25f, y + 3f));
 
             x += 300;
             y = 600f;
-            AddKeyBinder(tameOneKey, new Vector2(x, y -= 50f));
+            AddKeyBinder(tameOneKey, new Vector2(x, y -= 40f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
             AddCheckbox(tameOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tameAllCreaturesKey, new Vector2(x, y -= 50f));

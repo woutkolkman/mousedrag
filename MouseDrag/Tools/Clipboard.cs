@@ -36,6 +36,13 @@ namespace MouseDrag
         }
 
 
+        public static void CopyObject(PhysicalObject obj = null)
+        {
+            PhysicalObject dup = Duplicate.DuplicateObject(obj);
+            CutObject(dup);
+        }
+
+
         public static void PasteObject(RainWorldGame game, Room room, WorldCoordinate pos)
         {
             if (room?.world == null || room?.abstractRoom == null || game == null)

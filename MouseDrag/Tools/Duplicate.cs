@@ -8,19 +8,19 @@ namespace MouseDrag
 {
     public static class Duplicate
     {
-        public static void DuplicateObject(PhysicalObject obj = null)
+        public static PhysicalObject DuplicateObject(PhysicalObject obj = null)
         {
             if (obj == null)
                 obj = Drag.dragChunk?.owner;
             if (obj?.room?.abstractRoom == null || obj.room.game == null)
-                return;
+                return null;
 
             WorldCoordinate coord = obj.room.GetWorldCoordinate(obj.firstChunk?.pos ?? new Vector2());
             AbstractPhysicalObject oldApo = obj?.abstractPhysicalObject ?? (obj as Creature)?.abstractCreature;
             AbstractPhysicalObject newApo = null;
 
             if (oldApo == null)
-                return;
+                return null;
 
             if (obj is Creature) {
                 EntityID id = Options.copyID?.Value == false ? obj.room.game.GetNewID() : oldApo.ID;
@@ -50,7 +50,7 @@ namespace MouseDrag
 
                 } catch (Exception ex) {
                     Plugin.Logger.LogWarning("DuplicateObject exception: " + ex.ToString());
-                    return;
+                    return null;
                 }
                 newApo.pos = coord;
             }
@@ -59,6 +59,7 @@ namespace MouseDrag
                 Plugin.Logger.LogDebug("DuplicateObject, AddEntity " + newApo.type + " at " + coord.SaveToString());
             obj.room.abstractRoom.AddEntity(newApo);
             newApo.RealizeInRoom(); //actually places object/creature
+            return newApo.realizedObject;
         }
 
 

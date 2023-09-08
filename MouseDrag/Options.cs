@@ -127,7 +127,7 @@ namespace MouseDrag
             /**************** General ****************/
             curTab = 0;
             AddTitle();
-            float x = 90;
+            float x = 90f;
             float y = startHeight;
             AddComboBox(activateType, new Vector2(190f, y - 27f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
             AddKeyBinder(activateKey, new Vector2(330f, y - 30f));
@@ -155,7 +155,7 @@ namespace MouseDrag
 
             /**************** KeyBinds ****************/
             curTab++;
-            x = 70;
+            x = 70f;
             y = 600f;
             AddKeyBinder(menuOpen, new Vector2(x, y -= 40f));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= 50f));
@@ -191,9 +191,9 @@ namespace MouseDrag
             AddCheckbox(clipboardMenu, new Vector2(x - 56f, (y -= 50f) + 3f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
             AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
-            AddCheckbox(clipboardCtrlXCV, new Vector2(x + 25f, y + 3f));
+            AddCheckbox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
 
-            x += 300;
+            x += 300f;
             y = 600f;
             AddKeyBinder(tameOneKey, new Vector2(x, y -= 40f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");

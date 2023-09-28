@@ -85,8 +85,16 @@ namespace MouseDrag
             //pull spears from walls & grasps
             if (Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
                 if (isWeaponAndNotFree) {
-                    if (dragChunk.owner is Spear) //prevent spear leaving invisible beams behind
+                    if (dragChunk.owner is Spear) {
+                        //prevent spear leaving invisible beams behind
                         (dragChunk.owner as Spear).resetHorizontalBeamState();
+
+                        //drop spear from back
+                        if (game.Players != null)
+                            foreach (AbstractCreature ac in game.Players)
+                                if (dragChunk.owner == (ac?.realizedCreature as Player)?.spearOnBack?.spear)
+                                    (ac.realizedCreature as Player).spearOnBack.DropSpear();
+                    }
                     (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);
                 }
                 dragChunk.owner.AllGraspsLetGoOfThisObject(true);

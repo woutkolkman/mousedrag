@@ -56,6 +56,7 @@
                     (obj as Player).onBack?.slugOnBack?.DropSlug();
                     (obj as Player).slugOnBack = null;
                     (obj as Player).onBack = null;
+                    (obj as Player).spearOnBack?.DropSpear();
                 }
 
                 (obj as Creature).LoseAllGrasps();

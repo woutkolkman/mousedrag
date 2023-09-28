@@ -17,6 +17,9 @@ namespace MouseDrag
                 activated = game.devToolsActive;
             if (activeType == Options.ActivateTypes.AlwaysActive)
                 activated = true;
+            if (activeType == Options.ActivateTypes.SandboxAndSafari)
+                if (game.rainWorld?.safariMode == true)
+                    activated = true;
 
             //if sandbox is active, always enable (because mouse drag is also active)
             activated |= (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;

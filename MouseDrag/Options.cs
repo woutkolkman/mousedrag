@@ -34,7 +34,8 @@ namespace MouseDrag
         {
             DevToolsActive,
             KeyBindPressed,
-            AlwaysActive
+            AlwaysActive,
+            SandboxAndSafari
         }
 
 

@@ -78,10 +78,8 @@ namespace MouseDrag
                 dragChunk.vel = (dampingPos - dragChunk.pos) / 2f;
 
                 //reduce max speed of player
-                if (dragChunk.owner is Player && (!(dragChunk.owner as Player).isNPC || Options.exceptSlugNPC?.Value != false)) {
-                    dragChunk.vel.x = Mathf.Clamp(dragChunk.vel.x, -maxVelocityPlayer, maxVelocityPlayer);
-                    dragChunk.vel.y = Mathf.Clamp(dragChunk.vel.y, -maxVelocityPlayer, maxVelocityPlayer);
-                }
+                if (dragChunk.owner is Player && (!(dragChunk.owner as Player).isNPC || Options.exceptSlugNPC?.Value != false))
+                    dragChunk.vel = Vector2.ClampMagnitude(dragChunk.vel, maxVelocityPlayer);
             }
 
             //pull spears from walls & grasps

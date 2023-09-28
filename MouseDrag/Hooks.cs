@@ -200,6 +200,15 @@ namespace MouseDrag
                 State.activated = false;
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
+
+            //read activeType from config when game is started
+            if (Options.activateType?.Value != null) {
+                foreach (Options.ActivateTypes val in System.Enum.GetValues(typeof(Options.ActivateTypes)))
+                    if (System.String.Equals(Options.activateType.Value, val.ToString()))
+                        State.activeType = val;
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("RainWorldGameCtorHook, activeType: " + State.activeType.ToString());
+            }
         }
     }
 }

@@ -96,7 +96,7 @@ namespace MouseDrag
             reviveOneMenu = config.Bind("reviveOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             reviveAllCreaturesMenu = config.Bind("reviveAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
-            clipboardMenu = config.Bind("clipboardMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.\nCut/paste AbstractPhysicalObjects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.", null, "", ""));
+            clipboardMenu = config.Bind("clipboardMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.\nCut/paste PhysicalObjects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.", null, "", ""));
             clipboardCtrlXCV = config.Bind("clipboardCtrlXCV", defaultValue: false, new ConfigurableInfo("Using Control + X/C/V will cut, copy or paste the object/creature which you're currently dragging.", null, "", "Ctrl + X/C/V"));
 
             tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));

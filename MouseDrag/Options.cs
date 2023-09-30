@@ -20,6 +20,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
+        public static Configurable<KeyCode> tpCreaturesKey, tpObjectsKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
@@ -86,6 +87,8 @@ namespace MouseDrag
             destroyOneKey = config.Bind("destroyOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy the object/creature which you're currently dragging.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy"));
             destroyAllCreaturesKey = config.Bind("destroyAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy creatures\nin room"));
             destroyAllObjectsKey = config.Bind("destroyAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy objects\nin room"));
+            tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
+            tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
 
             pauseOneMenu = config.Bind("pauseOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind("pauseRoomCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -156,8 +159,8 @@ namespace MouseDrag
             /**************** KeyBinds ****************/
             curTab++;
             x = 70f;
-            y = 610f;
-            sepr = 50f;
+            y = 600f;
+            sepr = 40f;
             AddKeyBinder(menuOpen, new Vector2(x, y -= sepr));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
@@ -195,7 +198,7 @@ namespace MouseDrag
             AddCheckbox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
 
             x += 300f;
-            y = 610f;
+            y = 600f;
             AddKeyBinder(tameOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
             AddCheckbox(tameOneMenu, new Vector2(x - 56f, y + 3f));
@@ -229,6 +232,8 @@ namespace MouseDrag
             AddKeyBinder(destroyAllObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
             AddCheckbox(destroyAllObjectsMenu, new Vector2(x - 56f, y + 3f));
+            AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
+            AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
         }
 
 

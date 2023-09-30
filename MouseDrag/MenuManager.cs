@@ -103,8 +103,8 @@ namespace MouseDrag
                         if (game.cameras[0]?.room != null)
                             Clipboard.PasteObject(game, game.cameras[0].room, game.cameras[0].room.ToWorldCoordinate(menu.menuPos));
                         break;
-                    case "mousedragDestroyCreatures":   Destroy.DestroyObjects(game.cameras[0]?.room, true); break;
-                    case "mousedragDestroyAll":         Destroy.DestroyObjects(game.cameras[0]?.room, false); break;
+                    case "mousedragDestroyCreatures":   Destroy.DestroyObjects(game.cameras[0]?.room, creatures: true, objects: false); break;
+                    case "mousedragDestroyAll":         Destroy.DestroyObjects(game.cameras[0]?.room, creatures: true, objects: true); break;
                     case "mousedragPauseGlobal":
                     case "mousedragPlayGlobal":
                         if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllObjectsMenu?.Value != false) {
@@ -178,7 +178,7 @@ namespace MouseDrag
                     iconNames.Add("mousedragPaste");
                 if (Options.destroyAllCreaturesMenu?.Value != false)
                     iconNames.Add("mousedragDestroyCreatures");
-                if (Options.destroyAllObjectsMenu?.Value != false)
+                if (Options.destroyRoomMenu?.Value != false)
                     iconNames.Add("mousedragDestroyAll");
             }
 

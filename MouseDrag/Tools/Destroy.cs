@@ -30,13 +30,13 @@
 
 
         //destroy all objects in room
-        public static void DestroyObjects(Room room, bool onlyCreatures)
+        public static void DestroyObjects(Room room, bool creatures, bool objects)
         {
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("DestroyObjects, destroy " + (onlyCreatures ? "creatures" : "objects") + " in room");
+                Plugin.Logger.LogDebug("DestroyObjects, destroy in room: creatures?" + creatures.ToString() + ", objects?" + objects.ToString());
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
+                    if ((room.physicalObjects[i][j] is Creature && creatures) || (!(room.physicalObjects[i][j] is Creature) && objects))
                         if (!(room.physicalObjects[i][j] is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
                             DestroyObject(room.physicalObjects[i][j]);

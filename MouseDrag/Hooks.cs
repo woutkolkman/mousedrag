@@ -174,10 +174,10 @@ namespace MouseDrag
                 Destroy.DestroyObject();
 
             if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
-                Destroy.DestroyObjects(self.cameras[0]?.room, true);
+                Destroy.DestroyObjects(self.cameras[0]?.room, creatures: true, objects: false);
 
             if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
-                Destroy.DestroyObjects(self.cameras[0]?.room, false);
+                Destroy.DestroyObjects(self.cameras[0]?.room, creatures: false, objects: true);
 
             if (Options.tpCreaturesKey?.Value != null && Input.GetKey(Options.tpCreaturesKey.Value))
                 Teleport.TeleportObjects(self, self.cameras[0]?.room, true, false);

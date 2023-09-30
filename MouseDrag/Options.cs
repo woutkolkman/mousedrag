@@ -28,7 +28,7 @@ namespace MouseDrag
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
-        public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu;
+        public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
         public int curTab;
 
         public enum ActivateTypes
@@ -86,7 +86,7 @@ namespace MouseDrag
             stunAllKey = config.Bind("stunAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun all objects/creatures except Player and SlugNPC, including objects/creatures that still need to spawn.\nIndividually (un)stunned objects/creatures remain stunned.", null, "", "Stun all"));
             destroyOneKey = config.Bind("destroyOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy the object/creature which you're currently dragging.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy"));
             destroyAllCreaturesKey = config.Bind("destroyAllCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy creatures\nin room"));
-            destroyAllObjectsKey = config.Bind("destroyAllObjectsKey", KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy objects\nin room"));
+            destroyAllObjectsKey = config.Bind(nameof(destroyAllObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects in current room except creatures.", null, "", "Destroy objects\nin room"));
             tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
             tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
 
@@ -113,7 +113,7 @@ namespace MouseDrag
             stunAllMenu = config.Bind("stunAllMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyOneMenu = config.Bind("destroyOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyAllCreaturesMenu = config.Bind("destroyAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
-            destroyAllObjectsMenu = config.Bind("destroyAllObjectsMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
         }
 
 
@@ -231,7 +231,7 @@ namespace MouseDrag
             AddCheckbox(destroyAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyAllObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
-            AddCheckbox(destroyAllObjectsMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
             AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
         }

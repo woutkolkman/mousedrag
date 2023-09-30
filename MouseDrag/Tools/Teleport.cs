@@ -11,6 +11,8 @@ namespace MouseDrag
 
             void SetPosition(PhysicalObject obj, Vector2 newPos)
             {
+                if (!(obj is Creature))
+                    Destroy.ReleaseAllGrasps(obj);
                 for (int i = 0; i < obj?.bodyChunks?.Length; i++) {
                     if (obj.bodyChunks[i] == null)
                         continue;

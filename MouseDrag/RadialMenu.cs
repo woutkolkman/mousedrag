@@ -213,7 +213,7 @@ namespace MouseDrag
 
             public void DrawSprites(FContainer container, float timeStacker)
             {
-                float slotDegrees = (float)(360 / menu.slots.Count);
+                float slotDegrees = (float)(360f / menu.slots.Count);
                 int slotIndex = menu.slots.IndexOf(this);
                 float start = slotDegrees * slotIndex;
                 float end = slotDegrees + start;

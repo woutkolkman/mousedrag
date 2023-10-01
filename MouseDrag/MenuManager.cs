@@ -118,6 +118,9 @@ namespace MouseDrag
                         if (Options.logDebug?.Value != false)
                             Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllObjects: " + Pause.pauseAllObjects);
                         break;
+                    case "mousedragCrosshair":
+                        Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos);
+                        break;
                 }
             }
         }
@@ -180,6 +183,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragDestroyCreatures");
                 if (Options.destroyRoomMenu?.Value != false)
                     iconNames.Add("mousedragDestroyAll");
+                if (Options.tpWaypointMenu?.Value != false)
+                    iconNames.Add("mousedragCrosshair");
             }
 
             return iconNames;

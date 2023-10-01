@@ -19,8 +19,8 @@ namespace MouseDrag
 
 
         public static Room room; //if not null, waypoint is set
-        public static Vector2 pos;
-        public static void SetWaypoint(Room room, Vector2 pos)
+        public static Crosshair crosshair;
+        public static void SetWaypoint(Room room, Vector2 pos, BodyChunk bc = null)
         {
             //remove waypoint if previously set
             if (Teleport.room != null || room == null) {
@@ -29,8 +29,9 @@ namespace MouseDrag
             }
 
             Teleport.room = room;
-            Teleport.pos = pos;
-            room.AddObject(new Crosshair(room, pos));
+            crosshair = new Crosshair(room, pos);
+            crosshair.followChunk = bc;
+            room.AddObject(crosshair);
         }
 
 
@@ -46,7 +47,7 @@ namespace MouseDrag
                 return false;
             }
 
-            SetObjectPosition(obj, pos);
+            SetObjectPosition(obj, crosshair.curPos);
             return true;
         }
 
@@ -69,6 +70,7 @@ namespace MouseDrag
         public class Crosshair : UpdatableAndDeletable, IDrawable
         {
             public Vector2 curPos, prevPos;
+            public BodyChunk followChunk;
 
 
             public Crosshair(Room room, Vector2 pos)
@@ -84,8 +86,11 @@ namespace MouseDrag
             {
                 base.Update(eu);
                 prevPos = curPos;
-                if (Teleport.room != this.room)
-                    this.Destroy();
+                if (!Drag.ShouldRelease(followChunk?.owner) && followChunk?.owner?.room == room)
+                    curPos = followChunk.pos;
+                if (Teleport.room != room)
+                    Destroy();
+                //TODO crosshair might not get destroyed immediately after room is unloaded?
             }
 
 

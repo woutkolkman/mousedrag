@@ -79,6 +79,7 @@ namespace MouseDrag
                     case "mousedragDuplicate":  Duplicate.DuplicateObject(menu.followChunk?.owner); break;
                     case "mousedragCut":        Clipboard.CutObject(menu.followChunk?.owner); break;
                     case "mousedragDestroy":    Destroy.DestroyObject(menu.followChunk?.owner); break;
+                    case "mousedragCrosshair":  Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
                 }
 
             } else {
@@ -118,9 +119,7 @@ namespace MouseDrag
                         if (Options.logDebug?.Value != false)
                             Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllObjects: " + Pause.pauseAllObjects);
                         break;
-                    case "mousedragCrosshair":
-                        Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos);
-                        break;
+                    case "mousedragCrosshair":          Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos); break;
                 }
             }
         }
@@ -151,6 +150,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragCut");
                 if (Options.destroyOneMenu?.Value != false)
                     iconNames.Add("mousedragDestroy");
+                if (Options.tpWaypointMenu?.Value != false)
+                    iconNames.Add("mousedragCrosshair");
 
             } else {
                 //menu on background

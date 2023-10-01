@@ -29,7 +29,7 @@ namespace MouseDrag
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
-        public static Configurable<bool> tpWaypointMenu;
+        public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu;
         public int curTab;
 
         public enum ActivateTypes
@@ -115,7 +115,8 @@ namespace MouseDrag
             destroyOneMenu = config.Bind("destroyOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyAllCreaturesMenu = config.Bind("destroyAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
-            tpWaypointMenu = config.Bind(nameof(tpWaypointMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
+            tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
+            tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature. Also functions as a catapult for some reason.", null, "", ""));
         }
 
 
@@ -237,7 +238,8 @@ namespace MouseDrag
             AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
             AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f + sepr/2), "mousedragCrosshair");
-            AddCheckbox(tpWaypointMenu, new Vector2(x - 56f, y + 3f + sepr/2));
+            AddCheckbox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f + sepr/2 + 13f));
+            AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f + sepr/2 - 13f));
         }
 
 

@@ -150,7 +150,7 @@ namespace MouseDrag
                     iconNames.Add("mousedragCut");
                 if (Options.destroyOneMenu?.Value != false)
                     iconNames.Add("mousedragDestroy");
-                if (Options.tpWaypointMenu?.Value != false)
+                if (Options.tpWaypointCrMenu?.Value != false)
                     iconNames.Add("mousedragCrosshair");
 
             } else {
@@ -184,7 +184,7 @@ namespace MouseDrag
                     iconNames.Add("mousedragDestroyCreatures");
                 if (Options.destroyRoomMenu?.Value != false)
                     iconNames.Add("mousedragDestroyAll");
-                if (Options.tpWaypointMenu?.Value != false)
+                if (Options.tpWaypointBgMenu?.Value != false)
                     iconNames.Add("mousedragCrosshair");
             }
 

@@ -236,10 +236,11 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
             AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
+            AddCheckbox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f + sepr/2), "mousedragCrosshair");
-            AddCheckbox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f + sepr/2 + 13f));
-            AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f + sepr/2 - 13f));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
+            AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
         }
 
 

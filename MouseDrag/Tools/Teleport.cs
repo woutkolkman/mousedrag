@@ -8,6 +8,7 @@ namespace MouseDrag
         {
             if (!(obj is Creature))
                 Destroy.ReleaseAllGrasps(obj);
+
             for (int i = 0; i < obj?.bodyChunks?.Length; i++) {
                 if (obj.bodyChunks[i] == null)
                     continue;
@@ -26,8 +27,10 @@ namespace MouseDrag
                 Teleport.room = null;
                 return;
             }
+
             Teleport.room = room;
             Teleport.pos = pos;
+            room.AddObject(new Crosshair(room, pos));
         }
 
 
@@ -60,6 +63,63 @@ namespace MouseDrag
                         if ((room.physicalObjects[i][j] is Creature && creatures) ||
                             (!(room.physicalObjects[i][j] is Creature) && objects))
                             SetObjectPosition(room.physicalObjects[i][j], pos.Value);
+        }
+
+
+        public class Crosshair : UpdatableAndDeletable, IDrawable
+        {
+            public Vector2 curPos, prevPos;
+
+
+            public Crosshair(Room room, Vector2 pos)
+            {
+                this.room = room;
+                prevPos = pos;
+                curPos = pos;
+            }
+            ~Crosshair() { Destroy(); }
+
+
+            public override void Update(bool eu)
+            {
+                base.Update(eu);
+                prevPos = curPos;
+                if (Teleport.room != this.room)
+                    this.Destroy();
+            }
+
+
+            public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+            {
+                sLeaser.sprites = new FSprite[1];
+                sLeaser.sprites[0] = new FSprite("mousedragCrosshair", true);
+                this.AddToContainer(sLeaser, rCam, null);
+            }
+
+
+            public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+            {
+                if (slatedForDeletetion) {
+                    sLeaser?.CleanSpritesAndRemove();
+                    return;
+                }
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
+                sLeaser.sprites[0].x = tsPos.x - camPos.x;
+                sLeaser.sprites[0].y = tsPos.y - camPos.y;
+            }
+
+
+            public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+            {
+                if (newContainer == null)
+                    newContainer = rCam.ReturnFContainer("HUD");
+                newContainer.AddChild(sLeaser.sprites[0]);
+            }
+
+
+            public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+            {
+            }
         }
     }
 }

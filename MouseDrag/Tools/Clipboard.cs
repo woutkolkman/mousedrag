@@ -8,10 +8,8 @@ namespace MouseDrag
         public static List<AbstractPhysicalObject> cutObjects = new List<AbstractPhysicalObject>();
 
 
-        public static void CutObject(PhysicalObject obj = null)
+        public static void CutObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (obj?.room?.game == null || obj.abstractPhysicalObject == null)
                 return;
 
@@ -36,7 +34,7 @@ namespace MouseDrag
         }
 
 
-        public static void CopyObject(PhysicalObject obj = null)
+        public static void CopyObject(PhysicalObject obj)
         {
             PhysicalObject dup = Duplicate.DuplicateObject(obj);
             CutObject(dup);

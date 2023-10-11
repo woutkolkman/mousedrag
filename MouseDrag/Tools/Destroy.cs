@@ -2,11 +2,8 @@
 {
     public static class Destroy
     {
-        public static void DestroyObject(PhysicalObject obj = null)
+        public static void DestroyObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
-
             Destroy.ReleaseAllGrasps(obj);
 
             if (obj is Oracle) //prevent loitering sprites

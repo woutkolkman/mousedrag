@@ -8,10 +8,8 @@ namespace MouseDrag
 {
     public static class Duplicate
     {
-        public static PhysicalObject DuplicateObject(PhysicalObject obj = null)
+        public static PhysicalObject DuplicateObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (obj?.room?.abstractRoom == null || obj.room.game == null)
                 return null;
 

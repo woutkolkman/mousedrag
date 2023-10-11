@@ -152,10 +152,8 @@ namespace MouseDrag
 
 
         //try throwing object in the direction of mouse movement
-        public static void TryThrow(RainWorldGame game, PhysicalObject obj = null)
+        public static void TryThrow(RainWorldGame game, PhysicalObject obj)
         {
-            if (obj == null)
-                obj = dragChunk?.owner;
             if (obj?.firstChunk == null)
                 return;
 

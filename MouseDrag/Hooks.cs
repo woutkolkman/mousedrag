@@ -56,7 +56,7 @@ namespace MouseDrag
             //rapidly duplicate after one second feature
             if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
                 if (duplicateHoldCount >= duplicateHoldMin)
-                    Duplicate.DuplicateObject();
+                    Duplicate.DuplicateObject(Drag.dragChunk?.owner);
                 duplicateHoldCount++;
             } else {
                 duplicateHoldCount = 0;
@@ -94,7 +94,7 @@ namespace MouseDrag
                 return;
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
-                Pause.TogglePauseObject();
+                Pause.TogglePauseObject(Drag.dragChunk?.owner);
 
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
                 Pause.PauseObjects(self.cameras[0]?.room, true);
@@ -112,30 +112,30 @@ namespace MouseDrag
             }
 
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
-                Health.KillCreature(self);
-                Health.TriggerObject();
+                Health.KillCreature(self, Drag.dragChunk?.owner);
+                Health.TriggerObject(Drag.dragChunk?.owner);
             }
 
             if (Options.killAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.killAllCreaturesKey.Value))
                 Health.KillCreatures(self, self.cameras[0]?.room);
 
             if (Options.reviveOneKey?.Value != null && Input.GetKeyDown(Options.reviveOneKey.Value)) {
-                Health.ReviveCreature();
-                Health.ResetObject();
+                Health.ReviveCreature(Drag.dragChunk?.owner);
+                Health.ResetObject(Drag.dragChunk?.owner);
             }
 
             if (Options.reviveAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.reviveAllCreaturesKey.Value))
                 Health.ReviveCreatures(self.cameras[0]?.room);
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
-                Duplicate.DuplicateObject();
+                Duplicate.DuplicateObject(Drag.dragChunk?.owner);
 
             if (Options.clipboardCtrlXCV?.Value == true) {
                 if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) {
                     if (Input.GetKeyDown(KeyCode.X))
-                        Clipboard.CutObject();
+                        Clipboard.CutObject(Drag.dragChunk?.owner);
                     if (Input.GetKeyDown(KeyCode.C))
-                        Clipboard.CopyObject();
+                        Clipboard.CopyObject(Drag.dragChunk?.owner);
                     if (Input.GetKeyDown(KeyCode.V) && self.cameras[0]?.room != null) {
                         Clipboard.PasteObject(
                             self, 
@@ -147,19 +147,19 @@ namespace MouseDrag
             }
 
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
-                Tame.TameCreature(self);
+                Tame.TameCreature(self, Drag.dragChunk?.owner);
 
             if (Options.tameAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.tameAllCreaturesKey.Value))
                 Tame.TameCreatures(self, self.cameras[0]?.room);
 
             if (Options.clearRelOneKey?.Value != null && Input.GetKeyDown(Options.clearRelOneKey.Value))
-                Tame.ClearRelationships();
+                Tame.ClearRelationships(Drag.dragChunk?.owner);
 
             if (Options.clearRelAllKey?.Value != null && Input.GetKeyDown(Options.clearRelAllKey.Value))
                 Tame.ClearRelationships(self.cameras[0]?.room);
 
             if (Options.stunOneKey?.Value != null && Input.GetKeyDown(Options.stunOneKey.Value))
-                Stun.ToggleStunObject();
+                Stun.ToggleStunObject(Drag.dragChunk?.owner);
 
             if (Options.stunRoomKey?.Value != null && Input.GetKeyDown(Options.stunRoomKey.Value))
                 Stun.StunObjects(self.cameras[0]?.room);
@@ -171,7 +171,7 @@ namespace MouseDrag
             }
 
             if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
-                Destroy.DestroyObject();
+                Destroy.DestroyObject(Drag.dragChunk?.owner);
 
             if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
                 Destroy.DestroyObjects(self.cameras[0]?.room, creatures: true, objects: false);

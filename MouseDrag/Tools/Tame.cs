@@ -3,10 +3,8 @@
     public static class Tame
     {
         //code from Pokéballs
-        public static void TameCreature(RainWorldGame game, PhysicalObject obj = null)
+        public static void TameCreature(RainWorldGame game, PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (!(obj is Creature) || game.world == null)
                 return;
 
@@ -61,10 +59,8 @@
 
 
         //clear relationships of creature
-        public static void ClearRelationships(PhysicalObject obj = null)
+        public static void ClearRelationships(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (!(obj is Creature))
                 return;
 

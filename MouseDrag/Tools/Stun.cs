@@ -42,10 +42,8 @@ namespace MouseDrag
         }
 
 
-        public static void ToggleStunObject(PhysicalObject obj = null)
+        public static void ToggleStunObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (!(obj is PhysicalObject))
                 return;
             PhysicalObject c = obj as PhysicalObject;

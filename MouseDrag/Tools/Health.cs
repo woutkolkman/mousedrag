@@ -4,10 +4,8 @@ namespace MouseDrag
 {
     public static class Health
     {
-        public static void KillCreature(RainWorldGame game, PhysicalObject obj = null)
+        public static void KillCreature(RainWorldGame game, PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (!(obj is Creature))
                 return;
 
@@ -41,10 +39,8 @@ namespace MouseDrag
         }
 
 
-        public static void ReviveCreature(PhysicalObject obj = null)
+        public static void ReviveCreature(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (!(obj is Creature))
                 return;
 
@@ -83,10 +79,8 @@ namespace MouseDrag
         }
 
 
-        public static void TriggerObject(PhysicalObject obj = null)
+        public static void TriggerObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (obj is Creature || obj == null)
                 return;
 
@@ -179,10 +173,8 @@ namespace MouseDrag
         }
 
 
-        public static void ResetObject(PhysicalObject obj = null)
+        public static void ResetObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (obj is Creature || obj == null)
                 return;
 

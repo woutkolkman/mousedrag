@@ -37,10 +37,8 @@ namespace MouseDrag
         }
 
 
-        public static void TogglePauseObject(PhysicalObject obj = null)
+        public static void TogglePauseObject(PhysicalObject obj)
         {
-            if (obj == null)
-                obj = Drag.dragChunk?.owner;
             if (!(obj is PhysicalObject))
                 return;
             PhysicalObject c = obj as PhysicalObject;

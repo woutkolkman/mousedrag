@@ -163,7 +163,7 @@ namespace MouseDrag
             curTab++;
             x = 70f;
             y = 600f;
-            sepr = 40f;
+            sepr = 45f;
             AddKeyBinder(menuOpen, new Vector2(x, y -= sepr));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");

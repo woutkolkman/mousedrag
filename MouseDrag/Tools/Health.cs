@@ -52,7 +52,10 @@ namespace MouseDrag
                 (ac.state as HealthState).health = 1f;
             ac.state.alive = true;
             (obj as Creature).dead = false;
-            (obj as Creature).stun = 0;
+            (obj as Creature).stun = 0; //makes player immediately controllable
+
+            //reset destination so creature does not start running immediately
+            (obj.abstractPhysicalObject as AbstractCreature)?.abstractAI?.SetDestination(obj.abstractPhysicalObject.pos);
 
             if (obj is Hazer) {
                 (obj as Hazer).inkLeft = 1f;
@@ -60,12 +63,23 @@ namespace MouseDrag
                 (obj as Hazer).clds = 0;
             }
 
-            //try to exit game over mode
-            if (Options.exitGameOverMode?.Value != false && 
-                obj is Player && !(obj as Player).isNPC && 
-                obj?.room?.game?.cameras?.Length > 0 && 
-                obj.room.game.cameras[0]?.hud?.textPrompt != null)
-                obj.room.game.cameras[0].hud.textPrompt.gameOverMode = false;
+            if (obj is Player) {
+                //try to exit game over mode
+                if (Options.exitGameOverMode?.Value != false &&
+                    !(obj as Player).isNPC &&
+                    obj?.room?.game?.cameras?.Length > 0 &&
+                    obj.room.game.cameras[0]?.hud?.textPrompt != null)
+                    obj.room.game.cameras[0].hud.textPrompt.gameOverMode = false;
+
+                (obj as Player).exhausted = false;
+                (obj as Player).lungsExhausted = false;
+                (obj as Player).airInLungs = 1f;
+                (obj as Player).aerobicLevel = 0f;
+                if ((obj as Player).playerState != null) {
+                    (obj as Player).playerState.permaDead = false;
+                    (obj as Player).playerState.permanentDamageTracking = 0f;
+                }
+            }
         }
 
 

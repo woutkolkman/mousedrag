@@ -52,6 +52,7 @@ namespace MouseDrag
                 (ac.state as HealthState).health = 1f;
             ac.state.alive = true;
             (obj as Creature).dead = false;
+            (obj as Creature).stun = 0;
 
             if (obj is Hazer) {
                 (obj as Hazer).inkLeft = 1f;
@@ -264,8 +265,10 @@ namespace MouseDrag
                             obj.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.neuronsLeft++;
                     }
                 }
-                if ((obj as Oracle).ID != MoreSlugcats.MoreSlugcatsEnums.OracleID.ST)
+                if ((obj as Oracle).ID != MoreSlugcats.MoreSlugcatsEnums.OracleID.ST) {
                     (obj as Oracle).health = 1f;
+                    (obj as Oracle).stun = 0;
+                }
                 if ((obj as Oracle).ID == Oracle.OracleID.SL &&
                     (obj as Oracle).mySwarmers?.Count <= 0)
                     (obj as Oracle).SetUpSwarmers();

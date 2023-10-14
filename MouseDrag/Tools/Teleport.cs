@@ -12,8 +12,14 @@ namespace MouseDrag
             for (int i = 0; i < obj?.bodyChunks?.Length; i++) {
                 if (obj.bodyChunks[i] == null)
                     continue;
-                obj.bodyChunks[i].HardSetPosition(newPos);
+                obj.bodyChunks[i].pos = newPos;
+                obj.bodyChunks[i].lastPos = newPos;
+                obj.bodyChunks[i].lastLastPos = newPos;
                 obj.bodyChunks[i].vel = new Vector2();
+
+                //allow clipping into terrain
+                if (obj is PlayerCarryableItem)
+                    (obj as PlayerCarryableItem).lastOutsideTerrainPos = null;
             }
         }
 

@@ -120,7 +120,7 @@ namespace MouseDrag
 
                 for (int k = 0; k < obj.bodyChunks.Length; k++)
                 {
-                    if (!Custom.DistLess(pos, obj.bodyChunks[k].pos, Mathf.Min(obj.bodyChunks[k].rad + 10f, closest)))
+                    if (!Custom.DistLess(pos, obj.bodyChunks[k].pos, Mathf.Min(obj.bodyChunks[k].rad + 20f, closest)))
                         continue;
                     closest = Vector2.Distance(pos, obj.bodyChunks[k].pos);
                     ret = obj.bodyChunks[k];

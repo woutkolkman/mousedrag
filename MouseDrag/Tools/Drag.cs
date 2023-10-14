@@ -120,9 +120,7 @@ namespace MouseDrag
 
                 for (int k = 0; k < obj.bodyChunks.Length; k++)
                 {
-                    float rad = obj.bodyChunks[k].rad;
-                    if (rad < 20f)
-                        rad = 20f; //same value as RadialMenu.inRad
+                    float rad = Mathf.Max(obj.bodyChunks[k].rad, 20f); //same value as RadialMenu.inRad
                     if (!Custom.DistLess(pos, obj.bodyChunks[k].pos, Mathf.Min(rad, closest)))
                         continue;
                     closest = Vector2.Distance(pos, obj.bodyChunks[k].pos);

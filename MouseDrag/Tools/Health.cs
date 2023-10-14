@@ -77,8 +77,9 @@ namespace MouseDrag
                 (obj as Player).aerobicLevel = 0f;
                 if ((obj as Player).playerState != null) {
                     (obj as Player).playerState.permaDead = false;
-                    (obj as Player).playerState.permanentDamageTracking = 0f;
+                    (obj as Player).playerState.permanentDamageTracking = 0.0; //prevents sickness/waterdrips from revived pups
                 }
+                (obj as Player).animation = Player.AnimationIndex.None; //prevents lie-down slide
             }
         }
 

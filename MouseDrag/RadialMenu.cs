@@ -9,7 +9,7 @@ namespace MouseDrag
         public bool closed = false; //signal MenuStarter to destroy this
         public Vector2 menuPos, displayPos;
         public float outRad = 60f;
-        public float inRad = 20f;
+        public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false;
         public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
         public List<Slot> slots = new List<Slot>();

@@ -248,6 +248,7 @@ namespace MouseDrag
             public bool enabled = true;
             private bool visible;
             private int rotation = 0;
+            public int rotationSpeed = 3;
             public float radius = 16f;
             public float scale = 0.5f;
             public FSprite[] icons = new FSprite[4];
@@ -267,7 +268,7 @@ namespace MouseDrag
                 prevPos = curPos;
                 curPos = menu.displayPos;
                 visible = menu.followChunk != null && enabled;
-                rotation++;
+                rotation += rotationSpeed;
             }
 
 
@@ -284,7 +285,7 @@ namespace MouseDrag
             public void DrawSprites(FContainer container, float timeStacker)
             {
                 Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
-                float tsRotation = Mathf.Lerp(rotation - 1, rotation, timeStacker) % 360f;
+                float tsRotation = Mathf.Lerp(rotation - rotationSpeed, rotation, timeStacker) % 360f;
                 for (int i = 0; i < icons.Length; i++) {
                     icons[i].isVisible = visible;
                     icons[i].SetPosition(tsPos + (Custom.RotateAroundOrigo(Vector2.up, 90f * i + tsRotation) * radius));

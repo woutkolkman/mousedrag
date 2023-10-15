@@ -14,7 +14,7 @@ namespace MouseDrag
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<bool> velocityDrag, killReleasesMask;
-        public static Configurable<KeyCode> menuOpen, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
+        public static Configurable<KeyCode> menuOpen, throwWeapon, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
         public static Configurable<KeyCode> duplicateOneKey;
@@ -61,14 +61,15 @@ namespace MouseDrag
             exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind("tameIncreasesRep", defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
-            throwWithMouse = config.Bind("throwWithMouse", defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction.", null, "", "Throw with mouse"));
+            throwWithMouse = config.Bind("throwWithMouse", defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.", null, "", "Throw with mouse"));
             throwAsPlayer = config.Bind("throwAsPlayer", defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
-            throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released.", null, "", "Throw threshold"));
+            throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.", null, "", "Throw threshold"));
             throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
             velocityDrag = config.Bind("velocityDrag", defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
             killReleasesMask = config.Bind("killReleasesMask", defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
 
             menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
+            throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction.", null, "", "Throw weapon"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind("pauseRoomCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
@@ -170,6 +171,7 @@ namespace MouseDrag
             y = 600f;
             sepr = 45f;
             AddKeyBinder(menuOpen, new Vector2(x, y -= sepr));
+            AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));

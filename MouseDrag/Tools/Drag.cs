@@ -11,6 +11,7 @@ namespace MouseDrag
         public static Vector2 dragOffset;
         private static Vector2 dampingPos; //only used when velocityDrag == true
         public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
+        public static int tempStopTicks = 0; //temporarily deactivate drag
 
 
         public static void DragObject(RainWorldGame game)
@@ -38,6 +39,12 @@ namespace MouseDrag
             //dragchunk not in this room
             if (dragChunk?.owner?.room != null && dragChunk.owner.room != room)
                 stop = true;
+
+            //temporarily deactivated
+            if (tempStopTicks > 0) {
+                tempStopTicks--;
+                stop = true;
+            }
 
             if (stop) {
                 dragChunk = null;
@@ -153,13 +160,13 @@ namespace MouseDrag
 
 
         //try throwing object in the direction of mouse movement
-        public static void TryThrow(RainWorldGame game, PhysicalObject obj)
+        public static void TryThrow(RainWorldGame game, PhysicalObject obj, bool overrideThreshold = false)
         {
             if (obj?.firstChunk == null)
                 return;
 
             //throw only if mouse moved fast enough
-            if (Custom.Dist(obj.firstChunk.lastPos, obj.firstChunk.pos) < (Options.throwThreshold?.Value ?? 40f))
+            if (!overrideThreshold && Custom.Dist(obj.firstChunk.lastPos, obj.firstChunk.pos) < (Options.throwThreshold?.Value ?? 40f))
                 return;
 
             //don't throw if item is grabbed

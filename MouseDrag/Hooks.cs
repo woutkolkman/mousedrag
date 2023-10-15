@@ -93,6 +93,11 @@ namespace MouseDrag
             if (!State.activated)
                 return;
 
+            if (Options.throwWeapon?.Value != null && Input.GetKeyDown(Options.throwWeapon.Value)) {
+                Drag.TryThrow(self, Drag.dragChunk?.owner, overrideThreshold: true);
+                Drag.tempStopTicks = 20;
+            }
+
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Pause.TogglePauseObject(Drag.dragChunk?.owner);
 

@@ -65,11 +65,24 @@ namespace MouseDrag
 
             if (obj is Player) {
                 //try to exit game over mode
-                if (Options.exitGameOverMode?.Value != false &&
-                    !(obj as Player).isNPC &&
-                    obj?.room?.game?.cameras?.Length > 0 &&
-                    obj.room.game.cameras[0]?.hud?.textPrompt != null)
-                    obj.room.game.cameras[0].hud.textPrompt.gameOverMode = false;
+                if (Options.exitGameOverMode?.Value != false && !(obj as Player).isNPC) {
+                    //campaign
+                    if (obj.room?.game?.cameras?.Length > 0 &&
+                        obj.room.game.cameras[0]?.hud?.textPrompt != null)
+                        obj.room.game.cameras[0].hud.textPrompt.gameOverMode = false;
+
+                    //sandbox & challenges
+                    if (obj.room?.game?.arenaOverlay != null) {
+                        obj.room.game.arenaOverlay.ShutDownProcess();
+                        obj.room.game.manager?.sideProcesses?.Remove(obj.room.game.arenaOverlay);
+                        obj.room.game.arenaOverlay = null;
+                        if (obj.room.game.session is ArenaGameSession)
+                            (obj.room.game.session as ArenaGameSession).sessionEnded = false;
+                            (obj.room.game.session as ArenaGameSession).challengeCompleted = false;
+                            (obj.room.game.session as ArenaGameSession).endSessionCounter = -1;
+                        }
+                    }
+                }
 
                 (obj as Player).exhausted = false;
                 (obj as Player).lungsExhausted = false;

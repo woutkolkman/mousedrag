@@ -76,7 +76,7 @@ namespace MouseDrag
                         obj.room.game.arenaOverlay.ShutDownProcess();
                         obj.room.game.manager?.sideProcesses?.Remove(obj.room.game.arenaOverlay);
                         obj.room.game.arenaOverlay = null;
-                        if (obj.room.game.session is ArenaGameSession)
+                        if (obj.room.game.session is ArenaGameSession) {
                             (obj.room.game.session as ArenaGameSession).sessionEnded = false;
                             (obj.room.game.session as ArenaGameSession).challengeCompleted = false;
                             (obj.room.game.session as ArenaGameSession).endSessionCounter = -1;

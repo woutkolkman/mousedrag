@@ -12,6 +12,7 @@ namespace MouseDrag
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
         public static Configurable<bool> deactivateEveryRestart, logDebug;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
+        public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<bool> velocityDrag, killReleasesMask;
         public static Configurable<KeyCode> menuOpen, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
@@ -62,6 +63,8 @@ namespace MouseDrag
             tameIncreasesRep = config.Bind("tameIncreasesRep", defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             throwWithMouse = config.Bind("throwWithMouse", defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction.", null, "", "Throw with mouse"));
             throwAsPlayer = config.Bind("throwAsPlayer", defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
+            throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released.", null, "", "Throw threshold"));
+            throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
             velocityDrag = config.Bind("velocityDrag", defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
             killReleasesMask = config.Bind("killReleasesMask", defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
 
@@ -156,6 +159,8 @@ namespace MouseDrag
             AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
             AddCheckbox(throwWithMouse, new Vector2(x, y -= sepr));
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
+            AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);
+            AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
             AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
 
@@ -346,6 +351,27 @@ namespace MouseDrag
             Tabs[curTab].AddItems(new UIelement[]
             {
                 box,
+                label
+            });
+        }
+
+
+        private void AddTextBox<T>(Configurable<T> option, Vector2 pos, float width = 150f)
+        {
+            OpTextBox component = new OpTextBox(option, pos, width)
+            {
+                allowSpace = true,
+                description = option.info.description
+            };
+
+            OpLabel label = new OpLabel(pos.x + width + 18f, pos.y + 2f, option.info.Tags[0] as string)
+            {
+                description = option.info.description
+            };
+
+            Tabs[curTab].AddItems(new UIelement[]
+            {
+                component,
                 label
             });
         }

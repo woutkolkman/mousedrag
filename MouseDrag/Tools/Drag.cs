@@ -159,7 +159,7 @@ namespace MouseDrag
                 return;
 
             //throw only if mouse moved fast enough
-            if (Custom.Dist(obj.firstChunk.lastPos, obj.firstChunk.pos) < 40f)
+            if (Custom.Dist(obj.firstChunk.lastPos, obj.firstChunk.pos) < (Options.throwThreshold?.Value ?? 40f))
                 return;
 
             //don't throw if item is grabbed
@@ -211,7 +211,7 @@ namespace MouseDrag
             }
 
             IntVector2 throwDir = new IntVector2(Math.Sign(dir.x), Math.Sign(dir.y));
-            float force = 2f;
+            float force = Options.throwForce?.Value ?? 2f;
 
             //activate bombs etc.
             weapon.Thrown(thrower, weapon.firstChunk.pos, null, throwDir, force, false);

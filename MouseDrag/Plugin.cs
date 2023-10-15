@@ -9,7 +9,7 @@ using System.Security.Permissions;
 namespace MouseDrag
 {
     //also edit version in "modinfo.json"
-    [BepInPlugin("maxi-mol.mousedrag", "Mouse Drag", "0.2.7")] //(GUID, mod name, mod version)
+    [BepInPlugin("maxi-mol.mousedrag", "Mouse Drag", "0.2.8")] //(GUID, mod name, mod version)
     public class Plugin : BaseUnityPlugin
     {
         public static new ManualLogSource Logger { get; private set; } = null;

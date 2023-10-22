@@ -9,7 +9,7 @@ Source code is here: https://github.com/woutkolkman/mousedrag
 
 [h3]Known issues/bugs[/h3]
 - Pausing a deer while you're on it will make you slide off. You need to jump to be able to move again. 
-- When cut/pasting Players, if there's a creature in their stomach (Hazer), it is often deleted. This happens because of limitations when retrieving a serialized creature. 
+- When cut/pasting Players, if there's a creature in their stomach (Hazer), it is often deleted. This happens because of limitations when deserializing a creature. 
 - When cut/pasting objects, many objects will ignore the new position and spawn back on their old position in a new room. This is determined by how the object is programmed. 
 - Cut/pasting Oracles (iterator puppets) has a VERY HIGH chance of crashing the game. Also, their sprites will not be removed immediately. 
 - Pasting Garbage Worms in rooms where they cannot be might crash the game. 

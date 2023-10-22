@@ -12,6 +12,7 @@ namespace MouseDrag
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
         public static List<string> iconNames = new List<string>(){};
+        public static bool beastMasterEnabled = false;
 
 
         public static void Update(RainWorldGame game)
@@ -199,9 +200,23 @@ namespace MouseDrag
             //if editing in sandbox, disable open menu with right mouse button
             bool inSandboxAndEditing = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.playMode == false;
 
-            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing))
+            bool beastMasterOpened = false;
+            if (beastMasterEnabled) {
+                try {
+                    beastMasterOpened = beastMasterMenuOpened;
+                } catch (Exception ex) {
+                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster isMenuOpen value, mod integration is now disabled - " + ex.ToString());
+                    beastMasterEnabled = false;
+                }
+            }
+
+            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened))
                 shouldOpen = true;
         }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static bool beastMasterMenuOpened => (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen == true);
 
 
         public static void DrawSprites(float timeStacker)

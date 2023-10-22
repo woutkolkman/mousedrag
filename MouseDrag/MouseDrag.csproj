@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Reference Include="BeastMaster">
+      <HintPath>..\..\references\BeastMaster.dll</HintPath>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\..\references\BepInEx.dll</HintPath>
     </Reference>

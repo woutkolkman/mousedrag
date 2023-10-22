@@ -9,15 +9,16 @@ Make sure to select the ".NET desktop development" workload, and at the individu
 Clone this repository, or download as ZIP and unzip. Open the project (.sln).
 
 Add references to files as described in the guide above:
-- PUBLIC-Assembly-CSharp.dll
+- [BeastMaster.dll](https://github.com/NoirCatto/BeastMaster)
 - BepInEx.dll
 - HOOKS-Assembly-CSharp.dll
-- UnityEngine.dll
-- UnityEngine.CoreModule.dll
+- Mono.Cecil
 - MonoMod.RuntimeDetour.dll
 - MonoMod.Utils.dll
-- Mono.Cecil
-- UnityEngine.InputLegacyModule
+- PUBLIC-Assembly-CSharp.dll
+- UnityEngine.dll
+- UnityEngine.CoreModule.dll
+- UnityEngine.InputLegacyModule.dll
 
 The files can be found in the Rain World folder. You can copy and store these, for example, in a folder "references" next to the folder containing this source code.
 

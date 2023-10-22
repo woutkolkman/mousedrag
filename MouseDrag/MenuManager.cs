@@ -203,9 +203,9 @@ namespace MouseDrag
             bool beastMasterOpened = false;
             if (beastMasterEnabled) {
                 try {
-                    beastMasterOpened = beastMasterMenuOpened;
+                    beastMasterOpened = beastMasterMenuUsesRMB;
                 } catch (Exception ex) {
-                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster isMenuOpen value, mod integration is now disabled - " + ex.ToString());
+                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster isMenuOpen, mod integration is now disabled - " + ex.ToString());
                     beastMasterEnabled = false;
                 }
             }
@@ -216,7 +216,7 @@ namespace MouseDrag
 
 
         //use in try/catch so missing assembly does not crash the game
-        public static bool beastMasterMenuOpened => (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen == true);
+        public static bool beastMasterMenuUsesRMB => (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen == true);
 
 
         public static void DrawSprites(float timeStacker)

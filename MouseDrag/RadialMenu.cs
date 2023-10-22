@@ -153,7 +153,7 @@ namespace MouseDrag
             for (int i = 0; i < slots.Count; i++)
                 slots[i].DrawSprites(container, timeStacker);
             crosshair.DrawSprites(container, timeStacker);
-            container.MoveToFront(); //also refreshes container
+            container.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
         }
 
 

@@ -20,6 +20,9 @@ namespace MouseDrag
 
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
+
+            //at hibernate etc.
+            On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
         }
 
 
@@ -227,6 +230,15 @@ namespace MouseDrag
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("RainWorldGameCtorHook, activeType: " + State.activeType.ToString());
             }
+        }
+
+
+        //at hibernate etc.
+        static void RainWorldGameShutDownProcessHook(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
+        {
+            orig(self);
+            MenuManager.menu?.Destroy();
+            MenuManager.menu = null;
         }
     }
 }

@@ -200,12 +200,13 @@ namespace MouseDrag
             //if editing in sandbox, disable open menu with right mouse button
             bool inSandboxAndEditing = (game.GetArenaGameSession as SandboxGameSession)?.overlay?.playMode == false;
 
+            //if BeastMaster is enabled and opened, don't use right mouse button
             bool beastMasterOpened = false;
             if (beastMasterEnabled) {
                 try {
-                    beastMasterOpened = beastMasterMenuUsesRMB;
+                    beastMasterOpened = BeastMasterUsesRMB(game);
                 } catch (Exception ex) {
-                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster isMenuOpen, mod integration is now disabled - " + ex.ToString());
+                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster state, mod integration is now disabled - " + ex.ToString());
                     beastMasterEnabled = false;
                 }
             }
@@ -216,7 +217,18 @@ namespace MouseDrag
 
 
         //use in try/catch so missing assembly does not crash the game
-        public static bool beastMasterMenuUsesRMB => (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen == true);
+        public static bool BeastMasterUsesRMB(RainWorldGame game) {
+            if (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen != true)
+                return false;
+
+            //check if mouse is far enough from BeastMaster menu at player or center of screen
+            Player player = BeastMaster.BeastMaster.BMSInstance.lastPlayer;
+            Vector2 mid = game.rainWorld.options.ScreenSize / 2f + game.cameras[0].pos;
+            float magnitude = ((Vector2)Futile.mousePosition + game.cameras[0].pos - (player != null ? player.mainBodyChunk.pos : mid)).magnitude;
+
+            //return true if mouse is inside menu + extra depth around it
+            return magnitude > 50f && magnitude < (float)(50 + 50 * (2 + BeastMaster.BeastMaster.BMSInstance.currentDepth));
+        }
 
 
         public static void DrawSprites(float timeStacker)

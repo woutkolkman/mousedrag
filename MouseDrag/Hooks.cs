@@ -36,7 +36,7 @@ namespace MouseDrag
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
             MenuManager.LoadSprites();
 
-            //check if beastmaster is enabled
+            //check if BeastMaster is enabled
             for (int i = 0; i < ModManager.ActiveMods.Count; i++)
                 if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
                     MenuManager.beastMasterEnabled = true;

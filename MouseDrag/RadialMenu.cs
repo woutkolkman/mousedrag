@@ -199,7 +199,7 @@ namespace MouseDrag
             {
                 List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
 
-                for (int i = 0; i < 9; i++) { //this for-loop is heavily adapted from beastmaster
+                for (int i = 0; i < 9; i++) { //this for-loop is heavily adapted from BeastMaster
                     list.Add(new TriangleMesh.Triangle(i, i + 1, i + 10));
                     list.Add(new TriangleMesh.Triangle(i + 10, i + 10 + 1, i + 1));
                 }
@@ -223,7 +223,7 @@ namespace MouseDrag
 
                 Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
 
-                for (int i = 0; i < 10; i++) { //this for-loop is heavily adapted from beastmaster
+                for (int i = 0; i < 10; i++) { //this for-loop is heavily adapted from BeastMaster
                     float angle = Mathf.Lerp(start, end, (float)i / 9f);
                     background.vertices[i] = tsPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.inRad);
                     background.vertices[i + 10] = tsPos + (Custom.RotateAroundOrigo(Vector2.up, angle) * menu.outRad);

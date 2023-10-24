@@ -115,6 +115,10 @@ namespace MouseDrag
                         if (swallowedString.Contains("<oA>")) {
                             swallowedObj = SaveState.AbstractPhysicalObjectFromString(apo.world, swallowedString);
                         } else if (swallowedString.Contains("<cA>")) {
+                            string[] p = swallowedString.Split(new[] {"<cA>"}, StringSplitOptions.None);
+                            swallowedString = swallowedString.Replace(
+                                p[2], string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}.{1}", pos.ResolveRoomName() ?? pos.room.ToString(), pos.abstractNode)
+                            );
                             swallowedObj = SaveState.AbstractCreatureFromString(apo.world, swallowedString, onlyInCurrentRegion: false);
                         }
                         if (swallowedObj != null)

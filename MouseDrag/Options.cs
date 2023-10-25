@@ -9,11 +9,11 @@ namespace MouseDrag
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> menuRMB, menuMMB, menuFollows;
-        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill;
+        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> deactivateEveryRestart, logDebug;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
-        public static Configurable<bool> velocityDrag, killReleasesMask;
+        public static Configurable<bool> velocityDrag;
         public static Configurable<KeyCode> menuOpen, throwWeapon, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
@@ -54,6 +54,7 @@ namespace MouseDrag
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
             releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind("lineageKill", defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
+            killReleasesMask = config.Bind("killReleasesMask", defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
             deactivateEveryRestart = config.Bind("deactivateEveryRestart", defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
             logDebug = config.Bind("logDebug", defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
 
@@ -66,7 +67,6 @@ namespace MouseDrag
             throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.", null, "", "Throw threshold"));
             throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
             velocityDrag = config.Bind("velocityDrag", defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
-            killReleasesMask = config.Bind("killReleasesMask", defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
 
             menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere.", null, "", "Throw weapon"));
@@ -149,6 +149,7 @@ namespace MouseDrag
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= sepr));
             AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= sepr));
             AddCheckbox(lineageKill, new Vector2(x, y -= sepr));
+            AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
             AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));
             AddCheckbox(logDebug, new Vector2(x, y -= sepr));
 
@@ -163,7 +164,6 @@ namespace MouseDrag
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);
             AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
-            AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
 
             /**************** KeyBinds ****************/
             curTab++;

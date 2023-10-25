@@ -8,12 +8,15 @@ namespace MouseDrag
     {
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
-        public static Configurable<bool> menuRMB, menuMMB, menuFollows;
+        public static Configurable<bool> menuRMB, menuMMB;
+        public static Configurable<KeyCode> menuOpen;
+        public static Configurable<bool> menuFollows;
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, deactivateEveryRestart, logDebug;
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
+        public static Configurable<KeyCode> throwWeapon;
         public static Configurable<bool> velocityDrag;
-        public static Configurable<KeyCode> menuOpen, throwWeapon, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
+        public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
         public static Configurable<KeyCode> duplicateOneKey;
@@ -49,7 +52,8 @@ namespace MouseDrag
             activateKey = config.Bind("activateKey", KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
 
             menuRMB = config.Bind("menuRMB", defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
-            menuMMB = config.Bind("menuMMB", defaultValue: false, new ConfigurableInfo("Middle mouse button opens menu on object or background.", null, "", "MMB opens menu"));
+            menuMMB = config.Bind(nameof(menuMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
+            menuOpen = config.Bind(nameof(menuOpen), KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
             menuFollows = config.Bind("menuFollows", defaultValue: true, new ConfigurableInfo("If checked, menu follows the target creature/object on which actions are performed.", null, "", "Menu follows target"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
@@ -60,10 +64,9 @@ namespace MouseDrag
             throwAsPlayer = config.Bind("throwAsPlayer", defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
             throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.", null, "", "Throw threshold"));
             throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
+            throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere.", null, "", "Throw weapon"));
             velocityDrag = config.Bind("velocityDrag", defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
 
-            menuOpen = config.Bind("menuOpen", KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
-            throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere.", null, "", "Throw weapon"));
             pauseOneKey = config.Bind("pauseOneKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind("pauseRoomCreaturesKey", KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
             unpauseAllKey = config.Bind("unpauseAllKey", KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects/creatures, including individually paused creatures.", null, "", "Unpause all"));
@@ -148,6 +151,8 @@ namespace MouseDrag
 
             AddCheckbox(menuRMB, new Vector2(x, y -= sepr));
             AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
+            y -= 5f;
+            AddKeyBinder(menuOpen, new Vector2(x, y -= sepr));
             AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
             AddCheckbox(forceMouseVisible, new Vector2(x, y -= sepr));
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= sepr));
@@ -160,6 +165,8 @@ namespace MouseDrag
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);
             AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
+            y -= 5f;
+            AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr));
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
 
             /**************** Tools ****************/
@@ -167,8 +174,6 @@ namespace MouseDrag
             x = 70f;
             y = 600f;
             sepr = 45f;
-            AddKeyBinder(menuOpen, new Vector2(x, y -= sepr));
-            AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr));
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));

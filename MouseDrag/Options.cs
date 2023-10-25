@@ -20,19 +20,19 @@ namespace MouseDrag
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
         public static Configurable<KeyCode> duplicateOneKey;
+        public static Configurable<KeyCode> tpCreaturesKey, tpObjectsKey;
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
-        public static Configurable<KeyCode> tpCreaturesKey, tpObjectsKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
         public static Configurable<bool> duplicateOneMenu;
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
+        public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
-        public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu;
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public int curTab;
@@ -104,6 +104,8 @@ namespace MouseDrag
             duplicateOneMenu = config.Bind("duplicateOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             clipboardMenu = config.Bind("clipboardMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.\nCut/paste PhysicalObjects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.", null, "", ""));
             clipboardCtrlXCV = config.Bind("clipboardCtrlXCV", defaultValue: false, new ConfigurableInfo("Using Control + X/C/V will cut, copy or paste the object/creature which you're currently dragging.", null, "", "Ctrl + X/C/V"));
+            tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
+            tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature.", null, "", ""));
 
             tameOneMenu = config.Bind("tameOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameAllCreaturesMenu = config.Bind("tameAllCreaturesMenu", defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -116,8 +118,6 @@ namespace MouseDrag
             destroyOneMenu = config.Bind("destroyOneMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyAllCreaturesMenu = config.Bind("destroyAllCreaturesMenu", defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
-            tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
-            tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature.", null, "", ""));
 
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
@@ -208,6 +208,12 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
             AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
             AddCheckbox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
+            AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
+            AddCheckbox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f));
+            AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
+            AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
 
             x += 300f;
             y = 600f;
@@ -244,12 +250,6 @@ namespace MouseDrag
             AddKeyBinder(destroyAllObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
             AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y + 3f));
-            AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
-            AddCheckbox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f));
-            AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
-            AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
 
             /**************** Other ****************/
             curTab++;

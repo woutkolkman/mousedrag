@@ -75,12 +75,12 @@ namespace MouseDrag
                         Health.ReviveCreature(menu.followChunk?.owner);
                         Health.ResetObject(menu.followChunk?.owner);
                         break;
+                    case "mousedragCrosshair":  Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
                     case "mousedragHeart":      Tame.TameCreature(game, menu.followChunk?.owner); break;
                     case "mousedragUnheart":    Tame.ClearRelationships(menu.followChunk?.owner); break;
                     case "mousedragDuplicate":  Duplicate.DuplicateObject(menu.followChunk?.owner); break;
                     case "mousedragCut":        Clipboard.CutObject(menu.followChunk?.owner); break;
                     case "mousedragDestroy":    Destroy.DestroyObject(menu.followChunk?.owner); break;
-                    case "mousedragCrosshair":  Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
                 }
 
             } else {
@@ -99,6 +99,7 @@ namespace MouseDrag
                         break;
                     case "mousedragKillCreatures":      Health.KillCreatures(game, game.cameras[0]?.room); break;
                     case "mousedragReviveCreatures":    Health.ReviveCreatures(game.cameras[0]?.room); break;
+                    case "mousedragCrosshair":          Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos); break;
                     case "mousedragHeartCreatures":     Tame.TameCreatures(game, game.cameras[0]?.room); break;
                     case "mousedragUnheartCreatures":   Tame.ClearRelationships(game.cameras[0]?.room); break;
                     case "mousedragPaste":
@@ -120,7 +121,6 @@ namespace MouseDrag
                         if (Options.logDebug?.Value != false)
                             Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllObjects: " + Pause.pauseAllObjects);
                         break;
-                    case "mousedragCrosshair":          Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos); break;
                 }
             }
         }

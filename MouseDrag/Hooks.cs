@@ -161,6 +161,12 @@ namespace MouseDrag
                 }
             }
 
+            if (Options.tpCreaturesKey?.Value != null && Input.GetKey(Options.tpCreaturesKey.Value))
+                Teleport.TeleportObjects(self, self.cameras[0]?.room, true, false);
+
+            if (Options.tpObjectsKey?.Value != null && Input.GetKey(Options.tpObjectsKey.Value))
+                Teleport.TeleportObjects(self, self.cameras[0]?.room, false, true);
+
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tame.TameCreature(self, Drag.dragChunk?.owner);
 
@@ -193,12 +199,6 @@ namespace MouseDrag
 
             if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
                 Destroy.DestroyObjects(self.cameras[0]?.room, creatures: false, objects: true);
-
-            if (Options.tpCreaturesKey?.Value != null && Input.GetKey(Options.tpCreaturesKey.Value))
-                Teleport.TeleportObjects(self, self.cameras[0]?.room, true, false);
-
-            if (Options.tpObjectsKey?.Value != null && Input.GetKey(Options.tpObjectsKey.Value))
-                Teleport.TeleportObjects(self, self.cameras[0]?.room, false, true);
         }
 
 

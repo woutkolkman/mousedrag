@@ -9,9 +9,8 @@ namespace MouseDrag
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> menuRMB, menuMMB, menuFollows;
-        public static Configurable<bool> forceMouseVisible, undoMouseVisible, releaseGraspsPaused, lineageKill, killReleasesMask;
-        public static Configurable<bool> deactivateEveryRestart, logDebug;
-        public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, throwWithMouse, throwAsPlayer;
+        public static Configurable<bool> forceMouseVisible, undoMouseVisible, deactivateEveryRestart, logDebug;
+        public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<bool> velocityDrag;
         public static Configurable<KeyCode> menuOpen, throwWeapon, pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
@@ -31,6 +30,8 @@ namespace MouseDrag
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
         public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu;
+        public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
+        public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public int curTab;
 
         public enum ActivateTypes
@@ -52,16 +53,9 @@ namespace MouseDrag
             menuFollows = config.Bind("menuFollows", defaultValue: true, new ConfigurableInfo("If checked, menu follows the target creature/object on which actions are performed.", null, "", "Menu follows target"));
             forceMouseVisible = config.Bind("forceMouseVisible", defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind("undoMouseVisible", defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
-            releaseGraspsPaused = config.Bind("releaseGraspsPaused", defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
-            lineageKill = config.Bind("lineageKill", defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
-            killReleasesMask = config.Bind("killReleasesMask", defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
             deactivateEveryRestart = config.Bind("deactivateEveryRestart", defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
             logDebug = config.Bind("logDebug", defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
 
-            copyID = config.Bind("copyID", defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
-            exitGameOverMode = config.Bind("exitGameOverMode", defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
-            exceptSlugNPC = config.Bind("exceptSlugNPC", defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
-            tameIncreasesRep = config.Bind("tameIncreasesRep", defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             throwWithMouse = config.Bind("throwWithMouse", defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.", null, "", "Throw with mouse"));
             throwAsPlayer = config.Bind("throwAsPlayer", defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
             throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.", null, "", "Throw threshold"));
@@ -121,6 +115,15 @@ namespace MouseDrag
             destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
             tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
             tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature.", null, "", ""));
+
+            releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
+            lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
+            killReleasesMask = config.Bind(nameof(killReleasesMask), defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
+
+            copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
+            exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.\nOnly works in story-mode.", null, "", "Exit game over mode"));
+            exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
+            tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
         }
 
 
@@ -130,7 +133,8 @@ namespace MouseDrag
             Tabs = new OpTab[]
             {
                 new OpTab(this, "General"),
-                new OpTab(this, "KeyBinds")
+                new OpTab(this, "Tools"),
+                new OpTab(this, "Other")
             };
 
             /**************** General ****************/
@@ -147,25 +151,18 @@ namespace MouseDrag
             AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
             AddCheckbox(forceMouseVisible, new Vector2(x, y -= sepr));
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= sepr));
-            AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= sepr));
-            AddCheckbox(lineageKill, new Vector2(x, y -= sepr));
-            AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
             AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));
             AddCheckbox(logDebug, new Vector2(x, y -= sepr));
 
-            x += 250;
+            x += 250f;
             y = 460f;
-            AddCheckbox(copyID, new Vector2(x, y -= sepr));
-            AddCheckbox(exitGameOverMode, new Vector2(x, y -= sepr));
-            AddCheckbox(exceptSlugNPC, new Vector2(x, y -= sepr));
-            AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
             AddCheckbox(throwWithMouse, new Vector2(x, y -= sepr));
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);
             AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
 
-            /**************** KeyBinds ****************/
+            /**************** Tools ****************/
             curTab++;
             x = 70f;
             y = 600f;
@@ -248,6 +245,22 @@ namespace MouseDrag
             AddKeyBinder(tpObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
             AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
+
+            /**************** Other ****************/
+            curTab++;
+            x = 90f;
+            y = 595f;
+            sepr = 40f;
+            AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= sepr));
+            AddCheckbox(lineageKill, new Vector2(x, y -= sepr));
+            AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
+
+            x += 250f;
+            y = 595f;
+            AddCheckbox(copyID, new Vector2(x, y -= sepr));
+            AddCheckbox(exitGameOverMode, new Vector2(x, y -= sepr));
+            AddCheckbox(exceptSlugNPC, new Vector2(x, y -= sepr));
+            AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
         }
 
 

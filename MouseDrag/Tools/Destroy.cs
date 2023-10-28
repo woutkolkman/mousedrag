@@ -59,5 +59,56 @@
                 (obj as Creature).LoseAllGrasps();
             }
         }
+
+
+        //destroy all objects in all rooms in current region
+        public static void DestroyRegionObjects(RainWorldGame self, bool creatures, bool objects)
+        {
+            if (!(self?.world?.abstractRooms?.Length > 0))
+                return;
+
+            int totC = 0;
+            int totD = 0;
+
+            foreach (AbstractRoom ar in self.world.abstractRooms) {
+                if (ar == null)
+                    continue;
+                int clearedC = 0;
+                int clearedD = 0;
+
+                //return true if object is deleted
+                bool handleObject(AbstractPhysicalObject ac)
+                {
+                    if (ac == null)
+                        return false;
+                    if ((ac is AbstractCreature && !creatures) || (!(ac is AbstractCreature) && !objects))
+                        return false;
+                    if (ac.realizedObject is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
+                        (Options.exceptSlugNPC?.Value != false || !(ac.realizedObject as Player).isNPC))
+                            return false;
+                    if (ac.realizedObject != null) {
+                        DestroyObject(ac.realizedObject);
+                    } else {
+                        ar.RemoveEntity(ac);
+                    }
+                    return true;
+                }
+
+                for (int i = ar.entities.Count - 1; i >= 0; i--)
+                    if (handleObject(ar.entities[i] as AbstractPhysicalObject))
+                        clearedC++;
+                for (int i = ar.entitiesInDens.Count - 1; i >= 0; i--)
+                    if (handleObject(ar.entitiesInDens[i] as AbstractPhysicalObject))
+                        clearedD++;
+
+                if (Options.logDebug?.Value != false && (clearedC > 0 || clearedD > 0))
+                    Plugin.Logger.LogDebug("DestroyRegionObjects, room: " + ar.name + ", cleared objects not in den: " + clearedC + ", and in den: " + clearedD);
+                totC += clearedC;
+                totD += clearedD;
+            }
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("DestroyRegionObjects, region: " + self.world.name + ", total cleared objects not in den: " + totC + ", and in den: " + totD);
+        }
     }
 }

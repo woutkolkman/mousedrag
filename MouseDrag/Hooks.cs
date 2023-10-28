@@ -199,6 +199,12 @@ namespace MouseDrag
 
             if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
                 Destroy.DestroyObjects(self.cameras[0]?.room, creatures: false, objects: true);
+
+            if (Options.destroyRegionCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyRegionCreaturesKey.Value))
+                Destroy.DestroyRegionObjects(self, creatures: true, objects: false);
+
+            if (Options.destroyRegionObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyRegionObjectsKey.Value))
+                Destroy.DestroyRegionObjects(self, creatures: false, objects: true);
         }
 
 

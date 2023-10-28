@@ -25,6 +25,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
+        public static Configurable<KeyCode> destroyRegionCreaturesKey, destroyRegionObjectsKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
@@ -80,6 +81,8 @@ namespace MouseDrag
             reviveOneKey = config.Bind(nameof(reviveOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging. Can also reset objects like popcorn plants.", null, "", "Revive/heal"));
             reviveAllCreaturesKey = config.Bind(nameof(reviveAllCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal\ncreatures\nin room"));
             duplicateOneKey = config.Bind(nameof(duplicateOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object/creature which you're currently dragging. Hold button to repeat.", null, "", "Duplicate"));
+            tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
+            tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
 
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
             tameAllCreaturesKey = config.Bind(nameof(tameAllCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame creatures in\nroom"));
@@ -92,8 +95,8 @@ namespace MouseDrag
             destroyOneKey = config.Bind(nameof(destroyOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy the object/creature which you're currently dragging.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy"));
             destroyAllCreaturesKey = config.Bind(nameof(destroyAllCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", "Destroy creatures\nin room"));
             destroyAllObjectsKey = config.Bind(nameof(destroyAllObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects in current room except creatures.", null, "", "Destroy objects\nin room"));
-            tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
-            tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
+            destroyRegionCreaturesKey = config.Bind(nameof(destroyRegionCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.\nWARNING: if you hibernate afterwards, most creatures in the region will also be gone next cycle.", null, "", "Destroy creatures\nin region"));
+            destroyRegionObjectsKey = config.Bind(nameof(destroyRegionObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects in current region except creatures. Most objects will be re-added automatically, or are added later on.", null, "", "Destroy objects\nin region"));
 
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind(nameof(pauseRoomCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -253,6 +256,8 @@ namespace MouseDrag
             AddKeyBinder(destroyAllObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
             AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddKeyBinder(destroyRegionCreaturesKey, new Vector2(x, y -= sepr));
+            AddKeyBinder(destroyRegionObjectsKey, new Vector2(x, y -= sepr));
 
             /**************** Other ****************/
             curTab++;

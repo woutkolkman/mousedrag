@@ -16,6 +16,7 @@ namespace MouseDrag
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<KeyCode> throwWeapon;
         public static Configurable<bool> velocityDrag;
+        public static Configurable<KeyCode> selectCreatures, selectObjects;
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
@@ -66,6 +67,8 @@ namespace MouseDrag
             throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere.", null, "", "Throw weapon"));
             velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
+            selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
+            selectObjects = config.Bind(nameof(selectObjects), KeyCode.None, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select objects"));
 
             pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
@@ -151,8 +154,7 @@ namespace MouseDrag
 
             AddCheckbox(menuRMB, new Vector2(x, y -= sepr));
             AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
-            y -= 5f;
-            AddKeyBinder(menuOpen, new Vector2(x, y -= sepr));
+            AddKeyBinder(menuOpen, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
             AddCheckbox(forceMouseVisible, new Vector2(x, y -= sepr));
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= sepr));
@@ -165,9 +167,10 @@ namespace MouseDrag
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);
             AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
-            y -= 5f;
-            AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr));
+            AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
+            AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(selectObjects, new Vector2(x, y -= sepr + 5f));
 
             /**************** Tools ****************/
             curTab++;

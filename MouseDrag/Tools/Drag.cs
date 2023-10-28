@@ -125,6 +125,14 @@ namespace MouseDrag
                 if (ShouldRelease(obj))
                     return;
 
+                //only select or drag creatures or objects
+                if (Options.selectCreatures?.Value != null && Input.GetKey(Options.selectCreatures.Value))
+                    if (!(obj is Creature))
+                        return;
+                if (Options.selectObjects?.Value != null && Input.GetKey(Options.selectObjects.Value))
+                    if (obj is Creature)
+                        return;
+
                 for (int k = 0; k < obj.bodyChunks.Length; k++)
                 {
                     float rad = Mathf.Max(obj.bodyChunks[k].rad, 20f); //same value as RadialMenu.inRad

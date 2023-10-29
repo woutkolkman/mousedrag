@@ -35,6 +35,7 @@ namespace MouseDrag
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
+        public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionObjectsMenu;
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public int curTab;
@@ -124,6 +125,8 @@ namespace MouseDrag
             destroyOneMenu = config.Bind(nameof(destroyOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyAllCreaturesMenu = config.Bind(nameof(destroyAllCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
+            destroyRegionCreaturesMenu = config.Bind(nameof(destroyRegionCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            destroyRegionObjectsMenu = config.Bind(nameof(destroyRegionObjectsMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
@@ -257,7 +260,11 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
             AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyRegionCreaturesKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
+            AddCheckbox(destroyRegionCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyRegionObjectsKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
+            AddCheckbox(destroyRegionObjectsMenu, new Vector2(x - 56f, y + 3f));
 
             /**************** Other ****************/
             curTab++;

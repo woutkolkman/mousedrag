@@ -121,6 +121,7 @@ namespace MouseDrag
                         break;
                     case "mousedragDestroyCreatures":   Destroy.DestroyObjects(game.cameras[0]?.room, creatures: true, objects: false); break;
                     case "mousedragDestroyAll":         Destroy.DestroyObjects(game.cameras[0]?.room, creatures: true, objects: true); break;
+                    case "mousedragDestroyGlobal":      Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionObjectsMenu?.Value == true); break;
                 }
             }
         }
@@ -187,6 +188,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragDestroyCreatures");
                 if (Options.destroyRoomMenu?.Value != false)
                     iconNames.Add("mousedragDestroyAll");
+                if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false)
+                    iconNames.Add("mousedragDestroyGlobal");
             }
 
             return iconNames;

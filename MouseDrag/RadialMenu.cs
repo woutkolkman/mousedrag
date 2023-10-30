@@ -79,7 +79,7 @@ namespace MouseDrag
         }
 
 
-        //return index when item is clicked on
+        //return slot when icon is clicked on
         public Slot Update(RainWorldGame game)
         {
             prevFollowChunk = followChunk;

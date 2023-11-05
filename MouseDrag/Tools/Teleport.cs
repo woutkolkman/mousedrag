@@ -4,28 +4,10 @@ namespace MouseDrag
 {
     public static class Teleport
     {
-        public static void SetObjectPosition(PhysicalObject obj, Vector2 newPos)
-        {
-            if (!(obj is Creature))
-                Destroy.ReleaseAllGrasps(obj);
-
-            for (int i = 0; i < obj?.bodyChunks?.Length; i++) {
-                if (obj.bodyChunks[i] == null)
-                    continue;
-                obj.bodyChunks[i].pos = newPos;
-                obj.bodyChunks[i].lastPos = newPos;
-                obj.bodyChunks[i].lastLastPos = newPos;
-                obj.bodyChunks[i].vel = new Vector2();
-
-                //allow clipping into terrain
-                if (obj is PlayerCarryableItem)
-                    (obj as PlayerCarryableItem).lastOutsideTerrainPos = null;
-            }
-        }
-
-
         public static Room room; //if not null, waypoint is set
         public static Crosshair crosshair;
+
+
         public static void SetWaypoint(Room room, Vector2 pos, BodyChunk bc = null)
         {
             //remove waypoint if previously set
@@ -55,21 +37,6 @@ namespace MouseDrag
 
             SetObjectPosition(obj, crosshair.curPos);
             return true;
-        }
-
-
-        public static void TeleportObjects(RainWorldGame game, Room room, bool creatures, bool objects, Vector2? pos = null)
-        {
-            if (pos == null)
-                pos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
-
-            for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if (!(room.physicalObjects[i][j] is Player && //don't teleport when: creature is player and player is not SlugNPC (optional)
-                        (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
-                        if ((room.physicalObjects[i][j] is Creature && creatures) ||
-                            (!(room.physicalObjects[i][j] is Creature) && objects))
-                            SetObjectPosition(room.physicalObjects[i][j], pos.Value);
         }
 
 
@@ -130,6 +97,44 @@ namespace MouseDrag
 
             public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
             {
+            }
+        }
+
+
+        //teleport all objects via keybind
+        public static void TeleportObjects(RainWorldGame game, Room room, bool creatures, bool objects, Vector2? pos = null)
+        {
+            if (pos == null)
+                pos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+
+            for (int i = 0; i < room?.physicalObjects?.Length; i++)
+                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                    if (!(room.physicalObjects[i][j] is Player && //don't teleport when: creature is player and player is not SlugNPC (optional)
+                        (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
+                        if ((room.physicalObjects[i][j] is Creature && creatures) ||
+                            (!(room.physicalObjects[i][j] is Creature) && objects))
+                            SetObjectPosition(room.physicalObjects[i][j], pos.Value);
+        }
+
+
+        //move all bodychunks of object to new position
+        public static void SetObjectPosition(PhysicalObject obj, Vector2 newPos)
+        {
+            //creatures release this object
+            if (!(obj is Creature))
+                Destroy.ReleaseAllGrasps(obj);
+
+            for (int i = 0; i < obj?.bodyChunks?.Length; i++) {
+                if (obj.bodyChunks[i] == null)
+                    continue;
+                obj.bodyChunks[i].pos = newPos;
+                obj.bodyChunks[i].lastPos = newPos;
+                obj.bodyChunks[i].lastLastPos = newPos;
+                obj.bodyChunks[i].vel = new Vector2();
+
+                //allow clipping into terrain
+                if (obj is PlayerCarryableItem)
+                    (obj as PlayerCarryableItem).lastOutsideTerrainPos = null;
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace MouseDrag
 {
-    public class Hooks
+    public static class Hooks
     {
         public static void Apply()
         {

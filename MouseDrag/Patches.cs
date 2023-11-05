@@ -4,7 +4,7 @@ using Mono.Cecil.Cil;
 
 namespace MouseDrag
 {
-    public class Patches
+    public static class Patches
     {
         public static void Apply()
         {

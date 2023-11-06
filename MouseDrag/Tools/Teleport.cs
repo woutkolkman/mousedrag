@@ -4,19 +4,18 @@ namespace MouseDrag
 {
     public static class Teleport
     {
-        public static Room room; //if not null, waypoint is set
-        public static Crosshair crosshair;
+        public static Crosshair crosshair; //if not null, waypoint is set
 
 
         public static void SetWaypoint(Room room, Vector2 pos, BodyChunk bc = null)
         {
             //remove waypoint if previously set
-            if (Teleport.room != null || room == null) {
-                Teleport.room = null;
+            if (crosshair != null || room == null) {
+                crosshair.Destroy();
+                crosshair = null;
                 return;
             }
 
-            Teleport.room = room;
             crosshair = new Crosshair(room, pos);
             crosshair.followChunk = bc;
             room.AddObject(crosshair);
@@ -26,12 +25,14 @@ namespace MouseDrag
         //returns true if object is teleported
         public static bool UpdateTeleportObject(PhysicalObject obj)
         {
-            if (room == null)
+            //no waypoint is assigned, or obj is not valid
+            if (obj?.room == null || crosshair?.room == null)
                 return false;
 
             //remove waypoint if dragging in another room
-            if (room != obj?.room) {
-                room = null;
+            if (obj.room != crosshair.room) {
+                crosshair.Destroy();
+                crosshair = null;
                 return false;
             }
 
@@ -61,9 +62,6 @@ namespace MouseDrag
                 prevPos = curPos;
                 if (!Drag.ShouldRelease(followChunk?.owner) && followChunk?.owner?.room == room)
                     curPos = followChunk.pos;
-                if (Teleport.room != room)
-                    Destroy();
-                //TODO crosshair might not get destroyed immediately after room is unloaded?
             }
 
 

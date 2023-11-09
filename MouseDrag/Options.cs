@@ -70,7 +70,7 @@ namespace MouseDrag
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere.", null, "", "Throw weapon"));
             velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
             selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
-            selectObjects = config.Bind(nameof(selectObjects), KeyCode.None, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select objects"));
+            selectObjects = config.Bind(nameof(selectObjects), KeyCode.LeftAlt, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select objects"));
 
             pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));

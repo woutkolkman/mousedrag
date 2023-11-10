@@ -39,6 +39,7 @@ namespace MouseDrag
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionObjectsMenu;
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
+        public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public int curTab;
 
@@ -135,6 +136,8 @@ namespace MouseDrag
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
             killReleasesMask = config.Bind(nameof(killReleasesMask), defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
+            forcefieldImmunityPlayers = config.Bind(nameof(forcefieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by forcefields.", null, "", "Forcefield immunity players"));
+            forcefieldImmunityObjects = config.Bind(nameof(forcefieldImmunityObjects), defaultValue: false, new ConfigurableInfo("Objects (except thrown weapons) are unaffected by forcefields.", null, "", "Forcefield immunity objects"));
 
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
@@ -281,6 +284,8 @@ namespace MouseDrag
             AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= sepr));
             AddCheckbox(lineageKill, new Vector2(x, y -= sepr));
             AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
+            AddCheckbox(forcefieldImmunityPlayers, new Vector2(x, y -= sepr));
+            AddCheckbox(forcefieldImmunityObjects, new Vector2(x, y -= sepr));
 
             x += 250f;
             y = 595f;

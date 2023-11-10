@@ -14,10 +14,18 @@ namespace MouseDrag
             if (bodyChunk?.owner == null || !forcefieldChunks.Contains(bodyChunk))
                 return;
 
-            for (int i = 0; i < bodyChunk.owner?.room?.physicalObjects?.Length; i++)
-                foreach (PhysicalObject po in bodyChunk.owner.room.physicalObjects[i])
-                    if (po != bodyChunk.owner && po != null)
-                        po.PushOutOf(bodyChunk.pos, minDist, -1);
+            for (int i = 0; i < bodyChunk.owner?.room?.physicalObjects?.Length; i++) {
+                foreach (PhysicalObject po in bodyChunk.owner.room.physicalObjects[i]) {
+                    if (po == bodyChunk.owner || po == null)
+                        continue;
+                    if (Options.forcefieldImmunityPlayers?.Value != false && po is Player)
+                        continue;
+                    if (Options.forcefieldImmunityObjects?.Value != false && !(po is Creature) && //creatures aren't immune
+                        !(po is Weapon && (po as Weapon).mode == Weapon.Mode.Thrown)) //thrown weapons aren't immune
+                        continue;
+                    po.PushOutOf(bodyChunk.pos, minDist, -1);
+                }
+            }
         }
 
 

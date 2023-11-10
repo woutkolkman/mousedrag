@@ -22,6 +22,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
         public static Configurable<KeyCode> duplicateOneKey;
         public static Configurable<KeyCode> tpCreaturesKey, tpObjectsKey;
+        public static Configurable<KeyCode> forcefieldKey;
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
@@ -32,6 +33,7 @@ namespace MouseDrag
         public static Configurable<bool> duplicateOneMenu;
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
         public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu;
+        public static Configurable<bool> forcefieldMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
@@ -85,6 +87,7 @@ namespace MouseDrag
             tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
             tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
 
+            forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged bodychunk.", null, "", "Forcefield"));
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
             tameAllCreaturesKey = config.Bind(nameof(tameAllCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame creatures in\nroom"));
             clearRelOneKey = config.Bind(nameof(clearRelOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the creature which you're currently dragging.", null, "", "Clear relationships"));
@@ -114,6 +117,7 @@ namespace MouseDrag
             tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
             tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature.", null, "", ""));
 
+            forcefieldMenu = config.Bind(nameof(forcefieldMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameOneMenu = config.Bind(nameof(tameOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameAllCreaturesMenu = config.Bind(nameof(tameAllCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             clearRelOneMenu = config.Bind(nameof(clearRelOneMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -182,7 +186,7 @@ namespace MouseDrag
             curTab++;
             x = 70f;
             y = 600f;
-            sepr = 45f;
+            sepr = 42f;
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
@@ -226,6 +230,9 @@ namespace MouseDrag
 
             x += 300f;
             y = 600f;
+            AddKeyBinder(forcefieldKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragForceFieldOn");
+            AddCheckbox(forcefieldMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tameOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
             AddCheckbox(tameOneMenu, new Vector2(x - 56f, y + 3f));

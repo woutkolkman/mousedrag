@@ -23,6 +23,9 @@ namespace MouseDrag
 
             //at hibernate etc.
             On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
+
+            //forcefield
+            On.BodyChunk.Update += BodyChunkUpdateHook;
         }
 
 
@@ -167,6 +170,9 @@ namespace MouseDrag
             if (Options.tpObjectsKey?.Value != null && Input.GetKey(Options.tpObjectsKey.Value))
                 Teleport.TeleportObjects(self, self.cameras[0]?.room, false, true);
 
+            if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
+                Forcefield.ToggleForcefield(Drag.dragChunk);
+
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tame.TameCreature(self, Drag.dragChunk?.owner);
 
@@ -223,6 +229,7 @@ namespace MouseDrag
 
             Pause.UnpauseAll();
             Stun.UnstunAll();
+            Forcefield.ClearForcefields();
             if (Options.deactivateEveryRestart?.Value != false)
                 State.activated = false;
             if (Options.logDebug?.Value != false)
@@ -245,6 +252,14 @@ namespace MouseDrag
             orig(self);
             MenuManager.menu?.Destroy();
             MenuManager.menu = null;
+        }
+
+
+        //forcefield
+        static void BodyChunkUpdateHook(On.BodyChunk.orig_Update orig, BodyChunk self)
+        {
+            orig(self);
+            Forcefield.UpdateForcefield(self);
         }
     }
 }

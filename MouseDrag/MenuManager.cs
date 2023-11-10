@@ -64,7 +64,7 @@ namespace MouseDrag
                 switch (spriteName)
                 {
                     case "mousedragPause":
-                    case "mousedragPlay":       Pause.TogglePauseObject(menu.followChunk?.owner); break;
+                    case "mousedragPlay":           Pause.TogglePauseObject(menu.followChunk?.owner); break;
                     case "mousedragKill":
                         Health.KillCreature(game, menu.followChunk?.owner);
                         Health.TriggerObject(menu.followChunk?.owner);
@@ -73,14 +73,16 @@ namespace MouseDrag
                         Health.ReviveCreature(menu.followChunk?.owner);
                         Health.ResetObject(menu.followChunk?.owner);
                         break;
-                    case "mousedragDuplicate":  Duplicate.DuplicateObject(menu.followChunk?.owner); break;
-                    case "mousedragCut":        Clipboard.CutObject(menu.followChunk?.owner); break;
-                    case "mousedragCrosshair":  Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
-                    case "mousedragHeart":      Tame.TameCreature(game, menu.followChunk?.owner); break;
-                    case "mousedragUnheart":    Tame.ClearRelationships(menu.followChunk?.owner); break;
+                    case "mousedragDuplicate":      Duplicate.DuplicateObject(menu.followChunk?.owner); break;
+                    case "mousedragCut":            Clipboard.CutObject(menu.followChunk?.owner); break;
+                    case "mousedragCrosshair":      Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
+                    case "mousedragForceFieldOn":
+                    case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
+                    case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;
+                    case "mousedragUnheart":        Tame.ClearRelationships(menu.followChunk?.owner); break;
                     case "mousedragStun":
-                    case "mousedragUnstun":     Stun.ToggleStunObject(menu.followChunk?.owner); break;
-                    case "mousedragDestroy":    Destroy.DestroyObject(menu.followChunk?.owner); break;
+                    case "mousedragUnstun":         Stun.ToggleStunObject(menu.followChunk?.owner); break;
+                    case "mousedragDestroy":        Destroy.DestroyObject(menu.followChunk?.owner); break;
                 }
 
             } else {
@@ -146,6 +148,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragCut");
                 if (Options.tpWaypointCrMenu?.Value != false)
                     iconNames.Add("mousedragCrosshair");
+                if (Options.forcefieldMenu?.Value != false)
+                    iconNames.Add(Forcefield.HasForcefield(menu.followChunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn");
                 if (Options.tameOneMenu?.Value != false)
                     iconNames.Add("mousedragHeart");
                 if (Options.clearRelOneMenu?.Value != false)

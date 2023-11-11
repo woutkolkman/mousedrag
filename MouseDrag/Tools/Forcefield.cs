@@ -6,7 +6,6 @@ namespace MouseDrag
     public static class Forcefield
     {
         public static List<BodyChunk> forcefieldChunks = new List<BodyChunk>();
-        public static float minDist = 120f;
 
 
         public static void UpdateForcefield(BodyChunk bodyChunk)
@@ -23,7 +22,7 @@ namespace MouseDrag
                     if (Options.forcefieldImmunityObjects?.Value != false && !(po is Creature) && //creatures aren't immune
                         !(po is Weapon && (po as Weapon).mode == Weapon.Mode.Thrown)) //thrown weapons aren't immune
                         continue;
-                    po.PushOutOf(bodyChunk.pos, minDist, -1);
+                    po.PushOutOf(bodyChunk.pos, Options.forcefieldRadius?.Value ?? 120f, -1);
                 }
             }
         }

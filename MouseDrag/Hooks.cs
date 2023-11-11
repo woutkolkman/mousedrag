@@ -43,11 +43,10 @@ namespace MouseDrag
             MenuManager.LoadSprites();
 
             //check if BeastMaster is enabled
-            for (int i = 0; i < ModManager.ActiveMods.Count; i++)
+            for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
                 if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
-                    MenuManager.beastMasterEnabled = true;
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("RainWorldOnModsInitHook, beastMasterEnabled: " + MenuManager.beastMasterEnabled);
+                    MenuManager.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
+            }
         }
 
 

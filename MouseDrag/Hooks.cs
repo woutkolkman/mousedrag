@@ -9,6 +9,9 @@ namespace MouseDrag
             //initialize options & load sprites
             On.RainWorld.OnModsInit += RainWorldOnModsInitHook;
 
+            //after mods initialized
+            On.RainWorld.PostModsInit += RainWorldPostModsInitHook;
+
             //at tickrate
             On.RainWorldGame.Update += RainWorldGameUpdateHook;
 
@@ -41,6 +44,13 @@ namespace MouseDrag
             orig(self);
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
             MenuManager.LoadSprites();
+        }
+
+
+        //after mods initialized
+        static void RainWorldPostModsInitHook(On.RainWorld.orig_PostModsInit orig, RainWorld self)
+        {
+            orig(self);
 
             //check if BeastMaster is enabled
             for (int i = 0; i < ModManager.ActiveMods.Count; i++) {

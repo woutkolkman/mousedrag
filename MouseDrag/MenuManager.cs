@@ -76,7 +76,7 @@ namespace MouseDrag
                     case "mousedragDuplicate":      Duplicate.DuplicateObject(menu.followChunk?.owner); break;
                     case "mousedragCut":            Clipboard.CutObject(menu.followChunk?.owner); break;
                     case "mousedragCrosshair":      Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
-                    case "mousedragMove":           Control.ToggleControl(menu.followChunk?.owner); break;
+                    case "mousedragMove":           Control.ToggleControl(menu.followChunk?.owner as Creature); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
                     case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;

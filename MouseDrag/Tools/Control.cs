@@ -20,12 +20,12 @@ namespace MouseDrag
             Creature player = creature.room?.game?.Players?.Count > 0 ? creature.room.game.Players[0]?.realizedCreature : null;
 
             //stun/unstun player
-            if (player?.abstractCreature != null && player != creature) {
+            if (player?.abstractCreature != null) {
                 if (Stun.stunnedObjects.Contains(player)) {
-                    if (!ac.controlled)
+                    if (!ac.controlled || creature == player)
                         Stun.stunnedObjects.Remove(player);
                 } else {
-                    if (ac.controlled)
+                    if (ac.controlled && creature != player)
                         Stun.stunnedObjects.Add(player);
                 }
             }

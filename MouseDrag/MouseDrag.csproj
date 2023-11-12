@@ -41,6 +41,7 @@
     <Compile Include="MenuManager.cs" />
     <Compile Include="RadialMenu.cs" />
     <Compile Include="Tools\Clipboard.cs" />
+    <Compile Include="Tools\Control.cs" />
     <Compile Include="Tools\Destroy.cs" />
     <Compile Include="Tools\Drag.cs" />
     <Compile Include="Tools\Duplicate.cs" />

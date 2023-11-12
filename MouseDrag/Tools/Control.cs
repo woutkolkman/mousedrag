@@ -48,6 +48,10 @@ namespace MouseDrag
                 return;
             AbstractCreature ac = controlledCreatures[controlledCreatures.Count - 1];
 
+            //some rooms are still loading
+            if (game?.world?.loadingRooms?.Count > 0)
+                return;
+
             //creature not yet deleted
             if (ac.realizedCreature?.slatedForDeletetion == false)
                 return;
@@ -102,6 +106,9 @@ namespace MouseDrag
                 return;
             }
 
+            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+                return;
+
             //try to load room if it is not loaded
             if (ac.Room.realizedRoom == null) {
                 if (Options.logDebug?.Value != false)
@@ -110,9 +117,6 @@ namespace MouseDrag
                 if (ac.Room.realizedRoom == null)
                     return;
             }
-
-            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
-                return;
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("SwitchCamera: " + ac.ToString());

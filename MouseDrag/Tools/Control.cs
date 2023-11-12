@@ -4,20 +4,25 @@ namespace MouseDrag
 {
     public static class Control
     {
-        public static AbstractCreature lastControlled;
         public static List<AbstractCreature> controlledCreatures = new List<AbstractCreature>();
 
 
-        public static void ToggleControl(Creature creature)
+        public static void ToggleControl(RainWorldGame game, Creature creature)
         {
             AbstractCreature ac = creature?.abstractCreature;
-            if (ac == null)
+            if (ac == null || game == null)
                 return;
 
-            ac.controlled = !ac.controlled;
-            lastControlled = ac.controlled ? ac : null;
+            //if trying to safari control a player, clear all safari controls
+            if (creature is Player && !(creature as Player).isNPC) {
+                ReleaseControlAll();
+                ReturnToCreature(game);
+                return;
+            }
 
-            //keep track of controlled creatures to easily remove control later on
+            ac.controlled = !ac.controlled;
+
+            //keep track of controlled creatures to easily switch or remove control later on
             if (ac.controlled && !controlledCreatures.Contains(ac)) {
                 controlledCreatures.Add(ac);
             } else if (!ac.controlled && controlledCreatures.Contains(ac)) {
@@ -27,57 +32,36 @@ namespace MouseDrag
             //get player
             Creature player = creature.room?.game?.Players?.Count > 0 ? creature.room.game.Players[0]?.realizedCreature : null;
 
-            //stun/unstun player
-            if (player?.abstractCreature != null) {
-                if (Stun.stunnedObjects.Contains(player)) {
-                    if (!ac.controlled || creature == player)
-                        Stun.stunnedObjects.Remove(player);
-                } else {
-                    if (ac.controlled && creature != player)
-                        Stun.stunnedObjects.Add(player);
-                }
-            }
+            //stun player, because a creature will be safari controlled
+            if (ac.controlled && player?.abstractCreature != null)
+                if (!Stun.stunnedObjects.Contains(player))
+                    Stun.stunnedObjects.Add(player);
 
-            //uncontrol all
-            if (creature == player)
-                ReleaseControlAll();
-
-            //switch camera
-            Creature follow = (ac.controlled || player?.abstractCreature == null) ? creature : player;
-            SwitchCamera(follow);
+            //switch camera to next safari controlled creature
+            ReturnToCreature(game);
         }
 
 
-        public static void CreatureDeletedUpdate()
+        public static void CreatureDeletedUpdate(RainWorldGame game)
         {
-            if (lastControlled == null)
+            if (controlledCreatures.Count <= 0)
+                return;
+            AbstractCreature ac = controlledCreatures[controlledCreatures.Count - 1];
+
+            //creature not yet deleted
+            if (ac.realizedCreature?.slatedForDeletetion == false)
                 return;
 
-            if (lastControlled.realizedCreature?.slatedForDeletetion == false)
-                return;
+            //remove creature
+            controlledCreatures.Remove(ac);
 
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("CreatureDeletedUpdate, returning camera to player");
-
-            //get player
-            Creature player = lastControlled.Room?.world?.game?.Players?.Count > 0 ? lastControlled.Room.world.game.Players[0]?.realizedCreature : null;
-
-            lastControlled = null;
-
-            if (player?.abstractCreature == null)
-                return;
-
-            //unstun player
-            if (Stun.stunnedObjects.Contains(player))
-                Stun.stunnedObjects.Remove(player);
-
-            SwitchCamera(player);
+            //switch camera to next safari controlled creature
+            ReturnToCreature(game);
         }
 
 
         public static void ReleaseControlAll()
         {
-            lastControlled = null;
             foreach(AbstractCreature ac in controlledCreatures)
                 if (ac != null)
                     ac.controlled = false;
@@ -87,19 +71,51 @@ namespace MouseDrag
         }
 
 
-        private static void SwitchCamera(Creature creature)
+        private static void SwitchCamera(AbstractCreature ac)
         {
-            if (creature?.abstractCreature == null)
+            if (ac?.Room?.realizedRoom == null) {
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogWarning("SwitchCamera not switching: ac?.Room?.realizedRoom == null");
                 return;
-            if (creature?.room?.game?.cameras?.Length <= 0 || creature.room.game.cameras[0] == null)
+            }
+            if (ac?.Room?.world?.game?.cameras?.Length <= 0)
                 return;
+            RoomCamera camera = ac.Room.world.game.cameras[0];
+            if (camera == null)
+                return;
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("SwitchCamera: " + ac.realizedCreature?.ToString());
 
             //follow this creature
-            creature.room.game.cameras[0].followAbstractCreature = creature.abstractCreature;
+            camera.followAbstractCreature = ac;
 
             //if cam is in another room, switch rooms
-            if (creature.room.game.cameras[0].room != creature.room)
-                creature.room.game.cameras[0].MoveCamera(creature.room, -1);
+            if (camera.room != ac.Room.realizedRoom)
+                camera.MoveCamera(ac.Room.realizedRoom, -1);
+        }
+
+
+        private static void ReturnToCreature(RainWorldGame game)
+        {
+            //get player
+            AbstractCreature player = game?.Players?.Count > 0 ? game.Players[0] : null;
+
+            AbstractCreature ac = null;
+
+            if (controlledCreatures.Count > 0) {
+                //there are creatures left to control
+                ac = controlledCreatures[controlledCreatures.Count - 1];
+            } else {
+                //no creatures left, switch back to player
+                ac = player;
+
+                //unstun player
+                if (Stun.stunnedObjects.Contains(player?.realizedCreature))
+                    Stun.stunnedObjects.Remove(player?.realizedCreature);
+            }
+
+            SwitchCamera(ac);
         }
     }
 }

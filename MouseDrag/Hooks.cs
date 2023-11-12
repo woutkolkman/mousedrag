@@ -74,7 +74,7 @@ namespace MouseDrag
                 return;
 
             Drag.DragObject(self);
-            Control.CreatureDeletedUpdate();
+            Control.CreatureDeletedUpdate(self);
 
             //rapidly duplicate after one second feature
             if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
@@ -181,7 +181,7 @@ namespace MouseDrag
                 Teleport.TeleportObjects(self, self.cameras[0]?.room, false, true);
 
             if (Options.controlKey?.Value != null && Input.GetKeyDown(Options.controlKey.Value))
-                Control.ToggleControl(Drag.dragChunk?.owner as Creature);
+                Control.ToggleControl(self, Drag.dragChunk?.owner as Creature);
 
             if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
                 Forcefield.ToggleForcefield(Drag.dragChunk);

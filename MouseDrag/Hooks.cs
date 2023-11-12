@@ -74,6 +74,7 @@ namespace MouseDrag
                 return;
 
             Drag.DragObject(self);
+            Control.CreatureDeletedUpdate();
 
             //rapidly duplicate after one second feature
             if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {

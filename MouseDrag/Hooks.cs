@@ -101,7 +101,7 @@ namespace MouseDrag
 
             MenuManager.RawUpdate(self);
 
-            //other checks are found in Tools.UpdateActivated
+            //other checks are found in State.UpdateActivated
             if (State.activeType == Options.ActivateTypes.KeyBindPressed)
                 if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
                     State.activated = !State.activated;
@@ -243,6 +243,7 @@ namespace MouseDrag
             Pause.UnpauseAll();
             Stun.UnstunAll();
             Forcefield.ClearForcefields();
+            Control.ReleaseControlAll();
             if (Options.deactivateEveryRestart?.Value != false)
                 State.activated = false;
             if (Options.logDebug?.Value != false)

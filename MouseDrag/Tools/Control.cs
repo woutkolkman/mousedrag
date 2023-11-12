@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace MouseDrag
 {
     public static class Control
     {
         public static AbstractCreature lastControlled;
+        public static List<AbstractCreature> controlledCreatures = new List<AbstractCreature>();
 
 
         public static void ToggleControl(Creature creature)
@@ -15,6 +16,13 @@ namespace MouseDrag
 
             ac.controlled = !ac.controlled;
             lastControlled = ac.controlled ? ac : null;
+
+            //keep track of controlled creatures to easily remove control later on
+            if (ac.controlled && !controlledCreatures.Contains(ac)) {
+                controlledCreatures.Add(ac);
+            } else if (!ac.controlled && controlledCreatures.Contains(ac)) {
+                controlledCreatures.Remove(ac);
+            }
 
             //get player
             Creature player = creature.room?.game?.Players?.Count > 0 ? creature.room.game.Players[0]?.realizedCreature : null;
@@ -29,6 +37,10 @@ namespace MouseDrag
                         Stun.stunnedObjects.Add(player);
                 }
             }
+
+            //uncontrol all
+            if (creature == player)
+                ReleaseControlAll();
 
             //switch camera
             Creature follow = (ac.controlled || player?.abstractCreature == null) ? creature : player;
@@ -60,6 +72,18 @@ namespace MouseDrag
                 Stun.stunnedObjects.Remove(player);
 
             SwitchCamera(player);
+        }
+
+
+        public static void ReleaseControlAll()
+        {
+            lastControlled = null;
+            foreach(AbstractCreature ac in controlledCreatures)
+                if (ac != null)
+                    ac.controlled = false;
+            controlledCreatures.Clear();
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("ReleaseControlAll");
         }
 
 

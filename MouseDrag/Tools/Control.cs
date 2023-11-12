@@ -71,31 +71,6 @@ namespace MouseDrag
         }
 
 
-        private static void SwitchCamera(AbstractCreature ac)
-        {
-            if (ac?.Room?.realizedRoom == null) {
-                if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogWarning("SwitchCamera not switching: ac?.Room?.realizedRoom == null");
-                return;
-            }
-            if (ac?.Room?.world?.game?.cameras?.Length <= 0)
-                return;
-            RoomCamera camera = ac.Room.world.game.cameras[0];
-            if (camera == null)
-                return;
-
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("SwitchCamera: " + ac.realizedCreature?.ToString());
-
-            //follow this creature
-            camera.followAbstractCreature = ac;
-
-            //if cam is in another room, switch rooms
-            if (camera.room != ac.Room.realizedRoom)
-                camera.MoveCamera(ac.Room.realizedRoom, -1);
-        }
-
-
         private static void ReturnToCreature(RainWorldGame game)
         {
             //get player
@@ -115,7 +90,39 @@ namespace MouseDrag
                     Stun.stunnedObjects.Remove(player?.realizedCreature);
             }
 
-            SwitchCamera(ac);
+            SwitchCamera(game, ac);
+        }
+
+
+        private static void SwitchCamera(RainWorldGame game, AbstractCreature ac)
+        {
+            if (ac?.Room?.world == null) {
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogWarning("SwitchCamera failed: ac?.Room?.world is null");
+                return;
+            }
+
+            //try to load room if it is not loaded
+            if (ac.Room.realizedRoom == null) {
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogWarning("SwitchCamera, realizedRoom is null, trying to load room");
+                ac.Room.RealizeRoom(ac.Room.world, game);
+                if (ac.Room.realizedRoom == null)
+                    return;
+            }
+
+            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+                return;
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("SwitchCamera: " + ac.ToString());
+
+            //follow this creature
+            game.cameras[0].followAbstractCreature = ac;
+
+            //if cam is in another room, switch rooms
+            if (game.cameras[0].room != ac.Room.realizedRoom)
+                game.cameras[0].MoveCamera(ac.Room.realizedRoom, -1);
         }
     }
 }

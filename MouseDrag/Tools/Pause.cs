@@ -4,16 +4,16 @@ namespace MouseDrag
 {
     public static class Pause
     {
-        public static List<PhysicalObject> pausedObjects = new List<PhysicalObject>();
+        public static List<AbstractPhysicalObject> pausedObjects = new List<AbstractPhysicalObject>();
         public static bool pauseAllCreatures = false;
         public static bool pauseAllObjects = false;
 
 
         public static bool IsObjectPaused(UpdatableAndDeletable uad)
         {
-            if (!(uad is PhysicalObject))
+            if ((uad as PhysicalObject)?.abstractPhysicalObject == null)
                 return false;
-            bool shouldPause = pausedObjects.Contains(uad as PhysicalObject);
+            bool shouldPause = pausedObjects.Contains((uad as PhysicalObject).abstractPhysicalObject);
 
             if (uad is Creature) {
                 shouldPause |= pauseAllCreatures && !( //don't pause when: creature is player and player is not SlugNPC (optional)
@@ -39,9 +39,9 @@ namespace MouseDrag
 
         public static void TogglePauseObject(PhysicalObject obj)
         {
-            if (!(obj is PhysicalObject))
+            if (obj?.abstractPhysicalObject == null)
                 return;
-            PhysicalObject c = obj as PhysicalObject;
+            AbstractPhysicalObject c = obj.abstractPhysicalObject;
 
             if (pausedObjects.Contains(c)) {
                 pausedObjects.Remove(c);
@@ -68,10 +68,11 @@ namespace MouseDrag
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
-                        if (!(room.physicalObjects[i][j] is Player && //don't pause when: creature is player and player is not SlugNPC (optional)
+                        if (room.physicalObjects[i][j]?.abstractPhysicalObject != null && //null safety check
+                            !(room.physicalObjects[i][j] is Player && //don't pause when: creature is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
-                            if (!pausedObjects.Contains(room.physicalObjects[i][j]))
-                                pausedObjects.Add(room.physicalObjects[i][j]);
+                            if (!pausedObjects.Contains(room.physicalObjects[i][j].abstractPhysicalObject))
+                                pausedObjects.Add(room.physicalObjects[i][j].abstractPhysicalObject);
         }
     }
 }

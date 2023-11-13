@@ -93,7 +93,7 @@ namespace MouseDrag
             tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
             controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging. Does not work well in safari for obvious reasons.", null, "", "Control"));
 
-            forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged bodychunk.", null, "", "Forcefield"));
+            forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged bodychunk. Forcefield is lost if bodychunk is reloaded.", null, "", "Forcefield"));
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
             tameAllCreaturesKey = config.Bind(nameof(tameAllCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame creatures in\nroom"));
             clearRelOneKey = config.Bind(nameof(clearRelOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the creature which you're currently dragging.", null, "", "Clear relationships"));

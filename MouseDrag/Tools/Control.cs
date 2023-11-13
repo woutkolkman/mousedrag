@@ -30,10 +30,10 @@ namespace MouseDrag
             }
 
             //get player
-            Creature player = creature.room?.game?.Players?.Count > 0 ? creature.room.game.Players[0]?.realizedCreature : null;
+            AbstractCreature player = creature.room?.game?.Players?.Count > 0 ? creature.room.game.Players[0] : null;
 
             //stun player, because a creature will be safari controlled
-            if (ac.controlled && player?.abstractCreature != null)
+            if (ac.controlled && player != null)
                 if (!Stun.stunnedObjects.Contains(player))
                     Stun.stunnedObjects.Add(player);
 
@@ -90,8 +90,8 @@ namespace MouseDrag
                 ac = player;
 
                 //unstun player
-                if (Stun.stunnedObjects.Contains(player?.realizedCreature))
-                    Stun.stunnedObjects.Remove(player?.realizedCreature);
+                if (Stun.stunnedObjects.Contains(player))
+                    Stun.stunnedObjects.Remove(player);
             }
 
             SwitchCamera(game, ac);

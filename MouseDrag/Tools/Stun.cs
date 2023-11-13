@@ -4,7 +4,7 @@ namespace MouseDrag
 {
     public static class Stun
     {
-        public static List<PhysicalObject> stunnedObjects = new List<PhysicalObject>();
+        public static List<AbstractPhysicalObject> stunnedObjects = new List<AbstractPhysicalObject>();
         public static bool stunAll = false;
 
 
@@ -27,12 +27,12 @@ namespace MouseDrag
 
         public static bool IsObjectStunned(UpdatableAndDeletable uad)
         {
-            if (!(uad is PhysicalObject))
+            if ((uad as PhysicalObject)?.abstractPhysicalObject == null)
                 return false;
             if (!(uad is Oracle) && !(uad is Creature))
                 return false;
 
-            bool shouldStun = stunnedObjects.Contains(uad as PhysicalObject);
+            bool shouldStun = stunnedObjects.Contains((uad as PhysicalObject).abstractPhysicalObject);
 
             shouldStun |= stunAll && !( //not stunned when: creature is player and player is not SlugNPC (optional)
                 uad is Player && (Options.exceptSlugNPC?.Value != false || !(uad as Player).isNPC)
@@ -44,11 +44,11 @@ namespace MouseDrag
 
         public static void ToggleStunObject(PhysicalObject obj)
         {
-            if (!(obj is PhysicalObject))
+            if (obj?.abstractPhysicalObject == null)
                 return;
-            PhysicalObject c = obj as PhysicalObject;
-            if (!(c is Oracle) && !(c is Creature))
+            if (!(obj is Oracle) && !(obj is Creature))
                 return;
+            AbstractPhysicalObject c = (obj as PhysicalObject).abstractPhysicalObject;
 
             if (stunnedObjects.Contains(c)) {
                 stunnedObjects.Remove(c);
@@ -74,10 +74,11 @@ namespace MouseDrag
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Oracle) || (room.physicalObjects[i][j] is Creature))
-                        if (!(room.physicalObjects[i][j] is Player && //don't stun when: object is player and player is not SlugNPC (optional)
+                        if (room.physicalObjects[i][j]?.abstractPhysicalObject != null && //null safety check
+                            !(room.physicalObjects[i][j] is Player && //don't stun when: object is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
-                            if (!stunnedObjects.Contains(room.physicalObjects[i][j]))
-                                stunnedObjects.Add(room.physicalObjects[i][j]);
+                            if (!stunnedObjects.Contains(room.physicalObjects[i][j].abstractPhysicalObject))
+                                stunnedObjects.Add(room.physicalObjects[i][j].abstractPhysicalObject);
         }
     }
 }

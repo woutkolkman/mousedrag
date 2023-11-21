@@ -77,9 +77,6 @@ namespace MouseDrag
 
         private static void ReturnToCreature(RainWorldGame game)
         {
-            //get player
-            AbstractCreature player = game?.Players?.Count > 0 ? game.Players[0] : null;
-
             AbstractCreature ac = null;
 
             if (controlledCreatures.Count > 0) {
@@ -87,11 +84,11 @@ namespace MouseDrag
                 ac = controlledCreatures[controlledCreatures.Count - 1];
             } else {
                 //no creatures left, switch back to player
-                ac = player;
+                ac = game?.Players?.Count > 0 ? game.Players[0] : null;
 
                 //unstun player
-                if (Stun.stunnedObjects.Contains(player))
-                    Stun.stunnedObjects.Remove(player);
+                if (Stun.stunnedObjects.Contains(ac))
+                    Stun.stunnedObjects.Remove(ac);
             }
 
             SwitchCamera(game, ac);
@@ -100,6 +97,9 @@ namespace MouseDrag
 
         private static void SwitchCamera(RainWorldGame game, AbstractCreature ac)
         {
+            if (Options.controlChangesCamera?.Value != true)
+                return;
+
             if (ac?.Room?.world == null) {
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogWarning("SwitchCamera failed: ac?.Room?.world is null");

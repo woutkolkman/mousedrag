@@ -44,6 +44,7 @@ namespace MouseDrag
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
         public static Configurable<float> forcefieldRadius;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
+        public static Configurable<bool> controlChangesCamera;
         public static Configurable<bool> beastMasterIntegration;
         public int curTab;
 
@@ -150,6 +151,7 @@ namespace MouseDrag
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
+            controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Controlling creatures will change which creature the camera follows. Might not work with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu. Requires restart.", null, "", "BeastMaster integration"));
         }
 
@@ -308,6 +310,7 @@ namespace MouseDrag
             AddCheckbox(exitGameOverMode, new Vector2(x, y -= sepr));
             AddCheckbox(exceptSlugNPC, new Vector2(x, y -= sepr));
             AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
+            AddCheckbox(controlChangesCamera, new Vector2(x, y -= sepr));
         }
 
 

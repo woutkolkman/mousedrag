@@ -63,6 +63,11 @@ namespace MouseDrag
                 (obj as Hazer).clds = 0;
             }
 
+            if ((obj as MoreSlugcats.StowawayBug)?.AI is MoreSlugcats.StowawayBugAI) {
+                (obj as MoreSlugcats.StowawayBug).AI.activeThisCycle = true;
+                (obj as MoreSlugcats.StowawayBug).AI.behavior = MoreSlugcats.StowawayBugAI.Behavior.Idle;
+            }
+
             if (obj is Player) {
                 //try to exit game over mode
                 if (Options.exitGameOverMode?.Value != false && !(obj as Player).isNPC) {

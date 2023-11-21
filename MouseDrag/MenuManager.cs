@@ -76,7 +76,8 @@ namespace MouseDrag
                     case "mousedragDuplicate":      Duplicate.DuplicateObject(menu.followChunk?.owner); break;
                     case "mousedragCut":            Clipboard.CutObject(menu.followChunk?.owner); break;
                     case "mousedragCrosshair":      Teleport.SetWaypoint(game.cameras[0]?.room, menu.menuPos, menu.followChunk); break;
-                    case "mousedragMove":           Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
+                    case "mousedragMove":
+                    case "mousedragUnmove":         Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
                     case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;
@@ -150,7 +151,7 @@ namespace MouseDrag
                 if (Options.tpWaypointCrMenu?.Value != false)
                     iconNames.Add("mousedragCrosshair");
                 if (Options.controlMenu?.Value != false)
-                    iconNames.Add("mousedragMove");
+                    iconNames.Add((menu.followChunk?.owner?.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove");
                 if (Options.forcefieldMenu?.Value != false)
                     iconNames.Add(Forcefield.HasForcefield(menu.followChunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn");
                 if (Options.tameOneMenu?.Value != false)

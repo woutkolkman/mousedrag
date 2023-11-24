@@ -44,7 +44,7 @@ namespace MouseDrag
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
         public static Configurable<float> forcefieldRadius;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
-        public static Configurable<bool> controlChangesCamera;
+        public static Configurable<bool> controlChangesCamera, controlOnlyOne;
         public static Configurable<bool> beastMasterIntegration;
         public int curTab;
 
@@ -152,6 +152,7 @@ namespace MouseDrag
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
+            controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will switch control, so you will only control one creature at a time.", null, "", "Safari-control only one"));
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu. Requires restart.", null, "", "BeastMaster integration"));
         }
 
@@ -311,6 +312,7 @@ namespace MouseDrag
             AddCheckbox(exceptSlugNPC, new Vector2(x, y -= sepr));
             AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
             AddCheckbox(controlChangesCamera, new Vector2(x, y -= sepr));
+            AddCheckbox(controlOnlyOne, new Vector2(x, y -= sepr));
         }
 
 

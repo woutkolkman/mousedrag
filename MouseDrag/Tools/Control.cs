@@ -9,6 +9,10 @@ namespace MouseDrag
 
         public static void ToggleControl(RainWorldGame game, Creature creature)
         {
+            //without downpour DLC the safari-controls just don't work
+            if (!ModManager.MSC)
+                return;
+
             AbstractCreature ac = creature?.abstractCreature;
             if (ac == null || game == null)
                 return;
@@ -24,6 +28,8 @@ namespace MouseDrag
 
             //keep track of controlled creatures to easily switch or remove control later on
             if (ac.controlled && !controlledCreatures.Contains(ac)) {
+                if (Options.controlOnlyOne?.Value == true)
+                    ReleaseControlAll();
                 controlledCreatures.Add(ac);
             } else if (!ac.controlled && controlledCreatures.Contains(ac)) {
                 controlledCreatures.Remove(ac);

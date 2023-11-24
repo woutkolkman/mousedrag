@@ -83,9 +83,16 @@
                         return false;
                     if ((ac is AbstractCreature && !creatures) || (!(ac is AbstractCreature) && !objects))
                         return false;
-                    if (ac.realizedObject is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
-                        (Options.exceptSlugNPC?.Value != false || !(ac.realizedObject as Player).isNPC))
-                            return false;
+
+                    //don't destroy players
+                    if ((ac as AbstractCreature)?.creatureTemplate?.type == CreatureTemplate.Type.Slugcat)
+                        return false;
+
+                    //don't destroy slugpups (optional)
+                    if (Options.exceptSlugNPC?.Value != false && MoreSlugcats.MoreSlugcatsEnums.CreatureTemplateType.SlugNPC != null && 
+                        (ac as AbstractCreature)?.creatureTemplate?.type == MoreSlugcats.MoreSlugcatsEnums.CreatureTemplateType.SlugNPC)
+                        return false;
+
                     if (ac.realizedObject != null) {
                         DestroyObject(ac.realizedObject);
                     } else {

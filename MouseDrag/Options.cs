@@ -92,7 +92,7 @@ namespace MouseDrag
             duplicateOneKey = config.Bind(nameof(duplicateOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object/creature which you're currently dragging. Hold button to repeat.", null, "", "Duplicate"));
             tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
             tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
-            controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging. Requires Downpour DLC! Does not work well in safari for obvious reasons.", null, "", "Safari-control"));
+            controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging. Requires Downpour DLC. Does not work well in safari for obvious reasons.\nMake sure that the room you leave the player in does not contain any popcorn plants, as these will crash the game when returning. Alternatively you can use Jolly Co-op to keep the player room loaded to avoid crashes.", null, "", "Safari-control"));
 
             forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged bodychunk. Forcefield is lost if bodychunk is reloaded.", null, "", "Forcefield"));
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
@@ -151,7 +151,7 @@ namespace MouseDrag
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
-            controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Controlling creatures will change which creature the camera follows. Might not work with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
+            controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu. Requires restart.", null, "", "BeastMaster integration"));
         }
 

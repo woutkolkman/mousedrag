@@ -12,6 +12,7 @@ namespace MouseDrag
         private static Vector2 dampingPos; //only used when velocityDrag == true
         public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
         public static int tempStopTicks = 0; //temporarily deactivate drag
+        public static int playerNr = 0; //last dragged or selected player
 
 
         public static void DragObject(RainWorldGame game)
@@ -147,6 +148,10 @@ namespace MouseDrag
             for (int i = 0; i < room.physicalObjects.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     closestChunk(room.physicalObjects[i][j]);
+
+            //store current player nr
+            if (ret?.owner is Player && !(ret.owner as Player).isNPC)
+                playerNr = (ret.owner as Player).playerState?.playerNumber ?? 0;
 
             offset = offs;
             return ret;

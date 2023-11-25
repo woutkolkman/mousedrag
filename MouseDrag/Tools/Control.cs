@@ -4,7 +4,7 @@ namespace MouseDrag
 {
     public static class Control
     {
-        public static List<AbstractCreature> controlledCreatures = new List<AbstractCreature>();
+        public static List<KeyValuePair<AbstractCreature, int>> controlledCreatures = new List<KeyValuePair<AbstractCreature, int>>();
 
 
         public static void ToggleControl(RainWorldGame game, Creature creature)
@@ -24,26 +24,21 @@ namespace MouseDrag
                 return;
             }
 
+            //variable added in downpour that will immediately enable control, default playerNumber 0
             ac.controlled = !ac.controlled;
 
             //keep track of controlled creatures to easily switch or remove control later on
-            if (ac.controlled && !controlledCreatures.Contains(ac)) {
+            //the player that will control this creature is determined by Drag.playerNr (the last dragged player)
+            //also check CreatureSafariControlInputUpdateHook
+            if (ac.controlled && (null == ListContains(ac))) {
                 if (Options.controlOnlyOne?.Value == true)
                     ReleaseControlAll();
-                controlledCreatures.Add(ac);
-            } else if (!ac.controlled && controlledCreatures.Contains(ac)) {
-                controlledCreatures.Remove(ac);
+                controlledCreatures.Add(new KeyValuePair<AbstractCreature, int>(ac, Drag.playerNr));
+            } else if (!ac.controlled) {
+                ListRemove(ac);
             }
 
-            //get player
-            AbstractCreature player = creature.room?.game?.Players?.Count > 0 ? creature.room.game.Players[0] : null;
-
-            //stun player, because a creature will be safari controlled
-            if (ac.controlled && player != null)
-                if (!Stun.stunnedObjects.Contains(player))
-                    Stun.stunnedObjects.Add(player);
-
-            //switch camera to next safari controlled creature
+            //switch camera to next safari controlled creature, and stun/unstun players
             ReturnToCreature(game);
         }
 
@@ -52,29 +47,32 @@ namespace MouseDrag
         {
             if (controlledCreatures.Count <= 0)
                 return;
-            AbstractCreature ac = controlledCreatures[controlledCreatures.Count - 1];
 
             //some rooms are still loading
             if (game?.world?.loadingRooms?.Count > 0)
                 return;
+
+            //NOTE: stun and camera follow is only updated when the last controlled creature is deleted or control is revoked
+
+            AbstractCreature ac = ListLast();
 
             //creature not yet deleted
             if (ac.realizedCreature?.slatedForDeletetion == false)
                 return;
 
             //remove creature
-            controlledCreatures.Remove(ac);
+            ListRemove(ac);
 
-            //switch camera to next safari controlled creature
+            //switch camera to next safari controlled creature, and stun/unstun players
             ReturnToCreature(game);
         }
 
 
         public static void ReleaseControlAll()
         {
-            foreach(AbstractCreature ac in controlledCreatures)
-                if (ac != null)
-                    ac.controlled = false;
+            foreach(var pair in controlledCreatures)
+                if (pair.Key != null)
+                    pair.Key.controlled = false;
             controlledCreatures.Clear();
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ReleaseControlAll");
@@ -87,14 +85,25 @@ namespace MouseDrag
 
             if (controlledCreatures.Count > 0) {
                 //there are creatures left to control
-                ac = controlledCreatures[controlledCreatures.Count - 1];
-            } else {
-                //no creatures left, switch back to player
-                ac = game?.Players?.Count > 0 ? game.Players[0] : null;
+                ac = ListLast();
+            } else if (game?.Players != null) {
+                //no creatures left, switch back to last dragged player
+                foreach (AbstractCreature abst in game.Players)
+                    if ((abst?.state as PlayerState)?.playerNumber == Drag.playerNr)
+                        ac = abst;
+            }
 
-                //unstun player
-                if (Stun.stunnedObjects.Contains(ac))
-                    Stun.stunnedObjects.Remove(ac);
+            //refresh stunned players, game.Players array is unordered
+            if (game?.Players != null) {
+                for (int i = 0; i < game.Players.Count; i++)
+                    if (Stun.stunnedObjects.Contains(game.Players[i]))
+                        Stun.stunnedObjects.Remove(game.Players[i]);
+
+                for (int i = 0; i < controlledCreatures.Count; i++)
+                    foreach (AbstractCreature abst in game.Players)
+                        if ((abst?.state as PlayerState)?.playerNumber == controlledCreatures[i].Value &&
+                            !Stun.stunnedObjects.Contains(abst))
+                            Stun.stunnedObjects.Add(abst);
             }
 
             SwitchCamera(game, ac);
@@ -133,6 +142,36 @@ namespace MouseDrag
             //if cam is in another room, switch rooms
             if (game.cameras[0].room != ac.Room.realizedRoom)
                 game.cameras[0].MoveCamera(ac.Room.realizedRoom, -1);
+        }
+
+
+        public static AbstractCreature ListLast()
+        {
+            if (controlledCreatures.Count <= 0)
+                return null;
+            return controlledCreatures[controlledCreatures.Count - 1].Key;
+        }
+
+
+        public static KeyValuePair<AbstractCreature, int>? ListContains(AbstractCreature ac)
+        {
+            if (ac == null)
+                return null;
+            foreach (var pair in controlledCreatures)
+                if (pair.Key == ac)
+                    return pair;
+            return null;
+        }
+
+
+        public static void ListRemove(AbstractCreature ac)
+        {
+            for (int i = 0; i < controlledCreatures.Count; i++) {
+                if (controlledCreatures[i].Key == ac) {
+                    controlledCreatures.Remove(controlledCreatures[i]);
+                    break;
+                }
+            }
         }
     }
 }

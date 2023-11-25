@@ -29,6 +29,9 @@ namespace MouseDrag
 
             //forcefield
             On.BodyChunk.Update += BodyChunkUpdateHook;
+
+            //jolly co-op multiplayer safari control
+            On.Creature.SafariControlInputUpdate += CreatureSafariControlInputUpdateHook;
         }
 
 
@@ -274,6 +277,20 @@ namespace MouseDrag
         {
             orig(self);
             Forcefield.UpdateForcefield(self);
+        }
+
+
+        //jolly co-op multiplayer safari control
+        static void CreatureSafariControlInputUpdateHook(On.Creature.orig_SafariControlInputUpdate orig, Creature self, int playerIndex)
+        {
+            int pI = playerIndex;
+
+            var pair = Control.ListContains(self?.abstractCreature);
+            if (pair != null && pair.Value.Value >= 0 && //sanitize input to avoid crashes
+                pair.Value.Value < self?.room?.game?.Players?.Count)
+                pI = pair.Value.Value; //use assigned playernumber for control
+
+            orig(self, pI);
         }
     }
 }

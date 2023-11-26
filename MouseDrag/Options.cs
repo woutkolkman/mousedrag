@@ -92,7 +92,7 @@ namespace MouseDrag
             duplicateOneKey = config.Bind(nameof(duplicateOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object/creature which you're currently dragging. Hold button to repeat.", null, "", "Duplicate"));
             tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
             tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
-            controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging. Requires Downpour DLC. Does not work well in safari for obvious reasons.", null, "", "Safari-control"));
+            controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging, or to cycle between creatures if not dragging. Requires Downpour DLC. Does not work well in safari for obvious reasons.", null, "", "Safari-control"));
 
             forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged bodychunk. Forcefield is lost if bodychunk is reloaded.", null, "", "Forcefield"));
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
@@ -154,7 +154,7 @@ namespace MouseDrag
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: false, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
-            controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will switch control, so you will only control one creature at a time.", null, "", "Safari-control only one"));
+            controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: true, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will switch control, so you will only control one creature at a time. Increases game stability.", null, "", "Safari-control only one"));
             controlStunsPlayers = config.Bind(nameof(controlStunsPlayers), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.", null, "", "Safari-control stuns players"));
         }
 

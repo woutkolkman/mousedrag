@@ -46,6 +46,9 @@ namespace MouseDrag
 
         public static void Update(RainWorldGame game)
         {
+            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+                return;
+
             if (loadCreatureRoom != null) {
                 if (loadCreatureRoom.Room?.realizedRoom == null) {
                     Plugin.Logger.LogWarning("Control.Update, moving camera failed, Room?.realizedRoom is null");
@@ -63,12 +66,18 @@ namespace MouseDrag
             if (controlledCreatures.Count <= 0)
                 return;
 
-            //NOTE: stun and camera follow is only updated when the last controlled creature is deleted or control is revoked
+            //NOTE: stun and camera follow is only updated when this controlled
+            //creature (which is followed by the camera) is deleted or control is revoked
+            AbstractCreature ac = null;
+            if (ListContains(game.cameras[0].followAbstractCreature) != null)
+                ac = game.cameras[0].followAbstractCreature;
 
-            AbstractCreature ac = ListLast();
+            //probably player is viewed currently
+            if (ac == null)
+                return;
 
             //creature not yet deleted
-            if (ac?.realizedCreature?.slatedForDeletetion == false)
+            if (ac.realizedCreature?.slatedForDeletetion == false)
                 return;
 
             //remove creature
@@ -165,6 +174,41 @@ namespace MouseDrag
             //if cam is in another room, switch rooms (when room is fully loaded)
             if (game.cameras[0].room != ac.Room.realizedRoom)
                 loadCreatureRoom = ac;
+        }
+
+
+        public static void CycleCamera(RainWorldGame game)
+        {
+            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+                return;
+
+            //still moving camera
+            if (loadCreatureRoom != null)
+                return;
+
+            var pair = ListContains(game.cameras[0].followAbstractCreature);
+
+            //return to last controlled creature if camera is probably following player
+            if (pair == null) {
+                ReturnToCreature(game);
+                return;
+            }
+
+            //go back one creature if there are more before this one
+            int idx = controlledCreatures.IndexOf(pair.Value);
+            if (idx > 0) {
+                MoveCamera(game, controlledCreatures[idx - 1].Key);
+                return;
+            }
+
+            //go back to first player
+            if (game.Players?.Count > 0) {
+                MoveCamera(game, game.Players[0]);
+                return;
+            }
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogWarning("CycleCamera failed");
         }
 
 

@@ -183,8 +183,13 @@ namespace MouseDrag
             if (Options.tpObjectsKey?.Value != null && Input.GetKey(Options.tpObjectsKey.Value))
                 Teleport.TeleportObjects(self, self.cameras[0]?.room, false, true);
 
-            if (Options.controlKey?.Value != null && Input.GetKeyDown(Options.controlKey.Value))
-                Control.ToggleControl(self, Drag.dragChunk?.owner as Creature);
+            if (Options.controlKey?.Value != null && Input.GetKeyDown(Options.controlKey.Value)) {
+                if (Drag.dragChunk?.owner != null) {
+                    Control.ToggleControl(self, Drag.dragChunk?.owner as Creature);
+                } else {
+                    Control.CycleCamera(self);
+                }
+            }
 
             if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
                 Forcefield.ToggleForcefield(Drag.dragChunk);

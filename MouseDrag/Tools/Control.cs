@@ -5,6 +5,7 @@ namespace MouseDrag
     public static class Control
     {
         public static List<KeyValuePair<AbstractCreature, int>> controlledCreatures = new List<KeyValuePair<AbstractCreature, int>>();
+        public static AbstractCreature loadCreatureRoom = null;
 
 
         public static void ToggleControl(RainWorldGame game, Creature creature)
@@ -38,18 +39,28 @@ namespace MouseDrag
                 ListRemove(ac);
             }
 
-            //switch camera to next safari controlled creature, and stun/unstun players
+            //move camera to next safari controlled creature, and stun/unstun players
             ReturnToCreature(game);
         }
 
 
-        public static void CreatureDeletedUpdate(RainWorldGame game)
+        public static void Update(RainWorldGame game)
         {
-            if (controlledCreatures.Count <= 0)
-                return;
+            if (loadCreatureRoom != null) {
+                if (loadCreatureRoom.Room?.realizedRoom == null) {
+                    Plugin.Logger.LogWarning("Control.Update, moving camera failed, Room?.realizedRoom is null");
+                    loadCreatureRoom = null;
+                    return;
+                }
+                if (!loadCreatureRoom.Room.realizedRoom.ReadyForPlayer)
+                    return;
+                if (!loadCreatureRoom.Room.realizedRoom.fullyLoaded)
+                    return;
+                game.cameras[0].MoveCamera(loadCreatureRoom.Room.realizedRoom, -1);
+                loadCreatureRoom = null;
+            }
 
-            //some rooms are still loading
-            if (game?.world?.loadingRooms?.Count > 0)
+            if (controlledCreatures.Count <= 0)
                 return;
 
             //NOTE: stun and camera follow is only updated when the last controlled creature is deleted or control is revoked
@@ -57,13 +68,13 @@ namespace MouseDrag
             AbstractCreature ac = ListLast();
 
             //creature not yet deleted
-            if (ac.realizedCreature?.slatedForDeletetion == false)
+            if (ac?.realizedCreature?.slatedForDeletetion == false)
                 return;
 
             //remove creature
             ListRemove(ac);
 
-            //switch camera to next safari controlled creature, and stun/unstun players
+            //move camera to next safari controlled creature, and stun/unstun players
             ReturnToCreature(game);
         }
 
@@ -97,7 +108,7 @@ namespace MouseDrag
             }
 
             StunPlayers(game);
-            SwitchCamera(game, ac);
+            MoveCamera(game, ac);
         }
 
 
@@ -122,14 +133,14 @@ namespace MouseDrag
         }
 
 
-        private static void SwitchCamera(RainWorldGame game, AbstractCreature ac)
+        private static void MoveCamera(RainWorldGame game, AbstractCreature ac)
         {
             if (Options.controlChangesCamera?.Value != true)
                 return;
 
             if (ac?.Room?.world == null) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogWarning("SwitchCamera failed: ac?.Room?.world is null");
+                    Plugin.Logger.LogWarning("MoveCamera failed: ac?.Room?.world is null");
                 return;
             }
 
@@ -139,21 +150,21 @@ namespace MouseDrag
             //try to load room if it is not loaded
             if (ac.Room.realizedRoom == null) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogWarning("SwitchCamera, realizedRoom is null, trying to load room");
+                    Plugin.Logger.LogWarning("MoveCamera, realizedRoom is null, trying to load room");
                 ac.Room.RealizeRoom(ac.Room.world, game);
                 if (ac.Room.realizedRoom == null)
                     return;
             }
 
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("SwitchCamera: " + ac.ToString());
+                Plugin.Logger.LogDebug("MoveCamera: " + ac.ToString());
 
             //follow this creature
             game.cameras[0].followAbstractCreature = ac;
 
-            //if cam is in another room, switch rooms
+            //if cam is in another room, switch rooms (when room is fully loaded)
             if (game.cameras[0].room != ac.Room.realizedRoom)
-                game.cameras[0].MoveCamera(ac.Room.realizedRoom, -1);
+                loadCreatureRoom = ac;
         }
 
 

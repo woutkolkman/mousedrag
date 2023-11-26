@@ -296,6 +296,17 @@ namespace MouseDrag
                 pI = pair.Value.Value; //use assigned playernumber for control
 
             orig(self, pI);
+
+            if (self?.room?.game?.cameras?.Length <= 0 || self.room.game.cameras[0] == null)
+                return;
+
+            //no player input if creature is in another room, because that crashes the game
+            if (pair != null && (self.room == null || self.room.game.cameras[0].room != self.room)) {
+                self.inputWithoutDiagonals = null;
+                self.lastInputWithoutDiagonals = null;
+                self.inputWithDiagonals = null;
+                self.lastInputWithDiagonals = null;
+            }
         }
     }
 }

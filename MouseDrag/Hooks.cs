@@ -318,6 +318,16 @@ namespace MouseDrag
                 self.inputWithDiagonals = FilterInput(self.inputWithDiagonals);
                 self.lastInputWithDiagonals = FilterInput(self.lastInputWithDiagonals);
             }
+
+            //creatures that aren't followed will not move option, only valid if camera can switch to creatures
+            if (pair != null && Options.controlNoInput?.Value == true && 
+                Options.controlChangesCamera?.Value == true && 
+                self.room.game.cameras[0].followAbstractCreature != self.abstractCreature) {
+                self.inputWithoutDiagonals = null;
+                self.lastInputWithoutDiagonals = null;
+                self.inputWithDiagonals = null;
+                self.lastInputWithDiagonals = null;
+            }
         }
     }
 }

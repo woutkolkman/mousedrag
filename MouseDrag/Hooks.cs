@@ -300,7 +300,7 @@ namespace MouseDrag
             if (self?.room?.game?.cameras?.Length <= 0 || self.room.game.cameras[0] == null)
                 return;
 
-            //no player input if creature is in another room, because that crashes the game
+            //no player input if creature is in another room, because that crashes the game apparently
             //do still allow directional input so other safari players can still follow you through pipes
             if (pair != null && (self.room == null || self.room.game.cameras[0].room != self.room)) {
                 Player.InputPackage? FilterInput(Player.InputPackage? risk) {

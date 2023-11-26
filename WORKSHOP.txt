@@ -1,6 +1,7 @@
 [h3]Description[/h3]
-Tool which allows dragging creatures/objects outside sandbox-mode using your mouse, also known as the Sandbox Mouse. Includes options to pause, destroy, duplicate, tame, stun, teleport, kill & revive individual creatures, players and objects. Also allows you to activate and throw items like bombs and spears. 
+Tool which allows dragging creatures/objects outside sandbox-mode using your mouse, also known as the Sandbox Mouse. Includes options to pause, destroy, duplicate, tame, stun, teleport, safari-control, kill & revive individual creatures, players and objects. Also allows you to activate and throw items like bombs and spears. 
 Press right mouse button on an object or the background to open one of two radial menus. Hold left control (default) to only select or drag creatures, and left alt (default) for objects. 
+If you want to play multiplayer safari, you need to drag or select a player and then enable control over a creature. If there's no player to drag (safari mode) you can use Dev Console to run the following command to assign new safari-inputs to a specific player: 'invoke MouseDrag.Drag.SetPlayerNr 0' 
 
 Credits:
 - Fyre & Noir for the BeastMaster menu trianglemesh code 
@@ -14,6 +15,8 @@ Source code is here: https://github.com/woutkolkman/mousedrag
 - When cut/pasting objects, many objects will ignore the new position and spawn back on their old position in a new room. This is determined by how the object is programmed. 
 - Cut/pasting Oracles (iterator puppets) has a VERY HIGH chance of crashing the game. Also, their sprites will not be removed immediately. 
 - Pasting Garbage Worms in rooms where they cannot be might crash the game. 
+- If Jolly Co-op is enabled, the camera won't follow a safari-controlled slugpup. 
+- If returning form a safari-controlled creature, if the player room was reloaded, you cannot open your map. Jolly Co-op will keep the player's room loaded and prevent this from happening. 
 
 [h3]Reporting[/h3]
 Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 

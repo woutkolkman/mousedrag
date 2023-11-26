@@ -301,11 +301,22 @@ namespace MouseDrag
                 return;
 
             //no player input if creature is in another room, because that crashes the game
+            //do still allow directional input so other safari players can still follow you through pipes
             if (pair != null && (self.room == null || self.room.game.cameras[0].room != self.room)) {
-                self.inputWithoutDiagonals = null;
-                self.lastInputWithoutDiagonals = null;
-                self.inputWithDiagonals = null;
-                self.lastInputWithDiagonals = null;
+                Player.InputPackage? FilterInput(Player.InputPackage? risk) {
+                    if (risk == null)
+                        return null;
+                    var pip = risk.Value;
+                    pip.pckp = false;
+                    pip.jmp = false;
+                    pip.mp = false;
+                    pip.thrw = false;
+                    return pip;
+                }
+                self.inputWithoutDiagonals = FilterInput(self.inputWithoutDiagonals);
+                self.lastInputWithoutDiagonals = FilterInput(self.lastInputWithoutDiagonals);
+                self.inputWithDiagonals = FilterInput(self.inputWithDiagonals);
+                self.lastInputWithDiagonals = FilterInput(self.lastInputWithDiagonals);
             }
         }
     }

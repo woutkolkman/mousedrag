@@ -19,7 +19,7 @@ namespace MouseDrag
 
             //if trying to safari control a player, clear all safari controls
             if (creature is Player && !(creature as Player).isNPC) {
-                ReleaseControlAll();
+                ReleaseControlAll(Drag.playerNr);
                 ReturnToCreature(game);
                 return;
             }
@@ -32,7 +32,7 @@ namespace MouseDrag
             //also check CreatureSafariControlInputUpdateHook
             if (ac.controlled && (null == ListContains(ac))) {
                 if (Options.controlOnlyOne?.Value == true)
-                    ReleaseControlAll();
+                    ReleaseControlAll(Drag.playerNr);
                 controlledCreatures.Add(new KeyValuePair<AbstractCreature, int>(ac, Drag.playerNr));
             } else if (!ac.controlled) {
                 ListRemove(ac);
@@ -68,14 +68,17 @@ namespace MouseDrag
         }
 
 
-        public static void ReleaseControlAll()
+        public static void ReleaseControlAll(int playerNr = -1)
         {
-            foreach(var pair in controlledCreatures)
-                if (pair.Key != null)
+            for (int i = controlledCreatures.Count - 1; i >= 0; i--) {
+                var pair = controlledCreatures[i];
+                if (pair.Key != null && (pair.Value == playerNr || playerNr == -1)) {
                     pair.Key.controlled = false;
-            controlledCreatures.Clear();
+                    controlledCreatures.Remove(pair);
+                }
+            }
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("ReleaseControlAll");
+                Plugin.Logger.LogDebug("ReleaseControlAll" + (playerNr != -1 ? ", player " + playerNr : ""));
         }
 
 
@@ -93,20 +96,26 @@ namespace MouseDrag
                         ac = abst;
             }
 
-            //refresh stunned players, game.Players array is unordered
-            if (game?.Players != null) {
-                for (int i = 0; i < game.Players.Count; i++)
-                    if (Stun.stunnedObjects.Contains(game.Players[i]))
-                        Stun.stunnedObjects.Remove(game.Players[i]);
-
-                for (int i = 0; i < controlledCreatures.Count; i++)
-                    foreach (AbstractCreature abst in game.Players)
-                        if ((abst?.state as PlayerState)?.playerNumber == controlledCreatures[i].Value &&
-                            !Stun.stunnedObjects.Contains(abst))
-                            Stun.stunnedObjects.Add(abst);
-            }
-
+            StunPlayers(game);
             SwitchCamera(game, ac);
+        }
+
+
+        //refresh stunned players, game.Players array is unordered
+        private static void StunPlayers(RainWorldGame game)
+        {
+            if (game?.Players == null)
+                return;
+
+            for (int i = 0; i < game.Players.Count; i++)
+                if (Stun.stunnedObjects.Contains(game.Players[i]))
+                    Stun.stunnedObjects.Remove(game.Players[i]);
+
+            for (int i = 0; i < controlledCreatures.Count; i++)
+                foreach (AbstractCreature abst in game.Players)
+                    if ((abst?.state as PlayerState)?.playerNumber == controlledCreatures[i].Value &&
+                        !Stun.stunnedObjects.Contains(abst))
+                        Stun.stunnedObjects.Add(abst);
         }
 
 

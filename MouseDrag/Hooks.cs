@@ -287,7 +287,7 @@ namespace MouseDrag
 
             var pair = Control.ListContains(self?.abstractCreature);
             if (pair != null && pair.Value.Value >= 0 && //sanitize input to avoid crashes
-                pair.Value.Value < self?.room?.game?.Players?.Count)
+                pair.Value.Value < self?.room?.game?.rainWorld?.options?.controls?.Length)
                 pI = pair.Value.Value; //use assigned playernumber for control
 
             orig(self, pI);

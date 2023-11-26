@@ -13,6 +13,7 @@ namespace MouseDrag
         public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
         public static int tempStopTicks = 0; //temporarily deactivate drag
         public static int playerNr = 0; //last dragged or selected player
+        public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
 
 
         public static void DragObject(RainWorldGame game)

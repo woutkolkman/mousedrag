@@ -43,9 +43,9 @@ namespace MouseDrag
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
         public static Configurable<float> forcefieldRadius;
+        public static Configurable<bool> beastMasterIntegration;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<bool> controlChangesCamera, controlOnlyOne;
-        public static Configurable<bool> beastMasterIntegration;
         public int curTab;
 
         public enum ActivateTypes
@@ -147,13 +147,14 @@ namespace MouseDrag
             forcefieldImmunityObjects = config.Bind(nameof(forcefieldImmunityObjects), defaultValue: false, new ConfigurableInfo("Objects (except thrown weapons) are unaffected by forcefields.", null, "", "Forcefield immunity objects"));
             forcefieldRadius = config.Bind(nameof(forcefieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "Forcefield radius"));
 
+            beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu. Requires restart.", null, "", "BeastMaster integration"));
+
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: false, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
             controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will switch control, so you will only control one creature at a time.", null, "", "Safari-control only one"));
-            beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu. Requires restart.", null, "", "BeastMaster integration"));
         }
 
 

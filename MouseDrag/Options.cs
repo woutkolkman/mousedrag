@@ -45,7 +45,7 @@ namespace MouseDrag
         public static Configurable<float> forcefieldRadius;
         public static Configurable<bool> beastMasterIntegration;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
-        public static Configurable<bool> controlChangesCamera, controlOnlyOne;
+        public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlStunsPlayers;
         public int curTab;
 
         public enum ActivateTypes
@@ -155,6 +155,7 @@ namespace MouseDrag
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods.", null, "", "Safari-control changes camera"));
             controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will switch control, so you will only control one creature at a time.", null, "", "Safari-control only one"));
+            controlStunsPlayers = config.Bind(nameof(controlStunsPlayers), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.", null, "", "Safari-control stuns players"));
         }
 
 
@@ -314,6 +315,7 @@ namespace MouseDrag
             AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
             AddCheckbox(controlChangesCamera, new Vector2(x, y -= sepr));
             AddCheckbox(controlOnlyOne, new Vector2(x, y -= sepr));
+            AddCheckbox(controlStunsPlayers, new Vector2(x, y -= sepr));
         }
 
 

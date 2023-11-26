@@ -104,6 +104,9 @@ namespace MouseDrag
         //refresh stunned players, game.Players array is unordered
         private static void StunPlayers(RainWorldGame game)
         {
+            if (Options.controlStunsPlayers?.Value != true)
+                return;
+
             if (game?.Players == null)
                 return;
 

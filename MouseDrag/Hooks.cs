@@ -297,7 +297,7 @@ namespace MouseDrag
 
             orig(self, pI);
 
-            if (self?.room?.game?.cameras?.Length <= 0 || self.room.game.cameras[0] == null)
+            if (!(self?.room?.game?.cameras?.Length > 0) || self.room.game.cameras[0] == null)
                 return;
 
             //no player input if creature is in another room, because that crashes the game apparently

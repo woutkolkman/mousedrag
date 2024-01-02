@@ -46,7 +46,7 @@ namespace MouseDrag
 
         public static void Update(RainWorldGame game)
         {
-            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+            if (!(game?.cameras?.Length > 0) || game.cameras[0] == null)
                 return;
 
             if (loadCreatureRoom != null) {
@@ -153,7 +153,7 @@ namespace MouseDrag
                 return;
             }
 
-            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+            if (!(game?.cameras?.Length > 0) || game.cameras[0] == null)
                 return;
 
             //try to load room if it is not loaded
@@ -179,7 +179,7 @@ namespace MouseDrag
 
         public static void CycleCamera(RainWorldGame game)
         {
-            if (game?.cameras?.Length <= 0 || game.cameras[0] == null)
+            if (!(game?.cameras?.Length > 0) || game.cameras[0] == null)
                 return;
 
             //still moving camera

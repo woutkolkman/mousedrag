@@ -34,6 +34,13 @@ namespace MouseDragHelper
 
             Logger = base.Logger;
 
+            //check if MouseDrag is enabled
+            bool mouseDragEnabled = false;
+            for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
+                if (ModManager.ActiveMods[i].id == "maxi-mol.mousedrag")
+                    mouseDragEnabled = true;
+            }
+
             //hook for running commands
             IDetour detourRunCommand = new Hook(
                 typeof(MouseDrag.MenuManager).GetMethod("RunCommand", BindingFlags.Static | BindingFlags.Public),
@@ -72,9 +79,11 @@ namespace MouseDragHelper
         public static void MouseDragMenuManager_RunCommand_RuntimeDetour(Action<RainWorldGame, string, bool> orig, RainWorldGame game, string spriteName, bool followsObject)
         {
             orig(game, spriteName, followsObject);
-            if (spriteName == "smallKarma9-9") //temporary spritename
+            if (spriteName == "CentipedeSegment") //temporary spritename
                 Plugin.Logger.LogInfo("your code will run here");
+
             //you can reference MouseDrag.MenuManager.menu?.followChunk?.owner to get the object on which actions are performed
+            PhysicalObject obj = MouseDrag.MenuManager.menu?.followChunk?.owner;
         }
 
 
@@ -83,7 +92,7 @@ namespace MouseDragHelper
         public static List<string> MouseDragMenuManager_ReloadIconNames_RuntimeDetour(Func<bool, List<string>> orig, bool followsObject)
         {
             List<string> returnable = orig(followsObject);
-            returnable.Add("smallKarma9-9"); //temporary spritename
+            returnable.Add("CentipedeSegment"); //temporary spritename
             return returnable;
         }
     }

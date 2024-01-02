@@ -130,8 +130,10 @@ namespace MouseDrag
             if (obj is KarmaFlower)
                 (obj as KarmaFlower).bites = 1;
 
-            if (obj is JellyFish)
+            if (obj is JellyFish) {
+                (obj as JellyFish).Tossed(null);
                 (obj as JellyFish).bites = 1;
+            }
 
             if (obj is SlimeMold)
                 (obj as SlimeMold).bites = 1;

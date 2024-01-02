@@ -50,9 +50,8 @@ namespace MouseDrag
             reloadSlots |= !String.IsNullOrEmpty(pressedSprite);
 
             //run commands
-            if (String.IsNullOrEmpty(pressedSprite))
-                return;
-            RunCommand(game, pressedSprite, followsObject);
+            if (!String.IsNullOrEmpty(pressedSprite))
+                RunCommand(game, pressedSprite, followsObject);
         }
 
 
@@ -222,8 +221,12 @@ namespace MouseDrag
                 }
             }
 
-            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened))
+            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened)) {
                 shouldOpen = true;
+            } else if (beastMasterOpened && RadialMenu.menuButtonPressed()) {
+                menu?.Destroy();
+                menu = null;
+            }
         }
 
 

@@ -176,6 +176,8 @@ namespace MouseDrag
         //try throwing object in the direction of mouse movement
         public static void TryThrow(RainWorldGame game, PhysicalObject obj, bool overrideThreshold = false)
         {
+            Creature thrower = game?.FirstAlivePlayer?.realizedCreature;
+
             if (obj?.firstChunk == null)
                 return;
 
@@ -196,16 +198,32 @@ namespace MouseDrag
             if (obj is VultureGrub)
                 (obj as VultureGrub).InitiateSignalCountDown();
 
+            //jellyfish is special
+            if (obj is JellyFish) {
+                (obj as JellyFish).Tossed(thrower);
+                if (Options.throwAsPlayer?.Value != true)
+                    (obj as JellyFish).thrownBy = null;
+            }
+
+            //fireegg is special
+            if (obj is MoreSlugcats.FireEgg) {
+                (obj as MoreSlugcats.FireEgg).Tossed(thrower);
+                if (Options.throwAsPlayer?.Value != true)
+                    (obj as MoreSlugcats.FireEgg).thrownBy = null;
+            }
+
+            //hazer is special, alternative is using kill/revive options
+            if (obj is Hazer)
+                (obj as Hazer).tossed = true;
+
             if (!(obj is Weapon))
                 return;
             Weapon weapon = obj as Weapon;
             if (weapon.abstractPhysicalObject == null)
                 return;
 
-            Creature thrower = game?.FirstAlivePlayer?.realizedCreature;
-            bool deleteCreatureAfter = false;
-
             //temporary creature that receives a force on bodychunk
+            bool deleteCreatureAfter = false;
             if (thrower == null || Options.throwAsPlayer?.Value != true) {
                 CreatureTemplate ct = new CreatureTemplate(CreatureTemplate.Type.Fly, null, new List<TileTypeResistance>(), new List<TileConnectionResistance>(), new CreatureTemplate.Relationship());
                 AbstractCreature ac = new AbstractCreature(null, ct, null, weapon.abstractPhysicalObject.pos, new EntityID());

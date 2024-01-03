@@ -89,7 +89,6 @@ namespace MouseDrag
                 bool followTarget = Options.menuFollows?.Value != false || menuButtonPressed();
                 if (followTarget)
                     menuPos = followChunk.pos - followOffset;
-                crosshair.enabled = followTarget;
 
                 if (Drag.ShouldRelease(followChunk?.owner) ||
                     followChunk?.owner?.room != game.cameras[0]?.room)
@@ -267,6 +266,8 @@ namespace MouseDrag
             {
                 prevPos = curPos;
                 curPos = menu.displayPos;
+                if (menu.followChunk != null)
+                    curPos -= menu.menuPos - menu.followChunk.pos;
                 visible = menu.followChunk != null && enabled;
                 rotation += rotationSpeed;
             }
@@ -274,8 +275,7 @@ namespace MouseDrag
 
             public void InitiateSprites(FContainer container)
             {
-                for (int i = 0; i < icons.Length; i++)
-                {
+                for (int i = 0; i < icons.Length; i++) {
                     icons[i] = new FSprite("mousedragArrow", true);
                     container.AddChild(icons[i]);
                 }

@@ -11,6 +11,7 @@ namespace MouseDrag
         public float outRad = 60f;
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false;
+        private bool mouseIsWithinMenu;
         public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
         public List<Slot> slots = new List<Slot>();
         public Crosshair crosshair = null;
@@ -86,7 +87,9 @@ namespace MouseDrag
             if (followChunk != null) {
                 if (snapToChunk)
                     followOffset = new Vector2();
-                bool followTarget = Options.menuFollows?.Value != false || menuButtonPressed();
+                bool followTarget = Options.menuFollows?.Value != false; //menu follows if doing nothing
+                followTarget &= !mouseIsWithinMenu || Options.menuMoveHover?.Value == true; //menu doesn't follow if hovering over it
+                followTarget |= menuButtonPressed(); //menu always follows if button is pressed
                 if (followTarget)
                     menuPos = followChunk.pos - followOffset;
 
@@ -103,12 +106,14 @@ namespace MouseDrag
                 closed = true;
 
             float? angle = null;
-            if (angleVect != Vector2.zero && 
-                Custom.DistLess(menuPos, mouse, outRad) && 
-                !Custom.DistLess(menuPos, mouse, inRad)) {
-                angle = Custom.VecToDeg(angleVect);
-                if (angle < 0)
-                    angle += 360f;
+            mouseIsWithinMenu = false;
+            if (angleVect != Vector2.zero && Custom.DistLess(menuPos, mouse, outRad)) {
+                mouseIsWithinMenu = true;
+                if (!Custom.DistLess(menuPos, mouse, inRad)) {
+                    angle = Custom.VecToDeg(angleVect);
+                    if (angle < 0)
+                        angle += 360f;
+                }
             }
 
             int selected = -1;

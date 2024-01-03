@@ -10,7 +10,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> activateKey;
         public static Configurable<bool> menuRMB, menuMMB;
         public static Configurable<KeyCode> menuOpen;
-        public static Configurable<bool> menuFollows;
+        public static Configurable<bool> menuFollows, menuMoveHover;
         public static Configurable<bool> forceMouseVisible, undoMouseVisible, deactivateEveryRestart, logDebug;
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
@@ -66,6 +66,7 @@ namespace MouseDrag
             menuMMB = config.Bind(nameof(menuMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
             menuOpen = config.Bind(nameof(menuOpen), KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
             menuFollows = config.Bind(nameof(menuFollows), defaultValue: true, new ConfigurableInfo("If checked, menu follows the target creature/object on which actions are performed.", null, "", "Menu follows target"));
+            menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
             forceMouseVisible = config.Bind(nameof(forceMouseVisible), defaultValue: true, new ConfigurableInfo("Makes Windows mouse pointer always be visible in-game when tools are active.", null, "", "Force mouse visible"));
             undoMouseVisible = config.Bind(nameof(undoMouseVisible), defaultValue: false, new ConfigurableInfo("Hides Windows mouse pointer in-game when tools become inactive.", null, "", "Hide mouse after"));
             deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
@@ -183,6 +184,7 @@ namespace MouseDrag
             AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(menuOpen, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
+            AddCheckbox(menuMoveHover, new Vector2(x, y -= sepr));
             AddCheckbox(forceMouseVisible, new Vector2(x, y -= sepr));
             AddCheckbox(undoMouseVisible, new Vector2(x, y -= sepr));
             AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));

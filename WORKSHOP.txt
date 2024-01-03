@@ -16,7 +16,7 @@ Source code is here: https://github.com/woutkolkman/mousedrag
 - Cut/pasting Oracles (iterator puppets) has a VERY HIGH chance of crashing the game. Also, their sprites will not be removed immediately. 
 - Pasting Garbage Worms in rooms where they cannot be might crash the game. 
 - If Jolly Co-op is enabled, the camera won't follow a safari-controlled slugpup. 
-- If returning form a safari-controlled creature, if the player room was reloaded, you cannot open your map. Jolly Co-op will keep the player's room loaded and prevent this from happening. 
+- After returning from a safari-controlled creature and the player room was reloaded, you cannot open your map. Jolly Co-op will keep the player's room loaded and prevent this from happening. 
 
 [h3]Reporting[/h3]
 Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 

@@ -153,6 +153,9 @@ namespace MouseDrag
             //store current player nr
             if (ret?.owner is Player && !(ret.owner as Player).isNPC)
                 playerNr = (ret.owner as Player).playerState?.playerNumber ?? 0;
+            var pair = Control.ListContains(ret?.owner?.abstractPhysicalObject as AbstractCreature);
+            if (pair != null)
+                playerNr = pair.Value.Value;
 
             offset = offs;
             return ret;

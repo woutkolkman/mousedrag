@@ -2,6 +2,7 @@
 using RWCustom;
 using System;
 using System.Collections.Generic;
+using DevInterface;
 
 namespace MouseDrag
 {
@@ -47,6 +48,10 @@ namespace MouseDrag
                 tempStopTicks--;
                 stop = true;
             }
+
+            //devtools interface opened specifically on map page, to prevent accidental dragging
+            if (game.devUI?.activePage is MapPage)
+                stop = true;
 
             if (stop) {
                 dragChunk = null;

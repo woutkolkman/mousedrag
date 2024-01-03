@@ -87,10 +87,6 @@ namespace MouseDrag
             } else {
                 duplicateHoldCount = 0;
             }
-
-            //windows cursor visible
-            if (Options.forceMouseVisible?.Value != false)
-                Cursor.visible = true;
         }
 
 

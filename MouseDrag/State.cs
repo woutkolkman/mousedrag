@@ -23,14 +23,17 @@ namespace MouseDrag
             //if sandbox is active, always enable (because mouse drag is also active)
             activated |= (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
 
-            if (activated != prevActivated)
-            {
+            if (activated != prevActivated) {
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("CheckActivated, activated: " + activated);
                 if (!activated && Options.undoMouseVisible?.Value == true)
                     Cursor.visible = false;
             }
             prevActivated = activated;
+
+            //windows cursor visible
+            if (activated && Options.forceMouseVisible?.Value != false)
+                Cursor.visible = true;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -46,9 +47,11 @@ namespace MouseDrag
 
         public static void Update(RainWorldGame game)
         {
-            if (!(game?.cameras?.Length > 0) || game.cameras[0] == null)
+            var camera = GetCamera(game, Drag.playerNr);
+            if (camera == null)
                 return;
 
+            //wait for room to be loaded before moving camera to loadCreatureRoom
             if (loadCreatureRoom != null) {
                 if (loadCreatureRoom.Room?.realizedRoom == null) {
                     Plugin.Logger.LogWarning("Control.Update, moving camera failed, Room?.realizedRoom is null");
@@ -59,7 +62,7 @@ namespace MouseDrag
                     return;
                 if (!loadCreatureRoom.Room.realizedRoom.fullyLoaded)
                     return;
-                game.cameras[0].MoveCamera(loadCreatureRoom.Room.realizedRoom, -1);
+                camera.MoveCamera(loadCreatureRoom.Room.realizedRoom, -1);
                 loadCreatureRoom = null;
             }
 
@@ -69,8 +72,8 @@ namespace MouseDrag
             //NOTE: stun and camera follow is only updated when this controlled
             //creature (which is followed by the camera) is deleted or control is revoked
             AbstractCreature ac = null;
-            if (ListContains(game.cameras[0].followAbstractCreature) != null)
-                ac = game.cameras[0].followAbstractCreature;
+            if (ListContains(camera.followAbstractCreature) != null)
+                ac = camera.followAbstractCreature;
 
             //probably player is viewed currently
             if (ac == null)
@@ -114,6 +117,10 @@ namespace MouseDrag
                 foreach (AbstractCreature abst in game.Players)
                     if ((abst?.state as PlayerState)?.playerNumber == Drag.playerNr)
                         ac = abst;
+                if (ac == null && game.Players.Count > 0) {
+                    Plugin.Logger.LogDebug("ReturnToCreature, player not available, return to first player");
+                    ac = game.Players[0];
+                }
             }
 
             StunPlayers(game);
@@ -153,7 +160,8 @@ namespace MouseDrag
                 return;
             }
 
-            if (!(game?.cameras?.Length > 0) || game.cameras[0] == null)
+            var camera = GetCamera(game, Drag.playerNr);
+            if (camera == null)
                 return;
 
             //try to load room if it is not loaded
@@ -169,24 +177,25 @@ namespace MouseDrag
                 Plugin.Logger.LogDebug("MoveCamera: " + ac.ToString());
 
             //follow this creature
-            game.cameras[0].followAbstractCreature = ac;
+            camera.followAbstractCreature = ac;
 
             //if cam is in another room, switch rooms (when room is fully loaded)
-            if (game.cameras[0].room != ac.Room.realizedRoom)
+            if (camera.room != ac.Room.realizedRoom)
                 loadCreatureRoom = ac;
         }
 
 
         public static void CycleCamera(RainWorldGame game)
         {
-            if (!(game?.cameras?.Length > 0) || game.cameras[0] == null)
+            var camera = GetCamera(game, Drag.playerNr);
+            if (camera == null)
                 return;
 
             //still moving camera
             if (loadCreatureRoom != null)
                 return;
 
-            var pair = ListContains(game.cameras[0].followAbstractCreature);
+            var pair = ListContains(camera.followAbstractCreature);
 
             //return to last controlled creature if camera is probably following player
             if (pair == null) {
@@ -201,8 +210,15 @@ namespace MouseDrag
                 return;
             }
 
+            //go back to player
+            if (Drag.playerNr >= 0 && Drag.playerNr < game.Players?.Count) {
+                MoveCamera(game, game.Players[Drag.playerNr]);
+                return;
+            }
+
             //go back to first player
             if (game.Players?.Count > 0) {
+                Plugin.Logger.LogDebug("CycleCamera, player not available, return to first player");
                 MoveCamera(game, game.Players[0]);
                 return;
             }
@@ -239,6 +255,16 @@ namespace MouseDrag
                     break;
                 }
             }
+        }
+
+
+        public static RoomCamera GetCamera(RainWorldGame game, int playerNr = 0)
+        {
+            if (!(game?.cameras?.Length > 0))
+                return null;
+            if (playerNr >= 0 && playerNr < game.cameras.Length)
+                return game.cameras[playerNr];
+            return game.cameras[0];
         }
     }
 }

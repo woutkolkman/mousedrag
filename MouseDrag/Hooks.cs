@@ -293,12 +293,17 @@ namespace MouseDrag
 
             orig(self, pI);
 
-            if (!(self?.room?.game?.cameras?.Length > 0) || self.room.game.cameras[0] == null)
+            //if abstractcreature is not in list, no other code will run
+            if (pair == null)
+                return;
+
+            var camera = Control.GetCamera(self?.room?.game, Drag.playerNr);
+            if (camera == null)
                 return;
 
             //no player input if creature is in another room, because that crashes the game apparently
             //do still allow directional input so other safari players can still follow you through pipes
-            if (pair != null && (self.room == null || self.room.game.cameras[0].room != self.room)) {
+            if (self.room == null || camera.room != self.room) {
                 Player.InputPackage? FilterInput(Player.InputPackage? risk) {
                     if (risk == null)
                         return null;
@@ -316,7 +321,7 @@ namespace MouseDrag
             }
 
             //creatures that aren't followed will not move option, only valid if camera can switch to creatures
-            if (pair != null && Options.controlNoInput?.Value == true && 
+            if (Options.controlNoInput?.Value == true && 
                 Options.controlChangesCamera?.Value == true && 
                 self.room.game.cameras[0].followAbstractCreature != self.abstractCreature) {
                 self.inputWithoutDiagonals = null;

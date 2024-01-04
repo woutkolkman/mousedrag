@@ -162,6 +162,10 @@ namespace MouseDrag
                 return;
             }
 
+            if (ac.realizedCreature == null)
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("MoveCamera, note that realizedCreature is null");
+
             var camera = GetCamera(game, Drag.playerNr);
             if (camera == null)
                 return;

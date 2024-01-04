@@ -17,7 +17,8 @@ namespace MouseDrag
                 (uad as Oracle).stun = 40;
 
             if (uad is Creature)
-                (uad as Creature).Stun(40);
+                (uad as Creature).stun = UnityEngine.Mathf.Max((uad as Creature).stun, 40);
+//                (uad as Creature).Stun(40);
 
             //DLL cannot be stunned, so deafen those
             if (uad is DaddyLongLegs && (uad as DaddyLongLegs).deaf < 100)

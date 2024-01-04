@@ -59,7 +59,7 @@ namespace MouseDrag
             for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
                 if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
                     MenuManager.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
-                if (ModManager.ActiveMods[i].id == "com.henpemaz.splitscreencoop")
+                if (ModManager.ActiveMods[i].id == "henpemaz_splitscreencoop")
                     Drag.splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
             }
         }

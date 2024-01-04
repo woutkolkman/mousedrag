@@ -54,7 +54,8 @@ namespace MouseDrag
             //wait for room to be loaded before moving camera to loadCreatureRoom
             if (loadCreatureRoom != null) {
                 if (loadCreatureRoom.Room?.realizedRoom == null) {
-                    Plugin.Logger.LogWarning("Control.Update, moving camera failed, Room?.realizedRoom is null");
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogWarning("Control.Update, moving camera failed, Room?.realizedRoom is null");
                     loadCreatureRoom = null;
                     return;
                 }
@@ -118,7 +119,8 @@ namespace MouseDrag
                     if ((abst?.state as PlayerState)?.playerNumber == Drag.playerNr)
                         ac = abst;
                 if (ac == null && game.Players.Count > 0) {
-                    Plugin.Logger.LogDebug("ReturnToCreature, player not available, return to first player");
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogDebug("ReturnToCreature, player not available, return to first player");
                     ac = game.Players[0];
                 }
             }
@@ -218,7 +220,8 @@ namespace MouseDrag
 
             //go back to first player
             if (game.Players?.Count > 0) {
-                Plugin.Logger.LogDebug("CycleCamera, player not available, return to first player");
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("CycleCamera, player not available, return to first player");
                 MoveCamera(game, game.Players[0]);
                 return;
             }

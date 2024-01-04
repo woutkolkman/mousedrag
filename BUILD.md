@@ -10,9 +10,10 @@ Clone this repository, or download as ZIP and unzip. Open the project (.sln).
 
 Add references to files as described in the guide above:
 - [BeastMaster.dll](https://github.com/NoirCatto/BeastMaster)
+- [SplitScreen Co-op.dll](https://github.com/henpemaz/RemixMods)
 - BepInEx.dll
 - HOOKS-Assembly-CSharp.dll
-- Mono.Cecil
+- Mono.Cecil.dll
 - MonoMod.RuntimeDetour.dll
 - MonoMod.Utils.dll
 - PUBLIC-Assembly-CSharp.dll

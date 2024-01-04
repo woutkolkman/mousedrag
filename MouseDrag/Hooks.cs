@@ -55,10 +55,12 @@ namespace MouseDrag
         {
             orig(self);
 
-            //check if BeastMaster is enabled
+            //check if mods are enabled
             for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
                 if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
                     MenuManager.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "com.henpemaz.splitscreencoop")
+                    Drag.splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
             }
         }
 

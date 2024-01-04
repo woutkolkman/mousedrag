@@ -8,6 +8,7 @@ namespace MouseDrag
 {
     public static class Drag
     {
+        public static bool splitScreenCoopEnabled = false;
         public static BodyChunk dragChunk; //owner is reference to the physicalobject which is dragged
         public static Vector2 dragOffset;
         private static Vector2 dampingPos; //only used when velocityDrag == true

@@ -43,7 +43,7 @@ namespace MouseDrag
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
         public static Configurable<float> forcefieldRadius;
-        public static Configurable<bool> beastMasterIntegration;
+        public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
         public int curTab;
@@ -148,6 +148,7 @@ namespace MouseDrag
             forcefieldRadius = config.Bind(nameof(forcefieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "Forcefield radius"));
 
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu. Requires restart.", null, "", "BeastMaster integration"));
+            splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported. Requires restart.", null, "", "SplitScreen Co-op integration"));
 
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
@@ -307,6 +308,7 @@ namespace MouseDrag
 
             y = -19f; //from bottom up
             AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));
+            AddCheckbox(splitScreenCoopIntegration, new Vector2(x, y += sepr));
 
             x += 250f;
             y = 595f;

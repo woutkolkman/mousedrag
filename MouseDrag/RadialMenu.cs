@@ -13,6 +13,7 @@ namespace MouseDrag
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
         private bool mouseIsWithinMenu;
+        private RoomCamera prevRCam = null; //just to detect SplitScreen Co-op camera change
         public List<Slot> slots = new List<Slot>();
         public Crosshair crosshair = null;
         public FContainer container = null;
@@ -29,6 +30,7 @@ namespace MouseDrag
         public RadialMenu(RainWorldGame game)
         {
             var rcam = Drag.MouseCamera(game);
+            prevRCam = rcam;
             if (game != null) {
                 menuPos = Drag.MousePos(game);
                 followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
@@ -36,7 +38,9 @@ namespace MouseDrag
             }
 
             container = new FContainer();
-            Futile.stage.AddChild(container);
+            rcam?.ReturnFContainer("HUD").AddChild(container); //add to RoomCamera so SplitScreen Co-op is supported
+            if (rcam == null)
+                Futile.stage.AddChild(container); //backup / original code
             container.MoveToFront();
 
             crosshair = new Crosshair(this);
@@ -85,6 +89,12 @@ namespace MouseDrag
         public Slot Update(RainWorldGame game)
         {
             RoomCamera rcam = Drag.MouseCamera(game);
+            if (rcam != null && rcam != prevRCam) { //only occurs when SplitScreen Co-op is used
+                Plugin.Logger.LogInfo("RadialMenu.Update, camera changed");
+                container?.RemoveFromContainer();
+                rcam.ReturnFContainer("HUD").AddChild(container);
+                prevRCam = rcam;
+            }
 
             prevFollowChunk = followChunk;
             if (followChunk != null) {
@@ -160,8 +170,8 @@ namespace MouseDrag
         public void DrawSprites(float timeStacker)
         {
             for (int i = 0; i < slots.Count; i++)
-                slots[i].DrawSprites(container, timeStacker);
-            crosshair.DrawSprites(container, timeStacker);
+                slots[i].DrawSprites(timeStacker);
+            crosshair.DrawSprites(timeStacker);
             container.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
         }
 
@@ -220,7 +230,7 @@ namespace MouseDrag
             }
 
 
-            public void DrawSprites(FContainer container, float timeStacker)
+            public void DrawSprites(float timeStacker)
             {
                 float slotDegrees = (float)(360f / menu.slots.Count);
                 int slotIndex = menu.slots.IndexOf(this);
@@ -292,7 +302,7 @@ namespace MouseDrag
             }
 
 
-            public void DrawSprites(FContainer container, float timeStacker)
+            public void DrawSprites(float timeStacker)
             {
                 Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
                 float tsRotation = Mathf.Lerp(rotation - rotationSpeed, rotation, timeStacker) % 360f;

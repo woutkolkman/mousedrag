@@ -17,6 +17,7 @@ namespace MouseDrag
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
 
 
+        //get mouse position hovering over any camera
         public static Vector2 MousePos(RainWorldGame game)
         {
             RoomCamera rcam = MouseCamera(game, out Vector2 offset);
@@ -24,6 +25,7 @@ namespace MouseDrag
         }
 
 
+        //get camera where mouse is currently located
         public static RoomCamera MouseCamera(RainWorldGame game) { return MouseCamera(game, out _); }
         public static RoomCamera MouseCamera(RainWorldGame game, out Vector2 offset)
         {

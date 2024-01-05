@@ -90,7 +90,6 @@ namespace MouseDrag
         {
             RoomCamera rcam = Drag.MouseCamera(game);
             if (rcam != null && rcam != prevRCam) { //only occurs when SplitScreen Co-op is used
-                Plugin.Logger.LogInfo("RadialMenu.Update, camera changed");
                 container?.RemoveFromContainer();
                 rcam.ReturnFContainer("HUD").AddChild(container);
                 prevRCam = rcam;

@@ -72,9 +72,9 @@ namespace MouseDrag
                 //try to exit game over mode
                 if (Options.exitGameOverMode?.Value != false && !(obj as Player).isNPC) {
                     //campaign
-                    if (obj.room?.game?.cameras?.Length > 0 &&
-                        obj.room.game.cameras[0]?.hud?.textPrompt != null)
-                        obj.room.game.cameras[0].hud.textPrompt.gameOverMode = false;
+                    for (int i = 0; i < obj.room?.game?.cameras?.Length; i++)
+                        if (obj.room.game.cameras[i]?.hud?.textPrompt != null)
+                            obj.room.game.cameras[i].hud.textPrompt.gameOverMode = false;
 
                     //sandbox & challenges
                     if (obj.room?.game?.arenaOverlay != null) {

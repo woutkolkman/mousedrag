@@ -103,7 +103,7 @@ namespace MouseDrag
         public static void TeleportObjects(RainWorldGame game, Room room, bool creatures, bool objects, Vector2? pos = null)
         {
             if (pos == null)
-                pos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+                pos = Drag.MousePos(game);
 
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)

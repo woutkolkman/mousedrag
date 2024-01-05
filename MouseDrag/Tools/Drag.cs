@@ -8,7 +8,6 @@ namespace MouseDrag
 {
     public static class Drag
     {
-        public static bool splitScreenCoopEnabled = false;
         public static BodyChunk dragChunk; //owner is reference to the physicalobject which is dragged
         public static Vector2 dragOffset;
         private static Vector2 dampingPos; //only used when velocityDrag == true
@@ -31,13 +30,13 @@ namespace MouseDrag
             offset = Vector2.zero;
             if (!(game?.cameras?.Length > 0))
                 return null;
-            if (!splitScreenCoopEnabled)
+            if (!Plugin.splitScreenCoopEnabled)
                 return game.cameras[0];
             try {
                 return SplitScreenCoopCam(game, out offset);
             } catch (Exception ex) {
                 Plugin.Logger.LogError("Drag.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled - " + ex.ToString());
-                splitScreenCoopEnabled = false;
+                Plugin.splitScreenCoopEnabled = false;
             }
             return null;
         }
@@ -49,9 +48,7 @@ namespace MouseDrag
             offset = Vector2.zero;
             var mode = SplitScreenCoop.SplitScreenCoop.CurrentSplitMode;
 
-            if (!(game?.cameras?.Length > 0))
-                return null;
-
+            //it is assumed that game?.cameras?.Length is a value greater than 0
             if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.NoSplit)
                 return game.cameras[0];
 

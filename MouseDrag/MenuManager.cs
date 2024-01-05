@@ -12,7 +12,6 @@ namespace MouseDrag
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
         public static List<string> iconNames = new List<string>(){};
-        public static bool beastMasterEnabled = false;
 
 
         public static void Update(RainWorldGame game)
@@ -212,12 +211,12 @@ namespace MouseDrag
 
             //if BeastMaster is enabled and opened, don't use right mouse button
             bool beastMasterOpened = false;
-            if (beastMasterEnabled) {
+            if (Plugin.beastMasterEnabled) {
                 try {
                     beastMasterOpened = BeastMasterUsesRMB(game);
                 } catch (Exception ex) {
                     Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster state, integration is now disabled - " + ex.ToString());
-                    beastMasterEnabled = false;
+                    Plugin.beastMasterEnabled = false;
                 }
             }
 

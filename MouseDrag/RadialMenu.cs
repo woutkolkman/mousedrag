@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using UnityEngine;
 using RWCustom;
 
@@ -27,8 +28,8 @@ namespace MouseDrag
 
         public RadialMenu(RainWorldGame game)
         {
+            var rcam = Drag.MouseCamera(game);
             if (game != null) {
-                var rcam = Drag.MouseCamera(game);
                 menuPos = Drag.MousePos(game);
                 followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
                 displayPos = menuPos - rcam?.pos ?? new Vector2();

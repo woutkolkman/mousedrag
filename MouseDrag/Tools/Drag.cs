@@ -48,7 +48,8 @@ namespace MouseDrag
             offset = Vector2.zero;
             var mode = SplitScreenCoop.SplitScreenCoop.CurrentSplitMode;
 
-            //it is assumed that game?.cameras?.Length is a value greater than 0
+            if (!(game?.cameras?.Length > 0))
+                return null;
             if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.NoSplit)
                 return game.cameras[0];
 
@@ -88,6 +89,26 @@ namespace MouseDrag
                 offset = Vector2.zero;
 
             return game.cameras[mousePosToCam];
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static Vector2 SplitScreenCoopOffsetFromFistCam(RoomCamera rcam)
+        {
+            Vector2 offset = Vector2.zero;
+            var mode = SplitScreenCoop.SplitScreenCoop.CurrentSplitMode;
+            if (rcam == null || rcam.cameraNumber <= 0)
+                return offset;
+
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical ||
+                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen && rcam.cameraNumber != 2))
+                offset += new Vector2(rcam.sSize.x / 2f, 0f);
+
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal ||
+                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen && rcam.cameraNumber > 1))
+                offset += new Vector2(0f, rcam.sSize.y / 2f);
+
+            return offset;
         }
 
 

@@ -18,10 +18,86 @@ namespace MouseDrag
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
 
 
+        public static Vector2 MousePos(RainWorldGame game)
+        {
+            RoomCamera rcam = MouseCamera(game, out Vector2 offset);
+            return (Vector2)Futile.mousePosition - offset + rcam?.pos ?? new Vector2();
+        }
+
+
+        public static RoomCamera MouseCamera(RainWorldGame game) { return MouseCamera(game, out _); }
+        public static RoomCamera MouseCamera(RainWorldGame game, out Vector2 offset)
+        {
+            offset = Vector2.zero;
+            if (!(game?.cameras?.Length > 0))
+                return null;
+            if (!splitScreenCoopEnabled)
+                return game.cameras[0];
+            try {
+                return SplitScreenCoopCam(game, out offset);
+            } catch (Exception ex) {
+                Plugin.Logger.LogError("Drag.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled - " + ex.ToString());
+                splitScreenCoopEnabled = false;
+            }
+            return null;
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static RoomCamera SplitScreenCoopCam(RainWorldGame game, out Vector2 offset)
+        {
+            offset = Vector2.zero;
+            var mode = SplitScreenCoop.SplitScreenCoop.CurrentSplitMode;
+
+            if (!(game?.cameras?.Length > 0))
+                return null;
+
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.NoSplit)
+                return game.cameras[0];
+
+            int mousePosToCam = 0;
+            if (Futile.mousePosition.x > game.cameras[0].sSize.x / 2f)
+                mousePosToCam += 1;
+            if (Futile.mousePosition.y < game.cameras[0].sSize.y / 2f)
+                mousePosToCam += 2;
+
+            if (mousePosToCam % 2 == 0 &&
+                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical ||
+                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
+                offset.x -= game.cameras[0].sSize.x / 4f;
+
+            if (mousePosToCam % 2 == 1 &&
+                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical ||
+                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
+                offset.x += game.cameras[0].sSize.x / 4f;
+
+            if (mousePosToCam > 1 &&
+                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal ||
+                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
+                offset.y -= game.cameras[0].sSize.y / 4f;
+
+            if (mousePosToCam < 2 &&
+                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal ||
+                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
+                offset.y += game.cameras[0].sSize.y / 4f;
+
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal)
+                mousePosToCam /= 2;
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical)
+                mousePosToCam %= 2;
+
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen &&
+                SplitScreenCoop.SplitScreenCoop.cameraZoomed[mousePosToCam])
+                offset = Vector2.zero;
+
+            return game.cameras[mousePosToCam];
+        }
+
+
         public static void DragObject(RainWorldGame game)
         {
             bool stop = false;
-            Vector2 mousePos = (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
+            Vector2 mousePos = MousePos(game);
             dampingPos = Vector2.Lerp(dampingPos, mousePos, 0.3f);
 
             //game is paused
@@ -29,7 +105,7 @@ namespace MouseDrag
                 stop = true;
 
             //room unavailable
-            Room room = game.cameras[0]?.room;
+            Room room = MouseCamera(game)?.room;
             if (room?.physicalObjects == null)
                 stop = true;
 

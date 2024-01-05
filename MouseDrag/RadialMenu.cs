@@ -12,7 +12,6 @@ namespace MouseDrag
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
         private bool mouseIsWithinMenu;
-        public Vector2 mousePos(RainWorldGame game) => (Vector2)Futile.mousePosition + game.cameras[0]?.pos ?? new Vector2();
         public List<Slot> slots = new List<Slot>();
         public Crosshair crosshair = null;
         public FContainer container = null;
@@ -29,9 +28,10 @@ namespace MouseDrag
         public RadialMenu(RainWorldGame game)
         {
             if (game != null) {
-                menuPos = mousePos(game);
-                followChunk = Drag.GetClosestChunk(game.cameras[0]?.room, menuPos, ref followOffset);
-                displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
+                var rcam = Drag.MouseCamera(game);
+                menuPos = Drag.MousePos(game);
+                followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
+                displayPos = menuPos - rcam?.pos ?? new Vector2();
             }
 
             container = new FContainer();
@@ -83,6 +83,8 @@ namespace MouseDrag
         //return slot when icon is clicked on
         public Slot Update(RainWorldGame game)
         {
+            RoomCamera rcam = Drag.MouseCamera(game);
+
             prevFollowChunk = followChunk;
             if (followChunk != null) {
                 if (snapToChunk)
@@ -94,14 +96,14 @@ namespace MouseDrag
                     menuPos = followChunk.pos - followOffset;
 
                 if (Drag.ShouldRelease(followChunk?.owner) || 
-                    followChunk?.owner?.room != game.cameras[0]?.room)
+                    followChunk?.owner?.room != rcam?.room)
                     closed = true;
             }
             if (game.GamePaused || game.pauseUpdate || !game.processActive)
                 closed = true;
 
-            displayPos = menuPos - game.cameras[0]?.pos ?? new Vector2();
-            Vector2 mouse = mousePos(game);
+            displayPos = menuPos - rcam?.pos ?? new Vector2();
+            Vector2 mouse = Drag.MousePos(game);
             Vector2 angleVect = (mouse - menuPos).normalized; //angle of mouse from center of menu
 
             //determine if mouse is in a valid position in the menu
@@ -146,9 +148,10 @@ namespace MouseDrag
             if (Input.GetMouseButtonDown(0))
                 mousePressed = true;
             if (menuButtonPressed()) {
-                followChunk = Drag.GetClosestChunk(game.cameras[0]?.room, mousePos(game), ref followOffset);
+                Vector2 mousePos = Drag.MousePos(game);
+                followChunk = Drag.GetClosestChunk(Drag.MouseCamera(game)?.room, mousePos, ref followOffset);
                 if (followChunk == null)
-                    menuPos = mousePos(game);
+                    menuPos = mousePos;
             }
         }
 

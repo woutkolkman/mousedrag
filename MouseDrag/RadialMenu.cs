@@ -9,6 +9,7 @@ namespace MouseDrag
     {
         public bool closed = false; //signal MenuStarter to destroy this
         public Vector2 menuPos, displayPos;
+        private Vector2 prevCamPos; //only really used to compensate position with screen scrolling mods
         public float outRad = 60f;
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
@@ -111,6 +112,13 @@ namespace MouseDrag
             }
             if (game.GamePaused || game.pauseUpdate || !game.processActive)
                 closed = true;
+
+            //move menu with camera if mouse hovers & camera scrolls due to another mod
+            if (rcam != null) {
+                if (mouseIsWithinMenu && Options.menuMoveHover?.Value != true)
+                    menuPos += rcam.pos - prevCamPos;
+                prevCamPos = rcam.pos;
+            }
 
             displayPos = menuPos - rcam?.pos ?? new Vector2();
             Vector2 mouse = Drag.MousePos(game);

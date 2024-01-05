@@ -238,6 +238,7 @@ namespace MouseDrag
             Player player = BeastMaster.BeastMaster.BMSInstance.lastPlayer;
             Vector2 mid = game.rainWorld.options.ScreenSize / 2f + game.cameras[0].pos;
             float magnitude = ((Vector2)Futile.mousePosition + game.cameras[0].pos - (player != null ? player.mainBodyChunk.pos : mid)).magnitude;
+            //TODO change game.cameras[0] in this function if beastmaster is updated with SplitScreen Co-op support
 
             //return true if mouse is inside menu + extra depth around it
             return magnitude > 50f && magnitude < (float)(50 + 50 * (2 + BeastMaster.BeastMaster.BMSInstance.currentDepth));

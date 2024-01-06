@@ -83,6 +83,8 @@ namespace MouseDrag
             //creature not yet deleted
             if (ac.realizedCreature?.slatedForDeletetion == false)
                 return;
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Control.Update, creature was deleted, removing from list: " + ac.ToString());
 
             //remove creature
             ListRemove(ac);

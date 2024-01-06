@@ -273,6 +273,10 @@ namespace MouseDrag
             orig(self);
             MenuManager.menu?.Destroy();
             MenuManager.menu = null;
+
+            //prevent invisible mouse in main menu
+            if (Options.manageMouseVisibility?.Value == true)
+                Cursor.visible = true;
         }
 
 

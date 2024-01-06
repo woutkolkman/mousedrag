@@ -9,7 +9,7 @@ namespace MouseDrag
     {
         public bool closed = false; //signal MenuStarter to destroy this
         public Vector2 menuPos, displayPos;
-        private Vector2 prevCamPos; //only really used to compensate position with screen scrolling mods
+        private Vector2 prevCamPos; //only used to compensate stationary position with screen scrolling mods
         public float outRad = 60f;
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update

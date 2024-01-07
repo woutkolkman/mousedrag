@@ -21,7 +21,16 @@ namespace MouseDrag
         public static Vector2 MousePos(RainWorldGame game)
         {
             RoomCamera rcam = MouseCamera(game, out Vector2 offset);
-            return (Vector2)Futile.mousePosition - offset + rcam?.pos ?? new Vector2();
+            Vector2 pos = (Vector2)Futile.mousePosition - offset + rcam?.pos ?? new Vector2();
+            if (!Plugin.sBCameraScrollEnabled)
+                return pos;
+            try {
+                pos += SBCameraScrollExtraMouseOffset(rcam);
+            } catch (Exception ex) {
+                Plugin.Logger.LogError("Drag.MousePos exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
+                Plugin.sBCameraScrollEnabled = false;
+            }
+            return pos;
         }
 
 
@@ -91,6 +100,17 @@ namespace MouseDrag
                 offset = Vector2.zero;
 
             return game.cameras[mousePosToCam];
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static Vector2 SBCameraScrollExtraMouseOffset(RoomCamera rcam)
+        {
+            if (!SBCameraScroll.RoomCameraMod.Is_Camera_Zoom_Enabled || !(rcam?.SpriteLayers?.Length > 0))
+                return Vector2.zero;
+            Vector2 mouseOffset = (Vector2)Futile.mousePosition - (0.5f * rcam.sSize);
+            float scale = rcam.SpriteLayers[0].scale;
+            return (mouseOffset * (1f / scale)) - mouseOffset;
         }
 
 

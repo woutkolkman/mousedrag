@@ -61,6 +61,8 @@ namespace MouseDrag
                     Plugin.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "henpemaz_splitscreencoop")
                     Plugin.splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "SBCameraScroll")
+                    Plugin.sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
             }
         }
 

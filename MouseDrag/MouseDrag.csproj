@@ -82,6 +82,9 @@
     <Reference Include="PUBLIC-Assembly-CSharp">
       <HintPath>..\..\references\PUBLIC-Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="SBCameraScroll">
+      <HintPath>..\..\references\SBCameraScroll.dll</HintPath>
+    </Reference>
     <Reference Include="SplitScreen Co-op">
       <HintPath>..\..\references\SplitScreen Co-op.dll</HintPath>
     </Reference>

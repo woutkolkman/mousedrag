@@ -120,6 +120,14 @@ namespace MouseDrag
             }
 
             displayPos = menuPos - rcam?.pos ?? new Vector2();
+            if (Plugin.sBCameraScrollEnabled) {
+                try {
+                    displayPos -= Drag.SBCameraScrollExtraOffset(rcam, displayPos) / 2f;
+                } catch (Exception ex) {
+                    Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
+                    Plugin.sBCameraScrollEnabled = false;
+                }
+            }
             Vector2 mouse = Futile.mousePosition;
             Vector2 angleVect = (mouse - displayPos).normalized; //angle of mouse from center of menu
 

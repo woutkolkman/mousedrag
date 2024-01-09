@@ -123,6 +123,8 @@ namespace MouseDrag
             if (Plugin.sBCameraScrollEnabled) {
                 try {
                     displayPos -= Drag.SBCameraScrollExtraOffset(rcam, displayPos) / 2f;
+                    if (rcam?.SpriteLayers?.Length > 0)
+                        crosshair.bgScale = rcam.SpriteLayers[0].scale;
                 } catch (Exception ex) {
                     Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
                     Plugin.sBCameraScrollEnabled = false;
@@ -285,6 +287,7 @@ namespace MouseDrag
             public float radius = 16f;
             public float scale = 0.5f;
             public FSprite[] icons = new FSprite[4];
+            public float bgScale = 1f; //changed when SBCameraScroll zoom is active
 
 
             public Crosshair(RadialMenu menu)
@@ -301,7 +304,7 @@ namespace MouseDrag
                 prevPos = curPos;
                 curPos = menu.displayPos;
                 if (menu.followChunk != null)
-                    curPos -= menu.menuPos - menu.followChunk.pos;
+                    curPos -= (menu.menuPos - menu.followChunk.pos) * bgScale;
                 visible = menu.followChunk != null && enabled;
                 rotation += rotationSpeed;
             }

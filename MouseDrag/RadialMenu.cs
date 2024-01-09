@@ -8,7 +8,7 @@ namespace MouseDrag
     public class RadialMenu
     {
         public bool closed = false; //signal MenuStarter to destroy this
-        public Vector2 menuPos, displayPos;
+        public Vector2 menuPos, displayPos; //menuPos in room, displayPos on screen
         private Vector2 prevCamPos; //only used to compensate stationary position with screen scrolling mods
         public float outRad = 60f;
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
@@ -35,7 +35,6 @@ namespace MouseDrag
             if (game != null) {
                 menuPos = Drag.MousePos(game);
                 followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
-                displayPos = menuPos - rcam?.pos ?? new Vector2();
             }
 
             container = new FContainer();
@@ -121,15 +120,15 @@ namespace MouseDrag
             }
 
             displayPos = menuPos - rcam?.pos ?? new Vector2();
-            Vector2 mouse = Drag.MousePos(game);
-            Vector2 angleVect = (mouse - menuPos).normalized; //angle of mouse from center of menu
+            Vector2 mouse = Futile.mousePosition;
+            Vector2 angleVect = (mouse - displayPos).normalized; //angle of mouse from center of menu
 
             //determine if mouse is in a valid position in the menu
             float? angle = null;
             mouseIsWithinMenu = false;
-            if (angleVect != Vector2.zero && Custom.DistLess(menuPos, mouse, outRad)) {
+            if (angleVect != Vector2.zero && Custom.DistLess(displayPos, mouse, outRad)) {
                 mouseIsWithinMenu = true;
-                if (!Custom.DistLess(menuPos, mouse, inRad)) {
+                if (!Custom.DistLess(displayPos, mouse, inRad)) {
                     angle = Custom.VecToDeg(angleVect);
                     if (angle < 0)
                         angle += 360f;
@@ -155,7 +154,7 @@ namespace MouseDrag
             mousePressed = false;
 
             //close menu if mouse is pressed outside of menu
-            if (selected < 0 && !Custom.DistLess(menuPos, mouse, inRad))
+            if (selected < 0 && !Custom.DistLess(displayPos, mouse, inRad))
                 closed = true;
             return selectedSlot;
         }

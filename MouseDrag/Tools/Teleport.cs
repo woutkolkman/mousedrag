@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 namespace MouseDrag
 {
@@ -92,9 +93,19 @@ namespace MouseDrag
                     sLeaser?.CleanSpritesAndRemove();
                     return;
                 }
-                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
-                sLeaser.sprites[0].x = tsPos.x - camPos.x;
-                sLeaser.sprites[0].y = tsPos.y - camPos.y;
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker) - camPos;
+
+                if (Integration.sBCameraScrollEnabled) {
+                    try {
+                        tsPos -= Integration.SBCameraScrollExtraOffset(rCam, tsPos, out float scale) / (1f / scale);
+                    } catch (Exception ex) {
+                        Plugin.Logger.LogError("Teleport.DrawSprites exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
+                        Integration.sBCameraScrollEnabled = false;
+                    }
+                }
+
+                sLeaser.sprites[0].x = tsPos.x;
+                sLeaser.sprites[0].y = tsPos.y;
             }
 
 

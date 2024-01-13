@@ -88,7 +88,7 @@ namespace MouseDrag
         //return slot when icon is clicked on
         public Slot Update(RainWorldGame game)
         {
-            RoomCamera rcam = Drag.MouseCamera(game);
+            RoomCamera rcam = Drag.MouseCamera(game, out Vector2 splitScreenOffset);
             if (rcam != null && rcam != prevRCam) { //only occurs when SplitScreen Co-op is used
                 container?.RemoveFromContainer();
                 rcam.ReturnFContainer("HUD").AddChild(container);
@@ -129,7 +129,7 @@ namespace MouseDrag
                     Integration.sBCameraScrollEnabled = false;
                 }
             }
-            Vector2 mouse = Futile.mousePosition;
+            Vector2 mouse = (Vector2)Futile.mousePosition - splitScreenOffset;
             Vector2 angleVect = (mouse - displayPos).normalized; //angle of mouse from center of menu
 
             //determine if mouse is in a valid position in the menu

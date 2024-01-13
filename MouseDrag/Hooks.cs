@@ -295,6 +295,7 @@ namespace MouseDrag
         {
             int pI = playerIndex;
 
+            //if safari was activated via this mod, the creature was stored in this list
             var pair = Control.ListContains(self?.abstractCreature);
             if (pair != null && pair.Value.Value >= 0 && //sanitize input to avoid crashes
                 pair.Value.Value < self?.room?.game?.rainWorld?.options?.controls?.Length)
@@ -303,16 +304,23 @@ namespace MouseDrag
             orig(self, pI);
 
             //if abstractcreature is not in list, no other code will run
-            if (pair == null)
+            if (pair == null || self?.abstractCreature == null)
                 return;
 
-            var camera = Control.GetCamera(self?.room?.game, Drag.playerNr);
-            if (camera == null)
-                return;
+            //check if any camera is currently in the same room as this creature
+            bool isInCamRoom = false;
+            bool isFollowed = false;
+            for (int i = 0; i < self.room?.game?.cameras?.Length; i++) {
+                RoomCamera camera = self.room.game.cameras[i];
+                if (camera?.room == self.room)
+                    isInCamRoom = true;
+                if (camera?.followAbstractCreature == self.abstractCreature)
+                    isFollowed = true;
+            }
 
             //no player input if creature is in another room, because that crashes the game apparently
             //do still allow directional input so other safari players can still follow you through pipes
-            if (self.room == null || camera.room != self.room) {
+            if (!isInCamRoom || self.room == null) {
                 Player.InputPackage? FilterInput(Player.InputPackage? risk) {
                     if (risk == null)
                         return null;
@@ -332,7 +340,7 @@ namespace MouseDrag
             //creatures that aren't followed will not move option, only valid if camera can switch to creatures
             if (Options.controlNoInput?.Value == true && 
                 Options.controlChangesCamera?.Value == true && 
-                camera.followAbstractCreature != self.abstractCreature) {
+                !isFollowed) {
                 self.inputWithoutDiagonals = null;
                 self.lastInputWithoutDiagonals = null;
                 self.inputWithDiagonals = null;

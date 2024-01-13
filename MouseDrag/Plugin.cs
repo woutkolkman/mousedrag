@@ -21,11 +21,6 @@ namespace MouseDrag
 
         private static bool isEnabled = false;
 
-        //integration
-        public static bool beastMasterEnabled = false;
-        public static bool splitScreenCoopEnabled = false;
-        public static bool sBCameraScrollEnabled = false;
-
 
         //called when mod is loaded, subscribe functions to methods of the game
         public void OnEnable()

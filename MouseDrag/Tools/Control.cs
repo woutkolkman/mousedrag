@@ -219,7 +219,7 @@ namespace MouseDrag
             }
 
             //reasign current playerNr based on mouse position in SplitScreen Co-op
-            if (Plugin.splitScreenCoopEnabled)
+            if (Integration.splitScreenCoopEnabled)
                 if (camera.cameraNumber >= 0 && camera.cameraNumber < game.Players?.Count)
                     Drag.playerNr = camera.cameraNumber;
 
@@ -276,7 +276,7 @@ namespace MouseDrag
         {
             if (!(game?.cameras?.Length > 0))
                 return null;
-            if (Plugin.splitScreenCoopEnabled)
+            if (Integration.splitScreenCoopEnabled)
                 return Drag.MouseCamera(game);
             if (playerNr >= 0 && playerNr < game.cameras.Length)
                 return game.cameras[playerNr];

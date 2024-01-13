@@ -58,11 +58,11 @@ namespace MouseDrag
             //check if mods are enabled
             for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
                 if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
-                    Plugin.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
+                    Integration.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "henpemaz_splitscreencoop")
-                    Plugin.splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
+                    Integration.splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "SBCameraScroll")
-                    Plugin.sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
+                    Integration.sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
             }
         }
 

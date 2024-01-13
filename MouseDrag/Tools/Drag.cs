@@ -22,13 +22,13 @@ namespace MouseDrag
         {
             RoomCamera rcam = MouseCamera(game, out Vector2 offset);
             Vector2 pos = (Vector2)Futile.mousePosition - offset + rcam?.pos ?? new Vector2();
-            if (!Plugin.sBCameraScrollEnabled)
+            if (!Integration.sBCameraScrollEnabled)
                 return pos;
             try {
-                pos += SBCameraScrollExtraOffset(rcam, Futile.mousePosition, out _);
+                pos += Integration.SBCameraScrollExtraOffset(rcam, Futile.mousePosition, out _);
             } catch (Exception ex) {
                 Plugin.Logger.LogError("Drag.MousePos exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
-                Plugin.sBCameraScrollEnabled = false;
+                Integration.sBCameraScrollEnabled = false;
             }
             return pos;
         }
@@ -41,77 +41,15 @@ namespace MouseDrag
             offset = Vector2.zero;
             if (!(game?.cameras?.Length > 0))
                 return null;
-            if (!Plugin.splitScreenCoopEnabled)
+            if (!Integration.splitScreenCoopEnabled)
                 return game.cameras[0];
             try {
-                return SplitScreenCoopCam(game, out offset);
+                return Integration.SplitScreenCoopCam(game, out offset);
             } catch (Exception ex) {
                 Plugin.Logger.LogError("Drag.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled - " + ex.ToString());
-                Plugin.splitScreenCoopEnabled = false;
+                Integration.splitScreenCoopEnabled = false;
             }
             return null;
-        }
-
-
-        //use in try/catch so missing assembly does not crash the game
-        public static RoomCamera SplitScreenCoopCam(RainWorldGame game, out Vector2 offset)
-        {
-            offset = Vector2.zero;
-            var mode = SplitScreenCoop.SplitScreenCoop.CurrentSplitMode;
-
-            if (!(game?.cameras?.Length > 0))
-                return null;
-            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.NoSplit)
-                return game.cameras[0];
-
-            int mousePosToCam = 0;
-            if (Futile.mousePosition.x > game.cameras[0].sSize.x / 2f)
-                mousePosToCam += 1;
-            if (Futile.mousePosition.y < game.cameras[0].sSize.y / 2f)
-                mousePosToCam += 2;
-
-            if (mousePosToCam % 2 == 0 &&
-                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical ||
-                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
-                offset.x -= game.cameras[0].sSize.x / 4f;
-
-            if (mousePosToCam % 2 == 1 &&
-                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical ||
-                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
-                offset.x += game.cameras[0].sSize.x / 4f;
-
-            if (mousePosToCam > 1 &&
-                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal ||
-                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
-                offset.y -= game.cameras[0].sSize.y / 4f;
-
-            if (mousePosToCam < 2 &&
-                (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal ||
-                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen))
-                offset.y += game.cameras[0].sSize.y / 4f;
-
-            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal)
-                mousePosToCam /= 2;
-            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical)
-                mousePosToCam %= 2;
-
-            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen &&
-                SplitScreenCoop.SplitScreenCoop.cameraZoomed[mousePosToCam])
-                offset = Vector2.zero;
-
-            return game.cameras[mousePosToCam];
-        }
-
-
-        //use in try/catch so missing assembly does not crash the game
-        public static Vector2 SBCameraScrollExtraOffset(RoomCamera rcam, Vector2 pos, out float scale)
-        {
-            scale = 1f;
-            if (!SBCameraScroll.RoomCameraMod.Is_Camera_Zoom_Enabled || !(rcam?.SpriteLayers?.Length > 0))
-                return Vector2.zero;
-            Vector2 offset = pos - (0.5f * rcam.sSize);
-            scale = rcam.SpriteLayers[0].scale;
-            return (offset * (1f / scale)) - offset;
         }
 
 

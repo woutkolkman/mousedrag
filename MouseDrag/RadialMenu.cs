@@ -120,13 +120,13 @@ namespace MouseDrag
             }
 
             displayPos = menuPos - rcam?.pos ?? new Vector2();
-            if (Plugin.sBCameraScrollEnabled) {
+            if (Integration.sBCameraScrollEnabled) {
                 try {
-                    displayPos -= Drag.SBCameraScrollExtraOffset(rcam, displayPos, out float scale) / (1f / scale);
+                    displayPos -= Integration.SBCameraScrollExtraOffset(rcam, displayPos, out float scale) / (1f / scale);
                     crosshair.bgScale = scale;
                 } catch (Exception ex) {
                     Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
-                    Plugin.sBCameraScrollEnabled = false;
+                    Integration.sBCameraScrollEnabled = false;
                 }
             }
             Vector2 mouse = Futile.mousePosition;

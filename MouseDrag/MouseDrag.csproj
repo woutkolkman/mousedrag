@@ -38,6 +38,7 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Integration.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="RadialMenu.cs" />
     <Compile Include="Tools\Clipboard.cs" />

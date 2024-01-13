@@ -213,12 +213,12 @@ namespace MouseDrag
 
             //if BeastMaster is enabled and opened, don't use right mouse button
             bool beastMasterOpened = false;
-            if (Plugin.beastMasterEnabled) {
+            if (Integration.beastMasterEnabled) {
                 try {
-                    beastMasterOpened = BeastMasterUsesRMB(game);
+                    beastMasterOpened = Integration.BeastMasterUsesRMB(game);
                 } catch (Exception ex) {
                     Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster state, integration is now disabled - " + ex.ToString());
-                    Plugin.beastMasterEnabled = false;
+                    Integration.beastMasterEnabled = false;
                 }
             }
 
@@ -228,22 +228,6 @@ namespace MouseDrag
                 menu?.Destroy();
                 menu = null;
             }
-        }
-
-
-        //use in try/catch so missing assembly does not crash the game
-        public static bool BeastMasterUsesRMB(RainWorldGame game) {
-            if (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen != true)
-                return false;
-
-            //check if mouse is far enough from BeastMaster menu at player or center of screen
-            Player player = BeastMaster.BeastMaster.BMSInstance.lastPlayer;
-            Vector2 mid = game.rainWorld.options.ScreenSize / 2f + game.cameras[0].pos;
-            float magnitude = ((Vector2)Futile.mousePosition + game.cameras[0].pos - (player != null ? player.mainBodyChunk.pos : mid)).magnitude;
-            //TODO change game.cameras[0] in this function if beastmaster is updated with SplitScreen Co-op support
-
-            //return true if mouse is inside menu + extra depth around it
-            return magnitude > 50f && magnitude < (float)(50 + 50 * (2 + BeastMaster.BeastMaster.BMSInstance.currentDepth));
         }
 
 

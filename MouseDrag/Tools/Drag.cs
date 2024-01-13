@@ -25,7 +25,7 @@ namespace MouseDrag
             if (!Plugin.sBCameraScrollEnabled)
                 return pos;
             try {
-                pos += SBCameraScrollExtraOffset(rcam, Futile.mousePosition);
+                pos += SBCameraScrollExtraOffset(rcam, Futile.mousePosition, out _);
             } catch (Exception ex) {
                 Plugin.Logger.LogError("Drag.MousePos exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
                 Plugin.sBCameraScrollEnabled = false;
@@ -104,12 +104,13 @@ namespace MouseDrag
 
 
         //use in try/catch so missing assembly does not crash the game
-        public static Vector2 SBCameraScrollExtraOffset(RoomCamera rcam, Vector2 pos)
+        public static Vector2 SBCameraScrollExtraOffset(RoomCamera rcam, Vector2 pos, out float scale)
         {
+            scale = 1f;
             if (!SBCameraScroll.RoomCameraMod.Is_Camera_Zoom_Enabled || !(rcam?.SpriteLayers?.Length > 0))
                 return Vector2.zero;
             Vector2 offset = pos - (0.5f * rcam.sSize);
-            float scale = rcam.SpriteLayers[0].scale;
+            scale = rcam.SpriteLayers[0].scale;
             return (offset * (1f / scale)) - offset;
         }
 

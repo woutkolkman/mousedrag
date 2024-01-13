@@ -122,9 +122,8 @@ namespace MouseDrag
             displayPos = menuPos - rcam?.pos ?? new Vector2();
             if (Plugin.sBCameraScrollEnabled) {
                 try {
-                    displayPos -= Drag.SBCameraScrollExtraOffset(rcam, displayPos) / 2f;
-                    if (rcam?.SpriteLayers?.Length > 0)
-                        crosshair.bgScale = rcam.SpriteLayers[0].scale;
+                    displayPos -= Drag.SBCameraScrollExtraOffset(rcam, displayPos, out float scale) / (1f / scale);
+                    crosshair.bgScale = scale;
                 } catch (Exception ex) {
                     Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
                     Plugin.sBCameraScrollEnabled = false;

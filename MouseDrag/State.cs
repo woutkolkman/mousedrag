@@ -38,6 +38,10 @@ namespace MouseDrag
                 mouseStationaryCount++;
             if (mouseStationaryCount == mouseVisibilityTicks)
                 Cursor.visible = false;
+
+            //forced visibility
+            if (Options.forceMouseVisibility?.Value == true)
+                Cursor.visible = true;
         }
     }
 }

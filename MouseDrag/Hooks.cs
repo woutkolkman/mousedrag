@@ -124,6 +124,9 @@ namespace MouseDrag
                 Drag.tempStopTicks = 20;
             }
 
+            if (Teleport.UpdateTeleportObject(self))
+                Drag.dragChunk = null;
+
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))
                 Pause.TogglePauseObject(Drag.dragChunk?.owner);
 

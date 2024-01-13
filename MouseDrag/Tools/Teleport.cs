@@ -23,10 +23,23 @@ namespace MouseDrag
 
 
         //returns true if object is teleported
-        public static bool UpdateTeleportObject(PhysicalObject obj)
+        public static bool UpdateTeleportObject(RainWorldGame game)
         {
-            //no waypoint is assigned, or obj is not valid
-            if (obj?.room == null || crosshair?.room == null)
+            //no waypoint is assigned
+            if (crosshair?.room == null)
+                return false;
+
+            //only run when LMB is pressed
+            if (!Input.GetMouseButtonDown(0))
+                return false;
+
+            var rcam = Drag.MouseCamera(game);
+            Vector2 offs = Vector2.zero;
+            BodyChunk chunk = Drag.GetClosestChunk(rcam?.room, Drag.MousePos(game), ref offs);
+            PhysicalObject obj = chunk?.owner;
+
+            //obj is not valid
+            if (obj?.room == null)
                 return false;
 
             //remove waypoint if dragging in another room

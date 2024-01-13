@@ -102,8 +102,7 @@ namespace MouseDrag
             if (dragChunk == null)
                 return;
 
-            if (ShouldRelease(dragChunk.owner) || 
-                Teleport.UpdateTeleportObject(dragChunk.owner)) {
+            if (ShouldRelease(dragChunk.owner)) {
                 dragChunk = null;
                 return;
             }

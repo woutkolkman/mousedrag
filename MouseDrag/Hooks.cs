@@ -54,16 +54,7 @@ namespace MouseDrag
         static void RainWorldPostModsInitHook(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
             orig(self);
-
-            //check if mods are enabled
-            for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
-                if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
-                    Integration.beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
-                if (ModManager.ActiveMods[i].id == "henpemaz_splitscreencoop")
-                    Integration.splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
-                if (ModManager.ActiveMods[i].id == "SBCameraScroll")
-                    Integration.sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
-            }
+            Integration.RefreshActiveMods();
         }
 
 

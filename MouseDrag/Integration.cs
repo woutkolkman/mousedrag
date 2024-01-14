@@ -9,6 +9,20 @@ namespace MouseDrag
         public static bool sBCameraScrollEnabled = false;
 
 
+        public static void RefreshActiveMods()
+        {
+            //check if mods are enabled
+            for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
+                if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")
+                    beastMasterEnabled = Options.beastMasterIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "henpemaz_splitscreencoop")
+                    splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "SBCameraScroll")
+                    sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
+            }
+        }
+
+
         //use in try/catch so missing assembly does not crash the game
         public static RoomCamera SplitScreenCoopCam(RainWorldGame game, out Vector2 offset)
         {

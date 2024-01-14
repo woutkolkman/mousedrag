@@ -125,9 +125,10 @@ namespace MouseDrag
                 try {
                     displayPos -= Integration.SBCameraScrollExtraOffset(rcam, displayPos, out float scale) / (1f / scale);
                     crosshair.bgScale = scale;
-                } catch (Exception ex) {
-                    Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
+                } catch {
+                    Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled");
                     Integration.sBCameraScrollEnabled = false;
+                    throw; //throw original exception while preserving stack trace
                 }
             }
             Vector2 mouse = (Vector2)Futile.mousePosition - splitScreenOffset;

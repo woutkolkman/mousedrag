@@ -26,9 +26,10 @@ namespace MouseDrag
                 return pos;
             try {
                 pos += Integration.SBCameraScrollExtraOffset(rcam, Futile.mousePosition, out _);
-            } catch (Exception ex) {
-                Plugin.Logger.LogError("Drag.MousePos exception while reading SBCameraScroll, integration is now disabled - " + ex.ToString());
+            } catch {
+                Plugin.Logger.LogError("Drag.MousePos exception while reading SBCameraScroll, integration is now disabled");
                 Integration.sBCameraScrollEnabled = false;
+                throw; //throw original exception while preserving stack trace
             }
             return pos;
         }
@@ -45,11 +46,11 @@ namespace MouseDrag
                 return game.cameras[0];
             try {
                 return Integration.SplitScreenCoopCam(game, out offset);
-            } catch (Exception ex) {
-                Plugin.Logger.LogError("Drag.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled - " + ex.ToString());
+            } catch {
+                Plugin.Logger.LogError("Drag.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled");
                 Integration.splitScreenCoopEnabled = false;
+                throw; //throw original exception while preserving stack trace
             }
-            return null;
         }
 
 

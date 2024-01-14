@@ -216,9 +216,10 @@ namespace MouseDrag
             if (Integration.beastMasterEnabled) {
                 try {
                     beastMasterOpened = Integration.BeastMasterUsesRMB(game);
-                } catch (Exception ex) {
-                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster state, integration is now disabled - " + ex.ToString());
+                } catch {
+                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading BeastMaster state, integration is now disabled");
                     Integration.beastMasterEnabled = false;
+                    throw; //throw original exception while preserving stack trace
                 }
             }
 
@@ -242,7 +243,7 @@ namespace MouseDrag
             try {
                 Futile.atlasManager.LoadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");
             } catch (Exception ex) {
-                Plugin.Logger.LogError("LoadSprites exception: " + ex.ToString());
+                Plugin.Logger.LogError("MenuManager.LoadSprites exception: " + ex.ToString());
             }
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("LoadSprites called");

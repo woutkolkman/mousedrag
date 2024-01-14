@@ -35,6 +35,7 @@ namespace MouseDrag
             if (game != null) {
                 menuPos = Drag.MousePos(game);
                 followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
+                displayPos = menuPos - rcam?.pos ?? new Vector2();
             }
 
             container = new FContainer();

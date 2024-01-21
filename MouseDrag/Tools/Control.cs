@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace MouseDrag
 {
@@ -7,8 +6,8 @@ namespace MouseDrag
     {
         //this code works in conjunction with CreatureSafariControlInputUpdateHook
         //TODO this class kind of needs to be rewritten to fully support SplitScreen Co-op and multiple cameras
-        //TODO run Update() & manage loadCreatureRoom for all cameras simultaneously instead of only the camera 
-        //where the mouse is currently located, so when creatures die, camera properly goes to the next creature
+        //TODO run Update() & manage loadCreatureRoom for all cameras simultaneously instead of only the camera where 
+        //the mouse is currently located, so when creatures get destroyed, camera properly goes to the next creature
 
 
         public static List<KeyValuePair<AbstractCreature, int>> controlledCreatures = new List<KeyValuePair<AbstractCreature, int>>();

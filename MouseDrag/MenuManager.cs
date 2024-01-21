@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using System;
 using System.IO;
 
@@ -76,6 +75,9 @@ namespace MouseDrag
                     case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, menu.followChunk); break;
                     case "mousedragMove":
                     case "mousedragUnmove":         Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
+                    case "mousedragGravityOff":
+                    case "mousedragGravityOn":
+                    case "mousedragGravityReset":   Gravity.CycleObjectGravity(menu.followChunk?.owner); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
                     case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;
@@ -152,6 +154,16 @@ namespace MouseDrag
                     iconNames.Add("mousedragCrosshair");
                 if (Options.controlMenu?.Value != false)
                     iconNames.Add((menu.followChunk?.owner?.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove");
+                if (Options.gravityMenu?.Value != false) {
+                    var pair = Gravity.ListContains(menu.followChunk?.owner?.abstractPhysicalObject);
+                    if (pair == null) {
+                        iconNames.Add("mousedragGravityOff");
+                    } else if (pair.Value.Value == Gravity.GravityTypes.Off) {
+                        iconNames.Add("mousedragGravityOn");
+                    } else if (pair.Value.Value == Gravity.GravityTypes.On) {
+                        iconNames.Add("mousedragGravityReset");
+                    }
+                }
                 if (Options.forcefieldMenu?.Value != false)
                     iconNames.Add(Forcefield.HasForcefield(menu.followChunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn");
                 if (Options.tameOneMenu?.Value != false)

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using MonoMod.RuntimeDetour;
+using System.Reflection;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -32,6 +34,26 @@ namespace MouseDrag
 
             //jolly co-op multiplayer safari control
             On.Creature.SafariControlInputUpdate += CreatureSafariControlInputUpdateHook;
+
+            //gravity
+            Hook PhysicalObjectEffectiveRoomGravityHook = new Hook(
+                typeof(PhysicalObject).GetProperty("EffectiveRoomGravity", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetGetMethod(),
+                typeof(Hooks).GetMethod("PhysicalObject_EffectiveRoomGravity_get", BindingFlags.Static | BindingFlags.Public)
+            );
+            if (PhysicalObjectEffectiveRoomGravityHook?.IsValid != true || PhysicalObjectEffectiveRoomGravityHook?.IsApplied != true)
+                Plugin.Logger.LogError("PhysicalObjectEffectiveRoomGravityHook not valid");
+            Hook PlayerEffectiveRoomGravityHook = new Hook(
+                typeof(Player).GetProperty("EffectiveRoomGravity", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetGetMethod(),
+                typeof(Hooks).GetMethod("Player_EffectiveRoomGravity_get", BindingFlags.Static | BindingFlags.Public)
+            );
+            if (PlayerEffectiveRoomGravityHook?.IsValid != true || PlayerEffectiveRoomGravityHook?.IsApplied != true)
+                Plugin.Logger.LogError("PlayerEffectiveRoomGravityHook not valid");
+            Hook PhysicalObjectGravityHook = new Hook(
+                typeof(PhysicalObject).GetProperty("gravity", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetGetMethod(),
+                typeof(Hooks).GetMethod("PhysicalObject_gravity_get", BindingFlags.Static | BindingFlags.Public)
+            );
+            if (PhysicalObjectGravityHook?.IsValid != true || PhysicalObjectGravityHook?.IsApplied != true)
+                Plugin.Logger.LogError("PhysicalObjectGravityHook not valid");
         }
 
 
@@ -185,6 +207,9 @@ namespace MouseDrag
                     Control.CycleCamera(self);
                 }
             }
+
+            if (Options.gravityKey?.Value != null && Input.GetKeyDown(Options.gravityKey.Value))
+                Gravity.CycleObjectGravity(Drag.dragChunk?.owner);
 
             if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
                 Forcefield.ToggleForcefield(Drag.dragChunk);
@@ -340,6 +365,38 @@ namespace MouseDrag
                 self.inputWithDiagonals = null;
                 self.lastInputWithDiagonals = null;
             }
+        }
+
+
+        //gravity
+        public delegate float orig_PhysicalObject_EffectiveRoomGravity(PhysicalObject self);
+        public static float PhysicalObject_EffectiveRoomGravity_get(orig_PhysicalObject_EffectiveRoomGravity orig, PhysicalObject self)
+        {
+            float ret = orig(self);
+            return GetGravity(self, ret);
+        }
+        public delegate float orig_PhysicalObject_gravity(PhysicalObject self);
+        public static float PhysicalObject_gravity_get(orig_PhysicalObject_gravity orig, PhysicalObject self)
+        {
+            float ret = orig(self);
+            return GetGravity(self, ret);
+        }
+        public delegate float orig_Player_EffectiveRoomGravity(Player self);
+        public static float Player_EffectiveRoomGravity_get(orig_Player_EffectiveRoomGravity orig, Player self)
+        {
+            float ret = orig(self);
+            return GetGravity(self, ret);
+        }
+        private static float GetGravity(PhysicalObject self, float ret)
+        {
+            var pair = Gravity.ListContains(self?.abstractPhysicalObject);
+            if (pair == null)
+                return ret;
+            if (pair.Value.Value == Gravity.GravityTypes.Off)
+                return 0f;
+            if (pair.Value.Value == Gravity.GravityTypes.On)
+                return 1f;
+            return ret;
         }
     }
 }

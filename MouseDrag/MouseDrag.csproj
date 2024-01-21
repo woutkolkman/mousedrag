@@ -46,6 +46,7 @@
     <Compile Include="Tools\Destroy.cs" />
     <Compile Include="Tools\Drag.cs" />
     <Compile Include="Tools\Duplicate.cs" />
+    <Compile Include="Tools\Gravity.cs" />
     <Compile Include="Tools\Health.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Patches.cs" />

@@ -35,6 +35,7 @@ namespace MouseDrag
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
         public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu;
         public static Configurable<bool> controlMenu;
+        public static Configurable<bool> gravityRoomMenu;
         public static Configurable<bool> forcefieldMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
@@ -126,6 +127,7 @@ namespace MouseDrag
             tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature.", null, "", ""));
             controlMenu = config.Bind(nameof(controlMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
+            gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Toggles gravity in all rooms. 3 states can be assigned: Off/On/Unaffected.", null, "", ""));
             forcefieldMenu = config.Bind(nameof(forcefieldMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameOneMenu = config.Bind(nameof(tameOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameAllCreaturesMenu = config.Bind(nameof(tameAllCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -211,7 +213,7 @@ namespace MouseDrag
             curTab++;
             x = 70f;
             y = 600f;
-            sepr = 42f;
+            sepr = 40f;
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
@@ -258,6 +260,9 @@ namespace MouseDrag
 
             x += 300f;
             y = 600f;
+            y -= sepr; //line where keybind option would have been
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragGravityOff");
+            AddCheckbox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(forcefieldKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragForceFieldOn");
             AddCheckbox(forcefieldMenu, new Vector2(x - 56f, y + 3f));

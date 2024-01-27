@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using System;
 using System.IO;
 
@@ -113,6 +112,9 @@ namespace MouseDrag
                             Clipboard.PasteObject(game, rcam.room, rcam.room.ToWorldCoordinate(menu.menuPos));
                         break;
                     case "mousedragCrosshair":          Teleport.SetWaypoint(rcam?.room, menu.menuPos); break;
+                    case "mousedragGravityOff":
+                    case "mousedragGravityOn":
+                    case "mousedragGravityReset":       Gravity.CycleGravity(); break;
                     case "mousedragHeartCreatures":     Tame.TameCreatures(game, rcam?.room); break;
                     case "mousedragUnheartCreatures":   Tame.ClearRelationships(rcam?.room); break;
                     case "mousedragStunAll":            Stun.StunObjects(rcam?.room); break;
@@ -182,6 +184,15 @@ namespace MouseDrag
                     iconNames.Add("mousedragPaste");
                 if (Options.tpWaypointBgMenu?.Value != false)
                     iconNames.Add("mousedragCrosshair");
+                if (Options.gravityRoomMenu?.Value != false) {
+                    if (Gravity.gravityType == Gravity.GravityTypes.Unaffected) {
+                        iconNames.Add("mousedragGravityOff");
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.Off) {
+                        iconNames.Add("mousedragGravityOn");
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
+                        iconNames.Add("mousedragGravityReset");
+                    }
+                }
                 if (Options.tameAllCreaturesMenu?.Value != false)
                     iconNames.Add("mousedragHeartCreatures");
                 if (Options.clearRelAllMenu?.Value != false)

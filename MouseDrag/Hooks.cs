@@ -32,6 +32,9 @@ namespace MouseDrag
 
             //jolly co-op multiplayer safari control
             On.Creature.SafariControlInputUpdate += CreatureSafariControlInputUpdateHook;
+
+            //gravity
+            On.Room.Update += RoomUpdateHook;
         }
 
 
@@ -340,6 +343,19 @@ namespace MouseDrag
                 self.inputWithDiagonals = null;
                 self.lastInputWithDiagonals = null;
             }
+        }
+
+
+        //gravity
+        static void RoomUpdateHook(On.Room.orig_Update orig, Room self)
+        {
+            if (self != null) {
+                if (Gravity.gravityType == Gravity.GravityTypes.Off)
+                    self.gravity = 0f;
+                if (Gravity.gravityType == Gravity.GravityTypes.On)
+                    self.gravity = 1f;
+            }
+            orig(self);
         }
     }
 }

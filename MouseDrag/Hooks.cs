@@ -250,6 +250,7 @@ namespace MouseDrag
             Stun.UnstunAll();
             Forcefield.ClearForcefields();
             Control.ReleaseControlAll();
+            Gravity.gravityType = Gravity.GravityTypes.None;
             if (Options.deactivateEveryRestart?.Value != false)
                 State.activated = false;
             if (Options.logDebug?.Value != false)
@@ -352,6 +353,8 @@ namespace MouseDrag
             if (self != null) {
                 if (Gravity.gravityType == Gravity.GravityTypes.Off)
                     self.gravity = 0f;
+                if (Gravity.gravityType == Gravity.GravityTypes.Half)
+                    self.gravity = 0.5f;
                 if (Gravity.gravityType == Gravity.GravityTypes.On)
                     self.gravity = 1f;
             }

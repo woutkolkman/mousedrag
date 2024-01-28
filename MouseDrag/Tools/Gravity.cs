@@ -8,8 +8,9 @@ namespace MouseDrag
 
         public enum GravityTypes
         {
-            Unaffected, 
+            None, 
             Off, 
+            Half, 
             On
         }
 

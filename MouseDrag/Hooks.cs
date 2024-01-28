@@ -220,16 +220,19 @@ namespace MouseDrag
                 Destroy.DestroyObject(Drag.dragChunk?.owner);
 
             if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
-                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, objects: false);
+                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, objects: false, onlyDead: false);
 
             if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
-                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: false, objects: true);
+                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: false, objects: true, onlyDead: false);
 
             if (Options.destroyRegionCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyRegionCreaturesKey.Value))
                 Destroy.DestroyRegionObjects(self, creatures: true, objects: false);
 
             if (Options.destroyRegionObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyRegionObjectsKey.Value))
                 Destroy.DestroyRegionObjects(self, creatures: false, objects: true);
+
+            if (Options.destroyAllDeadCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllDeadCreaturesKey.Value))
+                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, objects: false, onlyDead: true);
 
             if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
                 Lock.ToggleLock(Drag.dragChunk);

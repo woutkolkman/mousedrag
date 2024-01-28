@@ -26,7 +26,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
         public static Configurable<KeyCode> destroyRegionCreaturesKey, destroyRegionObjectsKey;
-        public static Configurable<KeyCode> lockKey;
+        public static Configurable<KeyCode> destroyAllDeadCreaturesKey, lockKey;
         public static Configurable<KeyCode> gravityRoomKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
@@ -39,7 +39,7 @@ namespace MouseDrag
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu, destroyRoomMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionObjectsMenu;
-        public static Configurable<bool> lockMenu;
+        public static Configurable<bool> destroyAllDeadCreaturesMenu, lockMenu;
         public static Configurable<bool> gravityRoomMenu;
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> adjustableLocks;
@@ -112,6 +112,7 @@ namespace MouseDrag
             destroyRegionCreaturesKey = config.Bind(nameof(destroyRegionCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.\nWARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. Also don't use this in safari.", null, "", "Destroy creatures\nin region"));
             destroyRegionObjectsKey = config.Bind(nameof(destroyRegionObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects in current region except creatures. Most objects will be re-added automatically, or are added later on.", null, "", "Destroy objects\nin region"));
 
+            destroyAllDeadCreaturesKey = config.Bind(nameof(destroyAllDeadCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all dead creatures in current room except Player and SlugNPC.", null, "", "Destroy dead\ncreatures in room"));
             lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object/creature is reloaded.", null, "", "Lock"));
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 4 states can be assigned: None/Off/Half/On.", null, "", "Gravity"));
@@ -148,6 +149,7 @@ namespace MouseDrag
             destroyRegionCreaturesMenu = config.Bind(nameof(destroyRegionCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyRegionObjectsMenu = config.Bind(nameof(destroyRegionObjectsMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
+            destroyAllDeadCreaturesMenu = config.Bind(nameof(destroyAllDeadCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             lockMenu = config.Bind(nameof(lockMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
             gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -185,8 +187,8 @@ namespace MouseDrag
             Tabs = new OpTab[]
             {
                 new OpTab(this, "General"),
-                new OpTab(this, "Tools (1/2)"),
-                new OpTab(this, "Tools (2/2)"),
+                new OpTab(this, "Tools 1"),
+                new OpTab(this, "Tools 2"),
                 new OpTab(this, "Other")
             };
 
@@ -321,6 +323,9 @@ namespace MouseDrag
             x = 70f;
             y = 600f;
             sepr = 42f;
+            AddKeyBinder(destroyAllDeadCreaturesKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyDeadCreatures");
+            AddCheckbox(destroyAllDeadCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(lockKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragLocked");
             AddCheckbox(lockMenu, new Vector2(x - 56f, y + 3f));

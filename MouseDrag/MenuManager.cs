@@ -92,7 +92,7 @@ namespace MouseDrag
                 //menu on background
                 switch (spriteName)
                 {
-                    case "mousedragPauseCreatures":     Pause.PauseObjects(rcam?.room, true); break;
+                    case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true); break;
                     case "mousedragPauseGlobal":
                     case "mousedragPlayGlobal":
                         if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllObjectsMenu?.Value != false) {
@@ -106,32 +106,33 @@ namespace MouseDrag
                         if (Options.logDebug?.Value != false)
                             Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllObjects: " + Pause.pauseAllObjects);
                         break;
-                    case "mousedragPlayAll":            Pause.UnpauseAll(); break;
-                    case "mousedragKillCreatures":      Health.KillCreatures(game, rcam?.room); break;
-                    case "mousedragReviveCreatures":    Health.ReviveCreatures(rcam?.room); break;
+                    case "mousedragPlayAll":                Pause.UnpauseAll(); break;
+                    case "mousedragKillCreatures":          Health.KillCreatures(game, rcam?.room); break;
+                    case "mousedragReviveCreatures":        Health.ReviveCreatures(rcam?.room); break;
                     case "mousedragPaste":
                         if (rcam?.room != null)
                             Clipboard.PasteObject(game, rcam.room, rcam.room.ToWorldCoordinate(menu.menuPos));
                         break;
-                    case "mousedragCrosshair":          Teleport.SetWaypoint(rcam?.room, menu.menuPos); break;
-                    case "mousedragHeartCreatures":     Tame.TameCreatures(game, rcam?.room); break;
-                    case "mousedragUnheartCreatures":   Tame.ClearRelationships(rcam?.room); break;
-                    case "mousedragStunAll":            Stun.StunObjects(rcam?.room); break;
-                    case "mousedragUnstunAll":          Stun.UnstunAll(); break;
+                    case "mousedragCrosshair":              Teleport.SetWaypoint(rcam?.room, menu.menuPos); break;
+                    case "mousedragHeartCreatures":         Tame.TameCreatures(game, rcam?.room); break;
+                    case "mousedragUnheartCreatures":       Tame.ClearRelationships(rcam?.room); break;
+                    case "mousedragStunAll":                Stun.StunObjects(rcam?.room); break;
+                    case "mousedragUnstunAll":              Stun.UnstunAll(); break;
                     case "mousedragStunGlobal":
                     case "mousedragUnstunGlobal":
                         Stun.stunAll = !Stun.stunAll;
                         if (Options.logDebug?.Value != false)
                             Plugin.Logger.LogDebug("stunAll: " + Stun.stunAll);
                         break;
-                    case "mousedragDestroyCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false); break;
-                    case "mousedragDestroyItems":       Destroy.DestroyObjects(rcam?.room, creatures: false, objects: true); break;
-                    case "mousedragDestroyAll":         Destroy.DestroyObjects(rcam?.room, creatures: true, objects: true); break;
-                    case "mousedragDestroyGlobal":      Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionObjectsMenu?.Value == true); break;
+                    case "mousedragDestroyCreatures":       Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false, onlyDead: false); break;
+                    case "mousedragDestroyItems":           Destroy.DestroyObjects(rcam?.room, creatures: false, objects: true, onlyDead: false); break;
+                    case "mousedragDestroyAll":             Destroy.DestroyObjects(rcam?.room, creatures: true, objects: true, onlyDead: false); break;
+                    case "mousedragDestroyGlobal":          Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionObjectsMenu?.Value == true); break;
+                    case "mousedragDestroyDeadCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false, onlyDead: true); break;
                     case "mousedragGravityReset":
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
-                    case "mousedragGravityOn":          Gravity.CycleGravity(); break;
+                    case "mousedragGravityOn":              Gravity.CycleGravity(); break;
                 }
             }
         }
@@ -208,6 +209,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragDestroyAll");
                 if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false)
                     iconNames.Add("mousedragDestroyGlobal");
+                if (Options.destroyAllDeadCreaturesMenu?.Value != false)
+                    iconNames.Add("mousedragDestroyDeadCreatures");
                 if (Options.gravityRoomMenu?.Value != false) {
                     if (Gravity.gravityType == Gravity.GravityTypes.None) {
                         iconNames.Add("mousedragGravityReset");

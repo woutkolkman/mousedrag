@@ -37,7 +37,7 @@ namespace MouseDrag
         public static Configurable<bool> forcefieldMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
-        public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
+        public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu, destroyRoomMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionObjectsMenu;
         public static Configurable<bool> lockMenu;
         public static Configurable<bool> gravityRoomMenu;
@@ -142,7 +142,8 @@ namespace MouseDrag
             unstunAllMenu = config.Bind(nameof(unstunAllMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             stunAllMenu = config.Bind(nameof(stunAllMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyOneMenu = config.Bind(nameof(destroyOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
-            destroyAllCreaturesMenu = config.Bind(nameof(destroyAllCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            destroyAllCreaturesMenu = config.Bind(nameof(destroyAllCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
+            destroyAllObjectsMenu = config.Bind(nameof(destroyAllObjectsMenu), defaultValue: false, new ConfigurableInfo("Add action to menu. Destroy all objects in current room except creatures.", null, "", ""));
             destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
             destroyRegionCreaturesMenu = config.Bind(nameof(destroyRegionCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyRegionObjectsMenu = config.Bind(nameof(destroyRegionObjectsMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -301,11 +302,13 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroy");
             AddCheckbox(destroyOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyAllCreaturesKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyCreatures");
-            AddCheckbox(destroyAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddIcon(new Vector2(x - 25f, y + 9f), "mousedragDestroyCreatures");
+            AddCheckbox(destroyAllCreaturesMenu, new Vector2(x - 56f, y + 6f));
+            AddIcon(new Vector2(x - 25f, y + (6f - sepr / 2f)), "mousedragDestroyItems");
+            AddCheckbox(destroyAllObjectsMenu, new Vector2(x - 56f, y + (3f - sepr / 2f)));
+            AddIcon(new Vector2(x - 25f, y + (3f - sepr)), "mousedragDestroyAll");
+            AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y - sepr));
             AddKeyBinder(destroyAllObjectsKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyAll");
-            AddCheckbox(destroyRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyRegionCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
             AddCheckbox(destroyRegionCreaturesMenu, new Vector2(x - 56f, y + 3f));

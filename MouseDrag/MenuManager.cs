@@ -125,6 +125,7 @@ namespace MouseDrag
                             Plugin.Logger.LogDebug("stunAll: " + Stun.stunAll);
                         break;
                     case "mousedragDestroyCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false); break;
+                    case "mousedragDestroyItems":       Destroy.DestroyObjects(rcam?.room, creatures: false, objects: true); break;
                     case "mousedragDestroyAll":         Destroy.DestroyObjects(rcam?.room, creatures: true, objects: true); break;
                     case "mousedragDestroyGlobal":      Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionObjectsMenu?.Value == true); break;
                     case "mousedragGravityReset":
@@ -201,6 +202,8 @@ namespace MouseDrag
                     iconNames.Add(Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal");
                 if (Options.destroyAllCreaturesMenu?.Value != false)
                     iconNames.Add("mousedragDestroyCreatures");
+                if (Options.destroyAllObjectsMenu?.Value != false)
+                    iconNames.Add("mousedragDestroyItems");
                 if (Options.destroyRoomMenu?.Value != false)
                     iconNames.Add("mousedragDestroyAll");
                 if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false)

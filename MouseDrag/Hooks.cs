@@ -189,9 +189,6 @@ namespace MouseDrag
                 }
             }
 
-            if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
-                Lock.ToggleLock(Drag.dragChunk);
-
             if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
                 Forcefield.ToggleForcefield(Drag.dragChunk);
 
@@ -233,6 +230,12 @@ namespace MouseDrag
 
             if (Options.destroyRegionObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyRegionObjectsKey.Value))
                 Destroy.DestroyRegionObjects(self, creatures: false, objects: true);
+
+            if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
+                Lock.ToggleLock(Drag.dragChunk);
+
+            if (Options.gravityRoomKey?.Value != null && Input.GetKeyDown(Options.gravityRoomKey.Value))
+                Gravity.CycleGravity();
         }
 
 

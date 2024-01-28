@@ -20,23 +20,27 @@ namespace MouseDrag
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
-        public static Configurable<KeyCode> duplicateOneKey, tpCreaturesKey, tpObjectsKey, controlKey, lockKey;
+        public static Configurable<KeyCode> duplicateOneKey, tpCreaturesKey, tpObjectsKey, controlKey;
         public static Configurable<KeyCode> forcefieldKey;
         public static Configurable<KeyCode> tameOneKey, tameAllCreaturesKey, clearRelOneKey, clearRelAllKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
         public static Configurable<KeyCode> destroyRegionCreaturesKey, destroyRegionObjectsKey;
+        public static Configurable<KeyCode> lockKey;
+        public static Configurable<KeyCode> gravityRoomKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
         public static Configurable<bool> duplicateOneMenu;
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
-        public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu, controlMenu, lockMenu;
-        public static Configurable<bool> gravityRoomMenu, forcefieldMenu;
+        public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu, controlMenu;
+        public static Configurable<bool> forcefieldMenu;
         public static Configurable<bool> tameOneMenu, tameAllCreaturesMenu, clearRelOneMenu, clearRelAllMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyRoomMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionObjectsMenu;
+        public static Configurable<bool> lockMenu;
+        public static Configurable<bool> gravityRoomMenu;
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> adjustableLocks;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
@@ -92,7 +96,6 @@ namespace MouseDrag
             tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
             tpObjectsKey = config.Bind(nameof(tpObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all objects except creatures in current room to the mouse position.", null, "", "Teleport objects\nin room"));
             controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging, or to cycle between creatures if not dragging. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.", null, "", "Safari-control"));
-            lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object/creature is reloaded.", null, "", "Lock"));
 
             forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged BodyChunk. Forcefield is lost if BodyChunk is reloaded.", null, "", "Forcefield"));
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
@@ -109,6 +112,10 @@ namespace MouseDrag
             destroyRegionCreaturesKey = config.Bind(nameof(destroyRegionCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.\nWARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. Also don't use this in safari.", null, "", "Destroy creatures\nin region"));
             destroyRegionObjectsKey = config.Bind(nameof(destroyRegionObjectsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all objects in current region except creatures. Most objects will be re-added automatically, or are added later on.", null, "", "Destroy objects\nin region"));
 
+            lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object/creature is reloaded.", null, "", "Lock"));
+
+            gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 4 states can be assigned: None/Off/Half/On.", null, "", "Gravity"));
+
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind(nameof(pauseRoomCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             unpauseAllMenu = config.Bind(nameof(unpauseAllMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -124,9 +131,7 @@ namespace MouseDrag
             tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object/creature to teleport them to the waypoint.", null, "", ""));
             tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a creature.", null, "", ""));
             controlMenu = config.Bind(nameof(controlMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
-            lockMenu = config.Bind(nameof(lockMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
-            gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Toggles gravity in all rooms. 4 states can be assigned: None/Off/Half/On.", null, "", ""));
             forcefieldMenu = config.Bind(nameof(forcefieldMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameOneMenu = config.Bind(nameof(tameOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameAllCreaturesMenu = config.Bind(nameof(tameAllCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -141,6 +146,10 @@ namespace MouseDrag
             destroyRoomMenu = config.Bind(nameof(destroyRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu. Destroy all objects/creatures in current room except Player and SlugNPC.\nTo make creatures respawn, kill and then destroy them.", null, "", ""));
             destroyRegionCreaturesMenu = config.Bind(nameof(destroyRegionCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             destroyRegionObjectsMenu = config.Bind(nameof(destroyRegionObjectsMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+
+            lockMenu = config.Bind(nameof(lockMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+
+            gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
@@ -175,7 +184,8 @@ namespace MouseDrag
             Tabs = new OpTab[]
             {
                 new OpTab(this, "General"),
-                new OpTab(this, "Tools"),
+                new OpTab(this, "Tools (1/2)"),
+                new OpTab(this, "Tools (2/2)"),
                 new OpTab(this, "Other")
             };
 
@@ -213,7 +223,7 @@ namespace MouseDrag
             curTab++;
             x = 70f;
             y = 600f;
-            sepr = 39.3f;
+            sepr = 42f;
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
@@ -257,15 +267,9 @@ namespace MouseDrag
             AddKeyBinder(controlKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragMove");
             AddCheckbox(controlMenu, new Vector2(x - 56f, y + 3f));
-            AddKeyBinder(lockKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragLocked");
-            AddCheckbox(lockMenu, new Vector2(x - 56f, y + 3f));
 
             x += 300f;
             y = 600f;
-            y -= sepr; //line where keybind option would have been
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragGravityOff");
-            AddCheckbox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(forcefieldKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragForceFieldOn");
             AddCheckbox(forcefieldMenu, new Vector2(x - 56f, y + 3f));
@@ -308,6 +312,21 @@ namespace MouseDrag
             AddKeyBinder(destroyRegionObjectsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
             AddCheckbox(destroyRegionObjectsMenu, new Vector2(x - 56f, y + 3f));
+
+            /**************** Tools ****************/
+            curTab++;
+            x = 70f;
+            y = 600f;
+            sepr = 42f;
+            AddKeyBinder(lockKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragLocked");
+            AddCheckbox(lockMenu, new Vector2(x - 56f, y + 3f));
+
+            x += 300f;
+            y = 600f;
+            AddKeyBinder(gravityRoomKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragGravityOff");
+            AddCheckbox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
 
             /**************** Other ****************/
             curTab++;

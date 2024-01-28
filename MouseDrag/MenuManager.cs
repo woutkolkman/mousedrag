@@ -75,8 +75,6 @@ namespace MouseDrag
                     case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, menu.followChunk); break;
                     case "mousedragMove":
                     case "mousedragUnmove":         Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
-                    case "mousedragLocked":
-                    case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
                     case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;
@@ -84,6 +82,8 @@ namespace MouseDrag
                     case "mousedragStun":
                     case "mousedragUnstun":         Stun.ToggleStunObject(menu.followChunk?.owner); break;
                     case "mousedragDestroy":        Destroy.DestroyObject(menu.followChunk?.owner); break;
+                    case "mousedragLocked":
+                    case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
                 }
 
             } else {
@@ -114,10 +114,6 @@ namespace MouseDrag
                             Clipboard.PasteObject(game, rcam.room, rcam.room.ToWorldCoordinate(menu.menuPos));
                         break;
                     case "mousedragCrosshair":          Teleport.SetWaypoint(rcam?.room, menu.menuPos); break;
-                    case "mousedragGravityReset":
-                    case "mousedragGravityOff":
-                    case "mousedragGravityHalf":
-                    case "mousedragGravityOn":          Gravity.CycleGravity(); break;
                     case "mousedragHeartCreatures":     Tame.TameCreatures(game, rcam?.room); break;
                     case "mousedragUnheartCreatures":   Tame.ClearRelationships(rcam?.room); break;
                     case "mousedragStunAll":            Stun.StunObjects(rcam?.room); break;
@@ -131,6 +127,10 @@ namespace MouseDrag
                     case "mousedragDestroyCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false); break;
                     case "mousedragDestroyAll":         Destroy.DestroyObjects(rcam?.room, creatures: true, objects: true); break;
                     case "mousedragDestroyGlobal":      Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionObjectsMenu?.Value == true); break;
+                    case "mousedragGravityReset":
+                    case "mousedragGravityOff":
+                    case "mousedragGravityHalf":
+                    case "mousedragGravityOn":          Gravity.CycleGravity(); break;
                 }
             }
         }
@@ -157,8 +157,6 @@ namespace MouseDrag
                     iconNames.Add("mousedragCrosshair");
                 if (Options.controlMenu?.Value != false)
                     iconNames.Add((menu.followChunk?.owner?.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove");
-                if (Options.lockMenu?.Value != false)
-                    iconNames.Add(Lock.ListContains(menu.followChunk) == null ? "mousedragLocked" : "mousedragUnlocked");
                 if (Options.forcefieldMenu?.Value != false)
                     iconNames.Add(Forcefield.HasForcefield(menu.followChunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn");
                 if (Options.tameOneMenu?.Value != false)
@@ -169,6 +167,8 @@ namespace MouseDrag
                     iconNames.Add(Stun.IsObjectStunned(menu.followChunk?.owner) ? "mousedragUnstun" : "mousedragStun");
                 if (Options.destroyOneMenu?.Value != false)
                     iconNames.Add("mousedragDestroy");
+                if (Options.lockMenu?.Value != false)
+                    iconNames.Add(Lock.ListContains(menu.followChunk) == null ? "mousedragLocked" : "mousedragUnlocked");
 
             } else {
                 //menu on background
@@ -189,17 +189,6 @@ namespace MouseDrag
                     iconNames.Add("mousedragPaste");
                 if (Options.tpWaypointBgMenu?.Value != false)
                     iconNames.Add("mousedragCrosshair");
-                if (Options.gravityRoomMenu?.Value != false) {
-                    if (Gravity.gravityType == Gravity.GravityTypes.None) {
-                        iconNames.Add("mousedragGravityReset");
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Off) {
-                        iconNames.Add("mousedragGravityOff");
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Half) {
-                        iconNames.Add("mousedragGravityHalf");
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
-                        iconNames.Add("mousedragGravityOn");
-                    }
-                }
                 if (Options.tameAllCreaturesMenu?.Value != false)
                     iconNames.Add("mousedragHeartCreatures");
                 if (Options.clearRelAllMenu?.Value != false)
@@ -216,6 +205,17 @@ namespace MouseDrag
                     iconNames.Add("mousedragDestroyAll");
                 if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false)
                     iconNames.Add("mousedragDestroyGlobal");
+                if (Options.gravityRoomMenu?.Value != false) {
+                    if (Gravity.gravityType == Gravity.GravityTypes.None) {
+                        iconNames.Add("mousedragGravityReset");
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.Off) {
+                        iconNames.Add("mousedragGravityOff");
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.Half) {
+                        iconNames.Add("mousedragGravityHalf");
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
+                        iconNames.Add("mousedragGravityOn");
+                    }
+                }
             }
 
             return iconNames;

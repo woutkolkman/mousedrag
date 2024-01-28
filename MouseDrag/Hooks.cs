@@ -189,6 +189,9 @@ namespace MouseDrag
                 }
             }
 
+            if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
+                Lock.ToggleLock(Drag.dragChunk);
+
             if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
                 Forcefield.ToggleForcefield(Drag.dragChunk);
 
@@ -251,6 +254,7 @@ namespace MouseDrag
             Forcefield.ClearForcefields();
             Control.ReleaseControlAll();
             Gravity.gravityType = Gravity.GravityTypes.None;
+            Lock.bodyChunks.Clear();
             if (Options.deactivateEveryRestart?.Value != false)
                 State.activated = false;
             if (Options.logDebug?.Value != false)
@@ -285,6 +289,7 @@ namespace MouseDrag
         {
             orig(self);
             Forcefield.UpdateForcefield(self);
+            Lock.UpdatePosition(self);
         }
 
 

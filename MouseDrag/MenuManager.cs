@@ -75,6 +75,8 @@ namespace MouseDrag
                     case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, menu.followChunk); break;
                     case "mousedragMove":
                     case "mousedragUnmove":         Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
+                    case "mousedragLocked":
+                    case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
                     case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;
@@ -155,6 +157,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragCrosshair");
                 if (Options.controlMenu?.Value != false)
                     iconNames.Add((menu.followChunk?.owner?.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove");
+                if (Options.lockMenu?.Value != false)
+                    iconNames.Add(Lock.ListContains(menu.followChunk) == null ? "mousedragLocked" : "mousedragUnlocked");
                 if (Options.forcefieldMenu?.Value != false)
                     iconNames.Add(Forcefield.HasForcefield(menu.followChunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn");
                 if (Options.tameOneMenu?.Value != false)

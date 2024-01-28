@@ -91,6 +91,8 @@ namespace MouseDrag
                 stop = true;
 
             if (stop) {
+                if (Options.adjustableLocks?.Value != false)
+                    Lock.ResetLock(dragChunk);
                 dragChunk = null;
                 return;
             }

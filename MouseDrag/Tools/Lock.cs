@@ -32,14 +32,15 @@ namespace MouseDrag
         }
 
 
-        public static void ListRemove(BodyChunk bc)
+        public static bool ListRemove(BodyChunk bc)
         {
             for (int i = 0; i < bodyChunks.Count; i++) {
                 if (bodyChunks[i].Key == bc) {
                     bodyChunks.Remove(bodyChunks[i]);
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
 
@@ -50,6 +51,15 @@ namespace MouseDrag
                 return;
             bc.pos = pair.Value.Value;
             bc.vel = Vector2.zero;
+        }
+
+
+        public static void ResetLock(BodyChunk bc)
+        {
+            if (bc == null)
+                return;
+            if (ListRemove(bc))
+                ToggleLock(bc);
         }
     }
 }

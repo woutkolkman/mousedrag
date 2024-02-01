@@ -10,6 +10,9 @@ namespace MouseDrag
         {
             //pauses creatures and objects
             IL.Room.Update += RoomUpdateIL;
+
+            //pause creatures and objects in not-loaded rooms
+            IL.AbstractRoom.Update += AbstractRoomUpdateIL;
         }
 
 
@@ -24,7 +27,7 @@ namespace MouseDrag
         {
             //original code:
             //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag)
-            //resulting code will be:
+            //resulting code will be similar to:
             //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsObjectPaused(updatableAndDeletable))
 
             ILCursor c = new ILCursor(il);
@@ -57,6 +60,56 @@ namespace MouseDrag
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RoomUpdateIL success");
+        }
+
+
+        //pause creatures and objects in not-loaded rooms
+        static void AbstractRoomUpdateIL(ILContext il)
+        {
+            //original code:
+            //  this.entities[i].Update(timePassed);
+            //resulting code will be similar to:
+            //  if (!IsObjectPaused(this.entities[i]))
+            //      this.entities[i].Update(timePassed);
+
+            ILCursor c = new ILCursor(il);
+
+            //move cursor after update call
+            try {
+                c.GotoNext(MoveType.After,
+                    i => i.MatchLdarg(1),                                   //ldarg.1       (int timePassed)
+                    i => i.MatchCallvirt("AbstractWorldEntity", "Update")   //callvirt      instance void AbstractWorldEntity::Update(int32)
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("AbstractRoomUpdateIL exception: " + ex.ToString());
+                return;
+            }
+
+            //create label that jumps to pop if update is skipped
+            ILLabel skipCond = c.MarkLabel();
+
+            //move cursor before update call
+            try {
+                c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("AbstractRoomUpdateIL exception: " + ex.ToString());
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0); //push 'this' (AbstractRoom) on stack
+            c.Emit(OpCodes.Ldloc_1); //push index of loop local var on stack
+
+            //insert condition
+            c.EmitDelegate<Func<AbstractRoom, int, bool>>((obj, i) =>
+            {
+                return Pause.IsObjectPaused(obj.entities[i]);
+            });
+
+            //if value is true, don't update object
+            c.Emit(OpCodes.Brtrue_S, skipCond);
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("AbstractRoomUpdateIL success");
         }
     }
 }

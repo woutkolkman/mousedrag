@@ -9,28 +9,47 @@ namespace MouseDrag
         public static bool pauseAllObjects = false;
 
 
+        public static bool IsObjectPaused(AbstractWorldEntity awe)
+        {
+            if (!(awe is AbstractPhysicalObject))
+                return false;
+            return IsObjectPaused(awe as AbstractPhysicalObject);
+        }
+
+
         public static bool IsObjectPaused(UpdatableAndDeletable uad)
         {
             if ((uad as PhysicalObject)?.abstractPhysicalObject == null)
                 return false;
-            bool shouldPause = pausedObjects.Contains((uad as PhysicalObject).abstractPhysicalObject);
+            return IsObjectPaused((uad as PhysicalObject).abstractPhysicalObject);
+        }
 
-            if (uad is Creature) {
+
+        public static bool IsObjectPaused(AbstractPhysicalObject apo)
+        {
+            if (apo == null)
+                return false;
+            bool shouldPause = pausedObjects.Contains(apo);
+
+            if (apo.realizedObject is Creature) {
                 shouldPause |= pauseAllCreatures && !( //don't pause when: creature is player and player is not SlugNPC (optional)
-                    uad is Player && (Options.exceptSlugNPC?.Value != false || !(uad as Player).isNPC)
+                    apo.realizedObject is Player && (
+                        Options.exceptSlugNPC?.Value != false || 
+                        !(apo.realizedObject as Player).isNPC
+                    )
                 );
 
                 if (shouldPause && Options.releaseGraspsPaused?.Value != false)
-                    Destroy.ReleaseAllGrasps(uad as Creature);
+                    Destroy.ReleaseAllGrasps(apo.realizedObject as Creature);
             } else {
                 shouldPause |= pauseAllObjects;
             }
 
             //update physicalobject at least once
-            if (shouldPause && (uad as PhysicalObject).abstractPhysicalObject?.timeSpentHere == 0) {
-                (uad as PhysicalObject).abstractPhysicalObject.timeSpentHere++;
+            if (shouldPause && apo.timeSpentHere == 0) {
+                apo.timeSpentHere++;
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("IsObjectPaused, updating object " + (uad as PhysicalObject).abstractPhysicalObject.ID.ToString() + " once before pausing");
+                    Plugin.Logger.LogDebug("IsObjectPaused, updating object " + apo.ID.ToString() + " once before pausing");
                 return false;
             }
             return shouldPause;

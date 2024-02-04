@@ -247,7 +247,10 @@ namespace MouseDrag
                 }
             }
 
-            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened)) {
+            //if regionkit is enabled and dev tools menu is opened, don't use right mouse button (because of iggy)
+            bool devToolsOpened = Integration.regionKitEnabled && game.devUI != null;
+
+            if (RadialMenu.menuButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened || devToolsOpened)) {
                 shouldOpen = true;
             } else if (beastMasterOpened && RadialMenu.menuButtonPressed()) {
                 menu?.Destroy();

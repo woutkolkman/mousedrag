@@ -7,6 +7,7 @@ namespace MouseDrag
         public static bool beastMasterEnabled = false;
         public static bool splitScreenCoopEnabled = false;
         public static bool sBCameraScrollEnabled = false;
+        public static bool regionKitEnabled = false;
 
 
         public static void RefreshActiveMods()
@@ -19,6 +20,8 @@ namespace MouseDrag
                     splitScreenCoopEnabled = Options.splitScreenCoopIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "SBCameraScroll")
                     sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "regionkit")
+                    regionKitEnabled = Options.regionKitIntegration?.Value ?? true;
             }
         }
 

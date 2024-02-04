@@ -132,13 +132,13 @@ namespace MouseDrag
                 }
             }
 
-            StunPlayers(game);
+            StunPlayers(game, ac);
             MoveCamera(game, ac);
         }
 
 
         //refresh stunned players, game.Players array is unordered
-        private static void StunPlayers(RainWorldGame game)
+        private static void StunPlayers(RainWorldGame game, AbstractCreature except = null)
         {
             if (Options.controlStunsPlayers?.Value != true)
                 return;
@@ -152,8 +152,9 @@ namespace MouseDrag
 
             for (int i = 0; i < controlledCreatures.Count; i++)
                 foreach (AbstractCreature abst in game.Players)
-                    if ((abst?.state as PlayerState)?.playerNumber == controlledCreatures[i].Value &&
-                        !Stun.stunnedObjects.Contains(abst))
+                    if ((abst?.state as PlayerState)?.playerNumber == controlledCreatures[i].Value && 
+                        !Stun.stunnedObjects.Contains(abst) && 
+                        abst != except)
                         Stun.stunnedObjects.Add(abst);
         }
 
@@ -230,6 +231,7 @@ namespace MouseDrag
 
             //go back to player
             if (Drag.playerNr >= 0 && Drag.playerNr < game.Players?.Count) {
+                StunPlayers(game, game.Players[Drag.playerNr]); //re-stun
                 MoveCamera(game, game.Players[Drag.playerNr]);
                 return;
             }
@@ -238,6 +240,7 @@ namespace MouseDrag
             if (game.Players?.Count > 0) {
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("CycleCamera, player not available, return to first player");
+                StunPlayers(game, game.Players[0]); //re-stun
                 MoveCamera(game, game.Players[0]);
                 return;
             }

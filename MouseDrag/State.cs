@@ -6,7 +6,7 @@ namespace MouseDrag
     {
         public static Options.ActivateTypes activeType = Options.ActivateTypes.DevToolsActive;
         public static bool activated = false; //true --> all tools are available
-        private static Vector2 prevMousePos = Vector2.zero;
+        public static Vector2 prevMousePos = Vector2.zero;
         private static int mouseStationaryCount = 0;
         public static int mouseVisibilityTicks = 80; //2s
 

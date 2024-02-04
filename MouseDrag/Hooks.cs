@@ -285,8 +285,10 @@ namespace MouseDrag
             MenuManager.menu = null;
 
             //prevent invisible mouse in main menu
-            if (Options.manageMouseVisibility?.Value == true)
+            if (Options.manageMouseVisibility?.Value == true) {
                 Cursor.visible = true;
+                State.prevMousePos = Vector2.zero;
+            }
         }
 
 

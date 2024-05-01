@@ -15,7 +15,7 @@ namespace MouseDrag
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<KeyCode> throwWeapon;
-        public static Configurable<bool> velocityDrag;
+        public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
         public static Configurable<KeyCode> selectCreatures, selectObjects;
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
@@ -81,6 +81,7 @@ namespace MouseDrag
             throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere.", null, "", "Throw weapon"));
             velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects/creatures won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere.", null, "", "Velocity drag"));
+            velocityDragAtScreenChange = config.Bind(nameof(velocityDragAtScreenChange), defaultValue: true, new ConfigurableInfo("Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.", null, "", "Velocity drag at screen change"));
             selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
             selectObjects = config.Bind(nameof(selectObjects), KeyCode.LeftAlt, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select objects"));
 
@@ -170,7 +171,7 @@ namespace MouseDrag
 
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
-            exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: false, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
+            exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer.", null, "", "Safari-control changes camera"));
             controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.", null, "", "Safari-control only one creature"));
@@ -221,6 +222,7 @@ namespace MouseDrag
             AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
             AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
+            AddCheckbox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
             AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
             AddKeyBinder(selectObjects, new Vector2(x, y -= sepr + 5f));
 

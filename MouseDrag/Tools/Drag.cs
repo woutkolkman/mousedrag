@@ -12,6 +12,7 @@ namespace MouseDrag
         public static Vector2 dragOffset;
         private static Vector2 dampingPos; //only used when velocityDrag == true
         public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
+        public static bool tempVelocityDrag; //temporary velocityDrag until LMB is released
         public static int tempStopTicks = 0; //temporarily deactivate drag
         public static int playerNr = 0; //last dragged or selected player
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
@@ -94,6 +95,7 @@ namespace MouseDrag
                 if (Options.adjustableLocks?.Value != false)
                     Lock.ResetLock(dragChunk);
                 dragChunk = null;
+                tempVelocityDrag = false;
                 return;
             }
 
@@ -115,7 +117,7 @@ namespace MouseDrag
 
             //this drag functionality might (be) affect(ed by) sandbox mouse
             dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
-            if (Options.velocityDrag?.Value != true || paused || isWeaponAndNotFree)
+            if ((Options.velocityDrag?.Value != true && !tempVelocityDrag) || paused || isWeaponAndNotFree)
                 dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
 
             if (paused) {
@@ -127,7 +129,7 @@ namespace MouseDrag
             }
 
             //velocity drag with BodyChunk at center of mousePos
-            if (Options.velocityDrag?.Value == true) {
+            if (Options.velocityDrag?.Value == true || tempVelocityDrag) {
                 dragChunk.vel = (dampingPos - dragChunk.pos) / 2f;
 
                 //reduce max speed of player

@@ -35,6 +35,9 @@ namespace MouseDrag
 
             //gravity
             On.Room.Update += RoomUpdateHook;
+
+            //anti smash-scug-into-wall
+            On.RoomCamera.ApplyPositionChange += RoomCameraApplyPositionChangeHook;
         }
 
 
@@ -367,10 +370,20 @@ namespace MouseDrag
                 if (Gravity.gravityType == Gravity.GravityTypes.Off)
                     self.gravity = 0f;
                 if (Gravity.gravityType == Gravity.GravityTypes.Half)
-                    self.gravity = 0.5f;
+                    self.gravity = 0.2f;
                 if (Gravity.gravityType == Gravity.GravityTypes.On)
                     self.gravity = 1f;
             }
+            orig(self);
+        }
+
+
+        //anti smash-scug-into-wall
+        static void RoomCameraApplyPositionChangeHook(On.RoomCamera.orig_ApplyPositionChange orig, RoomCamera self)
+        {
+            if (Options.velocityDragAtScreenChange?.Value != false)
+                if (self != null && Drag.MouseCamera(self.game)?.cameraNumber == self.cameraNumber)
+                    Drag.tempVelocityDrag = true;
             orig(self);
         }
     }

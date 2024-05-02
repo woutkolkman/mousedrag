@@ -25,6 +25,12 @@ namespace MouseDrag
             //if sandbox is active, always enable (because mouse drag is also active)
             activated |= (game.GetArenaGameSession as SandboxGameSession)?.overlay?.mouseDragger != null;
 
+            //forced visibility
+            if (Options.forceMouseVisibility?.Value == true) {
+                Cursor.visible = true;
+                return;
+            }
+
             if (Options.manageMouseVisibility?.Value != true)
                 return;
 
@@ -38,10 +44,6 @@ namespace MouseDrag
                 mouseStationaryCount++;
             if (mouseStationaryCount == mouseVisibilityTicks)
                 Cursor.visible = false;
-
-            //forced visibility
-            if (Options.forceMouseVisibility?.Value == true)
-                Cursor.visible = true;
         }
     }
 }

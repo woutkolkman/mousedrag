@@ -196,7 +196,8 @@ namespace MouseDrag
             crosshair.DrawSprites(timeStacker);
             label.SetPosition(Vector2.Lerp(prevDisplayPos, displayPos, timeStacker) + new Vector2(0f, outRad));
             container.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
-            label.text = followChunk?.owner != null ? followChunk?.owner.ToString() : "";
+            if (Options.showSelectionLabel?.Value == true)
+                label.text = followChunk?.owner != null ? followChunk?.owner.ToString() : "";
         }
 
 
@@ -252,6 +253,7 @@ namespace MouseDrag
                 icon = new FSprite(iconName, true);
                 container.AddChild(background);
                 container.AddChild(icon);
+                background.MoveToBack();
             }
 
 

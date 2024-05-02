@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System;
 using UnityEngine;
 using RWCustom;
 
@@ -8,7 +7,7 @@ namespace MouseDrag
     public class RadialMenu
     {
         public bool closed = false; //signal MenuStarter to destroy this
-        public Vector2 menuPos, displayPos; //menuPos in room, displayPos on screen
+        public Vector2 menuPos, displayPos, prevDisplayPos; //menuPos in room, displayPos on screen
         private Vector2 prevCamPos; //only used to compensate stationary position with screen scrolling mods
         public float outRad = 60f;
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
@@ -17,6 +16,7 @@ namespace MouseDrag
         private RoomCamera prevRCam = null; //just to detect SplitScreen Co-op camera change
         public List<Slot> slots = new List<Slot>();
         public Crosshair crosshair = null;
+        public FLabel label = null;
         public FContainer container = null;
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
@@ -36,6 +36,7 @@ namespace MouseDrag
                 menuPos = Drag.MousePos(game);
                 followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
                 displayPos = menuPos - rcam?.pos ?? new Vector2();
+                prevDisplayPos = displayPos;
             }
 
             container = new FContainer();
@@ -46,6 +47,9 @@ namespace MouseDrag
 
             crosshair = new Crosshair(this);
             crosshair.InitiateSprites(container);
+
+            label = new FLabel(Custom.GetFont(), "");
+            container.AddChild(label);
 
             //dummy (not needed but makes menu visible if no slots are configured)
             AddSlot();
@@ -120,6 +124,7 @@ namespace MouseDrag
                 prevCamPos = rcam.pos;
             }
 
+            prevDisplayPos = displayPos;
             displayPos = menuPos - rcam?.pos ?? new Vector2();
             if (Integration.sBCameraScrollEnabled) {
                 try {
@@ -189,7 +194,9 @@ namespace MouseDrag
             for (int i = 0; i < slots.Count; i++)
                 slots[i].DrawSprites(timeStacker);
             crosshair.DrawSprites(timeStacker);
+            label.SetPosition(Vector2.Lerp(prevDisplayPos, displayPos, timeStacker) + new Vector2(0f, outRad));
             container.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
+            label.text = followChunk?.owner != null ? followChunk?.owner.ToString() : "";
         }
 
 
@@ -197,6 +204,7 @@ namespace MouseDrag
         {
             ClearSlots();
             crosshair?.Destroy();
+            label?.RemoveFromContainer();
             container?.RemoveFromContainer();
         }
 

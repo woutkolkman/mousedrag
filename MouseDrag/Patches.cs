@@ -85,7 +85,7 @@ namespace MouseDrag
                 return;
             }
 
-            //create label that jumps to pop if update is skipped
+            //create label to jump to if update is skipped
             ILLabel skipCond = c.MarkLabel();
 
             //move cursor before update call

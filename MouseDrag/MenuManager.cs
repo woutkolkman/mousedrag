@@ -11,6 +11,13 @@ namespace MouseDrag
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
         public static List<string> iconNames = new List<string>(){};
+        public static SubMenuTypes subMenuType;
+
+        public enum SubMenuTypes
+        {
+            None,
+            Gravity
+        }
 
 
         public static void Update(RainWorldGame game)
@@ -18,6 +25,7 @@ namespace MouseDrag
             if (shouldOpen && menu == null && State.activated) {
                 menu = new RadialMenu(game);
                 reloadSlots = true;
+                subMenuType = SubMenuTypes.None;
             }
             shouldOpen = false;
 
@@ -29,8 +37,11 @@ namespace MouseDrag
             if (menu == null)
                 return;
 
-            //reload slots if followchunk changed
-            reloadSlots |= menu.prevFollowChunk != menu.followChunk;
+            //followchunk changed
+            if (menu.prevFollowChunk != menu.followChunk) {
+                subMenuType = SubMenuTypes.None;
+                reloadSlots = true;
+            }
 
             RadialMenu.Slot slot = menu.Update(game);
             string pressedSprite = slot?.iconName;
@@ -52,13 +63,31 @@ namespace MouseDrag
                 RunCommand(game, pressedSprite, followsObject);
 
             //change label text
-            menu.labelText = menu.followChunk?.owner != null ? menu.followChunk?.owner.ToString() : "";
+            if (subMenuType == SubMenuTypes.Gravity) {
+                menu.labelText = "Select Gravity Type";
+            } else if (menu.followChunk?.owner != null) {
+                menu.labelText = menu.followChunk?.owner.ToString();
+            } else {
+                menu.labelText = "";
+            }
         }
 
 
         //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
         public static void RunCommand(RainWorldGame game, string spriteName, bool followsObject)
         {
+            if (subMenuType == SubMenuTypes.Gravity) {
+                subMenuType = SubMenuTypes.None;
+                switch (spriteName)
+                {
+                    case "mousedragGravityReset":   Gravity.gravityType = Gravity.GravityTypes.None; break;
+                    case "mousedragGravityOff":     Gravity.gravityType = Gravity.GravityTypes.Off; break;
+                    case "mousedragGravityHalf":    Gravity.gravityType = Gravity.GravityTypes.Half; break;
+                    case "mousedragGravityOn":      Gravity.gravityType = Gravity.GravityTypes.On; break;
+                }
+                return;
+            }
+
             if (followsObject) {
                 //menu follows object
                 switch (spriteName)
@@ -135,7 +164,7 @@ namespace MouseDrag
                     case "mousedragGravityReset":
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
-                    case "mousedragGravityOn":              Gravity.CycleGravity(); break;
+                    case "mousedragGravityOn":              subMenuType = SubMenuTypes.Gravity; break;
                 }
             }
         }
@@ -145,6 +174,14 @@ namespace MouseDrag
         public static List<string> ReloadIconNames(bool followsObject)
         {
             iconNames.Clear();
+
+            if (subMenuType == SubMenuTypes.Gravity) {
+                iconNames.Add("mousedragGravityReset");
+                iconNames.Add("mousedragGravityOff");
+                iconNames.Add("mousedragGravityHalf");
+                iconNames.Add("mousedragGravityOn");
+                return iconNames;
+            }
 
             if (followsObject) {
                 //menu follows object

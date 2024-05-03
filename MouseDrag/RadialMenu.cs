@@ -17,6 +17,7 @@ namespace MouseDrag
         public List<Slot> slots = new List<Slot>();
         public Crosshair crosshair = null;
         public FLabel label = null;
+        public string labelText = ""; //update label text using this field
         public FContainer container = null;
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
@@ -196,8 +197,10 @@ namespace MouseDrag
             crosshair.DrawSprites(timeStacker);
             label.SetPosition(Vector2.Lerp(prevDisplayPos, displayPos, timeStacker) + new Vector2(0f, outRad));
             container.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
-            if (Options.showSelectionLabel?.Value == true)
-                label.text = followChunk?.owner != null ? followChunk?.owner.ToString() : "";
+
+            //updating label after container.Redraw seems to fix some exceptions
+            if (Options.showLabel?.Value == true)
+                label.text = labelText;
         }
 
 

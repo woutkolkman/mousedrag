@@ -50,6 +50,9 @@ namespace MouseDrag
             //run commands
             if (!String.IsNullOrEmpty(pressedSprite))
                 RunCommand(game, pressedSprite, followsObject);
+
+            //change label text
+            menu.labelText = menu.followChunk?.owner != null ? menu.followChunk?.owner.ToString() : "";
         }
 
 

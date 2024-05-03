@@ -47,10 +47,16 @@ namespace MouseDragHelper
                 typeof(Plugin).GetMethod("MouseDragMenuManager_RunCommand_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
             );
 
-            //hook for adding sprite
+            //hook for adding sprites
             IDetour detourReloadIconNames = new Hook(
                 typeof(MouseDrag.MenuManager).GetMethod("ReloadIconNames", BindingFlags.Static | BindingFlags.Public),
                 typeof(Plugin).GetMethod("MouseDragMenuManager_ReloadIconNames_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+            );
+
+            //hook for adding labels
+            IDetour detourReloadLabelNames = new Hook(
+                typeof(MouseDrag.MenuManager).GetMethod("ReloadLabelNames", BindingFlags.Static | BindingFlags.Public),
+                typeof(Plugin).GetMethod("MouseDragMenuManager_ReloadLabelNames_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
             );
 
             //also hook RainWorld.OnModsInit to load your custom sprite, for example use Futile.atlasManager.LoadImage
@@ -80,19 +86,31 @@ namespace MouseDragHelper
         {
             orig(game, spriteName, followsObject);
             if (spriteName == "CentipedeSegment") //temporary spritename
-                Plugin.Logger.LogInfo("your code will run here");
+                Plugin.Logger.LogInfo("your icon code will run here");
+            if (spriteName == "Hello World!")
+                Plugin.Logger.LogInfo("your label code will run here");
 
             //you can reference MouseDrag.MenuManager.menu?.followChunk?.owner to get the object on which actions are performed
             PhysicalObject obj = MouseDrag.MenuManager.menu?.followChunk?.owner;
         }
 
 
-        //hook for adding sprite
+        //hook for adding sprites
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static List<string> MouseDragMenuManager_ReloadIconNames_RuntimeDetour(Func<bool, List<string>> orig, bool followsObject)
+        public static List<string> MouseDragMenuManager_ReloadIconNames_RuntimeDetour(Func<RainWorldGame, bool, List<string>> orig, RainWorldGame game, bool followsObject)
         {
-            List<string> returnable = orig(followsObject);
+            List<string> returnable = orig(game, followsObject);
             returnable.Add("CentipedeSegment"); //temporary spritename
+            return returnable;
+        }
+
+
+        //hook for adding labels
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static List<string> MouseDragMenuManager_ReloadLabelNames_RuntimeDetour(Func<RainWorldGame, bool, List<string>> orig, RainWorldGame game, bool followsObject)
+        {
+            List<string> returnable = orig(game, followsObject);
+            returnable.Add("Hello World!"); //temporary spritename
             return returnable;
         }
     }

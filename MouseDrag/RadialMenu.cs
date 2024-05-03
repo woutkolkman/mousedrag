@@ -58,20 +58,25 @@ namespace MouseDrag
         ~RadialMenu() { Destroy(); }
 
 
-        public void LoadSlots(List<string> iconNames)
+        public void LoadSlots(List<string> iconNames, List<string> labelNames)
         {
             ClearSlots();
-            foreach (string iconName in iconNames)
-                AddSlot(iconName);
+            if (iconNames != null)
+                foreach (string name in iconNames)
+                    AddSlot(name);
+            if (labelNames != null)
+                foreach (string name in labelNames)
+                    AddSlot(name, true);
         }
 
 
-        public void AddSlot(string iconName = "")
+        public void AddSlot(string name = "", bool asLabel = false)
         {
             Slot s = new Slot(this);
             slots.Add(s);
-            if (!string.IsNullOrEmpty(iconName))
-                s.iconName = iconName;
+            if (!string.IsNullOrEmpty(name))
+                s.name = name;
+            s.isLabel = asLabel;
             s.InitiateSprites(container);
         }
 
@@ -220,8 +225,9 @@ namespace MouseDrag
             public TriangleMesh background;
             public Vector2 curPos, prevPos;
             public Color curColor;
-            public FSprite icon = null;
-            public string iconName = "pixel";
+            public FNode icon = null;
+            public string name = "pixel";
+            public bool isLabel = false;
             Color hoverColor = new Color(1f, 1f, 1f, 0.4f);
             Color noneColor = new Color(0f, 0f, 0f, 0.2f);
 
@@ -253,7 +259,11 @@ namespace MouseDrag
                 }
 
                 background = new TriangleMesh("Futile_White", list.ToArray(), true, false);
-                icon = new FSprite(iconName, true);
+                if (isLabel) {
+                    icon = new FLabel(Custom.GetFont(), name);
+                } else {
+                    icon = new FSprite(name, true);
+                }
                 container.AddChild(background);
                 container.AddChild(icon);
                 background.MoveToBack();

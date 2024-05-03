@@ -11,12 +11,14 @@ namespace MouseDrag
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
         public static List<string> iconNames = new List<string>(){};
+        public static List<string> labelNames = new List<string>(){};
         public static SubMenuTypes subMenuType;
 
         public enum SubMenuTypes
         {
             None,
-            Gravity
+            Gravity,
+            SafariPlayer
         }
 
 
@@ -44,13 +46,14 @@ namespace MouseDrag
             }
 
             RadialMenu.Slot slot = menu.Update(game);
-            string pressedSprite = slot?.iconName;
+            string pressedSprite = slot?.name;
 
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
-                ReloadIconNames(followsObject);
-                menu.LoadSlots(iconNames);
+                ReloadIconNames(game, followsObject);
+                ReloadLabelNames(game, followsObject);
+                menu.LoadSlots(iconNames, labelNames);
             }
             prevFollowsObject = followsObject;
             reloadSlots = false;
@@ -65,6 +68,8 @@ namespace MouseDrag
             //change label text
             if (subMenuType == SubMenuTypes.Gravity) {
                 menu.labelText = "Select Gravity Type";
+            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
+                menu.labelText = "Select Safari Player";
             } else if (menu.followChunk?.owner != null) {
                 menu.labelText = menu.followChunk?.owner.ToString();
             } else {
@@ -76,6 +81,7 @@ namespace MouseDrag
         //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
         public static void RunCommand(RainWorldGame game, string spriteName, bool followsObject)
         {
+            //submenu for quick select gravity type
             if (subMenuType == SubMenuTypes.Gravity) {
                 subMenuType = SubMenuTypes.None;
                 switch (spriteName)
@@ -85,6 +91,18 @@ namespace MouseDrag
                     case "mousedragGravityHalf":    Gravity.gravityType = Gravity.GravityTypes.Half; break;
                     case "mousedragGravityOn":      Gravity.gravityType = Gravity.GravityTypes.On; break;
                 }
+                return;
+            }
+
+            //submenu for selecting player number which will safari control creature
+            if (subMenuType == SubMenuTypes.SafariPlayer) {
+                subMenuType = SubMenuTypes.None;
+                if (!Int32.TryParse(spriteName, out int pI)) {
+                    Plugin.Logger.LogWarning("MenuManager.RunCommand, parsing playerIndex failed, value is \"" + spriteName + "\"");
+                    return;
+                }
+                Drag.playerNr = pI - 1;
+                Control.ToggleControl(game, menu.followChunk?.owner as Creature);
                 return;
             }
 
@@ -106,6 +124,14 @@ namespace MouseDrag
                     case "mousedragCut":            Clipboard.CutObject(menu.followChunk?.owner); break;
                     case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, menu.followChunk); break;
                     case "mousedragMove":
+                        if (menu.followChunk?.owner is Player && !(menu.followChunk.owner as Player).isNPC) {
+                            //skip selection and uncontrol all
+                            Control.ToggleControl(game, menu.followChunk?.owner as Creature);
+                        } else if (menu.followChunk?.owner is Creature) {
+                            //creature can be controlled
+                            subMenuType = SubMenuTypes.SafariPlayer;
+                        }
+                        break;
                     case "mousedragUnmove":         Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
@@ -171,7 +197,7 @@ namespace MouseDrag
 
 
         //add-on mods need to hook the ReloadIconNames() function, and insert their sprite names in iconNames afterwards
-        public static List<string> ReloadIconNames(bool followsObject)
+        public static List<string> ReloadIconNames(RainWorldGame game, bool followsObject)
         {
             iconNames.Clear();
 
@@ -182,6 +208,9 @@ namespace MouseDrag
                 iconNames.Add("mousedragGravityOn");
                 return iconNames;
             }
+
+            if (subMenuType == SubMenuTypes.SafariPlayer)
+                return iconNames;
 
             if (followsObject) {
                 //menu follows object
@@ -265,6 +294,21 @@ namespace MouseDrag
             }
 
             return iconNames;
+        }
+
+
+        //add-on mods need to hook the ReloadLabelNames() function, and insert their text in labelNames afterwards
+        public static List<string> ReloadLabelNames(RainWorldGame game, bool followsObject)
+        {
+            labelNames.Clear();
+
+            //add all selectable safari control players to menu
+            if (subMenuType == SubMenuTypes.SafariPlayer) {
+                for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
+                    labelNames.Add((i + 1).ToString());
+            }
+
+            return labelNames;
         }
 
 

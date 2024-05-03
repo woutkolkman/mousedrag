@@ -41,6 +41,12 @@ namespace MouseDrag
                 if (Options.controlOnlyOne?.Value == true)
                     ReleaseControlAll(Drag.playerNr);
                 controlledCreatures.Add(new KeyValuePair<AbstractCreature, int>(ac, Drag.playerNr));
+
+                //activate unused player input
+                if (game.rainWorld?.options?.controls?.Length > Drag.playerNr)
+                    if (game.rainWorld.options.controls[Drag.playerNr] != null)
+                        game.rainWorld.options.controls[Drag.playerNr].active = true;
+
             } else if (!ac.controlled) {
                 ListRemove(ac);
             }

@@ -326,24 +326,24 @@ namespace MouseDrag
         }
 
 
-        public static int maxItemsOnPage = 8;
         public static int page = 0;
         public static void CreatePage()
         {
+            int maxOnPage = Options.maxOnPage?.Value ?? 7;
             int iconCount = iconNames.Count;
             int labelCount = labelNames.Count;
 
             //reset page if out of bounds
-            if (iconCount + labelCount <= maxItemsOnPage * page)
+            if (iconCount + labelCount <= maxOnPage * page)
                 page = 0;
 
             //no page slot is required
-            if (iconCount + labelCount <= maxItemsOnPage)
+            if (iconCount + labelCount <= maxOnPage)
                 return;
 
             for (int i = iconCount + labelCount - 1; i >= 0; i--) {
-                if (i < (maxItemsOnPage * page) + maxItemsOnPage && 
-                    i >= maxItemsOnPage * page)
+                if (i < (maxOnPage * page) + maxOnPage && 
+                    i >= maxOnPage * page)
                     continue;
                 if (i > iconCount - 1) {
                     labelNames.RemoveAt(i - iconCount);

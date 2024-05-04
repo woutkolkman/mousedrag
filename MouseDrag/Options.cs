@@ -18,6 +18,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> throwWeapon;
         public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
         public static Configurable<KeyCode> selectCreatures, selectObjects;
+        public static Configurable<int> maxOnPage;
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllObjectsKey;
         public static Configurable<KeyCode> killOneKey, killAllCreaturesKey, reviveOneKey, reviveAllCreaturesKey;
@@ -86,6 +87,7 @@ namespace MouseDrag
             velocityDragAtScreenChange = config.Bind(nameof(velocityDragAtScreenChange), defaultValue: true, new ConfigurableInfo("Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.", null, "", "Velocity drag at screen change"));
             selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
             selectObjects = config.Bind(nameof(selectObjects), KeyCode.LeftAlt, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select objects"));
+            maxOnPage = config.Bind(nameof(maxOnPage), defaultValue: 7, new ConfigurableInfo("Max amount of tools on a single menu page.", new ConfigAcceptableRange<int>(1, 999), "", "Max on page"));
 
             pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object/creature which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
@@ -228,6 +230,7 @@ namespace MouseDrag
             AddCheckbox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
             AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
             AddKeyBinder(selectObjects, new Vector2(x, y -= sepr + 5f));
+            AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
 
             /**************** Tools ****************/
             curTab++;

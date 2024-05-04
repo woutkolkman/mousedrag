@@ -22,8 +22,8 @@
                     rel.InfluenceTempLike(2f); //force max
                 if (rel?.like < 1f)
                     rel.InfluenceLike(2f); //force max
-                if (rel?.know < 0.25f)
-                    rel.InfluenceKnow(0.25f);
+                if (rel?.know < 1f)
+                    rel.InfluenceKnow(0.9f);
                 if (rel != null) {
                     if (Options.tameIncreasesRep?.Value == true)
                         game.session?.creatureCommunities?.InfluenceLikeOfPlayer(
@@ -73,11 +73,12 @@
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("ClearRelationships, cleared " + count + " relationships");
 
-                /*if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
-                    ai.friendTracker = null;
+                if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
+                    ai.friendTracker.friend = null;
+                    ai.friendTracker.friendRel = null;
                     if (Options.logDebug?.Value != false)
-                        Plugin.Logger.LogDebug("ClearRelationships, deleted friendTracker");
-                }*/
+                        Plugin.Logger.LogDebug("ClearRelationships, FriendTracker data reset");
+                }
             }
         }
 

@@ -43,6 +43,7 @@ namespace MouseDrag
             if (menu.prevFollowChunk != menu.followChunk) {
                 subMenuType = SubMenuTypes.None;
                 reloadSlots = true;
+                page = 0;
             }
 
             RadialMenu.Slot slot = menu.Update(game);
@@ -53,6 +54,7 @@ namespace MouseDrag
             if (followsObject ^ prevFollowsObject || reloadSlots) {
                 ReloadIconNames(game, followsObject);
                 ReloadLabelNames(game, followsObject);
+                CreatePage();
                 menu.LoadSlots(iconNames, labelNames);
             }
             prevFollowsObject = followsObject;
@@ -81,6 +83,12 @@ namespace MouseDrag
         //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
         public static void RunCommand(RainWorldGame game, string spriteName, bool followsObject)
         {
+            //next page
+            if (spriteName == "+") {
+                page++;
+                return;
+            }
+
             //submenu for quick select gravity type
             if (subMenuType == SubMenuTypes.Gravity) {
                 subMenuType = SubMenuTypes.None;
@@ -202,17 +210,15 @@ namespace MouseDrag
             iconNames.Clear();
 
             if (subMenuType == SubMenuTypes.Gravity) {
+                //add all selectable gravity types to submenu
                 iconNames.Add("mousedragGravityReset");
                 iconNames.Add("mousedragGravityOff");
                 iconNames.Add("mousedragGravityHalf");
                 iconNames.Add("mousedragGravityOn");
-                return iconNames;
-            }
 
-            if (subMenuType == SubMenuTypes.SafariPlayer)
-                return iconNames;
+            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
 
-            if (followsObject) {
+            } else if (followsObject) {
                 //menu follows object
                 if (Options.pauseOneMenu?.Value != false)
                     iconNames.Add(Pause.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause");
@@ -302,13 +308,50 @@ namespace MouseDrag
         {
             labelNames.Clear();
 
-            //add all selectable safari control players to menu
-            if (subMenuType == SubMenuTypes.SafariPlayer) {
+            if (subMenuType == SubMenuTypes.Gravity) {
+
+            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
+                //add all selectable safari control players to submenu
                 for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
                     labelNames.Add((i + 1).ToString());
+
+            } else if (followsObject) {
+                //menu follows object
+
+            } else {
+                //menu on background
             }
 
             return labelNames;
+        }
+
+
+        public static int maxItemsOnPage = 8;
+        public static int page = 0;
+        public static void CreatePage()
+        {
+            int iconCount = iconNames.Count;
+            int labelCount = labelNames.Count;
+
+            //reset page if out of bounds
+            if (iconCount + labelCount <= maxItemsOnPage * page)
+                page = 0;
+
+            //no page slot is required
+            if (iconCount + labelCount <= maxItemsOnPage)
+                return;
+
+            for (int i = iconCount + labelCount - 1; i >= 0; i--) {
+                if (i < (maxItemsOnPage * page) + maxItemsOnPage && 
+                    i >= maxItemsOnPage * page)
+                    continue;
+                if (i > iconCount - 1) {
+                    labelNames.RemoveAt(i - iconCount);
+                } else {
+                    iconNames.RemoveAt(i);
+                }
+            }
+            labelNames.Add("+");
         }
 
 

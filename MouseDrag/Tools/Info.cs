@@ -11,73 +11,35 @@ namespace MouseDrag
     {
         public static void DumpInfo(PhysicalObject obj)
         {
-            //string dumpedObject = ObjectDumper.Dump(obj);
-            User usr = new User();
-            usr.FirstName = "Henk";
-            usr.LastName = "De Potvis";
-            usr.Address = new Address();
-            usr.Address.Street = "A";
-            usr.Address.ZipCode = 69;
-            usr.Address.City = "B";
-            usr.Hobbies = new List<Hobby> {
-                new Hobby() { Name = "programming" }
-            };
-            string dumpedObject = ObjectDumper.Dump(usr);
+            string dumpedObject = ObjectDumper.Dump(obj, 2, 3);
             Plugin.Logger.LogDebug(dumpedObject);
             UniClipboard.SetText(dumpedObject);
         }
 
 
-        private class User
-        {
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public Address Address { get; set; }
-            public IList<Hobby> Hobbies { get; set; }
-        }
-
-
-        private class Hobby
-        {
-            public string Name { get; set; }
-        }
-
-
-        private class Address
-        {
-            public string Street { get; set; }
-            public int ZipCode { get; set; }
-            public string City { get; set; }
-        }
-
-
-        //not my code, but from https://stackoverflow.com/a/10478008
+        //not my code, but adapted from https://stackoverflow.com/a/10478008
         //more info https://stackoverflow.com/questions/852181/c-printing-all-properties-of-an-object/852216#852216
         private class ObjectDumper
         {
             private int _level;
+            private int _maxLevel; //added maxLevel
             private readonly int _indentSize;
             private readonly StringBuilder _stringBuilder;
             private readonly List<int> _hashListOfFoundElements;
 
 
-            private ObjectDumper(int indentSize)
+            private ObjectDumper(int indentSize, int maxLevel) //added maxLevel
             {
                 _indentSize = indentSize;
                 _stringBuilder = new StringBuilder();
                 _hashListOfFoundElements = new List<int>();
+                _maxLevel = maxLevel; //added maxLevel
             }
 
 
-            public static string Dump(object element)
+            public static string Dump(object element, int indentSize, int maxLevel) //added maxLevel
             {
-                return Dump(element, 2);
-            }
-
-
-            public static string Dump(object element, int indentSize)
-            {
-                var instance = new ObjectDumper(indentSize);
+                var instance = new ObjectDumper(indentSize, maxLevel);
                 return instance.DumpElement(element);
             }
 
@@ -89,7 +51,12 @@ namespace MouseDrag
                 } else {
                     var objectType = element.GetType();
                     if (!typeof(IEnumerable).IsAssignableFrom(objectType)) {
-                        Write("{{{0}}}", objectType.FullName);
+                        if (_level >= _maxLevel) { //added early return if max level is reached
+                            Write("{{{0}}} <-- max level reached", objectType.FullName);
+                            return _stringBuilder.ToString();
+                        } else {
+                            Write("{{{0}}}", objectType.FullName);
+                        }
                         _hashListOfFoundElements.Add(element.GetHashCode());
                         _level++;
                     }
@@ -104,7 +71,7 @@ namespace MouseDrag
                                 if (!AlreadyTouched(item)) {
                                     DumpElement(item);
                                 } else {
-                                    Write("{{{0}}} <-- bidirectional reference found", item.GetType().FullName);
+                                    Write("{{{0}}} <-- bidirectional reference found or already touched", item.GetType().FullName);
                                 }
                             }
                         }
@@ -130,7 +97,7 @@ namespace MouseDrag
                                 if (!alreadyTouched) {
                                     DumpElement(value);
                                 } else {
-                                    Write("{{{0}}} <-- bidirectional reference found", value.GetType().FullName);
+                                    Write("{{{0}}} <-- bidirectional reference found or already touched", value.GetType().FullName);
                                 }
                                 _level--;
                             }

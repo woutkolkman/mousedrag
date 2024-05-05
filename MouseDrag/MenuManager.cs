@@ -10,6 +10,7 @@ namespace MouseDrag
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
+        public static string tempText = "";
         public static List<string> iconNames = new List<string>(){};
         public static List<string> labelNames = new List<string>(){};
         public static SubMenuTypes subMenuType;
@@ -28,6 +29,7 @@ namespace MouseDrag
                 menu = new RadialMenu(game);
                 reloadSlots = true;
                 subMenuType = SubMenuTypes.None;
+                tempText = "";
             }
             shouldOpen = false;
 
@@ -41,8 +43,9 @@ namespace MouseDrag
 
             //followchunk changed
             if (menu.prevFollowChunk != menu.followChunk) {
-                subMenuType = SubMenuTypes.None;
                 reloadSlots = true;
+                subMenuType = SubMenuTypes.None;
+                tempText = "";
                 page = 0;
             }
 
@@ -60,18 +63,19 @@ namespace MouseDrag
             prevFollowsObject = followsObject;
             reloadSlots = false;
 
-            //reload slots if command is executed
-            reloadSlots |= !String.IsNullOrEmpty(pressedSprite);
+            if (!String.IsNullOrEmpty(pressedSprite)) {
+                tempText = "";
 
-            //run commands
-            if (!String.IsNullOrEmpty(pressedSprite))
+                //run command if a menu slot was pressed
                 RunCommand(game, pressedSprite, followsObject);
 
+                //reload slots if command is executed
+                reloadSlots = true;
+            }
+
             //change label text
-            if (subMenuType == SubMenuTypes.Gravity) {
-                menu.labelText = "Select Gravity Type";
-            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
-                menu.labelText = "Select Safari Player";
+            if (tempText?.Length > 0) {
+                menu.labelText = tempText;
             } else if (menu.followChunk?.owner != null) {
                 menu.labelText = menu.followChunk?.owner.ToString();
             } else {
@@ -151,7 +155,10 @@ namespace MouseDrag
                     case "mousedragDestroy":        Destroy.DestroyObject(menu.followChunk?.owner); break;
                     case "mousedragLocked":
                     case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
-                    case "mousedragInfo":           Info.DumpInfo(menu.followChunk?.owner); break;
+                    case "mousedragInfo":
+                        Info.DumpInfo(menu.followChunk?.owner);
+                        tempText = "Copied To Clipboard";
+                        break;
                 }
 
             } else {
@@ -219,6 +226,7 @@ namespace MouseDrag
                 iconNames.Add("mousedragGravityHalf");
                 iconNames.Add("mousedragGravityOn");
                 iconNames.Add("mousedragGravityInverse");
+                tempText = "Select Gravity Type";
 
             } else if (subMenuType == SubMenuTypes.SafariPlayer) {
 
@@ -322,6 +330,7 @@ namespace MouseDrag
                 //add all selectable safari control players to submenu
                 for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
                     labelNames.Add((i + 1).ToString());
+                tempText = "Select Safari Player";
 
             } else if (followsObject) {
                 //menu follows object

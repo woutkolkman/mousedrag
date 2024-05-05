@@ -100,7 +100,8 @@ namespace MouseDragHelper
         public static List<string> MouseDragMenuManager_ReloadIconNames_RuntimeDetour(Func<RainWorldGame, bool, List<string>> orig, RainWorldGame game, bool followsObject)
         {
             List<string> returnable = orig(game, followsObject);
-            returnable.Add("CentipedeSegment"); //temporary spritename
+            if (MouseDrag.MenuManager.subMenuType == MouseDrag.MenuManager.SubMenuTypes.None)
+                returnable.Add("CentipedeSegment"); //temporary spritename
             return returnable;
         }
 
@@ -110,7 +111,8 @@ namespace MouseDragHelper
         public static List<string> MouseDragMenuManager_ReloadLabelNames_RuntimeDetour(Func<RainWorldGame, bool, List<string>> orig, RainWorldGame game, bool followsObject)
         {
             List<string> returnable = orig(game, followsObject);
-            returnable.Add("Hello World!"); //temporary spritename
+            if (MouseDrag.MenuManager.subMenuType == MouseDrag.MenuManager.SubMenuTypes.None)
+                returnable.Add("Hello World!"); //temporary spritename
             return returnable;
         }
     }

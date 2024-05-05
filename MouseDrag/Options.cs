@@ -123,7 +123,7 @@ namespace MouseDrag
             lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object/creature is reloaded.", null, "", "Lock"));
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Half/On/Inverse.", null, "", "Gravity"));
-            infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object/creature which you're currently dragging.", null, "", "Info"));
+            infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object/creature which you're currently dragging, or the room if nothing is being dragged.", null, "", "Info"));
 
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind(nameof(pauseRoomCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -170,7 +170,7 @@ namespace MouseDrag
             forcefieldImmunityPlayers = config.Bind(nameof(forcefieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by forcefields.", null, "", "Forcefield immunity players"));
             forcefieldImmunityObjects = config.Bind(nameof(forcefieldImmunityObjects), defaultValue: false, new ConfigurableInfo("Objects (except thrown weapons) are unaffected by forcefields.", null, "", "Forcefield immunity objects"));
             forcefieldRadius = config.Bind(nameof(forcefieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "Forcefield radius"));
-            infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.", null, "", "Info depth"));
+            infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.\nKeep this value low to avoid copying 'the whole game' to your clipboard.", null, "", "Info depth"));
 
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "BeastMaster integration"));
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));

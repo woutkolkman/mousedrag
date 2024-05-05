@@ -157,7 +157,7 @@ namespace MouseDrag
                     case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
                     case "mousedragInfo":
                         Info.DumpInfo(menu.followChunk?.owner);
-                        tempText = "Copied To Clipboard";
+                        tempText = "Object Copied To Clipboard";
                         break;
                 }
 
@@ -209,6 +209,10 @@ namespace MouseDrag
                     case "mousedragGravityHalf":
                     case "mousedragGravityOn":
                     case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
+                    case "mousedragInfo":
+                        Info.DumpInfo(rcam?.room);
+                        tempText = "Room Copied To Clipboard";
+                        break;
                 }
             }
         }
@@ -313,6 +317,8 @@ namespace MouseDrag
                         iconNames.Add("mousedragGravityInverse");
                     }
                 }
+                if (Options.infoMenu?.Value != false)
+                    iconNames.Add("mousedragInfo");
             }
 
             return iconNames;

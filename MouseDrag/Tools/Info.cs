@@ -9,7 +9,7 @@ namespace MouseDrag
 {
     public static class Info
     {
-        public static void DumpInfo(PhysicalObject obj)
+        public static void DumpInfo(object obj)
         {
             string dumpedObject = ObjectDumper.Dump(obj, 2, Options.infoDepth?.Value ?? 3);
             //Plugin.Logger.LogDebug(dumpedObject);
@@ -73,7 +73,7 @@ namespace MouseDrag
                                 if (!AlreadyTouched(item)) {
                                     DumpElement(item);
                                 } else {
-                                    Write("{{{0}}} <-- bidirectional reference found or already touched", item.GetType().FullName);
+                                    Write("{{{0}}} <-- bidirectional reference or already touched", item.GetType().FullName);
                                 }
                             }
                         }
@@ -102,7 +102,7 @@ namespace MouseDrag
                                 if (!alreadyTouched) {
                                     DumpElement(value);
                                 } else {
-                                    Write("{{{0}}} <-- bidirectional reference found or already touched", value.GetType().FullName);
+                                    Write("{{{0}}} <-- bidirectional reference or already touched", value.GetType().FullName);
                                 }
                                 _level--;
                             }

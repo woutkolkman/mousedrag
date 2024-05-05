@@ -11,9 +11,11 @@ namespace MouseDrag
     {
         public static void DumpInfo(PhysicalObject obj)
         {
-            string dumpedObject = ObjectDumper.Dump(obj, 2, 3);
-            Plugin.Logger.LogDebug(dumpedObject);
+            string dumpedObject = ObjectDumper.Dump(obj, 2, 5);
+            //Plugin.Logger.LogDebug(dumpedObject);
             UniClipboard.SetText(dumpedObject);
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Info.DumpInfo, copied to clipboard");
         }
 
 
@@ -83,9 +85,12 @@ namespace MouseDrag
                             if (fieldInfo == null && propertyInfo == null)
                                 continue;
                             var type = fieldInfo != null ? fieldInfo.FieldType : propertyInfo.PropertyType;
-                            object value = fieldInfo != null
-                                               ? fieldInfo.GetValue(element)
-                                               : propertyInfo.GetValue(element, null);
+                            object value = null;
+                            try {
+                                value = fieldInfo != null ? fieldInfo.GetValue(element) : propertyInfo.GetValue(element, null);
+                            } catch (Exception e) { //added exception handler
+                                Plugin.Logger.LogWarning("Info.ObjectDumper.DumpElement exception while getting field or property info for a member: " + e.ToString());
+                            }
                             if (type.IsValueType || type == typeof(string)) {
                                 Write("{0}: {1}", memberInfo.Name, FormatValue(value));
                             } else {
@@ -126,8 +131,13 @@ namespace MouseDrag
             private void Write(string value, params object[] args)
             {
                 var space = new string(' ', _level * _indentSize);
-                if (args != null)
-                    value = string.Format(value, args);
+                if (args != null) {
+                    try {
+                        value = string.Format(value, args);
+                    } catch (FormatException) { //added to catch format exceptions
+                        Plugin.Logger.LogWarning("Info.ObjectDumper.Write, caught FormatException while formatting: " + value);
+                    }
+                }
                 _stringBuilder.AppendLine(space + value);
             }
 

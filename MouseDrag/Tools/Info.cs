@@ -11,7 +11,7 @@ namespace MouseDrag
     {
         public static void DumpInfo(PhysicalObject obj)
         {
-            string dumpedObject = ObjectDumper.Dump(obj, 2, 5);
+            string dumpedObject = ObjectDumper.Dump(obj, 2, Options.infoDepth?.Value ?? 3);
             //Plugin.Logger.LogDebug(dumpedObject);
             UniClipboard.SetText(dumpedObject);
             if (Options.logDebug?.Value != false)

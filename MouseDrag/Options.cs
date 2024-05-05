@@ -47,6 +47,7 @@ namespace MouseDrag
         public static Configurable<bool> adjustableLocks;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
         public static Configurable<float> forcefieldRadius;
+        public static Configurable<int> infoDepth;
         public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration, sBCameraScrollIntegration;
         public static Configurable<bool> regionKitIntegration;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
@@ -169,6 +170,7 @@ namespace MouseDrag
             forcefieldImmunityPlayers = config.Bind(nameof(forcefieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by forcefields.", null, "", "Forcefield immunity players"));
             forcefieldImmunityObjects = config.Bind(nameof(forcefieldImmunityObjects), defaultValue: false, new ConfigurableInfo("Objects (except thrown weapons) are unaffected by forcefields.", null, "", "Forcefield immunity objects"));
             forcefieldRadius = config.Bind(nameof(forcefieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "Forcefield radius"));
+            infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.", null, "", "Info depth"));
 
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "BeastMaster integration"));
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));
@@ -363,6 +365,7 @@ namespace MouseDrag
             AddCheckbox(forcefieldImmunityPlayers, new Vector2(x, y -= sepr));
             AddCheckbox(forcefieldImmunityObjects, new Vector2(x, y -= sepr));
             AddTextBox(forcefieldRadius, new Vector2(x, y -= sepr), 50f);
+            AddTextBox(infoDepth, new Vector2(x, y -= sepr), 40f);
 
             y = -19f; //from bottom up
             AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));

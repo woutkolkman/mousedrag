@@ -11,13 +11,23 @@ namespace MouseDrag
             None, 
             Off, 
             Half, 
-            On
+            On,
+            Inverse
         }
 
 
         public static void CycleGravity()
         {
-            gravityType = gravityType.Next();
+            //gravityType = gravityType.Next();
+
+            //exclude half and inverse
+            if (gravityType == GravityTypes.None) {
+                gravityType = GravityTypes.Off;
+            } else if (gravityType == GravityTypes.Off) {
+                gravityType = GravityTypes.On;
+            } else {
+                gravityType = GravityTypes.None;
+            }
         }
 
 

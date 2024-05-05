@@ -121,7 +121,7 @@ namespace MouseDrag
             destroyAllDeadCreaturesKey = config.Bind(nameof(destroyAllDeadCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all dead creatures in current room except Player and SlugNPC.", null, "", "Destroy dead\ncreatures in room"));
             lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object/creature is reloaded.", null, "", "Lock"));
 
-            gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 4 states can be assigned: None/Off/Half/On.", null, "", "Gravity"));
+            gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Half/On/Inverse.", null, "", "Gravity"));
 
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind(nameof(pauseRoomCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));

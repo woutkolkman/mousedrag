@@ -98,6 +98,7 @@ namespace MouseDrag
                     case "mousedragGravityOff":     Gravity.gravityType = Gravity.GravityTypes.Off; break;
                     case "mousedragGravityHalf":    Gravity.gravityType = Gravity.GravityTypes.Half; break;
                     case "mousedragGravityOn":      Gravity.gravityType = Gravity.GravityTypes.On; break;
+                    case "mousedragGravityInverse": Gravity.gravityType = Gravity.GravityTypes.Inverse; break;
                 }
                 return;
             }
@@ -198,7 +199,8 @@ namespace MouseDrag
                     case "mousedragGravityReset":
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
-                    case "mousedragGravityOn":              subMenuType = SubMenuTypes.Gravity; break;
+                    case "mousedragGravityOn":
+                    case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
                 }
             }
         }
@@ -215,6 +217,7 @@ namespace MouseDrag
                 iconNames.Add("mousedragGravityOff");
                 iconNames.Add("mousedragGravityHalf");
                 iconNames.Add("mousedragGravityOn");
+                iconNames.Add("mousedragGravityInverse");
 
             } else if (subMenuType == SubMenuTypes.SafariPlayer) {
 
@@ -295,6 +298,8 @@ namespace MouseDrag
                         iconNames.Add("mousedragGravityHalf");
                     } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
                         iconNames.Add("mousedragGravityOn");
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.Inverse) {
+                        iconNames.Add("mousedragGravityInverse");
                     }
                 }
             }

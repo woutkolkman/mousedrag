@@ -373,6 +373,8 @@ namespace MouseDrag
                     self.gravity = 0.2f;
                 if (Gravity.gravityType == Gravity.GravityTypes.On)
                     self.gravity = 1f;
+                if (Gravity.gravityType == Gravity.GravityTypes.Inverse)
+                    self.gravity = -1f;
             }
             orig(self);
         }

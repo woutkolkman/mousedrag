@@ -350,6 +350,10 @@ namespace MouseDrag
             int iconCount = iconNames.Count;
             int labelCount = labelNames.Count;
 
+            //go to last page if negative
+            if (page < 0)
+                page = (iconCount + labelCount - 1) / maxOnPage;
+
             //reset page if out of bounds
             if (iconCount + labelCount <= maxOnPage * page)
                 page = 0;
@@ -399,6 +403,16 @@ namespace MouseDrag
             } else if (beastMasterOpened && RadialMenu.menuButtonPressed()) {
                 menu?.Destroy();
                 menu = null;
+            }
+
+            //also use scroll wheel to navigate pages
+            if (UnityEngine.Input.mouseScrollDelta.y < 0) {
+                page++;
+                reloadSlots = true;
+            }
+            if (UnityEngine.Input.mouseScrollDelta.y > 0) {
+                page--;
+                reloadSlots = true;
             }
         }
 

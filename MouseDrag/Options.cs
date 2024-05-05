@@ -29,7 +29,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> destroyOneKey, destroyAllCreaturesKey, destroyAllObjectsKey;
         public static Configurable<KeyCode> destroyRegionCreaturesKey, destroyRegionObjectsKey;
         public static Configurable<KeyCode> destroyAllDeadCreaturesKey, lockKey;
-        public static Configurable<KeyCode> gravityRoomKey;
+        public static Configurable<KeyCode> gravityRoomKey, infoKey;
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllObjectsMenu;
         public static Configurable<bool> killOneMenu, killAllCreaturesMenu, reviveOneMenu, reviveAllCreaturesMenu;
@@ -42,7 +42,7 @@ namespace MouseDrag
         public static Configurable<bool> destroyOneMenu, destroyAllCreaturesMenu, destroyAllObjectsMenu, destroyRoomMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionObjectsMenu;
         public static Configurable<bool> destroyAllDeadCreaturesMenu, lockMenu;
-        public static Configurable<bool> gravityRoomMenu;
+        public static Configurable<bool> gravityRoomMenu, infoMenu;
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> adjustableLocks;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityObjects;
@@ -122,6 +122,7 @@ namespace MouseDrag
             lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object/creature is reloaded.", null, "", "Lock"));
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Half/On/Inverse.", null, "", "Gravity"));
+            infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object/creature which you're currently dragging.", null, "", "Info"));
 
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind(nameof(pauseRoomCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -159,6 +160,7 @@ namespace MouseDrag
             lockMenu = config.Bind(nameof(lockMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
             gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            infoMenu = config.Bind(nameof(infoMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
@@ -345,6 +347,9 @@ namespace MouseDrag
             AddKeyBinder(gravityRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragGravityOff");
             AddCheckbox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddKeyBinder(infoKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragInfo");
+            AddCheckbox(infoMenu, new Vector2(x - 56f, y + 3f));
 
             /**************** Other ****************/
             curTab++;

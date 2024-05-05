@@ -151,6 +151,7 @@ namespace MouseDrag
                     case "mousedragDestroy":        Destroy.DestroyObject(menu.followChunk?.owner); break;
                     case "mousedragLocked":
                     case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
+                    case "mousedragInfo":           Info.DumpInfo(menu.followChunk?.owner); break;
                 }
 
             } else {
@@ -249,6 +250,8 @@ namespace MouseDrag
                     iconNames.Add("mousedragDestroy");
                 if (Options.lockMenu?.Value != false)
                     iconNames.Add(Lock.ListContains(menu.followChunk) == null ? "mousedragLocked" : "mousedragUnlocked");
+                if (Options.infoMenu?.Value != false)
+                    iconNames.Add("mousedragInfo");
 
             } else {
                 //menu on background

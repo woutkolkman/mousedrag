@@ -242,6 +242,9 @@ namespace MouseDrag
 
             if (Options.gravityRoomKey?.Value != null && Input.GetKeyDown(Options.gravityRoomKey.Value))
                 Gravity.CycleGravity();
+
+            if (Options.infoKey?.Value != null && Input.GetKeyDown(Options.infoKey.Value))
+                Info.DumpInfo(Drag.dragChunk?.owner);
         }
 
 

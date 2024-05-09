@@ -49,7 +49,7 @@ namespace MouseDrag
         public static Configurable<float> forcefieldRadius;
         public static Configurable<int> infoDepth;
         public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration, sBCameraScrollIntegration;
-        public static Configurable<bool> regionKitIntegration;
+        public static Configurable<bool> regionKitIntegration, sprobgikParasiteIntegration;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
         public int curTab;
@@ -176,6 +176,8 @@ namespace MouseDrag
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));
             sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
             regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
+
+            sprobgikParasiteIntegration = config.Bind(nameof(sprobgikParasiteIntegration), defaultValue: true, new ConfigurableInfo("If Sprobgik's Parasitic Slugcat is enabled, safari control will use controls from that mod.", null, "", "Parasite integration"));
 
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
@@ -374,6 +376,9 @@ namespace MouseDrag
             AddCheckbox(regionKitIntegration, new Vector2(x, y += sepr));
 
             x += 250f;
+            y = -19f; //from bottom up
+            AddCheckbox(sprobgikParasiteIntegration, new Vector2(x, y += sepr));
+
             y = 595f;
             AddCheckbox(copyID, new Vector2(x, y -= sepr));
             AddCheckbox(exitGameOverMode, new Vector2(x, y -= sepr));

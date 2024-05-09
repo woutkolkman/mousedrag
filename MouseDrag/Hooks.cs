@@ -61,6 +61,10 @@ namespace MouseDrag
         {
             orig(self);
             Integration.RefreshActiveMods();
+
+            //parasite hooks
+            if (Integration.sprobgikParasiteEnabled)
+                Integration.SprobgikParasiteApply();
         }
 
 

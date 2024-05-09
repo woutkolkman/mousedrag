@@ -8,6 +8,7 @@ namespace MouseDrag
         public static bool splitScreenCoopEnabled = false;
         public static bool sBCameraScrollEnabled = false;
         public static bool regionKitEnabled = false;
+        public static bool sprobgikParasiteEnabled = false;
 
 
         public static void RefreshActiveMods()
@@ -22,6 +23,8 @@ namespace MouseDrag
                     sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "regionkit")
                     regionKitEnabled = Options.regionKitIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "sprobgik.parasitescug")
+                    sprobgikParasiteEnabled = Options.sprobgikParasiteIntegration?.Value ?? true;
             }
         }
 
@@ -101,6 +104,21 @@ namespace MouseDrag
 
             //return true if mouse is inside menu + extra depth around it
             return magnitude > 50f && magnitude < (float)(50 + 50 * (2 + BeastMaster.BeastMaster.BMSInstance.currentDepth));
+        }
+
+
+        public static bool sprobgikParasiteApplied = false;
+        public static void SprobgikParasiteApply()
+        {
+            if (sprobgikParasiteApplied)
+                return;
+            sprobgikParasiteApplied = true;
+
+            Plugin.Logger.LogWarning("SprobgikParasiteApply");
+            /*IDetour detourRunCommand = new Hook(
+                typeof(MouseDrag.MenuManager).GetMethod("RunCommand", BindingFlags.Static | BindingFlags.Public),
+                typeof(Plugin).GetMethod("MouseDragMenuManager_RunCommand_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+            );*/
         }
     }
 }

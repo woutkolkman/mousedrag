@@ -19,9 +19,21 @@ namespace MouseDrag
                         continue;
                     if (Options.forcefieldImmunityPlayers?.Value != false && po is Player)
                         continue;
-                    if (Options.forcefieldImmunityObjects?.Value != false && !(po is Creature) && //creatures aren't immune
-                        !(po is Weapon && (po as Weapon).mode == Weapon.Mode.Thrown)) //thrown weapons aren't immune
-                        continue;
+                    if (Options.forcefieldImmunityObjects?.Value != false) {
+                        if (po is Weapon) {
+                            //free weapons are immune
+                            if ((po as Weapon).mode != Weapon.Mode.Thrown)
+                                continue;
+
+                            //weapons thrown by player are immune
+                            if ((po as Weapon).thrownBy == bodyChunk.owner)
+                                continue;
+
+                        } else if (!(po is Creature)) {
+                            //any non-creature object is immune
+                            continue;
+                        }
+                    }
                     po.PushOutOf(bodyChunk.pos, Options.forcefieldRadius?.Value ?? 120f, -1);
                 }
             }

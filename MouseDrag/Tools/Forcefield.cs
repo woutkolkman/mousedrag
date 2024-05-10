@@ -21,16 +21,18 @@ namespace MouseDrag
                     if (Options.forcefieldImmunityPlayers?.Value != false && po is Player)
                         continue;
                     if (Options.forcefieldImmunityObjects?.Value != false) {
-                        //not immune when ignited
-                        if (po is ScavengerBomb && (po as ScavengerBomb).ignited) {
-                        } else if (po is ExplosiveSpear && (po as ExplosiveSpear).Ignited) {
-                        } else if (po is FirecrackerPlant && (po as FirecrackerPlant).fuseCounter > 0) {
-                        } else if (po is MoreSlugcats.SingularityBomb && (po as MoreSlugcats.SingularityBomb).ignited) {
-                        } else if (po is MoreSlugcats.FireEgg && (po as MoreSlugcats.FireEgg).activeCounter > 0) {
-                        } else if (po is Weapon) {
+                        if (po is Weapon) {
+                            //not immune when ignited
+                            if (po is ScavengerBomb && (po as ScavengerBomb).ignited) {
+                            } else if (po is ExplosiveSpear && (po as ExplosiveSpear).Ignited) {
+                            } else if (po is FirecrackerPlant && (po as FirecrackerPlant).fuseCounter > 0) {
+                            } else if (po is MoreSlugcats.SingularityBomb && (po as MoreSlugcats.SingularityBomb).ignited) {
+                            } else if (po is MoreSlugcats.FireEgg && (po as MoreSlugcats.FireEgg).activeCounter > 0) {
+
                             //free weapons are immune
-                            if ((po as Weapon).mode != Weapon.Mode.Thrown)
+                            } else if ((po as Weapon).mode != Weapon.Mode.Thrown) {
                                 continue;
+                            }
 
                             //weapons thrown by creature who threw them are immune
                             if ((po as Weapon).thrownBy == bodyChunk.owner)
@@ -40,6 +42,11 @@ namespace MouseDrag
                             //any non-creature object is immune
                             continue;
                         }
+
+                        //creature that grabs this object is immune (more fun when disabled)
+                        //for (int j = 0; j < bodyChunk.owner.grabbedBy?.Count; j++)
+                        //    if (bodyChunk.owner.grabbedBy[j]?.grabbed == po)
+                        //        continue;
                     }
                     po.PushOutOf(bodyChunk.pos, Options.forcefieldRadius?.Value ?? 120f, -1);
                 }

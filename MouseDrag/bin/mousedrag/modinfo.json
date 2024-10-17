@@ -7,5 +7,6 @@
   "requirements": [],
   "requirements_names": [],
   "tags": ["Tools"],
+  "update_url": "https://github.com/woutkolkman/mousedrag",
   "checksum_override_version": false
 }

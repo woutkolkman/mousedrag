@@ -53,30 +53,23 @@ namespace MouseDrag
             container.AddChild(label);
 
             //dummy (not needed but makes menu visible if no slots are configured)
-            AddSlot();
+            AddSlot(new Slot(this));
         }
         ~RadialMenu() { Destroy(); }
 
 
-        public void LoadSlots(List<string> iconNames, List<string> labelNames)
+        public void LoadSlots(List<Slot> slots)
         {
             ClearSlots();
-            if (iconNames != null)
-                foreach (string name in iconNames)
-                    AddSlot(name);
-            if (labelNames != null)
-                foreach (string name in labelNames)
-                    AddSlot(name, true);
+            if (slots != null)
+                foreach (Slot slot in slots)
+                    AddSlot(slot);
         }
 
 
-        public void AddSlot(string name = "", bool asLabel = false)
+        public void AddSlot(Slot s)
         {
-            Slot s = new Slot(this);
             slots.Add(s);
-            if (!string.IsNullOrEmpty(name))
-                s.name = name;
-            s.isLabel = asLabel;
             s.InitiateSprites(container);
         }
 
@@ -85,6 +78,15 @@ namespace MouseDrag
         {
             slots[i]?.Destroy();
             slots.RemoveAt(i);
+        }
+
+
+        public void ClearSlot(Slot s)
+        {
+            if (s == null)
+                return;
+            s.Destroy();
+            slots.Remove(s);
         }
 
 

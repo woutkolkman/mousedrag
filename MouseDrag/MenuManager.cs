@@ -11,8 +11,7 @@ namespace MouseDrag
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
         public static string tempText = "";
-        public static List<string> iconNames = new List<string>(){};
-        public static List<string> labelNames = new List<string>(){};
+        public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>(){};
         public static SubMenuTypes subMenuType;
 
         public enum SubMenuTypes
@@ -50,24 +49,22 @@ namespace MouseDrag
             }
 
             RadialMenu.Slot slot = menu.Update(game);
-            string pressedSprite = slot?.name;
 
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
-                ReloadIconNames(game, followsObject);
-                ReloadLabelNames(game, followsObject);
+                ReloadSlots(game, menu, menu.followChunk);
                 CreatePage();
-                menu.LoadSlots(iconNames, labelNames);
+                menu.LoadSlots(slots);
             }
             prevFollowsObject = followsObject;
             reloadSlots = false;
 
-            if (!String.IsNullOrEmpty(pressedSprite)) {
+            if (slot != null) {
                 tempText = "";
 
                 //run command if a menu slot was pressed
-                RunCommand(game, pressedSprite, followsObject);
+                RunAction(game, slot, menu.followChunk);
 
                 //reload slots if command is executed
                 reloadSlots = true;
@@ -84,11 +81,17 @@ namespace MouseDrag
         }
 
 
-        //add-on mods need to hook the RunCommand() function, and do an action when spriteName is their sprite
-        public static void RunCommand(RainWorldGame game, string spriteName, bool followsObject)
+        //add-on mods need to hook the RunAction() function, and do an action when their slot was pressed
+        public static void RunAction(RainWorldGame game, RadialMenu.Slot slot, BodyChunk chunk)
         {
+            if (slot?.name == null) {
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("MenuManager.RunAction, slot null or invalid name");
+                return;
+            }
+
             //next page
-            if (spriteName == "+") {
+            if (slot.name == "+") {
                 page++;
                 return;
             }
@@ -96,7 +99,7 @@ namespace MouseDrag
             //submenu for quick select gravity type
             if (subMenuType == SubMenuTypes.Gravity) {
                 subMenuType = SubMenuTypes.None;
-                switch (spriteName)
+                switch (slot.name)
                 {
                     case "mousedragGravityReset":   Gravity.gravityType = Gravity.GravityTypes.None; break;
                     case "mousedragGravityOff":     Gravity.gravityType = Gravity.GravityTypes.Off; break;
@@ -110,53 +113,53 @@ namespace MouseDrag
             //submenu for selecting player number which will safari control creature
             if (subMenuType == SubMenuTypes.SafariPlayer) {
                 subMenuType = SubMenuTypes.None;
-                if (!Int32.TryParse(spriteName, out int pI)) {
-                    Plugin.Logger.LogWarning("MenuManager.RunCommand, parsing playerIndex failed, value is \"" + spriteName + "\"");
+                if (!Int32.TryParse(slot.name, out int pI)) {
+                    Plugin.Logger.LogWarning("MenuManager.RunAction, parsing playerIndex failed, value is \"" + slot.name + "\"");
                     return;
                 }
                 Drag.playerNr = pI - 1;
-                Control.ToggleControl(game, menu.followChunk?.owner as Creature);
+                Control.ToggleControl(game, chunk?.owner as Creature);
                 return;
             }
 
-            if (followsObject) {
+            if (chunk?.owner != null) {
                 //menu follows object
-                switch (spriteName)
+                switch (slot.name)
                 {
                     case "mousedragPause":
-                    case "mousedragPlay":           Pause.TogglePauseObject(menu.followChunk?.owner); break;
+                    case "mousedragPlay":           Pause.TogglePauseObject(chunk.owner); break;
                     case "mousedragKill":
-                        Health.KillCreature(game, menu.followChunk?.owner);
-                        Health.TriggerObject(menu.followChunk?.owner);
+                        Health.KillCreature(game, chunk.owner);
+                        Health.TriggerObject(chunk.owner);
                         break;
                     case "mousedragRevive":
-                        Health.ReviveCreature(menu.followChunk?.owner);
-                        Health.ResetObject(menu.followChunk?.owner);
+                        Health.ReviveCreature(chunk.owner);
+                        Health.ResetObject(chunk.owner);
                         break;
-                    case "mousedragDuplicate":      Duplicate.DuplicateObject(menu.followChunk?.owner); break;
-                    case "mousedragCut":            Clipboard.CutObject(menu.followChunk?.owner); break;
-                    case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, menu.followChunk); break;
+                    case "mousedragDuplicate":      Duplicate.DuplicateObject(chunk.owner); break;
+                    case "mousedragCut":            Clipboard.CutObject(chunk.owner); break;
+                    case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, chunk); break;
                     case "mousedragMove":
-                        if (menu.followChunk?.owner is Player && !(menu.followChunk.owner as Player).isNPC) {
+                        if (chunk.owner is Player && !(chunk.owner as Player).isNPC) {
                             //skip selection and uncontrol all
-                            Control.ToggleControl(game, menu.followChunk?.owner as Creature);
-                        } else if (menu.followChunk?.owner is Creature) {
+                            Control.ToggleControl(game, chunk.owner as Creature);
+                        } else if (chunk.owner is Creature) {
                             //creature can be controlled
                             subMenuType = SubMenuTypes.SafariPlayer;
                         }
                         break;
-                    case "mousedragUnmove":         Control.ToggleControl(game, menu.followChunk?.owner as Creature); break;
+                    case "mousedragUnmove":         Control.ToggleControl(game, chunk.owner as Creature); break;
                     case "mousedragForceFieldOn":
-                    case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(menu.followChunk); break;
-                    case "mousedragHeart":          Tame.TameCreature(game, menu.followChunk?.owner); break;
-                    case "mousedragUnheart":        Tame.ClearRelationships(menu.followChunk?.owner); break;
+                    case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(chunk); break;
+                    case "mousedragHeart":          Tame.TameCreature(game, chunk.owner); break;
+                    case "mousedragUnheart":        Tame.ClearRelationships(chunk.owner); break;
                     case "mousedragStun":
-                    case "mousedragUnstun":         Stun.ToggleStunObject(menu.followChunk?.owner); break;
-                    case "mousedragDestroy":        Destroy.DestroyObject(menu.followChunk?.owner); break;
+                    case "mousedragUnstun":         Stun.ToggleStunObject(chunk.owner); break;
+                    case "mousedragDestroy":        Destroy.DestroyObject(chunk.owner); break;
                     case "mousedragLocked":
-                    case "mousedragUnlocked":       Lock.ToggleLock(menu.followChunk); break;
+                    case "mousedragUnlocked":       Lock.ToggleLock(chunk); break;
                     case "mousedragInfo":
-                        Info.DumpInfo(menu.followChunk?.owner);
+                        Info.DumpInfo(chunk.owner);
                         tempText = "Object Copied To Clipboard";
                         break;
                 }
@@ -165,7 +168,7 @@ namespace MouseDrag
                 var rcam = Drag.MouseCamera(game);
 
                 //menu on background
-                switch (spriteName)
+                switch (slot.name)
                 {
                     case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true); break;
                     case "mousedragPauseGlobal":
@@ -218,134 +221,136 @@ namespace MouseDrag
         }
 
 
-        //add-on mods need to hook the ReloadIconNames() function, and insert their sprite names in iconNames afterwards
-        public static List<string> ReloadIconNames(RainWorldGame game, bool followsObject)
+        //add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
+        public static List<RadialMenu.Slot> ReloadSlots(RainWorldGame game, RadialMenu menu, BodyChunk chunk)
         {
-            iconNames.Clear();
+            slots.Clear();
 
+            //add sprites
             if (subMenuType == SubMenuTypes.Gravity) {
                 //add all selectable gravity types to submenu
-                iconNames.Add("mousedragGravityReset");
-                iconNames.Add("mousedragGravityOff");
-                iconNames.Add("mousedragGravityHalf");
-                iconNames.Add("mousedragGravityOn");
-                iconNames.Add("mousedragGravityInverse");
+                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityReset" });
+                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOff" });
+                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityHalf" });
+                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOn" });
+                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityInverse" });
                 tempText = "Select Gravity Type";
 
             } else if (subMenuType == SubMenuTypes.SafariPlayer) {
+                //do not add sprites
 
-            } else if (followsObject) {
+            } else if (chunk?.owner != null) {
                 //menu follows object
                 if (Options.pauseOneMenu?.Value != false)
-                    iconNames.Add(Pause.IsObjectPaused(menu.followChunk?.owner) ? "mousedragPlay" : "mousedragPause");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Pause.IsObjectPaused(chunk.owner) ? "mousedragPlay" : "mousedragPause"
+                    });
                 if (Options.killOneMenu?.Value != false)
-                    iconNames.Add("mousedragKill");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragKill" });
                 if (Options.reviveOneMenu?.Value != false)
-                    iconNames.Add("mousedragRevive");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragRevive" });
                 if (Options.duplicateOneMenu?.Value != false)
-                    iconNames.Add("mousedragDuplicate");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDuplicate" });
                 if (Options.clipboardMenu?.Value != false)
-                    iconNames.Add("mousedragCut");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCut" });
                 if (Options.tpWaypointCrMenu?.Value != false)
-                    iconNames.Add("mousedragCrosshair");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCrosshair" });
                 if (Options.controlMenu?.Value != false)
-                    iconNames.Add((menu.followChunk?.owner?.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = (chunk.owner.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove"
+                    });
                 if (Options.forcefieldMenu?.Value != false)
-                    iconNames.Add(Forcefield.HasForcefield(menu.followChunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Forcefield.HasForcefield(chunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn"
+                    });
                 if (Options.tameOneMenu?.Value != false)
-                    iconNames.Add("mousedragHeart");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragHeart" });
                 if (Options.clearRelOneMenu?.Value != false)
-                    iconNames.Add("mousedragUnheart");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragUnheart" });
                 if (Options.stunOneMenu?.Value != false)
-                    iconNames.Add(Stun.IsObjectStunned(menu.followChunk?.owner) ? "mousedragUnstun" : "mousedragStun");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Stun.IsObjectStunned(chunk.owner) ? "mousedragUnstun" : "mousedragStun"
+                    });
                 if (Options.destroyOneMenu?.Value != false)
-                    iconNames.Add("mousedragDestroy");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroy" });
                 if (Options.lockMenu?.Value != false)
-                    iconNames.Add(Lock.ListContains(menu.followChunk) == null ? "mousedragLocked" : "mousedragUnlocked");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Lock.ListContains(chunk) == null ? "mousedragLocked" : "mousedragUnlocked"
+                    });
                 if (Options.infoMenu?.Value != false)
-                    iconNames.Add("mousedragInfo");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragInfo" });
 
             } else {
                 //menu on background
                 if (Options.pauseRoomCreaturesMenu?.Value != false)
-                    iconNames.Add("mousedragPauseCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragPauseCreatures" });
                 if (Options.pauseAllCreaturesMenu?.Value != false) {
-                    iconNames.Add(Pause.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Pause.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal"
+                    });
                 } else if (Options.pauseAllObjectsMenu?.Value != false) {
-                    iconNames.Add(Pause.pauseAllObjects ? "mousedragPlayGlobal" : "mousedragPauseGlobal");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Pause.pauseAllObjects ? "mousedragPlayGlobal" : "mousedragPauseGlobal"
+                    });
                 }
                 if (Options.unpauseAllMenu?.Value != false)
-                    iconNames.Add("mousedragPlayAll");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragPlayAll" });
                 if (Options.killAllCreaturesMenu?.Value != false)
-                    iconNames.Add("mousedragKillCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragKillCreatures" });
                 if (Options.reviveAllCreaturesMenu?.Value != false)
-                    iconNames.Add("mousedragReviveCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragReviveCreatures" });
                 if (Options.clipboardMenu?.Value != false)
-                    iconNames.Add("mousedragPaste");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragPaste" });
                 if (Options.tpWaypointBgMenu?.Value != false)
-                    iconNames.Add("mousedragCrosshair");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCrosshair" });
                 if (Options.tameAllCreaturesMenu?.Value != false)
-                    iconNames.Add("mousedragHeartCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragHeartCreatures" });
                 if (Options.clearRelAllMenu?.Value != false)
-                    iconNames.Add("mousedragUnheartCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragUnheartCreatures" });
                 if (Options.stunRoomMenu?.Value != false)
-                    iconNames.Add("mousedragStunAll");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragStunAll" });
                 if (Options.unstunAllMenu?.Value != false)
-                    iconNames.Add("mousedragUnstunAll");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragUnstunAll" });
                 if (Options.stunAllMenu?.Value != false)
-                    iconNames.Add(Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal");
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal"
+                    });
                 if (Options.destroyAllCreaturesMenu?.Value != false)
-                    iconNames.Add("mousedragDestroyCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyCreatures" });
                 if (Options.destroyAllObjectsMenu?.Value != false)
-                    iconNames.Add("mousedragDestroyItems");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyItems" });
                 if (Options.destroyRoomMenu?.Value != false)
-                    iconNames.Add("mousedragDestroyAll");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyAll" });
                 if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false)
-                    iconNames.Add("mousedragDestroyGlobal");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyGlobal" });
                 if (Options.destroyAllDeadCreaturesMenu?.Value != false)
-                    iconNames.Add("mousedragDestroyDeadCreatures");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyDeadCreatures" });
                 if (Options.gravityRoomMenu?.Value != false) {
                     if (Gravity.gravityType == Gravity.GravityTypes.None) {
-                        iconNames.Add("mousedragGravityReset");
+                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityReset" });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.Off) {
-                        iconNames.Add("mousedragGravityOff");
+                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOff" });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.Half) {
-                        iconNames.Add("mousedragGravityHalf");
+                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityHalf" });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
-                        iconNames.Add("mousedragGravityOn");
+                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOn" });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.Inverse) {
-                        iconNames.Add("mousedragGravityInverse");
+                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityInverse" });
                     }
                 }
                 if (Options.infoMenu?.Value != false)
-                    iconNames.Add("mousedragInfo");
+                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragInfo" });
             }
 
-            return iconNames;
-        }
-
-
-        //add-on mods need to hook the ReloadLabelNames() function, and insert their text in labelNames afterwards
-        public static List<string> ReloadLabelNames(RainWorldGame game, bool followsObject)
-        {
-            labelNames.Clear();
-
-            if (subMenuType == SubMenuTypes.Gravity) {
-
-            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
+            //add labels
+            if (subMenuType == SubMenuTypes.SafariPlayer) {
                 //add all selectable safari control players to submenu
                 for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
-                    labelNames.Add((i + 1).ToString());
+                    slots.Add(new RadialMenu.Slot(menu) { name = (i + 1).ToString(), isLabel = true });
                 tempText = "Select Safari Player";
-
-            } else if (followsObject) {
-                //menu follows object
-
-            } else {
-                //menu on background
             }
 
-            return labelNames;
+            return slots;
         }
 
 
@@ -353,32 +358,27 @@ namespace MouseDrag
         public static void CreatePage()
         {
             int maxOnPage = Options.maxOnPage?.Value ?? 7;
-            int iconCount = iconNames.Count;
-            int labelCount = labelNames.Count;
+            int count = slots.Count;
 
             //go to last page if negative
             if (page < 0)
-                page = (iconCount + labelCount - 1) / maxOnPage;
+                page = (count - 1) / maxOnPage;
 
             //reset page if out of bounds
-            if (iconCount + labelCount <= maxOnPage * page)
+            if (count <= maxOnPage * page)
                 page = 0;
 
             //no page slot is required
-            if (iconCount + labelCount <= maxOnPage)
+            if (count <= maxOnPage)
                 return;
 
-            for (int i = iconCount + labelCount - 1; i >= 0; i--) {
+            for (int i = count - 1; i >= 0; i--) {
                 if (i < (maxOnPage * page) + maxOnPage && 
                     i >= maxOnPage * page)
                     continue;
-                if (i > iconCount - 1) {
-                    labelNames.RemoveAt(i - iconCount);
-                } else {
-                    iconNames.RemoveAt(i);
-                }
+                slots.RemoveAt(i);
             }
-            labelNames.Add("+");
+            slots.Add(new RadialMenu.Slot(menu) { name = "+", isLabel = true });
         }
 
 

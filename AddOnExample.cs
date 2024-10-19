@@ -25,6 +25,9 @@ namespace MouseDragHelper
 
         private static bool isEnabled = false;
 
+        //hooks
+        IDetour detourRunAction, detourReloadSlots;
+
 
         //called when mod is loaded, subscribe functions to methods of the game
         public void OnEnable()
@@ -41,30 +44,24 @@ namespace MouseDragHelper
                     mouseDragEnabled = true;
             }
 
-            //hook for running commands
-            IDetour detourRunCommand = new Hook(
-                typeof(MouseDrag.MenuManager).GetMethod("RunCommand", BindingFlags.Static | BindingFlags.Public),
-                typeof(Plugin).GetMethod("MouseDragMenuManager_RunCommand_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+            //hook for running actions
+            detourRunAction = new Hook(
+                typeof(MouseDrag.MenuManager).GetMethod("RunAction", BindingFlags.Static | BindingFlags.Public),
+                typeof(Plugin).GetMethod("MouseDragMenuManager_RunAction_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
             );
 
-            //hook for adding sprites
-            IDetour detourReloadIconNames = new Hook(
-                typeof(MouseDrag.MenuManager).GetMethod("ReloadIconNames", BindingFlags.Static | BindingFlags.Public),
-                typeof(Plugin).GetMethod("MouseDragMenuManager_ReloadIconNames_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
-            );
-
-            //hook for adding labels
-            IDetour detourReloadLabelNames = new Hook(
-                typeof(MouseDrag.MenuManager).GetMethod("ReloadLabelNames", BindingFlags.Static | BindingFlags.Public),
-                typeof(Plugin).GetMethod("MouseDragMenuManager_ReloadLabelNames_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+            //hook for adding slots
+            detourReloadSlots = new Hook(
+                typeof(MouseDrag.MenuManager).GetMethod("ReloadSlots", BindingFlags.Static | BindingFlags.Public),
+                typeof(Plugin).GetMethod("MouseDragMenuManager_ReloadSlots_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
             );
 
             //also hook RainWorld.OnModsInit to load your custom sprite, for example use Futile.atlasManager.LoadImage
             //mousedrag sprites are 18x18 pixels with a 1px transparent border (so 16x16 icon)
 
-            GUID = Info.Metadata.GUID;
-            Name = Info.Metadata.Name;
-            Version = Info.Metadata.Version.ToString();
+            GUID = Info?.Metadata?.GUID;
+            Name = Info?.Metadata?.Name;
+            Version = Info?.Metadata?.Version?.ToString();
 
             Plugin.Logger.LogInfo("OnEnable called");
         }
@@ -76,43 +73,43 @@ namespace MouseDragHelper
             if (!isEnabled) return;
             isEnabled = false;
 
+            //optionally dispose of hooks for Rain Reload support
+            if (detourRunAction.IsValid)
+                detourRunAction.Dispose();
+            if (detourReloadSlots.IsValid)
+                detourReloadSlots.Dispose();
+
             Plugin.Logger.LogInfo("OnDisable called");
         }
 
 
-        //hook for running commands
+        //hook for running actions
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void MouseDragMenuManager_RunCommand_RuntimeDetour(Action<RainWorldGame, string, bool> orig, RainWorldGame game, string spriteName, bool followsObject)
+        public static void MouseDragMenuManager_RunAction_RuntimeDetour(Action<RainWorldGame, MouseDrag.RadialMenu.Slot, BodyChunk> orig, RainWorldGame game, MouseDrag.RadialMenu.Slot slot, BodyChunk chunk)
         {
-            orig(game, spriteName, followsObject);
-            if (spriteName == "CentipedeSegment") //temporary spritename
+            orig(game, slot, chunk);
+            if (slot?.name == null)
+                return;
+            if (slot.name == "CentipedeSegment") //temporary spritename
                 Plugin.Logger.LogInfo("your icon code will run here");
-            if (spriteName == "Hello World!")
+            if (slot.name == "Hello World!")
                 Plugin.Logger.LogInfo("your label code will run here");
 
-            //you can reference MouseDrag.MenuManager.menu?.followChunk?.owner to get the object on which actions are performed
-            PhysicalObject obj = MouseDrag.MenuManager.menu?.followChunk?.owner;
+            //you can reference chunk?.owner to get the object on which actions are performed
+            //if chunk is null, the menu is on the background instead of an object
+            PhysicalObject obj = chunk?.owner;
         }
 
 
-        //hook for adding sprites
+        //hook for adding slots
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static List<string> MouseDragMenuManager_ReloadIconNames_RuntimeDetour(Func<RainWorldGame, bool, List<string>> orig, RainWorldGame game, bool followsObject)
+        public static List<MouseDrag.RadialMenu.Slot> MouseDragMenuManager_ReloadSlots_RuntimeDetour(Func<RainWorldGame, MouseDrag.RadialMenu, BodyChunk, List<MouseDrag.RadialMenu.Slot>> orig, RainWorldGame game, MouseDrag.RadialMenu menu, BodyChunk chunk)
         {
-            List<string> returnable = orig(game, followsObject);
-            if (MouseDrag.MenuManager.subMenuType == MouseDrag.MenuManager.SubMenuTypes.None)
-                returnable.Add("CentipedeSegment"); //temporary spritename
-            return returnable;
-        }
-
-
-        //hook for adding labels
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public static List<string> MouseDragMenuManager_ReloadLabelNames_RuntimeDetour(Func<RainWorldGame, bool, List<string>> orig, RainWorldGame game, bool followsObject)
-        {
-            List<string> returnable = orig(game, followsObject);
-            if (MouseDrag.MenuManager.subMenuType == MouseDrag.MenuManager.SubMenuTypes.None)
-                returnable.Add("Hello World!"); //temporary spritename
+            List<MouseDrag.RadialMenu.Slot> returnable = orig(game, menu, chunk);
+            if (MouseDrag.MenuManager.subMenuType == MouseDrag.MenuManager.SubMenuTypes.None) {
+                returnable.Add(new MouseDrag.RadialMenu.Slot(menu) { name = "CentipedeSegment" }); //temporary sprite name
+                returnable.Add(new MouseDrag.RadialMenu.Slot(menu) { name = "Hello World!", isLabel = true }); //temporary label text
+            }
             return returnable;
         }
     }

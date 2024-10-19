@@ -92,7 +92,7 @@ namespace MouseDragHelper
                 return;
             if (slot.name == "CentipedeSegment") //temporary spritename
                 Plugin.Logger.LogInfo("your icon code will run here");
-            if (slot.name == "Hello World!")
+            if (slot.name == "Hello World!") //temporary label text
                 Plugin.Logger.LogInfo("your label code will run here");
 
             //you can reference chunk?.owner to get the object on which actions are performed

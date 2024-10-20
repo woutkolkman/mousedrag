@@ -303,13 +303,19 @@ namespace MouseDrag
                     });
                 }
                 if (Options.unpauseAllMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragPlayAll" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragPlayAll",
+                        curIconColor = Pause.pausedObjects.Count > 0 || Pause.pauseAllCreatures || Pause.pauseAllObjects ? Color.white : Color.grey
+                    });
                 if (Options.killAllCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) { name = "mousedragKillCreatures" });
                 if (Options.reviveAllCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) { name = "mousedragReviveCreatures" });
                 if (Options.clipboardMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragPaste" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragPaste",
+                        curIconColor = Clipboard.cutObjects.Count > 0 ? Color.white : Color.grey
+                    });
                 if (Options.tpWaypointBgMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCrosshair" });
                 if (Options.tameAllCreaturesMenu?.Value != false)
@@ -319,7 +325,10 @@ namespace MouseDrag
                 if (Options.stunRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) { name = "mousedragStunAll" });
                 if (Options.unstunAllMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragUnstunAll" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragUnstunAll",
+                        curIconColor = Stun.stunnedObjects.Count > 0 || Stun.stunAll ? Color.white : Color.grey
+                    });
                 if (Options.stunAllMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal"

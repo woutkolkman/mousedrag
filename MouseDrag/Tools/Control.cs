@@ -119,6 +119,17 @@ namespace MouseDrag
         }
 
 
+        public static bool PlayerHasControl(int playerNr)
+        {
+            for (int i = controlledCreatures.Count - 1; i >= 0; i--) {
+                var pair = controlledCreatures[i];
+                if (pair.Key != null && pair.Value == playerNr)
+                    return true;
+            }
+            return false;
+        }
+
+
         private static void ReturnToCreature(RainWorldGame game)
         {
             AbstractCreature ac = null;

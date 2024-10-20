@@ -226,12 +226,12 @@ namespace MouseDrag
             public RadialMenu menu;
             public TriangleMesh background;
             public Vector2 curPos, prevPos;
-            public Color curColor;
+            public Color curBgColor, curIconColor = Color.white;
             public FNode icon = null;
             public string name = "pixel";
             public bool isLabel = false;
-            Color hoverColor = new Color(1f, 1f, 1f, 0.4f);
-            Color noneColor = new Color(0f, 0f, 0f, 0.2f);
+            Color hoverBgColor = new Color(1f, 1f, 1f, 0.4f);
+            Color noneBgColor = new Color(0f, 0f, 0f, 0.2f);
 
 
             public Slot(RadialMenu menu)
@@ -239,7 +239,7 @@ namespace MouseDrag
                 this.menu = menu;
                 prevPos = menu.displayPos;
                 curPos = menu.displayPos;
-                curColor = noneColor;
+                curBgColor = noneBgColor;
             }
             ~Slot() { Destroy(); }
 
@@ -279,8 +279,12 @@ namespace MouseDrag
                 float start = slotDegrees * slotIndex;
                 float end = slotDegrees + start;
 
-                curColor = Color.Lerp(curColor, hover ? hoverColor : noneColor, 0.1f);
-                background.color = curColor;
+                curBgColor = Color.Lerp(curBgColor, hover ? hoverBgColor : noneBgColor, 0.1f);
+                background.color = curBgColor;
+                if (icon is FLabel)
+                    (icon as FLabel).color = curIconColor;
+                if (icon is FSprite)
+                    (icon as FSprite).color = curIconColor;
 
                 Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
 

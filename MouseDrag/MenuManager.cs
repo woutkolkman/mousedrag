@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.IO;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -257,19 +258,27 @@ namespace MouseDrag
                     slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCrosshair" });
                 if (Options.controlMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
-                        name = (chunk.owner.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove"
+                        name = (chunk.owner.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove",
+                        curIconColor = chunk.owner.abstractPhysicalObject is AbstractCreature ? Color.white : Color.grey
                     });
                 if (Options.forcefieldMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Forcefield.HasForcefield(chunk) ? "mousedragForceFieldOff" : "mousedragForceFieldOn"
                     });
                 if (Options.tameOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragHeart" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragHeart",
+                        curIconColor = Tame.IsTamable(game, chunk.owner) ? Color.white : Color.grey
+                    });
                 if (Options.clearRelOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragUnheart" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragUnheart",
+                        curIconColor = Tame.IsTamable(game, chunk.owner) ? Color.white : Color.grey
+                    });
                 if (Options.stunOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
-                        name = Stun.IsObjectStunned(chunk.owner) ? "mousedragUnstun" : "mousedragStun"
+                        name = Stun.IsObjectStunned(chunk.owner) ? "mousedragUnstun" : "mousedragStun",
+                        curIconColor = chunk.owner is Oracle || chunk.owner is Creature ? Color.white : Color.grey
                     });
                 if (Options.destroyOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroy" });

@@ -2,6 +2,18 @@
 {
     public static class Tame
     {
+        //check if creature can be tamed
+        public static bool IsTamable(RainWorldGame game, PhysicalObject obj)
+        {
+            if (!(obj is Creature))
+                return false;
+            if (game?.FirstAlivePlayer == null)
+                return false;
+            ArtificialIntelligence ai = (obj as Creature)?.abstractCreature?.abstractAI?.RealAI;
+            return ai is IUseARelationshipTracker || ai is FriendTracker.IHaveFriendTracker;
+        }
+
+
         //code from Pokéballs
         public static void TameCreature(RainWorldGame game, PhysicalObject obj)
         {

@@ -439,5 +439,17 @@ namespace MouseDrag
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("LoadSprites called");
         }
+
+
+        public static void UnloadSprites()
+        {
+            try {
+                Futile.atlasManager.UnloadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");
+            } catch (Exception ex) {
+                Plugin.Logger.LogError("MenuManager.UnloadSprites exception: " + ex.ToString());
+            }
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("UnloadSprites called");
+        }
     }
 }

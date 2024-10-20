@@ -18,7 +18,8 @@ namespace MouseDrag
 
         public static void Unapply()
         {
-            //TODO
+            IL.Room.Update -= RoomUpdateIL;
+            IL.AbstractRoom.Update -= AbstractRoomUpdateIL;
         }
 
 

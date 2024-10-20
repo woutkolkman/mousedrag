@@ -8,17 +8,15 @@ using System.Security.Permissions;
 
 namespace MouseDrag
 {
-    //also edit version in "modinfo.json"
-    [BepInPlugin("maxi-mol.mousedrag", "Mouse Drag", "0.4.0")] //(GUID, mod name, mod version)
+    [BepInPlugin(GUID, Name, Version)]
     public class Plugin : BaseUnityPlugin
     {
+        //metadata
+        public const string GUID = "maxi-mol.mousedrag";
+        public const string Name = "Mouse Drag";
+        public const string Version = "0.4.0"; //also edit version in "modinfo.json"
+
         public static new ManualLogSource Logger { get; private set; } = null;
-
-        //reference metadata
-        public static string GUID;
-        public static string Name;
-        public static string Version;
-
         private static bool isEnabled = false;
 
 
@@ -32,9 +30,14 @@ namespace MouseDrag
             Hooks.Apply();
             Patches.Apply();
 
-            GUID = Info.Metadata.GUID;
-            Name = Info.Metadata.Name;
-            Version = Info.Metadata.Version.ToString();
+            //Rain Reloader re-initialize Options and sprites
+            if (MachineConnector.IsThisModActive(GUID)) {
+                Plugin.Logger.LogDebug("OnEnable, re-initializing options interface and sprites");
+                MachineConnector.SetRegisteredOI(GUID, new Options());
+                MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
+                MenuManager.LoadSprites();
+                Integration.RefreshActiveMods();
+            }
 
             Plugin.Logger.LogInfo("OnEnable called");
         }
@@ -48,6 +51,7 @@ namespace MouseDrag
 
             Hooks.Unapply();
             Patches.Unapply();
+            MenuManager.UnloadSprites();
 
             Plugin.Logger.LogInfo("OnDisable called");
         }

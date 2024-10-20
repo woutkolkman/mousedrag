@@ -43,7 +43,17 @@ namespace MouseDrag
 
         public static void Unapply()
         {
-            //TODO
+            On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
+            On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
+            On.RainWorldGame.Update -= RainWorldGameUpdateHook;
+            On.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateHook;
+            On.RainWorldGame.GrafUpdate -= RainWorldGameGrafUpdateHook;
+            On.RainWorldGame.ctor -= RainWorldGameCtorHook;
+            On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
+            On.BodyChunk.Update += BodyChunkUpdateHook;
+            On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
+            On.Room.Update -= RoomUpdateHook;
+            On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
         }
 
 
@@ -51,6 +61,9 @@ namespace MouseDrag
         static void RainWorldOnModsInitHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
         {
             orig(self);
+
+            //hook gets called (for this mod) only when not using Rain Reloader
+            Plugin.Logger.LogDebug("RainWorldOnModsInitHook, first time initializing options interface and sprites");
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
             MenuManager.LoadSprites();
         }
@@ -60,6 +73,8 @@ namespace MouseDrag
         static void RainWorldPostModsInitHook(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
             orig(self);
+
+            //hook gets called (for this mod) only when not using Rain Reloader
             Integration.RefreshActiveMods();
         }
 

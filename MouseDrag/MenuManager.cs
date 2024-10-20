@@ -11,7 +11,7 @@ namespace MouseDrag
         public static bool shouldOpen = false; //signal from RawUpdate to open menu
         public static bool prevFollowsObject = false;
         public static bool reloadSlots = false;
-        public static string tempText = "";
+        public static string lowPrioText, highPrioText;
         public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>(){};
         public static SubMenuTypes subMenuType;
 
@@ -29,7 +29,8 @@ namespace MouseDrag
                 menu = new RadialMenu(game);
                 reloadSlots = true;
                 subMenuType = SubMenuTypes.None;
-                tempText = "";
+                lowPrioText = null;
+                highPrioText = null;
             }
             shouldOpen = false;
 
@@ -45,11 +46,12 @@ namespace MouseDrag
             if (menu.prevFollowChunk != menu.followChunk) {
                 reloadSlots = true;
                 subMenuType = SubMenuTypes.None;
-                tempText = "";
+                lowPrioText = null;
+                highPrioText = null;
                 page = 0;
             }
 
-            RadialMenu.Slot slot = menu.Update(game);
+            RadialMenu.Slot slot = menu.Update(game, out RadialMenu.Slot hoverSlot);
 
             //switch slots
             bool followsObject = menu.followChunk != null;
@@ -62,7 +64,8 @@ namespace MouseDrag
             reloadSlots = false;
 
             if (slot != null) {
-                tempText = "";
+                lowPrioText = null;
+                highPrioText = null;
 
                 //run command if a menu slot was pressed
                 RunAction(game, slot, menu.followChunk);
@@ -72,8 +75,12 @@ namespace MouseDrag
             }
 
             //change label text
-            if (tempText?.Length > 0) {
-                menu.labelText = tempText;
+            if (highPrioText?.Length > 0) {
+                menu.labelText = highPrioText;
+            } else if (!string.IsNullOrEmpty(hoverSlot?.tooltip)) {
+                menu.labelText = hoverSlot.tooltip;
+            } else if (lowPrioText?.Length > 0) {
+                menu.labelText = lowPrioText;
             } else if (menu.followChunk?.owner != null) {
                 menu.labelText = menu.followChunk?.owner.ToString();
             } else {
@@ -161,7 +168,7 @@ namespace MouseDrag
                     case "mousedragUnlocked":       Lock.ToggleLock(chunk); break;
                     case "mousedragInfo":
                         Info.DumpInfo(chunk.owner);
-                        tempText = "Object Copied To Clipboard";
+                        highPrioText = "Object copied to clipboard";
                         break;
                 }
 
@@ -215,7 +222,7 @@ namespace MouseDrag
                     case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
                     case "mousedragInfo":
                         Info.DumpInfo(rcam?.room);
-                        tempText = "Room Copied To Clipboard";
+                        highPrioText = "Room copied to clipboard";
                         break;
                 }
             }
@@ -230,12 +237,27 @@ namespace MouseDrag
             //add sprites
             if (subMenuType == SubMenuTypes.Gravity) {
                 //add all selectable gravity types to submenu
-                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityReset" });
-                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOff" });
-                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityHalf" });
-                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOn" });
-                slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityInverse" });
-                tempText = "Select Gravity Type";
+                slots.Add(new RadialMenu.Slot(menu) {
+                    name = "mousedragGravityReset",
+                    tooltip = "Reset gravity"
+                });
+                slots.Add(new RadialMenu.Slot(menu) {
+                    name = "mousedragGravityOff",
+                    tooltip = "Gravity off"
+                });
+                slots.Add(new RadialMenu.Slot(menu) {
+                    name = "mousedragGravityHalf",
+                    tooltip = "Gravity halved"
+                });
+                slots.Add(new RadialMenu.Slot(menu) {
+                    name = "mousedragGravityOn",
+                    tooltip = "Gravity on"
+                });
+                slots.Add(new RadialMenu.Slot(menu) {
+                    name = "mousedragGravityInverse",
+                    tooltip = "Reverse gravity"
+                });
+                lowPrioText = "Select gravity type";
 
             } else if (subMenuType == SubMenuTypes.SafariPlayer) {
                 //do not add sprites
@@ -247,15 +269,25 @@ namespace MouseDrag
                         name = Pause.IsObjectPaused(chunk.owner) ? "mousedragPlay" : "mousedragPause"
                     });
                 if (Options.killOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragKill" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragKill"
+                    });
                 if (Options.reviveOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragRevive" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragRevive"
+                    });
                 if (Options.duplicateOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDuplicate" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDuplicate"
+                    });
                 if (Options.clipboardMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCut" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragCut"
+                    });
                 if (Options.tpWaypointCrMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCrosshair" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragCrosshair"
+                    });
                 if (Options.controlMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = (chunk.owner.abstractPhysicalObject as AbstractCreature)?.controlled == true ? "mousedragUnmove" : "mousedragMove",
@@ -281,18 +313,24 @@ namespace MouseDrag
                         curIconColor = chunk.owner is Oracle || chunk.owner is Creature ? Color.white : Color.grey
                     });
                 if (Options.destroyOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroy" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDestroy"
+                    });
                 if (Options.lockMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Lock.ListContains(chunk) == null ? "mousedragLocked" : "mousedragUnlocked"
                     });
                 if (Options.infoMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragInfo" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragInfo"
+                    });
 
             } else {
                 //menu on background
                 if (Options.pauseRoomCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragPauseCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragPauseCreatures"
+                    });
                 if (Options.pauseAllCreaturesMenu?.Value != false) {
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Pause.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal"
@@ -308,22 +346,34 @@ namespace MouseDrag
                         curIconColor = Pause.pausedObjects.Count > 0 || Pause.pauseAllCreatures || Pause.pauseAllObjects ? Color.white : Color.grey
                     });
                 if (Options.killAllCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragKillCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragKillCreatures"
+                    });
                 if (Options.reviveAllCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragReviveCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragReviveCreatures"
+                    });
                 if (Options.clipboardMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragPaste",
                         curIconColor = Clipboard.cutObjects.Count > 0 ? Color.white : Color.grey
                     });
                 if (Options.tpWaypointBgMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragCrosshair" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragCrosshair"
+                    });
                 if (Options.tameAllCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragHeartCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragHeartCreatures"
+                    });
                 if (Options.clearRelAllMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragUnheartCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragUnheartCreatures"
+                    });
                 if (Options.stunRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragStunAll" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragStunAll"
+                    });
                 if (Options.unstunAllMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragUnstunAll",
@@ -334,38 +384,63 @@ namespace MouseDrag
                         name = Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal"
                     });
                 if (Options.destroyAllCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDestroyCreatures"
+                    });
                 if (Options.destroyAllObjectsMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyItems" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDestroyItems"
+                    });
                 if (Options.destroyRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyAll" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDestroyAll"
+                    });
                 if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyGlobal" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDestroyGlobal"
+                    });
                 if (Options.destroyAllDeadCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragDestroyDeadCreatures" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragDestroyDeadCreatures"
+                    });
                 if (Options.gravityRoomMenu?.Value != false) {
                     if (Gravity.gravityType == Gravity.GravityTypes.None) {
-                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityReset" });
+                        slots.Add(new RadialMenu.Slot(menu) {
+                            name = "mousedragGravityReset"
+                        });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.Off) {
-                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOff" });
+                        slots.Add(new RadialMenu.Slot(menu) {
+                            name = "mousedragGravityOff"
+                        });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.Half) {
-                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityHalf" });
+                        slots.Add(new RadialMenu.Slot(menu) {
+                            name = "mousedragGravityHalf"
+                        });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
-                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityOn" });
+                        slots.Add(new RadialMenu.Slot(menu) {
+                            name = "mousedragGravityOn"
+                        });
                     } else if (Gravity.gravityType == Gravity.GravityTypes.Inverse) {
-                        slots.Add(new RadialMenu.Slot(menu) { name = "mousedragGravityInverse" });
+                        slots.Add(new RadialMenu.Slot(menu) {
+                            name = "mousedragGravityInverse"
+                        });
                     }
                 }
                 if (Options.infoMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) { name = "mousedragInfo" });
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragInfo"
+                    });
             }
 
             //add labels
             if (subMenuType == SubMenuTypes.SafariPlayer) {
                 //add all selectable safari control players to submenu
                 for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
-                    slots.Add(new RadialMenu.Slot(menu) { name = (i + 1).ToString(), isLabel = true });
-                tempText = "Select Safari Player";
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = (i + 1).ToString(),
+                        isLabel = true
+                    });
+                lowPrioText = "Select safari player";
             }
 
             return slots;

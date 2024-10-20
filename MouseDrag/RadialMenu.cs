@@ -99,7 +99,7 @@ namespace MouseDrag
 
 
         //return slot when icon is clicked on
-        public Slot Update(RainWorldGame game)
+        public Slot Update(RainWorldGame game, out Slot hoverSlot)
         {
             RoomCamera rcam = Drag.MouseCamera(game, out Vector2 splitScreenOffset);
             if (rcam != null && rcam != prevRCam) { //only occurs when SplitScreen Co-op is used
@@ -171,6 +171,7 @@ namespace MouseDrag
                 if (i == selected)
                     selectedSlot = slots[i];
             }
+            hoverSlot = selectedSlot;
             crosshair.Update();
 
             if (!mousePressed)
@@ -229,6 +230,7 @@ namespace MouseDrag
             public Color curBgColor, curIconColor = Color.white;
             public FNode icon = null;
             public string name = "pixel";
+            public string tooltip = null;
             public bool isLabel = false;
             Color hoverBgColor = new Color(1f, 1f, 1f, 0.4f);
             Color noneBgColor = new Color(0f, 0f, 0f, 0.2f);

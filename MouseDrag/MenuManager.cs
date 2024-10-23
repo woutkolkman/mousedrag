@@ -344,7 +344,7 @@ namespace MouseDrag
                     bool unlocked = Lock.ListContains(chunk) == null;
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = unlocked ? "mousedragLocked" : "mousedragUnlocked",
-                        tooltip = unlocked ? "Lock" : "Unlock"
+                        tooltip = unlocked ? "Lock position" : "Unlock position"
                     });
                 }
                 if (Options.infoMenu?.Value != false)

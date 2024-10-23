@@ -113,8 +113,11 @@ namespace MouseDrag
                 if (snapToChunk)
                     followOffset = new Vector2();
                 bool followTarget = Options.menuFollows?.Value != false; //menu follows if doing nothing
-                followTarget &= !mouseIsWithinMenu || Options.menuMoveHover?.Value == true; //stop follow if hovering over it
-                followTarget |= menuButtonPressed(); //menu always follows if button is pressed
+                followTarget &= 
+                    !mouseIsWithinMenu || //move menu if mouse is not within menu, stop follow if hovering over menu
+                    Drag.dragChunk != null || //move menu if dragging something with your mouse (menu selected object)
+                    Options.menuMoveHover?.Value == true; //always move menu even if hovering over it
+                followTarget |= menuButtonPressed(); //menu always follows if menu-open button is pressed
                 if (followTarget)
                     menuPos = followChunk.pos - followOffset;
 

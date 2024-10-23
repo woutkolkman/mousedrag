@@ -120,7 +120,7 @@ namespace MouseDrag
             destroyRegionItemsKey = config.Bind(nameof(destroyRegionItemsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.", null, "", "Destroy items\nin region"));
 
             destroyRoomDeadCreaturesKey = config.Bind(nameof(destroyRoomDeadCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all dead creatures in current room except Player and SlugNPC.", null, "", "Destroy dead\ncreatures in room"));
-            lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object is reloaded.", null, "", "Lock"));
+            lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object is reloaded.", null, "", "Lock position"));
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Half/On/Inverse.", null, "", "Gravity"));
             infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object which you're currently dragging, or the room if nothing is being dragged.", null, "", "Info"));

@@ -281,6 +281,8 @@ namespace MouseDrag
         {
             orig(self, manager);
 
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
             Pause.UnpauseAll();
             Stun.UnstunAll();
             Forcefield.ClearForcefields();
@@ -289,8 +291,6 @@ namespace MouseDrag
             Lock.bodyChunks.Clear();
             if (Options.deactivateEveryRestart?.Value != false)
                 State.activated = false;
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
 
             //read activeType from config when game is started
             if (Options.activateType?.Value != null) {

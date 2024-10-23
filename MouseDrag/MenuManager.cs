@@ -39,8 +39,12 @@ namespace MouseDrag
                 menu = null;
             }
 
-            if (menu == null)
+            //menu closed
+            if (menu == null) {
+                page = 0;
+                subPage = 0;
                 return;
+            }
 
             //followchunk changed
             if (menu.prevFollowChunk != menu.followChunk) {
@@ -48,7 +52,12 @@ namespace MouseDrag
                 subMenuType = SubMenuTypes.None;
                 lowPrioText = null;
                 highPrioText = null;
-                page = 0;
+
+                //menu switched from bodychunk to background or vice versa
+                if (menu.prevFollowChunk == null || menu.followChunk == null) {
+                    page = 0;
+                    subPage = 0;
+                }
             }
 
             RadialMenu.Slot slot = menu.Update(game, out RadialMenu.Slot hoverSlot);
@@ -57,7 +66,11 @@ namespace MouseDrag
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
                 ReloadSlots(game, menu, menu.followChunk);
-                CreatePage();
+                if (subMenuType == SubMenuTypes.None) {
+                    CreatePage(ref page);
+                } else {
+                    CreatePage(ref subPage);
+                }
                 menu.LoadSlots(slots);
             }
             prevFollowsObject = followsObject;
@@ -100,7 +113,11 @@ namespace MouseDrag
 
             //next page
             if (slot.name == "+") {
-                page++;
+                if (subMenuType == SubMenuTypes.None) {
+                    page++;
+                } else {
+                    subPage++;
+                }
                 return;
             }
 
@@ -512,8 +529,8 @@ namespace MouseDrag
         }
 
 
-        public static int page = 0;
-        public static void CreatePage()
+        public static int page, subPage;
+        public static void CreatePage(ref int page)
         {
             int maxOnPage = Options.maxOnPage?.Value ?? 7;
             int count = slots.Count;
@@ -575,11 +592,19 @@ namespace MouseDrag
 
             //also use scroll wheel to navigate pages
             if (UnityEngine.Input.mouseScrollDelta.y < 0) {
-                page++;
+                if (subMenuType == SubMenuTypes.None) {
+                    page++;
+                } else {
+                    subPage++;
+                }
                 reloadSlots = true;
             }
             if (UnityEngine.Input.mouseScrollDelta.y > 0) {
-                page--;
+                if (subMenuType == SubMenuTypes.None) {
+                    page--;
+                } else {
+                    subPage--;
+                }
                 reloadSlots = true;
             }
         }

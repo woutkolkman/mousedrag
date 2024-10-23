@@ -27,18 +27,18 @@
 
 
         //destroy all objects in room
-        public static void DestroyObjects(Room room, bool creatures, bool objects, bool onlyDead)
+        public static void DestroyObjects(Room room, bool creatures, bool items, bool onlyDead)
         {
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("DestroyObjects, destroy in room" + 
                     ": creatures?" + creatures.ToString() + 
-                    ", objects?" + objects.ToString() + 
+                    ", items?" + items.ToString() + 
                     ", onlyDead?" + onlyDead.ToString());
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
                 for (int j = 0; j < room.physicalObjects[i].Count; j++)
                     if ((room.physicalObjects[i][j] is Creature && creatures && 
                         (!onlyDead || (room.physicalObjects[i][j] as Creature).dead)) || 
-                        (!(room.physicalObjects[i][j] is Creature) && objects))
+                        (!(room.physicalObjects[i][j] is Creature) && items))
                         if (!(room.physicalObjects[i][j] is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || 
                             !(room.physicalObjects[i][j] as Player).isNPC)))
@@ -68,7 +68,7 @@
 
 
         //destroy all objects in all rooms in current region
-        public static void DestroyRegionObjects(RainWorldGame self, bool creatures, bool objects)
+        public static void DestroyRegionObjects(RainWorldGame self, bool creatures, bool items)
         {
             if (!(self?.world?.abstractRooms?.Length > 0))
                 return;
@@ -87,7 +87,7 @@
                 {
                     if (ac == null)
                         return false;
-                    if ((ac is AbstractCreature && !creatures) || (!(ac is AbstractCreature) && !objects))
+                    if ((ac is AbstractCreature && !creatures) || (!(ac is AbstractCreature) && !items))
                         return false;
 
                     //don't destroy players

@@ -113,7 +113,7 @@ namespace MouseDrag
         }
 
 
-        public static void TriggerObject(PhysicalObject obj)
+        public static void TriggerItem(PhysicalObject obj)
         {
             if (obj is Creature || obj == null)
                 return;
@@ -209,7 +209,7 @@ namespace MouseDrag
         }
 
 
-        public static void ResetObject(PhysicalObject obj)
+        public static void ResetItem(PhysicalObject obj)
         {
             if (obj is Creature || obj == null)
                 return;

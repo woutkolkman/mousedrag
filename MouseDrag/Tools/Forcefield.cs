@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using IL.MoreSlugcats;
-using RWCustom;
 
 namespace MouseDrag
 {
@@ -20,7 +18,7 @@ namespace MouseDrag
                         continue;
                     if (Options.forcefieldImmunityPlayers?.Value != false && po is Player)
                         continue;
-                    if (Options.forcefieldImmunityObjects?.Value != false) {
+                    if (Options.forcefieldImmunityItems?.Value != false) {
                         if (po is Weapon) {
                             //not immune when ignited
                             if (po is ScavengerBomb && (po as ScavengerBomb).ignited) {

@@ -176,7 +176,7 @@ namespace MouseDrag
                 if (Options.selectCreatures?.Value != null && Input.GetKey(Options.selectCreatures.Value))
                     if (!(obj is Creature))
                         return;
-                if (Options.selectObjects?.Value != null && Input.GetKey(Options.selectObjects.Value))
+                if (Options.selectItems?.Value != null && Input.GetKey(Options.selectItems.Value))
                     if (obj is Creature)
                         return;
 

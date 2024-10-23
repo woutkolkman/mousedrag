@@ -20,7 +20,7 @@ namespace MouseDrag
         {
             //gravityType = gravityType.Next();
 
-            //exclude half and inverse
+            //exclude half and inverse to avoid confusion about current active type
             if (gravityType == GravityTypes.None) {
                 gravityType = GravityTypes.Off;
             } else if (gravityType == GravityTypes.Off) {

@@ -138,11 +138,11 @@ namespace MouseDrag
                     case "mousedragPlay":           Pause.TogglePauseObject(chunk.owner); break;
                     case "mousedragKill":
                         Health.KillCreature(game, chunk.owner);
-                        Health.TriggerObject(chunk.owner);
+                        Health.TriggerItem(chunk.owner);
                         break;
                     case "mousedragRevive":
                         Health.ReviveCreature(chunk.owner);
-                        Health.ResetObject(chunk.owner);
+                        Health.ResetItem(chunk.owner);
                         break;
                     case "mousedragDuplicate":      Duplicate.DuplicateObject(chunk.owner); break;
                     case "mousedragCut":            Clipboard.CutObject(chunk.owner); break;
@@ -181,16 +181,16 @@ namespace MouseDrag
                     case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true); break;
                     case "mousedragPauseGlobal":
                     case "mousedragPlayGlobal":
-                        if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllObjectsMenu?.Value != false) {
+                        if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllItemsMenu?.Value != false) {
                             Pause.pauseAllCreatures = !Pause.pauseAllCreatures;
-                            Pause.pauseAllObjects = Pause.pauseAllCreatures;
+                            Pause.pauseAllItems = Pause.pauseAllCreatures;
                         } else if (Options.pauseAllCreaturesMenu?.Value != false) {
                             Pause.pauseAllCreatures = !Pause.pauseAllCreatures;
-                        } else if (Options.pauseAllObjectsMenu?.Value != false) {
-                            Pause.pauseAllObjects = !Pause.pauseAllObjects;
+                        } else if (Options.pauseAllItemsMenu?.Value != false) {
+                            Pause.pauseAllItems = !Pause.pauseAllItems;
                         }
                         if (Options.logDebug?.Value != false)
-                            Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllObjects: " + Pause.pauseAllObjects);
+                            Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllItems: " + Pause.pauseAllItems);
                         break;
                     case "mousedragPlayAll":                Pause.UnpauseAll(); break;
                     case "mousedragKillCreatures":          Health.KillCreatures(game, rcam?.room); break;
@@ -210,11 +210,11 @@ namespace MouseDrag
                         if (Options.logDebug?.Value != false)
                             Plugin.Logger.LogDebug("stunAll: " + Stun.stunAll);
                         break;
-                    case "mousedragDestroyCreatures":       Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false, onlyDead: false); break;
-                    case "mousedragDestroyItems":           Destroy.DestroyObjects(rcam?.room, creatures: false, objects: true, onlyDead: false); break;
-                    case "mousedragDestroyAll":             Destroy.DestroyObjects(rcam?.room, creatures: true, objects: true, onlyDead: false); break;
-                    case "mousedragDestroyGlobal":          Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionObjectsMenu?.Value == true); break;
-                    case "mousedragDestroyDeadCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, objects: false, onlyDead: true); break;
+                    case "mousedragDestroyCreatures":       Destroy.DestroyObjects(rcam?.room, creatures: true, items: false, onlyDead: false); break;
+                    case "mousedragDestroyItems":           Destroy.DestroyObjects(rcam?.room, creatures: false, items: true, onlyDead: false); break;
+                    case "mousedragDestroyAll":             Destroy.DestroyObjects(rcam?.room, creatures: true, items: true, onlyDead: false); break;
+                    case "mousedragDestroyGlobal":          Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionItemsMenu?.Value == true); break;
+                    case "mousedragDestroyDeadCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, items: false, onlyDead: true); break;
                     case "mousedragGravityReset":
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
@@ -255,7 +255,7 @@ namespace MouseDrag
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityInverse",
-                    tooltip = "Reverse gravity"
+                    tooltip = "Gravity inversed"
                 });
                 lowPrioText = "Select gravity type";
 
@@ -279,7 +279,7 @@ namespace MouseDrag
                 if (Options.reviveOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragRevive",
-                        tooltip = chunk.owner is Creature ? "Revive and heal" : "Reset"
+                        tooltip = chunk.owner is Creature ? "Revive/heal" : "Reset"
                     });
                 if (Options.duplicateOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
@@ -363,31 +363,31 @@ namespace MouseDrag
                 if (Options.pauseAllCreaturesMenu?.Value != false) {
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Pause.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
-                        tooltip = Options.pauseAllObjectsMenu?.Value != false ? 
+                        tooltip = Options.pauseAllItemsMenu?.Value != false ? 
                         (Pause.pauseAllCreatures ? "Unpause all" : "Pause all") : 
                         (Pause.pauseAllCreatures ? "Unpause all creatures" : "Pause all creatures")
                     });
-                } else if (Options.pauseAllObjectsMenu?.Value != false) {
+                } else if (Options.pauseAllItemsMenu?.Value != false) {
                     slots.Add(new RadialMenu.Slot(menu) {
-                        name = Pause.pauseAllObjects ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
-                        tooltip = Pause.pauseAllObjects ? "Unpause all objects" : "Pause all objects"
+                        name = Pause.pauseAllItems ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
+                        tooltip = Pause.pauseAllItems ? "Unpause all items" : "Pause all items"
                     });
                 }
                 if (Options.unpauseAllMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragPlayAll",
                         tooltip = "Unpause all",
-                        curIconColor = Pause.pausedObjects.Count > 0 || Pause.pauseAllCreatures || Pause.pauseAllObjects ? Color.white : Color.grey
+                        curIconColor = Pause.pausedObjects.Count > 0 || Pause.pauseAllCreatures || Pause.pauseAllItems ? Color.white : Color.grey
                     });
-                if (Options.killAllCreaturesMenu?.Value != false)
+                if (Options.killRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragKillCreatures",
-                        tooltip = "Kill creatures in room"
+                        tooltip = "Kill in room"
                     });
-                if (Options.reviveAllCreaturesMenu?.Value != false)
+                if (Options.reviveRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragReviveCreatures",
-                        tooltip = "Revive and heal creatures in room"
+                        tooltip = "Revive/heal in room"
                     });
                 if (Options.clipboardMenu?.Value != false) {
                     string tooltip = "Paste";
@@ -404,12 +404,12 @@ namespace MouseDrag
                         name = "mousedragCrosshair",
                         tooltip = Teleport.crosshair == null ? "Set teleport position" : "Cancel teleportation"
                     });
-                if (Options.tameAllCreaturesMenu?.Value != false)
+                if (Options.tameRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragHeartCreatures",
-                        tooltip = "Tame creatures in room"
+                        tooltip = "Tame in room"
                     });
-                if (Options.clearRelAllMenu?.Value != false)
+                if (Options.clearRelRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragUnheartCreatures",
                         tooltip = "Clear relationships in room"
@@ -430,39 +430,39 @@ namespace MouseDrag
                         name = Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal",
                         tooltip = Stun.stunAll ? "Unstun all" : "Stun all"
                     });
-                if (Options.destroyAllCreaturesMenu?.Value != false)
+                if (Options.destroyRoomCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyCreatures",
                         tooltip = "Destroy creatures in room"
                     });
-                if (Options.destroyAllObjectsMenu?.Value != false)
+                if (Options.destroyRoomItemsMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyItems",
                         tooltip = "Destroy items in room"
                     });
-                if (Options.destroyRoomMenu?.Value != false)
+                if (Options.destroyRoomObjectsMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyAll",
-                        tooltip = "Destroy objects in room"
+                        tooltip = "Destroy all in room"
                     });
-                if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionObjectsMenu?.Value != false) {
+                if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionItemsMenu?.Value != false) {
                     string tooltip = "Destroy all in region";
                     if (!(Options.destroyRegionCreaturesMenu?.Value != false))
-                        tooltip = "Destroy objects in region";
-                    if (!(Options.destroyRegionObjectsMenu?.Value != false))
+                        tooltip = "Destroy items in region";
+                    if (!(Options.destroyRegionItemsMenu?.Value != false))
                         tooltip = "Destroy creatures in region";
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyGlobal",
                         tooltip = tooltip
                     });
                 }
-                if (Options.destroyAllDeadCreaturesMenu?.Value != false)
+                if (Options.destroyRoomDeadCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyDeadCreatures",
                         tooltip = "Destroy dead creatures in room"
                     });
                 if (Options.gravityRoomMenu?.Value != false) {
-                    string tooltip = "Gravity";
+                    string tooltip = "Set gravity";
                     if (Gravity.gravityType == Gravity.GravityTypes.None) {
                         slots.Add(new RadialMenu.Slot(menu) {
                             name = "mousedragGravityReset",

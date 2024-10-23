@@ -121,7 +121,7 @@ namespace MouseDrag
                 if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
                     State.activated = !State.activated;
 
-            //always active, so unpause together with deactivate dev tools works
+            //always active, so unpause together with deactivate tools works
             if (Options.unpauseAllKey?.Value != null && Input.GetKeyDown(Options.unpauseAllKey.Value))
                 Pause.UnpauseAll();
 
@@ -151,26 +151,26 @@ namespace MouseDrag
                     Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures);
             }
 
-            if (Options.pauseAllObjectsKey?.Value != null && Input.GetKeyDown(Options.pauseAllObjectsKey.Value)) {
-                Pause.pauseAllObjects = !Pause.pauseAllObjects;
+            if (Options.pauseAllItemsKey?.Value != null && Input.GetKeyDown(Options.pauseAllItemsKey.Value)) {
+                Pause.pauseAllItems = !Pause.pauseAllItems;
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("pauseAllObjects: " + Pause.pauseAllObjects);
+                    Plugin.Logger.LogDebug("pauseAllItems: " + Pause.pauseAllItems);
             }
 
             if (Options.killOneKey?.Value != null && Input.GetKeyDown(Options.killOneKey.Value)) {
                 Health.KillCreature(self, Drag.dragChunk?.owner);
-                Health.TriggerObject(Drag.dragChunk?.owner);
+                Health.TriggerItem(Drag.dragChunk?.owner);
             }
 
-            if (Options.killAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.killAllCreaturesKey.Value))
+            if (Options.killRoomKey?.Value != null && Input.GetKeyDown(Options.killRoomKey.Value))
                 Health.KillCreatures(self, Drag.MouseCamera(self)?.room);
 
             if (Options.reviveOneKey?.Value != null && Input.GetKeyDown(Options.reviveOneKey.Value)) {
                 Health.ReviveCreature(Drag.dragChunk?.owner);
-                Health.ResetObject(Drag.dragChunk?.owner);
+                Health.ResetItem(Drag.dragChunk?.owner);
             }
 
-            if (Options.reviveAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.reviveAllCreaturesKey.Value))
+            if (Options.reviveRoomKey?.Value != null && Input.GetKeyDown(Options.reviveRoomKey.Value))
                 Health.ReviveCreatures(Drag.MouseCamera(self)?.room);
 
             if (Options.duplicateOneKey?.Value != null && Input.GetKeyDown(Options.duplicateOneKey.Value))
@@ -196,7 +196,7 @@ namespace MouseDrag
             if (Options.tpCreaturesKey?.Value != null && Input.GetKey(Options.tpCreaturesKey.Value))
                 Teleport.TeleportObjects(self, Drag.MouseCamera(self)?.room, true, false);
 
-            if (Options.tpObjectsKey?.Value != null && Input.GetKey(Options.tpObjectsKey.Value))
+            if (Options.tpItemsKey?.Value != null && Input.GetKey(Options.tpItemsKey.Value))
                 Teleport.TeleportObjects(self, Drag.MouseCamera(self)?.room, false, true);
 
             if (Options.controlKey?.Value != null && Input.GetKeyDown(Options.controlKey.Value)) {
@@ -213,13 +213,13 @@ namespace MouseDrag
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tame.TameCreature(self, Drag.dragChunk?.owner);
 
-            if (Options.tameAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.tameAllCreaturesKey.Value))
+            if (Options.tameRoomKey?.Value != null && Input.GetKeyDown(Options.tameRoomKey.Value))
                 Tame.TameCreatures(self, Drag.MouseCamera(self)?.room);
 
             if (Options.clearRelOneKey?.Value != null && Input.GetKeyDown(Options.clearRelOneKey.Value))
                 Tame.ClearRelationships(Drag.dragChunk?.owner);
 
-            if (Options.clearRelAllKey?.Value != null && Input.GetKeyDown(Options.clearRelAllKey.Value))
+            if (Options.clearRelRoomKey?.Value != null && Input.GetKeyDown(Options.clearRelRoomKey.Value))
                 Tame.ClearRelationships(Drag.MouseCamera(self)?.room);
 
             if (Options.stunOneKey?.Value != null && Input.GetKeyDown(Options.stunOneKey.Value))
@@ -237,20 +237,20 @@ namespace MouseDrag
             if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value))
                 Destroy.DestroyObject(Drag.dragChunk?.owner);
 
-            if (Options.destroyAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllCreaturesKey.Value))
-                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, objects: false, onlyDead: false);
+            if (Options.destroyRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyRoomCreaturesKey.Value))
+                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, items: false, onlyDead: false);
 
-            if (Options.destroyAllObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyAllObjectsKey.Value))
-                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: false, objects: true, onlyDead: false);
+            if (Options.destroyRoomItemsKey?.Value != null && Input.GetKeyDown(Options.destroyRoomItemsKey.Value))
+                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: false, items: true, onlyDead: false);
 
             if (Options.destroyRegionCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyRegionCreaturesKey.Value))
-                Destroy.DestroyRegionObjects(self, creatures: true, objects: false);
+                Destroy.DestroyRegionObjects(self, creatures: true, items: false);
 
-            if (Options.destroyRegionObjectsKey?.Value != null && Input.GetKeyDown(Options.destroyRegionObjectsKey.Value))
-                Destroy.DestroyRegionObjects(self, creatures: false, objects: true);
+            if (Options.destroyRegionItemsKey?.Value != null && Input.GetKeyDown(Options.destroyRegionItemsKey.Value))
+                Destroy.DestroyRegionObjects(self, creatures: false, items: true);
 
-            if (Options.destroyAllDeadCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyAllDeadCreaturesKey.Value))
-                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, objects: false, onlyDead: true);
+            if (Options.destroyRoomDeadCreaturesKey?.Value != null && Input.GetKeyDown(Options.destroyRoomDeadCreaturesKey.Value))
+                Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, items: false, onlyDead: true);
 
             if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
                 Lock.ToggleLock(Drag.dragChunk);

@@ -6,7 +6,7 @@ namespace MouseDrag
     {
         public static List<AbstractPhysicalObject> pausedObjects = new List<AbstractPhysicalObject>();
         public static bool pauseAllCreatures = false;
-        public static bool pauseAllObjects = false;
+        public static bool pauseAllItems = false;
 
 
         public static bool IsObjectPaused(AbstractWorldEntity awe)
@@ -42,7 +42,7 @@ namespace MouseDrag
                 if (shouldPause && Options.releaseGraspsPaused?.Value != false)
                     Destroy.ReleaseAllGrasps(apo.realizedObject as Creature);
             } else {
-                shouldPause |= pauseAllObjects;
+                shouldPause |= pauseAllItems;
             }
 
             //update physicalobject at least once
@@ -74,7 +74,7 @@ namespace MouseDrag
         {
             pausedObjects.Clear();
             pauseAllCreatures = false;
-            pauseAllObjects = false;
+            pauseAllItems = false;
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("UnpauseAll");
         }

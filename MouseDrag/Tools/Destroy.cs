@@ -21,7 +21,7 @@
             obj?.RemoveFromRoom();
             obj?.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
 
-            if (!(obj is Player)) //Jolly Co-op's Destoy kills player
+            if (!(obj is Player)) //Jolly Co-op's Destroy kills player
                 obj?.Destroy(); //prevent realizing after hibernation
         }
 

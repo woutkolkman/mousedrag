@@ -12,17 +12,15 @@ using System.Security.Permissions;
 
 namespace MouseDragHelper
 {
-    //also edit version in "modinfo.json"
-    [BepInPlugin("yourname.mousedraghelper", "Mouse Drag Helper", "0.1.0")] //(GUID, mod name, mod version)
+    [BepInPlugin(GUID, Name, Version)]
     public class Plugin : BaseUnityPlugin
     {
+        //metadata
+        public const string GUID = "yourname.mousedraghelper"; //change global unique identifier
+        public const string Name = "Mouse Drag Helper"; //change name of mod
+        public const string Version = "0.1.0"; //also edit version and name in "modinfo.json"
+
         public static new ManualLogSource Logger { get; private set; } = null;
-
-        //reference metadata
-        public static string GUID;
-        public static string Name;
-        public static string Version;
-
         private static bool isEnabled = false;
 
         //hooks
@@ -59,10 +57,6 @@ namespace MouseDragHelper
             //also hook RainWorld.OnModsInit to load your custom sprite, for example use Futile.atlasManager.LoadImage
             //mousedrag sprites are 18x18 pixels with a 1px transparent border (so 16x16 icon)
 
-            GUID = Info?.Metadata?.GUID;
-            Name = Info?.Metadata?.Name;
-            Version = Info?.Metadata?.Version?.ToString();
-
             Plugin.Logger.LogInfo("OnEnable called");
         }
 
@@ -90,7 +84,7 @@ namespace MouseDragHelper
             orig(game, slot, chunk);
             if (slot?.name == null)
                 return;
-            if (slot.name == "CentipedeSegment") //temporary spritename
+            if (slot.name == "CentipedeSegment") //temporary sprite name
                 Plugin.Logger.LogInfo("your icon code will run here");
             if (slot.name == "Hello World!") //temporary label text
                 Plugin.Logger.LogInfo("your label code will run here");

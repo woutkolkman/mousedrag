@@ -209,10 +209,10 @@ namespace MouseDrag
             curTab = 0;
             AddTitle();
             float x = 90f;
-            float y = 460f;
+            float y = 480f;
             float sepr = 40f;
-            AddComboBox(activateType, new Vector2(190f, 493f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
-            AddKeyBinder(activateKey, new Vector2(330f, 490f));
+            AddComboBox(activateType, new Vector2(190f, 503f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
+            AddKeyBinder(activateKey, new Vector2(330f, 500f));
 
             AddCheckbox(menuRMB, new Vector2(x, y -= sepr));
             AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
@@ -227,7 +227,7 @@ namespace MouseDrag
             AddCheckbox(logDebug, new Vector2(x, y -= sepr));
 
             x += 250f;
-            y = 460f;
+            y = 480f;
             AddCheckbox(throwWithMouse, new Vector2(x, y -= sepr));
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);

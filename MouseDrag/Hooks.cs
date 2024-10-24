@@ -38,6 +38,9 @@ namespace MouseDrag
 
             //anti smash-scug-into-wall
             On.RoomCamera.ApplyPositionChange += RoomCameraApplyPositionChangeHook;
+
+            //disable vanilla sandbox mouse dragger
+            On.Menu.SandboxOverlay.Initiate += MenuSandboxOverlayInitiateHook;
         }
 
 
@@ -54,6 +57,7 @@ namespace MouseDrag
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
             On.Room.Update -= RoomUpdateHook;
             On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
+            On.Menu.SandboxOverlay.Initiate -= MenuSandboxOverlayInitiateHook;
         }
 
 
@@ -410,6 +414,23 @@ namespace MouseDrag
                 if (self != null && Drag.MouseCamera(self.game)?.cameraNumber == self.cameraNumber)
                     Drag.tempVelocityDrag = true;
             orig(self);
+        }
+
+
+        //disable vanilla sandbox mouse dragger
+        static void MenuSandboxOverlayInitiateHook(On.Menu.SandboxOverlay.orig_Initiate orig, Menu.SandboxOverlay self, bool playMode)
+        {
+            orig(self, playMode);
+
+            if (Options.disVnlMouseDragger?.Value != true)
+                return;
+            if (self?.mouseDragger == null || !(self.pages?.Count > 0) || self.pages[0].subObjects == null)
+                return;
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("MenuSandboxOverlayInitiateHook, removing Menu.SandboxOverlay.mouseDragger");
+            if (self.pages[0].subObjects.Contains(self.mouseDragger))
+                self.pages[0].subObjects.Remove(self.mouseDragger);
+            self.mouseDragger = null;
         }
     }
 }

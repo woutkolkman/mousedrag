@@ -90,7 +90,7 @@ namespace MouseDrag
             //change label text
             if (highPrioText?.Length > 0) {
                 menu.labelText = highPrioText;
-            } else if (!string.IsNullOrEmpty(hoverSlot?.tooltip)) {
+            } else if (!string.IsNullOrEmpty(hoverSlot?.tooltip) && Options.showTooltips?.Value != false) {
                 menu.labelText = hoverSlot.tooltip;
             } else if (lowPrioText?.Length > 0) {
                 menu.labelText = lowPrioText;

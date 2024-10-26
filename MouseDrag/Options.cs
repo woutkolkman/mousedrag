@@ -8,17 +8,22 @@ namespace MouseDrag
     {
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
-        public static Configurable<bool> menuRMB, menuMMB;
-        public static Configurable<KeyCode> menuOpen;
-        public static Configurable<bool> menuFollows, menuMoveHover;
-        public static Configurable<bool> forceMouseVisibility, manageMouseVisibility, showLabel, showTooltips;
-        public static Configurable<bool> deactivateEveryRestart, logDebug;
+        public static Configurable<bool> forceMouseVisibility, manageMouseVisibility;
+        public static Configurable<bool> deactivateEveryRestart;
+        public static Configurable<bool> disVnlMouseDragger;
+        public static Configurable<bool> logDebug;
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<KeyCode> throwWeapon;
-        public static Configurable<bool> velocityDrag, velocityDragAtScreenChange, disVnlMouseDragger;
+        public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
         public static Configurable<KeyCode> selectCreatures, selectItems;
+        public static Configurable<bool> menuRMB, menuMMB;
+        public static Configurable<KeyCode> menuOpen;
+        public static Configurable<bool> menuFollows, menuMoveHover;
+        public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration;
+        public static Configurable<bool> showLabel, showTooltips;
         public static Configurable<int> maxOnPage;
+        public static Configurable<bool> sBCameraScrollIntegration, regionKitIntegration;
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllItemsKey;
         public static Configurable<KeyCode> killOneKey, killRoomKey, reviveOneKey, reviveRoomKey;
@@ -48,8 +53,6 @@ namespace MouseDrag
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityItems;
         public static Configurable<float> forcefieldRadius;
         public static Configurable<int> infoDepth;
-        public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration, sBCameraScrollIntegration;
-        public static Configurable<bool> regionKitIntegration;
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
         public int curTab;
@@ -68,16 +71,10 @@ namespace MouseDrag
             activateType = config.Bind(nameof(activateType), defaultValue: ActivateTypes.AlwaysActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active if sandbox mouse dragger is available.", null, "", "Active when"));
             activateKey = config.Bind(nameof(activateKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
 
-            menuRMB = config.Bind(nameof(menuRMB), defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
-            menuMMB = config.Bind(nameof(menuMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
-            menuOpen = config.Bind(nameof(menuOpen), KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
-            menuFollows = config.Bind(nameof(menuFollows), defaultValue: true, new ConfigurableInfo("If checked, menu follows the target object on which actions are performed.", null, "", "Menu follows target"));
-            menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
             forceMouseVisibility = config.Bind(nameof(forceMouseVisibility), defaultValue: false, new ConfigurableInfo("Always show Windows mouse pointer in-game. Overrides \"Manage mouse visibility\". Unchecking this option allows other mods to manage cursor visibility.", null, "", "Force mouse visible"));
             manageMouseVisibility = config.Bind(nameof(manageMouseVisibility), defaultValue: true, new ConfigurableInfo("Show Windows mouse pointer for 2 seconds in-game when mouse moved. Unchecking this option allows other mods to manage cursor visibility.", null, "", "Manage mouse visibility"));
-            showLabel = config.Bind(nameof(showLabel), defaultValue: true, new ConfigurableInfo("Show label above menu with name of selected object, and other text.", null, "", "Show label"));
-            showTooltips = config.Bind(nameof(showTooltips), defaultValue: true, new ConfigurableInfo("The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.", null, "", "Show tooltips"));
             deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
+            disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some rare issues while dragging in sandbox.", null, "", "Disable sandbox mouse"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
 
             throwWithMouse = config.Bind(nameof(throwWithMouse), defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.", null, "", "Throw with mouse"));
@@ -87,10 +84,22 @@ namespace MouseDrag
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).", null, "", "Throw weapon"));
             velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere (if initialized).", null, "", "Velocity drag"));
             velocityDragAtScreenChange = config.Bind(nameof(velocityDragAtScreenChange), defaultValue: true, new ConfigurableInfo("Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.", null, "", "Velocity drag at screen change"));
-            disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some rare issues while dragging in sandbox.", null, "", "Disable sandbox mouse"));
             selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
             selectItems = config.Bind(nameof(selectItems), KeyCode.LeftAlt, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
+
+            menuRMB = config.Bind(nameof(menuRMB), defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
+            menuMMB = config.Bind(nameof(menuMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
+            menuOpen = config.Bind(nameof(menuOpen), KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
+            menuFollows = config.Bind(nameof(menuFollows), defaultValue: true, new ConfigurableInfo("If checked, menu follows the target object on which actions are performed.", null, "", "Menu follows target"));
+            menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
+            beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "BeastMaster integration"));
+            splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));
+
+            showLabel = config.Bind(nameof(showLabel), defaultValue: true, new ConfigurableInfo("Show label above menu with name of selected object, and other text.", null, "", "Show label"));
+            showTooltips = config.Bind(nameof(showTooltips), defaultValue: true, new ConfigurableInfo("The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.", null, "", "Show tooltips"));
             maxOnPage = config.Bind(nameof(maxOnPage), defaultValue: 7, new ConfigurableInfo("Max amount of tools on a single menu page.", new ConfigAcceptableRange<int>(1, 999), "", "Max on page"));
+            sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
+            regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
 
             pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
@@ -174,16 +183,11 @@ namespace MouseDrag
             forcefieldRadius = config.Bind(nameof(forcefieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "Forcefield radius"));
             infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.\nKeep this value low to avoid copying 'the whole game' to your clipboard.", null, "", "Info depth"));
 
-            beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "BeastMaster integration"));
-            splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));
-            sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
-            regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
-
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
-            controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer.", null, "", "Safari-control changes camera"));
+            controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).", null, "", "Safari-control changes camera"));
             controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.", null, "", "Safari-control only one creature"));
             controlNoInput = config.Bind(nameof(controlNoInput), defaultValue: false, new ConfigurableInfo("While safari-controlling creatures, only the creature which a camera is following will move. Unused if \"Safari-control changes camera\" is unchecked.", null, "", "Reset other safari-control input"));
             controlStunsPlayers = config.Bind(nameof(controlStunsPlayers), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.", null, "", "Safari-control stuns players"));
@@ -215,16 +219,10 @@ namespace MouseDrag
             AddComboBox(activateType, new Vector2(190f, 503f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
             AddKeyBinder(activateKey, new Vector2(330f, 500f));
 
-            AddCheckbox(menuRMB, new Vector2(x, y -= sepr));
-            AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
-            AddKeyBinder(menuOpen, new Vector2(x, y -= sepr + 5f));
-            AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
-            AddCheckbox(menuMoveHover, new Vector2(x, y -= sepr));
             AddCheckbox(forceMouseVisibility, new Vector2(x, y -= sepr));
             AddCheckbox(manageMouseVisibility, new Vector2(x, y -= sepr));
-            AddCheckbox(showLabel, new Vector2(x, y -= sepr));
-            AddCheckbox(showTooltips, new Vector2(x, y -= sepr));
             AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));
+            AddCheckbox(disVnlMouseDragger, new Vector2(x, y -= sepr));
             AddCheckbox(logDebug, new Vector2(x, y -= sepr));
 
             x += 250f;
@@ -236,16 +234,19 @@ namespace MouseDrag
             AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
             AddCheckbox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
-            AddCheckbox(disVnlMouseDragger, new Vector2(x, y -= sepr));
             AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
             AddKeyBinder(selectItems, new Vector2(x, y -= sepr + 5f));
-            AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
 
             /**************** General ****************/
             curTab++;
             x = 90f;
             y = 595f;
             sepr = 40f;
+            AddCheckbox(menuRMB, new Vector2(x, y -= sepr));
+            AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
+            AddKeyBinder(menuOpen, new Vector2(x, y -= sepr + 5f));
+            AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
+            AddCheckbox(menuMoveHover, new Vector2(x, y -= sepr));
 
             y = -19f; //from bottom up
             AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));
@@ -253,6 +254,9 @@ namespace MouseDrag
 
             x += 250f;
             y = 595f;
+            AddCheckbox(showLabel, new Vector2(x, y -= sepr));
+            AddCheckbox(showTooltips, new Vector2(x, y -= sepr));
+            AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
 
             y = -19f; //from bottom up
             AddCheckbox(sBCameraScrollIntegration, new Vector2(x, y += sepr));

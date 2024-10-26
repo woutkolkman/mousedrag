@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using MonoMod.RuntimeDetour;
+using System.Reflection;
 
 namespace MouseDrag
 {
     public static class Hooks
     {
+        public static Hook MenuShowCursorHook;
+
+
         public static void Apply()
         {
             //initialize options & load sprites
@@ -41,6 +46,12 @@ namespace MouseDrag
 
             //disable vanilla sandbox mouse dragger
             On.Menu.SandboxOverlay.Initiate += MenuSandboxOverlayInitiateHook;
+
+            //change visibility Rain World cursor
+            MenuShowCursorHook = new Hook(
+                typeof(Menu.Menu).GetProperty("ShowCursor", BindingFlags.Instance | BindingFlags.Public).GetGetMethod(),
+                typeof(Hooks).GetMethod("Menu_ShowCursor_get", BindingFlags.Static | BindingFlags.Public)
+            );
         }
 
 
@@ -58,6 +69,8 @@ namespace MouseDrag
             On.Room.Update -= RoomUpdateHook;
             On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
             On.Menu.SandboxOverlay.Initiate -= MenuSandboxOverlayInitiateHook;
+            if (MenuShowCursorHook.IsValid)
+                MenuShowCursorHook.Dispose();
         }
 
 
@@ -397,6 +410,17 @@ namespace MouseDrag
             if (self.pages[0].subObjects.Contains(self.mouseDragger))
                 self.pages[0].subObjects.Remove(self.mouseDragger);
             self.mouseDragger = null;
+        }
+
+
+        //change visibility Rain World cursor
+        public delegate bool orig_ShowCursor(Menu.Menu self);
+        public static bool Menu_ShowCursor_get(orig_ShowCursor orig, Menu.Menu self)
+        {
+            bool ret = orig(self);
+            if (Options.disVnlCursor?.Value == true)
+                ret = false;
+            return ret;
         }
     }
 }

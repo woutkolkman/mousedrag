@@ -12,7 +12,8 @@ namespace MouseDrag
         public static Configurable<bool> deactivateEveryRestart;
         public static Configurable<bool> disVnlMouseDragger;
         public static Configurable<bool> logDebug;
-        public static Configurable<string> rwCursorVisType, winCursorVisType;
+        public static Configurable<bool> disVnlCursor;
+        public static Configurable<string> winCursorVisType;
 
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
@@ -95,7 +96,7 @@ namespace MouseDrag
             deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
             disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some rare issues while dragging in sandbox.", null, "", "Disable sandbox mouse"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
-            rwCursorVisType = config.Bind(nameof(rwCursorVisType), defaultValue: CursorVisibilityTypes.NoChanges.ToString(), new ConfigurableInfo("Change visibility of Rain World cursor in-game.", null, "", "Rain World\ncursor"));
+            disVnlCursor = config.Bind(nameof(disVnlCursor), defaultValue: false, new ConfigurableInfo("Disables Rain World cursor. Solves the double mouse pointers in sandbox.", null, "", "Hide Rain World cursor"));
             winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.Moved2Seconds.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"" + CursorVisibilityTypes.NoChanges.ToString() + "\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
 
             throwWithMouse = config.Bind(nameof(throwWithMouse), defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.", null, "", "Throw with mouse"));
@@ -243,7 +244,7 @@ namespace MouseDrag
             AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));
             AddCheckbox(disVnlMouseDragger, new Vector2(x, y -= sepr));
             AddCheckbox(logDebug, new Vector2(x, y -= sepr));
-//            AddComboBox(rwCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
+            AddCheckbox(disVnlCursor, new Vector2(x, y -= sepr));
             AddComboBox(winCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
 
             x += 250f;

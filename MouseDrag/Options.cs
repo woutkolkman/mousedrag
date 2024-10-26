@@ -8,51 +8,64 @@ namespace MouseDrag
     {
         public static Configurable<string> activateType;
         public static Configurable<KeyCode> activateKey;
-        public static Configurable<bool> forceMouseVisibility, manageMouseVisibility;
+
         public static Configurable<bool> deactivateEveryRestart;
         public static Configurable<bool> disVnlMouseDragger;
         public static Configurable<bool> logDebug;
+        public static Configurable<string> rwCursorVisType, winCursorVisType;
+
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<KeyCode> throwWeapon;
         public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
         public static Configurable<KeyCode> selectCreatures, selectItems;
+
         public static Configurable<bool> menuRMB, menuMMB;
         public static Configurable<KeyCode> menuOpen;
         public static Configurable<bool> menuFollows, menuMoveHover;
         public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration;
+
         public static Configurable<bool> showLabel, showTooltips;
         public static Configurable<int> maxOnPage;
         public static Configurable<bool> sBCameraScrollIntegration, regionKitIntegration;
+
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllItemsKey;
         public static Configurable<KeyCode> killOneKey, killRoomKey, reviveOneKey, reviveRoomKey;
         public static Configurable<KeyCode> duplicateOneKey, tpCreaturesKey, tpItemsKey, controlKey;
+
         public static Configurable<KeyCode> forcefieldKey;
         public static Configurable<KeyCode> tameOneKey, tameRoomKey, clearRelOneKey, clearRelRoomKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyRoomCreaturesKey, destroyRoomItemsKey;
         public static Configurable<KeyCode> destroyRegionCreaturesKey, destroyRegionItemsKey;
+
         public static Configurable<KeyCode> destroyRoomDeadCreaturesKey, lockKey;
         public static Configurable<KeyCode> gravityRoomKey, infoKey;
+
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllItemsMenu;
         public static Configurable<bool> killOneMenu, killRoomMenu, reviveOneMenu, reviveRoomMenu;
         public static Configurable<bool> duplicateOneMenu;
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
         public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu, controlMenu;
+
         public static Configurable<bool> forcefieldMenu;
         public static Configurable<bool> tameOneMenu, tameRoomMenu, clearRelOneMenu, clearRelRoomMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyRoomCreaturesMenu, destroyRoomItemsMenu, destroyRoomObjectsMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionItemsMenu;
+
         public static Configurable<bool> destroyRoomDeadCreaturesMenu, lockMenu;
+
         public static Configurable<bool> gravityRoomMenu, infoMenu;
+
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
         public static Configurable<bool> adjustableLocks;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityItems;
         public static Configurable<float> forcefieldRadius;
         public static Configurable<int> infoDepth;
+
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
         public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
         public int curTab;
@@ -65,17 +78,25 @@ namespace MouseDrag
             SandboxAndSafari
         }
 
+        public enum CursorVisibilityTypes
+        {
+            NoChanges,
+            ForceVisible,
+            ForceInvisible,
+            Moved2Seconds
+        }
+
 
         public Options()
         {
             activateType = config.Bind(nameof(activateType), defaultValue: ActivateTypes.AlwaysActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active if sandbox mouse dragger is available.", null, "", "Active when"));
             activateKey = config.Bind(nameof(activateKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
 
-            forceMouseVisibility = config.Bind(nameof(forceMouseVisibility), defaultValue: false, new ConfigurableInfo("Always show Windows mouse pointer in-game. Overrides \"Manage mouse visibility\". Unchecking this option allows other mods to manage cursor visibility.", null, "", "Force mouse visible"));
-            manageMouseVisibility = config.Bind(nameof(manageMouseVisibility), defaultValue: true, new ConfigurableInfo("Show Windows mouse pointer for 2 seconds in-game when mouse moved. Unchecking this option allows other mods to manage cursor visibility.", null, "", "Manage mouse visibility"));
             deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
             disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some rare issues while dragging in sandbox.", null, "", "Disable sandbox mouse"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
+            rwCursorVisType = config.Bind(nameof(rwCursorVisType), defaultValue: CursorVisibilityTypes.NoChanges.ToString(), new ConfigurableInfo("Change visibility of Rain World cursor in-game.", null, "", "Rain World\ncursor"));
+            winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.Moved2Seconds.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"" + CursorVisibilityTypes.NoChanges.ToString() + "\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
 
             throwWithMouse = config.Bind(nameof(throwWithMouse), defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.", null, "", "Throw with mouse"));
             throwAsPlayer = config.Bind(nameof(throwAsPlayer), defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
@@ -214,19 +235,19 @@ namespace MouseDrag
             curTab = 0;
             AddTitle();
             float x = 90f;
-            float y = 480f;
+            float y = 460f;
             float sepr = 40f;
             AddComboBox(activateType, new Vector2(190f, 503f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
             AddKeyBinder(activateKey, new Vector2(330f, 500f));
 
-            AddCheckbox(forceMouseVisibility, new Vector2(x, y -= sepr));
-            AddCheckbox(manageMouseVisibility, new Vector2(x, y -= sepr));
             AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));
             AddCheckbox(disVnlMouseDragger, new Vector2(x, y -= sepr));
             AddCheckbox(logDebug, new Vector2(x, y -= sepr));
+//            AddComboBox(rwCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
+            AddComboBox(winCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
 
             x += 250f;
-            y = 480f;
+            y = 460f;
             AddCheckbox(throwWithMouse, new Vector2(x, y -= sepr));
             AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);

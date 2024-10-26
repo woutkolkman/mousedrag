@@ -293,17 +293,7 @@ namespace MouseDrag
             Control.ReleaseControlAll();
             Gravity.gravityType = Gravity.GravityTypes.None;
             Lock.bodyChunks.Clear();
-            if (Options.deactivateEveryRestart?.Value != false)
-                State.activated = false;
-
-            //read activeType from config when game is started
-            if (Options.activateType?.Value != null) {
-                foreach (Options.ActivateTypes val in System.Enum.GetValues(typeof(Options.ActivateTypes)))
-                    if (System.String.Equals(Options.activateType.Value, val.ToString()))
-                        State.activeType = val;
-                if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("RainWorldGameCtorHook, activeType: " + State.activeType.ToString());
-            }
+            State.GameStarted();
         }
 
 
@@ -313,12 +303,7 @@ namespace MouseDrag
             orig(self);
             MenuManager.menu?.Destroy();
             MenuManager.menu = null;
-
-            //prevent invisible mouse in main menu
-            if (Options.manageMouseVisibility?.Value == true) {
-                Cursor.visible = true;
-                State.prevMousePos = Vector2.zero;
-            }
+            State.GameEnded();
         }
 
 

@@ -21,13 +21,15 @@ namespace MouseDrag
         public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
         public static Configurable<KeyCode> selectCreatures, selectItems;
 
-        public static Configurable<bool> menuRMB, menuMMB;
+        public static Configurable<bool> menuOpenRMB, menuOpenMMB;
         public static Configurable<KeyCode> menuOpen;
-        public static Configurable<bool> menuFollows, menuMoveHover;
+        public static Configurable<bool> menuSelectLMB, menuSelectMMB;
+        public static Configurable<KeyCode> menuSelect;
         public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration;
 
         public static Configurable<bool> showLabel, showTooltips;
         public static Configurable<int> maxOnPage;
+        public static Configurable<bool> menuFollows, menuMoveHover;
         public static Configurable<bool> sBCameraScrollIntegration, regionKitIntegration;
 
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
@@ -109,17 +111,20 @@ namespace MouseDrag
             selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
             selectItems = config.Bind(nameof(selectItems), KeyCode.LeftAlt, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
 
-            menuRMB = config.Bind(nameof(menuRMB), defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
-            menuMMB = config.Bind(nameof(menuMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
+            menuOpenRMB = config.Bind(nameof(menuOpenRMB), defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
+            menuOpenMMB = config.Bind(nameof(menuOpenMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
             menuOpen = config.Bind(nameof(menuOpen), KeyCode.None, new ConfigurableInfo("KeyBind opens menu on object or background, as an alternative to right mouse button.", null, "", "Open menu"));
-            menuFollows = config.Bind(nameof(menuFollows), defaultValue: true, new ConfigurableInfo("If checked, menu follows the target object on which actions are performed.", null, "", "Menu follows target"));
-            menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
+            menuSelectLMB = config.Bind(nameof(menuSelectLMB), defaultValue: true, new ConfigurableInfo("Left mouse button selects actions in menu.", null, "", "LMB selects in menu"));
+            menuSelectMMB = config.Bind(nameof(menuSelectMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button selects actions in menu.", null, "", "MMB selects in menu"));
+            menuSelect = config.Bind(nameof(menuSelect), KeyCode.None, new ConfigurableInfo("KeyBind selects actions in menu, as an alternative to left mouse button.", null, "", "Select in menu"));
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "BeastMaster integration"));
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));
 
             showLabel = config.Bind(nameof(showLabel), defaultValue: true, new ConfigurableInfo("Show label above menu with name of selected object, and other text.", null, "", "Show label"));
             showTooltips = config.Bind(nameof(showTooltips), defaultValue: true, new ConfigurableInfo("The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.", null, "", "Show tooltips"));
             maxOnPage = config.Bind(nameof(maxOnPage), defaultValue: 7, new ConfigurableInfo("Max amount of tools on a single menu page.", new ConfigAcceptableRange<int>(1, 999), "", "Max on page"));
+            menuFollows = config.Bind(nameof(menuFollows), defaultValue: true, new ConfigurableInfo("If checked, menu follows the target object on which actions are performed.", null, "", "Menu follows target"));
+            menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
             sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
             regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
 
@@ -264,11 +269,12 @@ namespace MouseDrag
             x = 90f;
             y = 595f;
             sepr = 40f;
-            AddCheckbox(menuRMB, new Vector2(x, y -= sepr));
-            AddCheckbox(menuMMB, new Vector2(x, y -= sepr));
+            AddCheckbox(menuOpenRMB, new Vector2(x, y -= sepr));
+            AddCheckbox(menuOpenMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(menuOpen, new Vector2(x, y -= sepr + 5f));
-            AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
-            AddCheckbox(menuMoveHover, new Vector2(x, y -= sepr));
+            AddCheckbox(menuSelectLMB, new Vector2(x, y -= sepr));
+            AddCheckbox(menuSelectMMB, new Vector2(x, y -= sepr));
+            AddKeyBinder(menuSelect, new Vector2(x, y -= sepr + 5f));
 
             y = -19f; //from bottom up
             AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));
@@ -279,6 +285,8 @@ namespace MouseDrag
             AddCheckbox(showLabel, new Vector2(x, y -= sepr));
             AddCheckbox(showTooltips, new Vector2(x, y -= sepr));
             AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
+            AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
+            AddCheckbox(menuMoveHover, new Vector2(x, y -= sepr));
 
             y = -19f; //from bottom up
             AddCheckbox(sBCameraScrollIntegration, new Vector2(x, y += sepr));

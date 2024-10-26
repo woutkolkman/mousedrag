@@ -22,10 +22,15 @@ namespace MouseDrag
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
         public bool snapToChunk = true;
-        public static bool menuButtonPressed(bool noRMB = false) => (
-            (Input.GetMouseButton(1) && Options.menuRMB?.Value == true && !noRMB) ||
-            (Input.GetMouseButton(2) && Options.menuMMB?.Value == true) ||
+        public static bool menuOpenButtonPressed(bool noRMB = false) => (
+            (Input.GetMouseButton(1) && Options.menuOpenRMB?.Value == true && !noRMB) ||
+            (Input.GetMouseButton(2) && Options.menuOpenMMB?.Value == true) ||
             (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))
+        );
+        public static bool menuSelectButtonDown() => (
+            (Input.GetMouseButtonDown(0) && Options.menuSelectLMB?.Value == true) ||
+            (Input.GetMouseButtonDown(2) && Options.menuSelectMMB?.Value == true) ||
+            (Options.menuSelect?.Value != null && Input.GetKeyDown(Options.menuSelect.Value))
         );
 
 
@@ -117,7 +122,7 @@ namespace MouseDrag
                     !mouseIsWithinMenu || //move menu if mouse is not within menu, stop follow if hovering over menu
                     Drag.dragChunk != null || //move menu if dragging something with your mouse (menu selected object)
                     Options.menuMoveHover?.Value == true; //always move menu even if hovering over it
-                followTarget |= menuButtonPressed(); //menu always follows if menu-open button is pressed
+                followTarget |= menuOpenButtonPressed(); //menu always follows if menu-open button is pressed
                 if (followTarget)
                     menuPos = followChunk.pos - followOffset;
 
@@ -190,9 +195,9 @@ namespace MouseDrag
 
         public void RawUpdate(RainWorldGame game)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (menuSelectButtonDown())
                 mousePressed = true;
-            if (menuButtonPressed()) {
+            if (menuOpenButtonPressed()) {
                 Vector2 mousePos = Drag.MousePos(game);
                 followChunk = Drag.GetClosestChunk(Drag.MouseCamera(game)?.room, mousePos, ref followOffset);
                 if (followChunk == null)

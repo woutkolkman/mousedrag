@@ -40,5 +40,20 @@ namespace MouseDrag
             int j = Array.IndexOf<T>(Arr, src) + 1;
             return (Arr.Length == j) ? Arr[0] : Arr[j];
         }
+
+
+        public static void Update(Room room)
+        {
+            if (room == null)
+                return;
+            if (Gravity.gravityType == Gravity.GravityTypes.Off)
+                room.gravity = 0f;
+            if (Gravity.gravityType == Gravity.GravityTypes.Half)
+                room.gravity = 0.2f;
+            if (Gravity.gravityType == Gravity.GravityTypes.On)
+                room.gravity = 1f;
+            if (Gravity.gravityType == Gravity.GravityTypes.Inverse)
+                room.gravity = -1f;
+        }
     }
 }

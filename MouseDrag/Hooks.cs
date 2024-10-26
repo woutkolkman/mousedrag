@@ -84,8 +84,6 @@ namespace MouseDrag
 
 
         //at tickrate
-        public static int duplicateHoldCount = 0;
-        public static int duplicateHoldMin = 40;
         static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
         {
             orig(self);
@@ -98,15 +96,7 @@ namespace MouseDrag
 
             Drag.DragObject(self);
             Control.Update(self);
-
-            //rapidly duplicate after one second feature
-            if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
-                if (duplicateHoldCount >= duplicateHoldMin)
-                    Duplicate.DuplicateObject(Drag.dragChunk?.owner);
-                duplicateHoldCount++;
-            } else {
-                duplicateHoldCount = 0;
-            }
+            Duplicate.Update();
         }
 
 
@@ -378,16 +368,7 @@ namespace MouseDrag
         //gravity
         static void RoomUpdateHook(On.Room.orig_Update orig, Room self)
         {
-            if (self != null) {
-                if (Gravity.gravityType == Gravity.GravityTypes.Off)
-                    self.gravity = 0f;
-                if (Gravity.gravityType == Gravity.GravityTypes.Half)
-                    self.gravity = 0.2f;
-                if (Gravity.gravityType == Gravity.GravityTypes.On)
-                    self.gravity = 1f;
-                if (Gravity.gravityType == Gravity.GravityTypes.Inverse)
-                    self.gravity = -1f;
-            }
+            Gravity.Update(self);
             orig(self);
         }
 

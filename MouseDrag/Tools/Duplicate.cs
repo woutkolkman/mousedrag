@@ -83,5 +83,20 @@ namespace MouseDrag
             }
             return newApo;
         }
+
+
+        public static int duplicateHoldCount = 0;
+        public static int duplicateHoldMin = 40;
+        public static void Update()
+        {
+            //rapidly duplicate after one second feature
+            if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
+                if (duplicateHoldCount >= duplicateHoldMin)
+                    Duplicate.DuplicateObject(Drag.dragChunk?.owner);
+                duplicateHoldCount++;
+            } else {
+                duplicateHoldCount = 0;
+            }
+        }
     }
 }

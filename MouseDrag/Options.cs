@@ -199,10 +199,11 @@ namespace MouseDrag
             base.Initialize();
             Tabs = new OpTab[]
             {
-                new OpTab(this, "General"),
+                new OpTab(this, "General 1"),
+                new OpTab(this, "General 2"),
                 new OpTab(this, "Tools 1"),
                 new OpTab(this, "Tools 2"),
-                new OpTab(this, "Other")
+                new OpTab(this, "Tool Settings")
             };
 
             /**************** General ****************/
@@ -239,6 +240,23 @@ namespace MouseDrag
             AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
             AddKeyBinder(selectItems, new Vector2(x, y -= sepr + 5f));
             AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
+
+            /**************** General ****************/
+            curTab++;
+            x = 90f;
+            y = 595f;
+            sepr = 40f;
+
+            y = -19f; //from bottom up
+            AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));
+            AddCheckbox(splitScreenCoopIntegration, new Vector2(x, y += sepr));
+
+            x += 250f;
+            y = 595f;
+
+            y = -19f; //from bottom up
+            AddCheckbox(sBCameraScrollIntegration, new Vector2(x, y += sepr));
+            AddCheckbox(regionKitIntegration, new Vector2(x, y += sepr));
 
             /**************** Tools ****************/
             curTab++;
@@ -357,7 +375,7 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragInfo");
             AddCheckbox(infoMenu, new Vector2(x - 56f, y + 3f));
 
-            /**************** Other ****************/
+            /**************** Tool Settings ****************/
             curTab++;
             x = 90f;
             y = 595f;
@@ -370,12 +388,6 @@ namespace MouseDrag
             AddCheckbox(forcefieldImmunityItems, new Vector2(x, y -= sepr));
             AddTextBox(forcefieldRadius, new Vector2(x, y -= sepr), 50f);
             AddTextBox(infoDepth, new Vector2(x, y -= sepr), 40f);
-
-            y = -19f; //from bottom up
-            AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));
-            AddCheckbox(splitScreenCoopIntegration, new Vector2(x, y += sepr));
-            AddCheckbox(sBCameraScrollIntegration, new Vector2(x, y += sepr));
-            AddCheckbox(regionKitIntegration, new Vector2(x, y += sepr));
 
             x += 250f;
             y = 595f;

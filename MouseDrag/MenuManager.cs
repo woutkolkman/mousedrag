@@ -128,7 +128,7 @@ namespace MouseDrag
                 {
                     case "mousedragGravityReset":   Gravity.gravityType = Gravity.GravityTypes.None; break;
                     case "mousedragGravityOff":     Gravity.gravityType = Gravity.GravityTypes.Off; break;
-                    case "mousedragGravityHalf":    Gravity.gravityType = Gravity.GravityTypes.Half; break;
+                    case "mousedragGravityHalf":    Gravity.gravityType = Gravity.GravityTypes.Low; break;
                     case "mousedragGravityOn":      Gravity.gravityType = Gravity.GravityTypes.On; break;
                     case "mousedragGravityInverse": Gravity.gravityType = Gravity.GravityTypes.Inverse; break;
                 }
@@ -264,7 +264,7 @@ namespace MouseDrag
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityHalf",
-                    tooltip = "Gravity halved"
+                    tooltip = "Gravity low"
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityOn",
@@ -288,16 +288,30 @@ namespace MouseDrag
                         tooltip = paused ? "Unpause" : "Pause"
                     });
                 }
-                if (Options.killOneMenu?.Value != false)
+                if (Options.killOneMenu?.Value != false) {
+                    string tooltip = "Trigger";
+                    if (chunk.owner is Creature) {
+                        tooltip = "Kill";
+                        if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
+                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
+                    }
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragKill",
-                        tooltip = chunk.owner is Creature ? "Kill" : "Trigger"
+                        tooltip = tooltip
                     });
-                if (Options.reviveOneMenu?.Value != false)
+                }
+                if (Options.reviveOneMenu?.Value != false) {
+                    string tooltip = "Reset";
+                    if (chunk.owner is Creature) {
+                        tooltip = "Revive/heal";
+                        if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
+                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
+                    }
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragRevive",
-                        tooltip = chunk.owner is Creature ? "Revive/heal" : "Reset"
+                        tooltip = tooltip
                     });
+                }
                 if (Options.duplicateOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDuplicate",
@@ -490,7 +504,7 @@ namespace MouseDrag
                             name = "mousedragGravityOff",
                             tooltip = tooltip
                         });
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Half) {
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.Low) {
                         slots.Add(new RadialMenu.Slot(menu) {
                             name = "mousedragGravityHalf",
                             tooltip = tooltip

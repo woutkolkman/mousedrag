@@ -8,9 +8,9 @@ namespace MouseDrag
 
         public enum GravityTypes
         {
-            None, 
-            Off, 
-            Half, 
+            None,
+            Off,
+            Low,
             On,
             Inverse
         }
@@ -20,7 +20,7 @@ namespace MouseDrag
         {
             //gravityType = gravityType.Next();
 
-            //exclude half and inverse to avoid confusion about current active type
+            //exclude low and inverse to avoid confusion about current active type
             if (gravityType == GravityTypes.None) {
                 gravityType = GravityTypes.Off;
             } else if (gravityType == GravityTypes.Off) {
@@ -48,7 +48,7 @@ namespace MouseDrag
                 return;
             if (Gravity.gravityType == Gravity.GravityTypes.Off)
                 room.gravity = 0f;
-            if (Gravity.gravityType == Gravity.GravityTypes.Half)
+            if (Gravity.gravityType == Gravity.GravityTypes.Low)
                 room.gravity = 0.2f;
             if (Gravity.gravityType == Gravity.GravityTypes.On)
                 room.gravity = 1f;

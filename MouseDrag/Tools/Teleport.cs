@@ -29,8 +29,8 @@ namespace MouseDrag
             if (crosshair?.room == null)
                 return false;
 
-            //only run when LMB is pressed
-            if (!Input.GetMouseButtonDown(0))
+            //only run when drag button is pressed
+            if (!Drag.dragButtonDown()) //TODO, should be changed (or ||) to new menuSelectButton?
                 return false;
 
             var rcam = Drag.MouseCamera(game);

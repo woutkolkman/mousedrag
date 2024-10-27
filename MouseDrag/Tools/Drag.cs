@@ -16,6 +16,16 @@ namespace MouseDrag
         public static int tempStopTicks = 0; //temporarily deactivate drag
         public static int playerNr = 0; //last dragged or selected player
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
+        public static bool dragButtonPressed(bool noRMB = false) => (
+            (Input.GetMouseButton(0) && Options.dragLMB?.Value == true) ||
+            (Input.GetMouseButton(2) && Options.dragMMB?.Value == true) ||
+            (Options.drag?.Value != null && Input.GetKey(Options.drag.Value))
+        );
+        public static bool dragButtonDown() => (
+            (Input.GetMouseButtonDown(0) && Options.dragLMB?.Value == true) ||
+            (Input.GetMouseButtonDown(2) && Options.dragMMB?.Value == true) ||
+            (Options.drag?.Value != null && Input.GetKeyDown(Options.drag.Value))
+        );
 
 
         //get mouse position hovering over any camera
@@ -70,8 +80,8 @@ namespace MouseDrag
             if (room?.physicalObjects == null)
                 stop = true;
 
-            //left mouse button not pressed
-            if (!Input.GetMouseButton(0)) {
+            //drag button not pressed
+            if (!dragButtonPressed()) {
                 if (Options.throwWithMouse?.Value != false)
                     TryThrow(game, dragChunk?.owner);
                 stop = true;

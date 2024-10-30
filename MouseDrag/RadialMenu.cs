@@ -18,6 +18,7 @@ namespace MouseDrag
         public Crosshair crosshair = null;
         public FLabel label = null;
         public string labelText = ""; //update label text using this field
+        public string roomName { get; private set; } = null; //outgoing name of room where menu is located currently
         public FContainer container = null;
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
@@ -112,6 +113,7 @@ namespace MouseDrag
                 rcam.ReturnFContainer("HUD").AddChild(container);
                 prevRCam = rcam;
             }
+            roomName = rcam?.room?.abstractRoom?.name;
 
             prevFollowChunk = followChunk;
             if (followChunk != null) {

@@ -347,7 +347,7 @@ namespace MouseDrag
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
             AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(controlKey, new Vector2(x, y -= sepr));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragMove");
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragControl");
             AddCheckbox(controlMenu, new Vector2(x - 56f, y + 3f));
 
             x += 300f;

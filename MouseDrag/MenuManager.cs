@@ -96,6 +96,8 @@ namespace MouseDrag
                 menu.labelText = lowPrioText;
             } else if (menu.followChunk?.owner != null) {
                 menu.labelText = menu.followChunk?.owner.ToString();
+            } else if (!string.IsNullOrEmpty(menu.roomName)) {
+                menu.labelText = menu.roomName;
             } else {
                 menu.labelText = "";
             }
@@ -164,7 +166,7 @@ namespace MouseDrag
                     case "mousedragDuplicate":      Duplicate.DuplicateObject(chunk.owner); break;
                     case "mousedragCut":            Clipboard.CutObject(chunk.owner); break;
                     case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, chunk); break;
-                    case "mousedragMove":
+                    case "mousedragControl":
                         if (chunk.owner is Player && !(chunk.owner as Player).isNPC) {
                             //skip selection and uncontrol all
                             Control.ToggleControl(game, chunk.owner as Creature);
@@ -173,7 +175,7 @@ namespace MouseDrag
                             subMenuType = SubMenuTypes.SafariPlayer;
                         }
                         break;
-                    case "mousedragUnmove":         Control.ToggleControl(game, chunk.owner as Creature); break;
+                    case "mousedragUncontrol":      Control.ToggleControl(game, chunk.owner as Creature); break;
                     case "mousedragForceFieldOn":
                     case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(chunk); break;
                     case "mousedragHeart":          Tame.TameCreature(game, chunk.owner); break;
@@ -334,7 +336,7 @@ namespace MouseDrag
                     if (isPlayer)
                         hasControl = Control.PlayerHasControl((chunk.owner as Player).playerState?.playerNumber ?? -1);
                     slots.Add(new RadialMenu.Slot(menu) {
-                        name = isControlled ? "mousedragUnmove" : "mousedragMove",
+                        name = isControlled ? "mousedragUncontrol" : "mousedragControl",
                         tooltip = isPlayer ? "Release all for this player" : (isControlled ? "Release control" : "Safari-control"),
                         curIconColor = chunk.owner.abstractPhysicalObject is AbstractCreature && (!isPlayer || hasControl) ? Color.white : Color.grey
                     });

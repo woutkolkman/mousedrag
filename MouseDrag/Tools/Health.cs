@@ -54,6 +54,32 @@ namespace MouseDrag
             (obj as Creature).dead = false;
             (obj as Creature).stun = 0; //makes player immediately controllable
 
+            //heal limbs/tentacles/wings
+            if (Options.healLimbs?.Value != false) {
+                if (ac.state is LizardState) {
+                    for (int i = 0; i < (ac.state as LizardState).limbHealth?.Length; i++)
+                        if ((ac.state as LizardState).limbHealth[i] < 1f)
+                            (ac.state as LizardState).limbHealth[i] = 1f;
+                    if ((ac.state as LizardState).throatHealth < 1f)
+                        (ac.state as LizardState).throatHealth = 1f;
+                }
+                if (ac.state is Vulture.VultureState)
+                    for (int i = 0; i < (ac.state as Vulture.VultureState).wingHealth?.Length; i++)
+                        if ((ac.state as Vulture.VultureState).wingHealth[i] < 1f)
+                            (ac.state as Vulture.VultureState).wingHealth[i] = 1f;
+                if (ac.state is DaddyLongLegs.DaddyState)
+                    for (int i = 0; i < (ac.state as DaddyLongLegs.DaddyState).tentacleHealth?.Length; i++)
+                        if ((ac.state as DaddyLongLegs.DaddyState).tentacleHealth[i] < 1f)
+                            (ac.state as DaddyLongLegs.DaddyState).tentacleHealth[i] = 1f;
+                if (ac.state is Centipede.CentipedeState)
+                    for (int i = 0; i < (ac.state as Centipede.CentipedeState).shells?.Length; i++)
+                        (ac.state as Centipede.CentipedeState).shells[i] = true;
+                if (ac.state is MoreSlugcats.Inspector.InspectorState)
+                    for (int i = 0; i < (ac.state as MoreSlugcats.Inspector.InspectorState).headHealth?.Length; i++)
+                        if ((ac.state as MoreSlugcats.Inspector.InspectorState).headHealth[i] < 3f)
+                            (ac.state as MoreSlugcats.Inspector.InspectorState).headHealth[i] = 3f; //special, not 1f
+            }
+
             //reset destination so creature does not start running immediately
             (obj.abstractPhysicalObject as AbstractCreature)?.abstractAI?.SetDestination(obj.abstractPhysicalObject.pos);
 

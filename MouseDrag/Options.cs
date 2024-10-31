@@ -66,7 +66,7 @@ namespace MouseDrag
 
         public static Configurable<bool> gravityRoomMenu, infoMenu;
 
-        public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask;
+        public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask, healLimbs;
         public static Configurable<bool> adjustableLocks;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityItems;
         public static Configurable<float> forcefieldRadius;
@@ -210,6 +210,7 @@ namespace MouseDrag
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
             killReleasesMask = config.Bind(nameof(killReleasesMask), defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
+            healLimbs = config.Bind(nameof(healLimbs), defaultValue: true, new ConfigurableInfo("Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.", null, "", "Heal limbs"));
             adjustableLocks = config.Bind(nameof(adjustableLocks), defaultValue: true, new ConfigurableInfo("BodyChunks can be adjusted while locked in-place.", null, "", "Adjustable locks"));
             forcefieldImmunityPlayers = config.Bind(nameof(forcefieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by forcefields.", null, "", "Forcefield immunity players"));
             forcefieldImmunityItems = config.Bind(nameof(forcefieldImmunityItems), defaultValue: false, new ConfigurableInfo("Items (except thrown weapons) are unaffected by forcefields.", null, "", "Forcefield immunity items"));
@@ -426,6 +427,7 @@ namespace MouseDrag
             AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= sepr));
             AddCheckbox(lineageKill, new Vector2(x, y -= sepr));
             AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
+            AddCheckbox(healLimbs, new Vector2(x, y -= sepr));
             AddCheckbox(adjustableLocks, new Vector2(x, y -= sepr));
             AddCheckbox(forcefieldImmunityPlayers, new Vector2(x, y -= sepr));
             AddCheckbox(forcefieldImmunityItems, new Vector2(x, y -= sepr));

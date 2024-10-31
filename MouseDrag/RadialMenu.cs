@@ -172,7 +172,7 @@ namespace MouseDrag
             //determine which slot is hovered over
             int selected = -1;
             if (angle != null && slots.Count > 0)
-                selected = (int)(angle.Value / (360 / (slots.Count > 0 ? slots.Count : 1)));
+                selected = (int)(angle.Value / (360f / (slots.Count > 0 ? slots.Count : 1)));
 
             Slot selectedSlot = null;
             for (int i = 0; i < slots.Count; i++) {

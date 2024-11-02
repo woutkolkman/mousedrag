@@ -6,11 +6,15 @@ namespace MouseDrag
     {
         public static Options.ActivateTypes activeType = Options.ActivateTypes.DevToolsActive;
         public static Options.CursorVisibilityTypes winCursorVisType = Options.CursorVisibilityTypes.Moved2Seconds;
-        public static bool activated = false; //true --> all tools are available
+        public static bool activated = false; //true --> all tools & menu are available
         public static Vector2 prevMousePos = Vector2.zero;
         private static int mouseStationaryCount = 0;
         public static int mouseVisibilityTicks = 80; //2s
         public static bool mouseMovedVisibility, prevMouseMovedVisibility;
+
+        public static bool menuToolsDisabled = false; //another mod disables all menu tools
+        public static bool draggingDisabled = false; //another mod disables mouse dragging objects
+        public static bool keyBindToolsDisabled = false; //another mod disables all keybind tools
 
 
         public static void UpdateActivated(RainWorldGame game)

@@ -71,7 +71,7 @@ namespace MouseDrag
                 } else {
                     CreatePage(ref subPage);
                 }
-                if (Plugin.menuToolsDisabled)
+                if (State.menuToolsDisabled)
                     DisableMenu();
                 menu.LoadSlots(slots);
             }

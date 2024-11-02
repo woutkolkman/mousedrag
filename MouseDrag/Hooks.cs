@@ -108,6 +108,10 @@ namespace MouseDrag
                 return;
 
             Drag.DragObject(self);
+
+            if (State.keyBindToolsDisabled)
+                return;
+
             Control.Update(self);
             Duplicate.Update();
         }
@@ -135,7 +139,7 @@ namespace MouseDrag
             if (Options.unstunAllKey?.Value != null && Input.GetKeyDown(Options.unstunAllKey.Value))
                 Stun.UnstunAll();
 
-            if (!State.activated)
+            if (!State.activated || State.keyBindToolsDisabled)
                 return;
 
             if (Options.throwWeapon?.Value != null && Input.GetKeyDown(Options.throwWeapon.Value)) {

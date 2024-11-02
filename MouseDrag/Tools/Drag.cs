@@ -102,7 +102,7 @@ namespace MouseDrag
                 stop = true;
 
             //mouse dragging disabled by another mod
-            if (Plugin.draggingDisabled)
+            if (State.draggingDisabled)
                 stop = true;
 
             if (stop) {

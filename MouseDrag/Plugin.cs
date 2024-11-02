@@ -18,6 +18,9 @@ namespace MouseDrag
         public static new ManualLogSource Logger { get; private set; } = null;
         private static bool isEnabled = false;
 
+        public static bool menuToolsDisabled = false; //another mod disables all menu tools
+        public static bool draggingDisabled = false; //another mod disables mouse dragging objects
+
 
         //called when mod is loaded, subscribe functions to methods of the game
         public void OnEnable()

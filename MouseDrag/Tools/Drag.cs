@@ -101,6 +101,10 @@ namespace MouseDrag
             if (game.devUI?.activePage is MapPage)
                 stop = true;
 
+            //mouse dragging disabled by another mod
+            if (Plugin.draggingDisabled)
+                stop = true;
+
             if (stop) {
                 if (Options.adjustableLocks?.Value != false)
                     Lock.ResetLock(dragChunk);

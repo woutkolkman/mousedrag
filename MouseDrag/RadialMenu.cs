@@ -234,6 +234,7 @@ namespace MouseDrag
         public class Slot
         {
             public bool hover;
+            public bool actionEnabled = true;
             public RadialMenu menu;
             public TriangleMesh background;
             public Vector2 curPos, prevPos;

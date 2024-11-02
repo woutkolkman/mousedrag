@@ -8,8 +8,8 @@ namespace MouseDrag
     public static class MenuManager
     {
         public static RadialMenu menu = null;
-        public static bool shouldOpen = false; //signal from RawUpdate to open menu
-        public static bool prevFollowsObject = false;
+        private static bool shouldOpen = false; //signal from RawUpdate to open menu
+        private static bool prevFollowsObject = false; //detect if slots must be reloaded
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
         public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>(){};
@@ -71,12 +71,14 @@ namespace MouseDrag
                 } else {
                     CreatePage(ref subPage);
                 }
+                if (Plugin.menuToolsDisabled)
+                    DisableMenu();
                 menu.LoadSlots(slots);
             }
             prevFollowsObject = followsObject;
             reloadSlots = false;
 
-            if (slot != null) {
+            if (slot != null && slot.actionEnabled) {
                 lowPrioText = null;
                 highPrioText = null;
 
@@ -574,6 +576,18 @@ namespace MouseDrag
                 tooltip = "Next page (" + (page + 1) + "/" + (((count - 1) / maxOnPage) + 1) + ")",
                 isLabel = true
             });
+        }
+
+
+        public static void DisableMenu()
+        {
+            for (int i = 0; i < slots.Count; i++) {
+                if (slots[i].name == "+") //for pages to work
+                    continue;
+                slots[i].curIconColor = Color.grey;
+                slots[i].tooltip = "Disabled";
+                slots[i].actionEnabled = false;
+            }
         }
 
 

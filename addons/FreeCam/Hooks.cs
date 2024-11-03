@@ -25,9 +25,6 @@ namespace FreeCam
 
             //at hibernate etc.
             On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
-
-            //freecam disables a RoomCamera function
-            On.RoomCamera.GetCameraBestIndex += RoomCameraGetCameraBestIndexHook;
         }
 
 
@@ -39,7 +36,6 @@ namespace FreeCam
             On.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
-            On.RoomCamera.GetCameraBestIndex -= RoomCameraGetCameraBestIndexHook;
         }
 
 
@@ -104,14 +100,6 @@ namespace FreeCam
             orig(self);
             FreeCam.enabled = false;
             Cursor.Deinit();
-        }
-
-
-        //freecam disables a RoomCamera function
-        public static void RoomCameraGetCameraBestIndexHook(On.RoomCamera.orig_GetCameraBestIndex orig, RoomCamera self)
-        {
-            if (!FreeCam.enabled)
-                orig(self);
         }
     }
 }

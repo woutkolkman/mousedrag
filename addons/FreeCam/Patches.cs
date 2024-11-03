@@ -8,55 +8,62 @@ namespace FreeCam
     {
         public static void Apply()
         {
-            //pauses creatures and objects
-//            IL.Room.Update += RoomUpdateIL;
+            //change RoomCamera update
+            IL.RoomCamera.Update += RoomCameraUpdateIL;
         }
 
 
         public static void Unapply()
         {
-//            IL.Room.Update -= RoomUpdateIL;
+            IL.RoomCamera.Update -= RoomCameraUpdateIL;
         }
 
 
-/*        //pauses creatures and objects
-        static void RoomUpdateIL(ILContext il)
+        //change RoomCamera update
+        static void RoomCameraUpdateIL(ILContext il)
         {
-            //original code:
-            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag)
-            //resulting code will be similar to:
-            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsObjectPaused(updatableAndDeletable))
-
             ILCursor c = new ILCursor(il);
 
+            //============================= disable GetCameraBestIndex() call =============================
+            //move cursor after function call
             try {
                 c.GotoNext(MoveType.After,
-                    i => i.MatchIsinst<MoreSlugcats.IRunDuringDialog>(),    //isinst        MoreSlugcats.IRunDuringDialog
-                    i => i.Match(OpCodes.Brfalse_S),                        //brfalse.s     776 (09DF) ldloc.s V10 (10)
-                    i => i.MatchLdloc(11),                                  //ldloc.s       V11 (11)
-                    i => i.Match(OpCodes.Brtrue_S)                          //brtrue.s      776 (09DF) ldloc.s V10 (10)
+                    i => i.MatchLdarg(0),
+                    i => i.MatchCall<RoomCamera>("GetCameraBestIndex")
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RoomUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception: " + ex.ToString());
                 return;
             }
 
-            //get skip instruction to call if object is paused
-            ILLabel skipCond = c.Prev.Operand as ILLabel;
+            //create label to jump to if function call is skipped
+            ILLabel gcbiSkipCond = c.MarkLabel();
+
+            //move cursor before function call
+            try {
+                c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception: " + ex.ToString());
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0); //push 'this' (RoomCamera) on stack
 
             //insert condition
-            c.Emit(OpCodes.Ldloc, 10); //push updatableAndDeletable local var on stack
-            c.EmitDelegate<Func<UpdatableAndDeletable, bool>>(obj =>
+            c.EmitDelegate<Func<RoomCamera, bool>>((obj) =>
             {
-                Stun.UpdateObjectStunned(obj);
-                return Pause.IsObjectPaused(obj);
+//                Plugin.Logger.LogDebug("delegate called");
+                return FreeCam.enabled;
             });
 
             //if value is true, don't update object
-            c.Emit(OpCodes.Brtrue_S, skipCond);
+            c.Emit(OpCodes.Brtrue_S, gcbiSkipCond);
+
+//            Plugin.Logger.LogDebug(il.ToString());
+            //=============================================================================================
 
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("RoomUpdateIL success");
-        }*/
+                Plugin.Logger.LogDebug("RoomCameraUpdateIL success");
+        }
     }
 }

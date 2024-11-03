@@ -1,0 +1,12 @@
+{
+  "id": "maxi-mol.freecam",
+  "name": "FreeCam",
+  "version": "0.1.0",
+  "authors": "Maxi Mol",
+  "description": "Navigate in and to rooms with your mouse by clicking pipes.",
+  "requirements": [],
+  "requirements_names": [],
+  "tags": ["Tools"],
+  "update_url": "https://github.com/woutkolkman/freecam/releases/latest",
+  "checksum_override_version": false
+}

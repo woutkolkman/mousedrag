@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseDrag", "MouseDrag\MouseDrag.csproj", "{C0093BC7-1934-4C50-9C34-16B6DA636F83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCam", "addons\FreeCam\FreeCam.csproj", "{CC22E952-FDFB-45DA-B93A-4724104260FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +17,10 @@ Global
 		{C0093BC7-1934-4C50-9C34-16B6DA636F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0093BC7-1934-4C50-9C34-16B6DA636F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0093BC7-1934-4C50-9C34-16B6DA636F83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6082A96D-F386-44BF-B920-ECC469215F50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6082A96D-F386-44BF-B920-ECC469215F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6082A96D-F386-44BF-B920-ECC469215F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6082A96D-F386-44BF-B920-ECC469215F50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC22E952-FDFB-45DA-B93A-4724104260FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC22E952-FDFB-45DA-B93A-4724104260FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC22E952-FDFB-45DA-B93A-4724104260FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC22E952-FDFB-45DA-B93A-4724104260FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

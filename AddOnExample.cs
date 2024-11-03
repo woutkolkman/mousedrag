@@ -68,10 +68,10 @@ namespace MouseDragHelper
             isEnabled = false;
 
             //optionally dispose of hooks for Rain Reload support
-            if (detourRunAction.IsValid)
-                detourRunAction.Dispose();
-            if (detourReloadSlots.IsValid)
-                detourReloadSlots.Dispose();
+            if (detourRunAction?.IsValid == true && detourRunAction?.IsApplied == true)
+                detourRunAction?.Dispose();
+            if (detourReloadSlots?.IsValid == true && detourReloadSlots?.IsApplied == true)
+                detourReloadSlots?.Dispose();
 
             Plugin.Logger.LogInfo("OnDisable called");
         }

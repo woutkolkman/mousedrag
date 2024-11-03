@@ -12,6 +12,7 @@ namespace FreeCam
         public static bool splitScreenCoopEnabled = false;
         public static bool sBCameraScrollEnabled = false;
         public static bool mouseDragEnabled = false;
+        public static bool jollyCoopEnabled = false;
 
 
         public static void RefreshActiveMods()
@@ -24,6 +25,8 @@ namespace FreeCam
                     sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "maxi-mol.mousedrag")
                     mouseDragEnabled = Options.mouseDragIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "jollycoop")
+                    jollyCoopEnabled = true;
             }
         }
 

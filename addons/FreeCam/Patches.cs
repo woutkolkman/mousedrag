@@ -28,7 +28,6 @@ namespace FreeCam
             //move cursor after function call
             try {
                 c.GotoNext(MoveType.After,
-                    i => i.MatchLdarg(0),
                     i => i.MatchCall<RoomCamera>("GetCameraBestIndex")
                 );
             } catch (Exception ex) {
@@ -40,26 +39,21 @@ namespace FreeCam
             ILLabel gcbiSkipCond = c.MarkLabel();
 
             //move cursor before function call
-            try {
-                c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
-            } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception: " + ex.ToString());
-                return;
-            }
+            c.Index--;
 
-            c.Emit(OpCodes.Ldarg_0); //push 'this' (RoomCamera) on stack
-
-            //insert condition
+            //insert condition (uses 'this' (RoomCamera) which is already on stack)
             c.EmitDelegate<Func<RoomCamera, bool>>((obj) =>
             {
-//                Plugin.Logger.LogDebug("delegate called");
                 return FreeCam.enabled;
             });
 
             //if value is true, don't update object
             c.Emit(OpCodes.Brtrue_S, gcbiSkipCond);
 
-//            Plugin.Logger.LogDebug(il.ToString());
+            //push 'this' (RoomCamera) on stack for GetCameraBestIndex() call
+            c.Emit(OpCodes.Ldarg_0);
+
+            //Plugin.Logger.LogDebug(il.ToString());
             //=============================================================================================
 
             if (Options.logDebug?.Value != false)

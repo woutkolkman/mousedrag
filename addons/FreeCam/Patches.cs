@@ -10,12 +10,16 @@ namespace FreeCam
         {
             //change RoomCamera update
             IL.RoomCamera.Update += RoomCameraUpdateIL;
+
+            //prevent changing rooms from taking over camera control
+            IL.ShortcutHandler.Update += ShortcutHandlerUpdateIL;
         }
 
 
         public static void Unapply()
         {
             IL.RoomCamera.Update -= RoomCameraUpdateIL;
+            IL.ShortcutHandler.Update -= ShortcutHandlerUpdateIL;
         }
 
 
@@ -47,7 +51,7 @@ namespace FreeCam
                 return FreeCam.enabled;
             });
 
-            //if value is true, don't update object
+            //if value is true, don't change camera within room
             c.Emit(OpCodes.Brtrue_S, gcbiSkipCond);
 
             //push 'this' (RoomCamera) on stack for GetCameraBestIndex() call
@@ -90,13 +94,57 @@ namespace FreeCam
                 return FreeCam.enabled;
             });
 
-            //if value is true, don't update object
+            //if value is true, don't auto switch camera to rooms
             c.Emit(OpCodes.Brtrue_S, jlcpSkipCond);
             //=============================================================================================
 
             //Plugin.Logger.LogDebug(il.ToString());
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RoomCameraUpdateIL success");
+        }
+
+
+        //prevent changing rooms from taking over camera control
+        static void ShortcutHandlerUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            //move after MoveCamera() call
+            try {
+                c.GotoNext(MoveType.After,
+                    i => i.MatchCallvirt<RoomCamera>("MoveCamera")
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception: " + ex.ToString());
+                return;
+            }
+
+            //create label to jump to if freecam is enabled
+            ILLabel skipCond = c.MarkLabel();
+
+            //go to start of MoveCamera() call
+            try {
+                c.GotoPrev(MoveType.Before,
+                    i => i.MatchLdarg(0),
+                    i => i.MatchLdfld<ShortcutHandler>("game"),
+                    i => i.MatchCallvirt<RainWorldGame>("get_cameras")
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception: " + ex.ToString());
+                return;
+            }
+
+            //insert condition
+            c.EmitDelegate<Func<bool>>(() =>
+            {
+                return FreeCam.enabled;
+            });
+
+            //if value is true, don't take camera control
+            c.Emit(OpCodes.Brtrue_S, skipCond);
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("ShortcutHandlerUpdateIL success");
         }
     }
 }

@@ -5,9 +5,6 @@ namespace FreeCam
 {
     public static class FreeCam
     {
-        //TODO camera still moves back to RoomCamera.followAbstractCreature if the creature changes room
-
-
         public static bool enabled = false;
         private static bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
         private static int screenChangeStopTicks = 0;
@@ -101,18 +98,6 @@ namespace FreeCam
 
             //lean camera feedback for user
             rcam.leanPos = targetDir;
-
-            if (false && Integration.sBCameraScrollEnabled) {
-                rcam.pos += targetDir;
-
-                float halfScreenX = rcam.sSize.x / 2f;
-                float distFromEdgeX = Mathf.Abs(Mathf.Abs(mouse.x - halfScreenX) - halfScreenX);
-                float halfScreenY = rcam.sSize.y / 2f;
-                float distFromEdgeY = Mathf.Abs(Mathf.Abs(mouse.y - halfScreenY) - halfScreenY);
-
-                //TODO, finish sBCameraScroll support, also implement fast/slow movement
-                return;
-            }
 
             if (targetDir == Vector2.zero)
                 screenChangeStopTicks = 40;

@@ -149,8 +149,8 @@ namespace FreeCam
             //push local variable "k" on stack
             c.Emit(OpCodes.Ldloc, kIdx);
 
-            //insert condition
-            c.EmitDelegate<Func<ShortcutHandler, int, bool>>((obj, k) =>
+            //create delegate
+            Func<ShortcutHandler, int, bool> fcDelegate = ((obj, k) =>
             {
                 //safety checks
                 if (!(obj?.betweenRoomsWaitingLobby?.Count > k) ||
@@ -166,8 +166,13 @@ namespace FreeCam
                 return FreeCamManager.IsEnabled(cam);
             });
 
+            //insert condition
+            c.EmitDelegate(fcDelegate);
+
             //if value is true, skip camera control
             //TODO: this does not skip SplitScreenCoop camera control, because that code is inserted after this label
+            //TODO: if changing this for SplitScreenCoop, a load order probably has to be applied also
+            //TODO: this means that currently secondary cameras change room when their abstractCreature changes room
             c.Emit(OpCodes.Brtrue_S, skipCond);
 
             //push ShortcutHandler on stack for next instructions

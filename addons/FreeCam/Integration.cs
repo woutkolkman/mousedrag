@@ -145,7 +145,7 @@ namespace FreeCam
                 if (slot?.name == null)
                     return;
                 if (slot.name == "mousedragMove" || slot.name == "mousedragUnmove")
-                    FreeCam.ToggleFreeCam(game);
+                    FreeCamManager.Toggle(game);
             }
 
 
@@ -155,14 +155,17 @@ namespace FreeCam
             {
                 List<MouseDrag.RadialMenu.Slot> returnable = orig(game, menu, chunk);
                 if (MouseDrag.MenuManager.subMenuType == MouseDrag.MenuManager.SubMenuTypes.None && chunk == null) {
-                    if (Options.mouseDragIntegration?.Value != false)
+                    if (Options.mouseDragIntegration?.Value != false) {
+                        bool enabled = FreeCamManager.IsEnabled(game);
                         returnable.Add(new MouseDrag.RadialMenu.Slot(menu) {
-                            name = FreeCam.enabled ? "mousedragUnmove" : "mousedragMove", //sprite already loaded via Mouse Drag spritesheet
-                            tooltip = FreeCam.enabled ? "Disable FreeCam" : "Enable FreeCam"
+                            name = enabled ? "mousedragUnmove" : "mousedragMove", //sprite already loaded via Mouse Drag spritesheet
+                            tooltip = enabled ? "Disable FreeCam" : "Enable FreeCam"
                         });
+                    }
                 }
                 return returnable;
             }
         }
+        //=============================================================================================================================
     }
 }

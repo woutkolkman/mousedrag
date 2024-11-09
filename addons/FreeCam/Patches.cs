@@ -48,7 +48,7 @@ namespace FreeCam
             //insert condition (uses 'this' (RoomCamera) which is already on stack)
             c.EmitDelegate<Func<RoomCamera, bool>>((obj) =>
             {
-                return FreeCam.enabled;
+                return FreeCamManager.IsEnabled(obj?.cameraNumber ?? -1);
             });
 
             //if value is true, don't change camera within room
@@ -91,7 +91,7 @@ namespace FreeCam
             //insert condition
             c.EmitDelegate<Func<RoomCamera, bool>>((obj) =>
             {
-                return FreeCam.enabled;
+                return FreeCamManager.IsEnabled(obj?.cameraNumber ?? -1);
             });
 
             //if value is true, don't auto switch camera to rooms
@@ -137,7 +137,7 @@ namespace FreeCam
             //insert condition
             c.EmitDelegate<Func<bool>>(() =>
             {
-                return FreeCam.enabled;
+                return FreeCamManager.IsEnabled(0); //TODO check if this must be changed for SplitScreen Co-op
             });
 
             //if value is true, don't take camera control

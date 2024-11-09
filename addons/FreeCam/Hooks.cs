@@ -65,7 +65,7 @@ namespace FreeCam
         static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
         {
             orig(self);
-            FreeCam.Update(self);
+            FreeCamManager.Update(self);
             Cursor.Update(self);
         }
 
@@ -78,10 +78,10 @@ namespace FreeCam
             if (self.GamePaused || self.pauseUpdate || !self.processActive)
                 return;
 
-            FreeCam.RawUpdate(self);
+            FreeCamManager.RawUpdate(self);
 
             if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
-                FreeCam.ToggleFreeCam(self);
+                FreeCamManager.Toggle(self);
         }
 
 
@@ -89,7 +89,7 @@ namespace FreeCam
         static void RainWorldGameCtorHook(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
         {
             orig(self, manager);
-            FreeCam.enabled = false;
+            FreeCamManager.Init(self);
             Cursor.Init();
         }
 
@@ -98,7 +98,7 @@ namespace FreeCam
         static void RainWorldGameShutDownProcessHook(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
         {
             orig(self);
-            FreeCam.enabled = false;
+            FreeCamManager.Deinit();
             Cursor.Deinit();
         }
     }

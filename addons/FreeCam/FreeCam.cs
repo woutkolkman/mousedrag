@@ -3,82 +3,63 @@ using UnityEngine;
 
 namespace FreeCam
 {
-    public static class FreeCam
+    public class FreeCam
     {
-        public static bool enabled = false;
-        private static bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
-        private static int screenChangeStopTicks = 0;
-        private static Room loadingRoom = null; //room will be moved to when it is fully loaded
-        private static RoomCamera loadingCam = null; //this camera will move to loadingRoom
-        public static bool selectButtonDown() => (
-            (Input.GetMouseButtonDown(0) && Options.selectLMB?.Value == true) ||
-            (Input.GetMouseButtonDown(2) && Options.selectMMB?.Value == true) ||
-            (Options.select?.Value != null && Input.GetKeyDown(Options.select.Value))
-        );
+        public bool enabled = false;
+        public bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
+        private int screenChangeStopTicks = 0;
+        private Room loadingRoom = null; //room will be moved to when it is fully loaded
+        private RoomCamera rcam;
 
 
-        public static void ToggleFreeCam(RainWorldGame game)
+        public FreeCam(RoomCamera rcam)
+        {
+            if (rcam == null)
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogWarning("FreeCam ctor, RoomCamera value null");
+            this.rcam = rcam;
+        }
+
+
+        public void Toggle()
         {
             enabled = !enabled;
             if (enabled)
                 return;
 
-            if (game?.cameras == null)
+            //move this camera back to the followAbstractCreature room
+            AbstractRoom acRoom = rcam?.followAbstractCreature?.Room;
+            if (acRoom?.world == null || rcam.room?.abstractRoom == acRoom)
                 return;
-
-            //move all cameras back to their followAbstractCreature rooms
-            for (int i = 0; i < game.cameras.Length; i++) {
-                AbstractRoom acRoom = game.cameras[i]?.followAbstractCreature?.Room;
-                if (acRoom?.world == null || game.cameras[i].room?.abstractRoom == acRoom)
-                    continue;
-                if (acRoom.world != game.cameras[i].room?.abstractRoom?.world)
-                    continue;
-                if (acRoom.realizedRoom == null)
-                    acRoom.world.ActivateRoom(acRoom);
+            if (acRoom.world != rcam.room?.abstractRoom?.world)
+                return;
+            if (acRoom.realizedRoom == null)
+                acRoom.world.ActivateRoom(acRoom);
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("FreeCam.Toggle, move camera back to followAbstractCreature room");
+            if (acRoom.realizedRoom == null) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("FreeCam.ToggleFreeCam, move camera back to followAbstractCreature room");
-                if (acRoom.realizedRoom == null) {
-                    if (Options.logDebug?.Value != false)
-                        Plugin.Logger.LogDebug("FreeCam.ToggleFreeCam, realizedRoom still null after ActivateRoom call");
-                } else {
-                    //TODO room might not be ready? but player was/is in it, so it is always ready?
-                    game.cameras[i].MoveCamera(acRoom.realizedRoom, 0); //camPos gets auto corrected after moving to room
-                }
+                    Plugin.Logger.LogDebug("FreeCam.Toggle, realizedRoom still null after ActivateRoom call");
+            } else {
+                //TODO room might not be ready? but player was/is in it, so it is always ready?
+                rcam.MoveCamera(acRoom.realizedRoom, 0); //camPos gets auto corrected after moving to room
             }
         }
 
 
-        public static void Update(RainWorldGame game)
+        public void Update(RainWorldGame game)
         {
             if (!enabled || game == null)
                 return;
 
-            //game is paused
-            if (game.GamePaused || game.pauseUpdate || !game.processActive)
-                return;
-
-            RoomCamera rcam = Tools.MouseCamera(game);
-            if (rcam == null)
-                return;
-
-            ScreenChanger(game, rcam);
-            PipeSelector(game, rcam);
+            ScreenChanger(game);
+            PipeSelector(game);
             RoomChanger();
         }
 
 
-        public static void RawUpdate(RainWorldGame game)
-        {
-            if (!enabled)
-                return;
-
-            if (selectButtonDown())
-                mousePressed = true;
-        }
-
-
         //move to other screens when mouse is at edge of screen
-        private static void ScreenChanger(RainWorldGame game, RoomCamera rcam)
+        private void ScreenChanger(RainWorldGame game)
         {
             if (rcam?.room == null || game == null)
                 return;
@@ -137,13 +118,14 @@ namespace FreeCam
 
 
         //check if shortcuts are pressed
-        private static void PipeSelector(RainWorldGame game, RoomCamera rcam)
+        private void PipeSelector(RainWorldGame game)
         {
             //mouse is used to select a shortcut
             if (!mousePressed)
                 return;
             mousePressed = false;
 
+            //defensive programming checks
             if (rcam?.room?.abstractRoom == null || 
                 rcam.room.exitAndDenIndex == null || 
                 rcam.room.world == null || 
@@ -161,9 +143,9 @@ namespace FreeCam
                 Plugin.Logger.LogDebug("FreeCam.PipeSelector, shortcut selected to tile " + destTile.ToString() + ", node " + scd.destNode);
 
             //still loading another room
-            if (loadingRoom != null || loadingCam != null) {
+            if (loadingRoom != null) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("FreeCam.PipeSelector, canceling, a camera is still moving to another room");
+                    Plugin.Logger.LogDebug("FreeCam.PipeSelector, canceling, the RoomCamera is still moving to another room");
                 return;
             }
 
@@ -190,35 +172,30 @@ namespace FreeCam
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("FreeCam.PipeSelector, realizedRoom still null after ActivateRoom call");
             loadingRoom = destAR.realizedRoom;
-            loadingCam = rcam;
         }
 
 
         //move camera to the room selected by PipeSelector
-        private static void RoomChanger() {
-            if (loadingRoom == null || loadingCam == null) {
-                loadingRoom = null;
-                loadingCam = null;
+        private void RoomChanger() {
+            if (loadingRoom == null)
                 return;
-            }
 
             //room is still loading
             if (!loadingRoom.fullyLoaded || !loadingRoom.ReadyForPlayer)
                 return;
 
             //defensive programming checks
-            if (loadingCam.room?.world == null || 
-                loadingCam.room?.abstractRoom == null || 
+            if (rcam?.room?.world == null || 
+                rcam.room?.abstractRoom == null || 
                 loadingRoom.abstractRoom == null) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("FreeCam.RoomChanger, invalid loadingRoom or loadingCam");
+                    Plugin.Logger.LogDebug("FreeCam.RoomChanger, invalid loadingRoom or RoomCamera location");
                 loadingRoom = null;
-                loadingCam = null;
                 return;
             }
 
             //get node in other room leading to this room
-            WorldCoordinate wcDestNode = loadingCam.room.world.NodeInALeadingToB(loadingRoom.abstractRoom, loadingCam.room.abstractRoom);
+            WorldCoordinate wcDestNode = rcam.room.world.NodeInALeadingToB(loadingRoom.abstractRoom, rcam.room.abstractRoom);
             int destNode = 0; //nodes count from 0 up
             if (wcDestNode.NodeDefined)
                 destNode = wcDestNode.abstractNode;
@@ -233,10 +210,9 @@ namespace FreeCam
             }
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("FreeCam.RoomChanger, calling MoveCamera to room " + loadingRoom.abstractRoom.name + " camPos " + camPos);
-            loadingCam.MoveCamera(loadingRoom, camPos);
+            rcam.MoveCamera(loadingRoom, camPos);
 
             loadingRoom = null;
-            loadingCam = null;
         }
     }
 }

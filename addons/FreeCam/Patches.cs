@@ -35,7 +35,7 @@ namespace FreeCam
                     i => i.MatchCall<RoomCamera>("GetCameraBestIndex")
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception pt1: " + ex.ToString());
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace FreeCam
                     i => i.MatchLdfld<RainWorldGame>("wasAnArtificerDream")
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception pt2: " + ex.ToString());
                 return;
             }
 
@@ -81,7 +81,7 @@ namespace FreeCam
                     i => i.Match(OpCodes.Brfalse)
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception pt3: " + ex.ToString());
                 return;
             }
 
@@ -115,33 +115,63 @@ namespace FreeCam
                     i => i.MatchCallvirt<RoomCamera>("MoveCamera")
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception pt1: " + ex.ToString());
                 return;
             }
 
             //create label to jump to if freecam is enabled
             ILLabel skipCond = c.MarkLabel();
 
-            //go to start of MoveCamera() call
+            //get index of local variable called "k" (in dnSpy) from for-loop
+            int kIdx = 0;
             try {
-                c.GotoPrev(MoveType.Before,
-                    i => i.MatchLdarg(0),
-                    i => i.MatchLdfld<ShortcutHandler>("game"),
-                    i => i.MatchCallvirt<RainWorldGame>("get_cameras")
+                c.GotoPrev(MoveType.After,
+                    i => i.MatchLdfld<ShortcutHandler>("betweenRoomsWaitingLobby"),
+                    i => i.MatchLdloc(out kIdx)
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception pt2: " + ex.ToString());
                 return;
             }
 
+            //go to start of if-statement containing MoveCamera() call
+            try {
+                c.GotoPrev(MoveType.After,
+                    i => i.MatchCall<ShortcutHandler>("PopOutOfBatHive"),
+                    i => i.MatchLdarg(0)
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("ShortcutHandlerUpdateIL exception pt3: " + ex.ToString());
+                return;
+            }
+
+            //ShortcutHandler already on stack
+            //push local variable "k" on stack
+            c.Emit(OpCodes.Ldloc, kIdx);
+
             //insert condition
-            c.EmitDelegate<Func<bool>>(() =>
+            c.EmitDelegate<Func<ShortcutHandler, int, bool>>((obj, k) =>
             {
-                return FreeCamManager.IsEnabled(0); //TODO check if this must be changed for SplitScreen Co-op
+                //safety checks
+                if (!(obj?.betweenRoomsWaitingLobby?.Count > k) ||
+                    obj.betweenRoomsWaitingLobby[k]?.creature?.abstractCreature == null)
+                    return false;
+
+                //get camera number for this creature
+                int cam = -1;
+                for (int i = 0; i < obj.game?.cameras?.Length; i++)
+                    if (obj.betweenRoomsWaitingLobby[k].creature.abstractCreature.FollowedByCamera(i))
+                        cam = i;
+
+                return FreeCamManager.IsEnabled(cam);
             });
 
-            //if value is true, don't take camera control
+            //if value is true, skip camera control
+            //TODO: this does not skip SplitScreenCoop camera control, because that code is inserted after this label
             c.Emit(OpCodes.Brtrue_S, skipCond);
+
+            //push ShortcutHandler on stack for next instructions
+            c.Emit(OpCodes.Ldarg_0);
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ShortcutHandlerUpdateIL success");

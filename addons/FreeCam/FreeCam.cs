@@ -90,7 +90,6 @@ namespace FreeCam
         {
             float minDistFromEdge = 120f;
             Vector2 mouse = Futile.mousePosition;
-            Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
             Vector2 centerOfScreen = rcam.sSize / 2f;
 
             Vector2 direction = (mouse - centerOfScreen).normalized;

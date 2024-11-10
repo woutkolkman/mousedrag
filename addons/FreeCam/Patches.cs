@@ -13,6 +13,9 @@ namespace FreeCam
 
             //prevent changing rooms from taking over camera control
             IL.ShortcutHandler.Update += ShortcutHandlerUpdateIL;
+
+            //prevent forced VirtualMicrophone position
+            IL.VirtualMicrophone.Update += VirtualMicrophoneUpdateIL;
         }
 
 
@@ -20,6 +23,7 @@ namespace FreeCam
         {
             IL.RoomCamera.Update -= RoomCameraUpdateIL;
             IL.ShortcutHandler.Update -= ShortcutHandlerUpdateIL;
+            IL.VirtualMicrophone.Update -= VirtualMicrophoneUpdateIL;
         }
 
 
@@ -180,6 +184,55 @@ namespace FreeCam
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ShortcutHandlerUpdateIL success");
+        }
+
+
+        //prevent forced VirtualMicrophone position
+        static void VirtualMicrophoneUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            //go to OnScreenPositionOfInShortCutCreature() call
+            try {
+                c.GotoNext(MoveType.Before,
+                    i => i.MatchCallvirt<ShortcutHandler>("OnScreenPositionOfInShortCutCreature")
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("VirtualMicrophoneUpdateIL exception pt1: " + ex.ToString());
+                return;
+            }
+
+            //go back to if-statement
+            try {
+                c.GotoPrev(MoveType.After,
+                    i => i.MatchLdarg(0),
+                    i => i.MatchLdfld<VirtualMicrophone>("camera"),
+                    i => i.MatchLdfld<RoomCamera>("followAbstractCreature"),
+                    i => i.Match(OpCodes.Brfalse)
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("VirtualMicrophoneUpdateIL exception pt2: " + ex.ToString());
+                return;
+            }
+
+            //get skip instruction to call if freecam is enabled
+            ILLabel skipCond = c.Prev.Operand as ILLabel;
+
+            //push RoomCamera on stack
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit<VirtualMicrophone>(OpCodes.Ldfld, "camera");
+
+            //insert condition
+            c.EmitDelegate<Func<RoomCamera, bool>>((obj) =>
+            {
+                return FreeCamManager.IsEnabled(obj?.cameraNumber ?? -1);
+            });
+
+            //if value is true, skip VirtualMicrophone position assignment
+            c.Emit(OpCodes.Brtrue_S, skipCond);
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("VirtualMicrophoneUpdateIL success");
         }
     }
 }

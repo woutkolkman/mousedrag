@@ -297,6 +297,7 @@ namespace FreeCam
             }
 
             //TODO, currently non functional
+            //TODO, SBCameraScroll changes camPos in a MoveCamera hook, maybe insert correct camPos by hooking RoomCameraMod.RoomCamera_MoveCamera2?
             /*//apply initial camera position in new room for SBCameraScroll
             if (Integration.sBCameraScrollEnabled) {
                 try {

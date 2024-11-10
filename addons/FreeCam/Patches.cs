@@ -102,6 +102,49 @@ namespace FreeCam
             c.Emit(OpCodes.Brtrue_S, jlcpSkipCond);
             //=============================================================================================
 
+            //========================= disable SplitScreen Co-op camera control ==========================
+            c = new ILCursor(il);
+
+            //go to end of if-condition where camera position is set
+            try {
+                c.GotoNext(MoveType.Before,
+                    i => i.MatchLdarg(0),
+                    i => i.MatchCall<RoomCamera>("get_screenShake"),
+                    i => i.MatchStloc(out _)
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception pt4: " + ex.ToString());
+                return;
+            }
+
+            //create label to jump to if camera position code is skipped
+            ILLabel sscoSkipCond = c.MarkLabel();
+
+            //go to start of entire if/else-condition
+            try {
+                c.GotoPrev(MoveType.Before,
+                    i => i.MatchLdarg(0),
+                    i => i.MatchLdfld<RoomCamera>("voidSeaMode"),
+                    i => i.Match(OpCodes.Brfalse_S)
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("RoomCameraUpdateIL exception pt5: " + ex.ToString());
+                return;
+            }
+
+            //push 'this' (RoomCamera) on stack
+            c.Emit(OpCodes.Ldarg_0);
+
+            //insert condition
+            c.EmitDelegate<Func<RoomCamera, bool>>((obj) =>
+            {
+                return FreeCamManager.IsEnabled(obj?.cameraNumber ?? -1);
+            });
+
+            //if value is true, don't run camera position code
+            c.Emit(OpCodes.Brtrue_S, sscoSkipCond);
+            //=============================================================================================
+
             //Plugin.Logger.LogDebug(il.ToString());
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RoomCameraUpdateIL success");

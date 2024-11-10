@@ -52,14 +52,73 @@ namespace FreeCam
             if (!enabled || game == null)
                 return;
 
-            ScreenChanger(game);
+            if (Integration.sBCameraScrollEnabled) {
+                ScrollScreenChanger(game);
+            } else {
+                DefaultScreenChanger(game);
+            }
             PipeSelector(game);
             RoomChanger();
         }
 
 
+        //move screen using SBCameraScroll
+        private void ScrollScreenChanger(RainWorldGame game)
+        {
+            if (rcam?.room == null || game == null)
+                return;
+
+            float minDistFromEdge = 120f;
+            Vector2 mouse = Futile.mousePosition;
+            Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
+
+            if (mouse.x < rcam.sSize.x / 2f) {
+                //mouse on left of screen
+                if (mouse.x >= 0f)
+                    distFromEdge.x = -mouse.x;
+            } else {
+                //mouse on right of screen
+                if (mouse.x <= rcam.sSize.x)
+                    distFromEdge.x = Mathf.Abs(mouse.x - rcam.sSize.x);
+            }
+
+            if (mouse.y < rcam.sSize.y / 2f) {
+                //mouse on bottom of screen
+                if (mouse.y >= 0f)
+                    distFromEdge.y = -mouse.y;
+            } else {
+                //mouse on top of screen
+                if (mouse.y <= rcam.sSize.y)
+                    distFromEdge.y = Mathf.Abs(mouse.y - rcam.sSize.y);
+            }
+
+            //mouse not within screen
+            if (distFromEdge.x == float.MaxValue || distFromEdge.y == float.MaxValue)
+                return;
+
+            //calculate movement speed based on mouse distance from edge
+            Vector2 direction = new Vector2(
+                distFromEdge.x > 0f ? -Mathf.Min(0f, distFromEdge.x - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.x + minDistFromEdge),
+                distFromEdge.y > 0f ? -Mathf.Min(0f, distFromEdge.y - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.y + minDistFromEdge)
+            ) / minDistFromEdge;
+
+            //mouse not near edge, no movement required
+            if (direction == Vector2.zero)
+                return;
+
+            //actually move screen
+            try {
+                Integration.SBCameraScrollMoveScreen(rcam, direction);
+            } catch {
+                Plugin.Logger.LogError("FreeCam.ScrollScreenChanger exception while writing SBCameraScroll, integration is now disabled");
+                Integration.sBCameraScrollEnabled = false;
+                throw; //throw original exception while preserving stack trace
+            }
+        }
+
+
         //move to other screens when mouse is at edge of screen
-        private void ScreenChanger(RainWorldGame game)
+        private void DefaultScreenChanger(RainWorldGame game)
         {
             if (rcam?.room == null || game == null)
                 return;
@@ -106,13 +165,13 @@ namespace FreeCam
             }
             if (camPos < 0) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("FreeCam.ScreenChanger, current camera is closest to target position");
+                    Plugin.Logger.LogDebug("FreeCam.DefaultScreenChanger, current camera is closest to target position");
                 return;
             }
 
             //move camera to new position
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("FreeCam.ScreenChanger, move camera to camPos " + camPos);
+                Plugin.Logger.LogDebug("FreeCam.DefaultScreenChanger, move camera to camPos " + camPos);
             rcam.MoveCamera(camPos);
         }
 
@@ -208,6 +267,19 @@ namespace FreeCam
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("FreeCam.RoomChanger, CameraViewingNode call failed: " + ex?.ToString());
             }
+
+            //TODO, currently non functional
+            /*//apply initial camera position in new room for SBCameraScroll
+            if (Integration.sBCameraScrollEnabled) {
+                try {
+                    Integration.SBCameraScrollPreparePos(rcam, camPos);
+                } catch {
+                    Plugin.Logger.LogError("FreeCam.RoomChanger exception while writing SBCameraScroll, integration is now disabled");
+                    Integration.sBCameraScrollEnabled = false;
+                    throw; //throw original exception while preserving stack trace
+                }
+            }*/
+
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("FreeCam.RoomChanger, calling MoveCamera to room " + loadingRoom.abstractRoom.name + " camPos " + camPos);
             rcam.MoveCamera(loadingRoom, camPos);

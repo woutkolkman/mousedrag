@@ -93,13 +93,53 @@ namespace FreeCam
         }
 
 
+        //use in try/catch so missing assembly does not crash the game
+        public static void SBCameraScrollMoveScreen(RoomCamera rcam, Vector2 direction)
+        {
+            var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(rcam);
+            if (af == null || rcam == null) //this code not working will be obvious
+                return;
+
+            //write new RoomCamera position within borders checked by SBCameraScroll
+            rcam.lastPos = rcam.pos;
+            Vector2 newPos = rcam.pos + direction * 25f;
+            SBCameraScroll.RoomCameraMod.CheckBorders(rcam, ref newPos);
+            rcam.pos = newPos;
+
+            //also write SBCameraScroll camera position
+            af.last_on_screen_position = rcam.lastPos;
+            af.on_screen_position = rcam.pos;
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static void SBCameraScrollPreparePos(RoomCamera rcam, int loadingCameraPos)
+        {
+            var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(rcam);
+            if (af == null) {
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("Integration.SBCameraScrollPreparePos, unable to set pre_loaded_camera_index");
+                return;
+            }
+            af.pre_loaded_camera_index = loadingCameraPos;
+        }
+
+
         //===================================================== Integration Hooks =====================================================
         public static class Hooks {
+            static IDetour sBCameraScrollUpdateOnScreenPosition;
             static IDetour detourMouseDragRunAction, detourMouseDragReloadSlots;
 
 
             public static void Apply()
             {
+                if (sBCameraScrollEnabled) {
+                    try {
+                        ApplySBCameraScroll();
+                    } catch (System.Exception ex) {
+                        Plugin.Logger.LogError("Integration.Hooks.Apply exception, unable to apply SBCameraScroll hooks: " + ex?.ToString());
+                    }
+                }
                 if (mouseDragEnabled) {
                     try {
                         ApplyMouseDrag();
@@ -107,7 +147,18 @@ namespace FreeCam
                         Plugin.Logger.LogError("Integration.Hooks.Apply exception, unable to apply Mouse Drag hooks: " + ex?.ToString());
                     }
                 }
-                Plugin.Logger.LogDebug("Integration.Hooks.Apply, finished applying integration hooks");
+                Plugin.Logger.LogDebug("Integration.Hooks.Apply, finished applying enabled integration hook(s)");
+            }
+
+
+            //use in try/catch so missing assembly does not crash the game
+            public static void ApplySBCameraScroll()
+            {
+                //hook to prevent camera from following creature with SBCameraScroll
+                sBCameraScrollUpdateOnScreenPosition = new Hook(
+                    typeof(SBCameraScroll.RoomCameraMod).GetMethod("UpdateOnScreenPosition", BindingFlags.Static | BindingFlags.Public),
+                    typeof(Integration.Hooks).GetMethod("SBCameraScrollRoomCameraMod_UpdateOnScreenPosition_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+                );
             }
 
 
@@ -130,10 +181,22 @@ namespace FreeCam
 
             public static void Unapply()
             {
+                if (sBCameraScrollUpdateOnScreenPosition?.IsValid == true && sBCameraScrollUpdateOnScreenPosition?.IsApplied == true)
+                    sBCameraScrollUpdateOnScreenPosition?.Dispose();
                 if (detourMouseDragRunAction?.IsValid == true && detourMouseDragRunAction?.IsApplied == true)
                     detourMouseDragRunAction?.Dispose();
                 if (detourMouseDragReloadSlots?.IsValid == true && detourMouseDragReloadSlots?.IsApplied == true)
                     detourMouseDragReloadSlots?.Dispose();
+            }
+
+
+            //hook to prevent camera from following creature with SBCameraScroll
+            [MethodImpl(MethodImplOptions.NoInlining)]
+            public static void SBCameraScrollRoomCameraMod_UpdateOnScreenPosition_RuntimeDetour(Action<RoomCamera> orig, RoomCamera room_camera)
+            {
+                if (FreeCamManager.IsEnabled(room_camera?.cameraNumber ?? -1))
+                    return;
+                orig(room_camera);
             }
 
 

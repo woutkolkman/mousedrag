@@ -68,6 +68,46 @@ namespace FreeCam
             if (rcam?.room == null || game == null)
                 return;
 
+            Vector2 direction = MouseDirectionMethodB();
+
+            //mouse not near edge, no movement required
+            if (direction == Vector2.zero)
+                return;
+
+            //actually move screen
+            try {
+                Integration.SBCameraScrollMoveScreen(rcam, direction);
+            } catch {
+                Plugin.Logger.LogError("FreeCam.ScrollScreenChanger exception while writing SBCameraScroll, integration is now disabled");
+                Integration.sBCameraScrollEnabled = false;
+                throw; //throw original exception while preserving stack trace
+            }
+        }
+
+
+        //easier to move screen at an angle
+        private Vector2 MouseDirectionMethodB()
+        {
+            float minDistFromEdge = 120f;
+            Vector2 mouse = Futile.mousePosition;
+            Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
+            Vector2 centerOfScreen = rcam.sSize / 2f;
+
+            Vector2 direction = (mouse - centerOfScreen).normalized;
+            float distFromEdgeX = Mathf.Abs(Mathf.Abs(mouse.x - centerOfScreen.x) - centerOfScreen.x);
+            float distFromEdgeY = Mathf.Abs(Mathf.Abs(mouse.y - centerOfScreen.y) - centerOfScreen.y);
+            distFromEdgeX = -distFromEdgeX + minDistFromEdge;
+            distFromEdgeY = -distFromEdgeY + minDistFromEdge;
+            float speed = Mathf.Max(distFromEdgeX, distFromEdgeY) / minDistFromEdge;
+            speed = Mathf.Max(speed, 0f);
+
+            return direction * speed;
+        }
+
+
+        //easier to move screen in a straight line
+        private Vector2 MouseDirectionMethodA()
+        {
             float minDistFromEdge = 120f;
             Vector2 mouse = Futile.mousePosition;
             Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
@@ -94,7 +134,7 @@ namespace FreeCam
 
             //mouse not within screen
             if (distFromEdge.x == float.MaxValue || distFromEdge.y == float.MaxValue)
-                return;
+                return Vector2.zero;
 
             //calculate movement speed based on mouse distance from edge
             Vector2 direction = new Vector2(
@@ -102,18 +142,7 @@ namespace FreeCam
                 distFromEdge.y > 0f ? -Mathf.Min(0f, distFromEdge.y - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.y + minDistFromEdge)
             ) / minDistFromEdge;
 
-            //mouse not near edge, no movement required
-            if (direction == Vector2.zero)
-                return;
-
-            //actually move screen
-            try {
-                Integration.SBCameraScrollMoveScreen(rcam, direction);
-            } catch {
-                Plugin.Logger.LogError("FreeCam.ScrollScreenChanger exception while writing SBCameraScroll, integration is now disabled");
-                Integration.sBCameraScrollEnabled = false;
-                throw; //throw original exception while preserving stack trace
-            }
+            return direction;
         }
 
 

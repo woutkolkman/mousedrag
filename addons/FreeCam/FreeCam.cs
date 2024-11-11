@@ -41,7 +41,7 @@ namespace FreeCam
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("FreeCam.Toggle, realizedRoom still null after ActivateRoom call");
             } else {
-                //TODO room might not be ready? but player was/is in it, so it is always ready?
+                //TODO, room might not be ready? but player was/is in it, so it is always ready?
                 rcam.MoveCamera(acRoom.realizedRoom, 0); //camPos gets auto corrected after moving to room
             }
         }
@@ -68,15 +68,17 @@ namespace FreeCam
             if (rcam?.room == null || game == null)
                 return;
 
-            Vector2 direction = MouseDirectionMethodB();
+            float minDistFromEdge = 120f;
+            float speed = 25f;
+            Vector2 movement = MouseDirectionMethodB(minDistFromEdge) * speed;
 
             //mouse not near edge, no movement required
-            if (direction == Vector2.zero)
+            if (movement == Vector2.zero)
                 return;
 
             //actually move screen
             try {
-                Integration.SBCameraScrollMoveScreen(rcam, direction);
+                Integration.SBCameraScrollMoveScreen(rcam, movement);
             } catch {
                 Plugin.Logger.LogError("FreeCam.ScrollScreenChanger exception while writing SBCameraScroll, integration is now disabled");
                 Integration.sBCameraScrollEnabled = false;
@@ -86,9 +88,8 @@ namespace FreeCam
 
 
         //easier to move screen at an angle
-        private Vector2 MouseDirectionMethodB()
+        private Vector2 MouseDirectionMethodB(float minDistFromEdge)
         {
-            float minDistFromEdge = 120f;
             Vector2 mouse = Futile.mousePosition;
             Vector2 centerOfScreen = rcam.sSize / 2f;
 
@@ -105,9 +106,8 @@ namespace FreeCam
 
 
         //easier to move screen in a straight line
-        private Vector2 MouseDirectionMethodA()
+        private Vector2 MouseDirectionMethodA(float minDistFromEdge)
         {
-            float minDistFromEdge = 120f;
             Vector2 mouse = Futile.mousePosition;
             Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
 
@@ -166,6 +166,25 @@ namespace FreeCam
 
             //lean camera feedback for user
             rcam.leanPos = targetDir;
+
+            //before changing position, scroll camera using SplitScreen Co-op
+            if (Integration.splitScreenCoopEnabled && !Integration.sBCameraScrollEnabled) {
+                float speed = 15f;
+                Vector2 tryNewPos = rcam.pos + (MouseDirectionMethodA(minDistFromEdge) * speed);
+                bool inASplitScreenMode;
+                try {
+                    inASplitScreenMode = Integration.SplitScreenCoopCheckBorders(rcam, ref tryNewPos);
+                } catch {
+                    Plugin.Logger.LogError("FreeCam.DefaultScreenChanger exception while reading SplitScreen Co-op, integration is now disabled");
+                    Integration.splitScreenCoopEnabled = false;
+                    throw; //throw original exception while preserving stack trace
+                }
+                if (inASplitScreenMode) {
+                    if (rcam.pos != tryNewPos)
+                        screenChangeStopTicks = 20;
+                    rcam.pos = tryNewPos;
+                }
+            }
 
             if (targetDir == Vector2.zero)
                 screenChangeStopTicks = 40;

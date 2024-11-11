@@ -32,6 +32,44 @@ namespace FreeCam
 
 
         //use in try/catch so missing assembly does not crash the game
+        public static bool SplitScreenCoopCheckBorders(RoomCamera rcam, ref Vector2 pos)
+        {
+            if (rcam == null)
+                return false;
+
+            var mode = SplitScreenCoop.SplitScreenCoop.CurrentSplitMode;
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.NoSplit)
+                return false; //we are not in a split mode
+
+            Vector2 vanillaPos = rcam.CamPos(rcam.currentCameraPosition);
+
+            //NOTE, might not entirely be the correct implementation, but it works fine
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitVertical || 
+                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen) {
+                pos.x = Mathf.Clamp(
+                    pos.x,
+                    vanillaPos.x - rcam.sSize.x / 4f,
+                    vanillaPos.x + rcam.sSize.x / 4f
+                );
+            } else {
+                pos.x = vanillaPos.x;
+            }
+            if (mode == SplitScreenCoop.SplitScreenCoop.SplitMode.SplitHorizontal || 
+                mode == SplitScreenCoop.SplitScreenCoop.SplitMode.Split4Screen) {
+                pos.y = Mathf.Clamp(
+                    pos.y,
+                    vanillaPos.y - rcam.sSize.y / 4f,
+                    vanillaPos.y + rcam.sSize.y / 4f
+                );
+            } else {
+                pos.y = vanillaPos.y;
+            }
+
+            return true; //we are in a split mode
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
         public static RoomCamera SplitScreenCoopCam(RainWorldGame game, out Vector2 offset)
         {
             offset = Vector2.zero;
@@ -94,7 +132,7 @@ namespace FreeCam
 
 
         //use in try/catch so missing assembly does not crash the game
-        public static void SBCameraScrollMoveScreen(RoomCamera rcam, Vector2 direction)
+        public static void SBCameraScrollMoveScreen(RoomCamera rcam, Vector2 movement)
         {
             var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(rcam);
             if (af == null || rcam == null) //this code not working will be obvious
@@ -102,7 +140,7 @@ namespace FreeCam
 
             //write new RoomCamera position within borders checked by SBCameraScroll
             rcam.lastPos = rcam.pos;
-            Vector2 newPos = rcam.pos + direction * 25f;
+            Vector2 newPos = rcam.pos + movement;
             SBCameraScroll.RoomCameraMod.CheckBorders(rcam, ref newPos);
             rcam.pos = newPos;
 

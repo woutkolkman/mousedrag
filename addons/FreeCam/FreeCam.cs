@@ -184,6 +184,9 @@ namespace FreeCam
                         screenChangeStopTicks = 20;
                     rcam.pos = tryNewPos;
                 }
+                //TODO, after changing the screen position, the screen is auto-centered
+                //TODO, maybe change the scroll to start nearby previous position?
+                //TODO, that way the screen scrolls more naturally
             }
 
             if (targetDir == Vector2.zero)
@@ -272,6 +275,10 @@ namespace FreeCam
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("FreeCam.PipeSelector, realizedRoom null, activating");
             }
+            //NOTE, rooms activated/loaded via this method stay loaded unless you visit the room afterwards with a player
+            //NOTE, this is because RoomRealizer uses the player position to track and load/unload rooms, not the camera position
+            //NOTE, if using RoomRealizer anyway, the room the camera would be in would randomly unload?
+            //TODO, maybe manage own activated rooms? unless added to a RoomRealizer.realizedRooms?
 
             //move to room once it is ready
             if (destAR.realizedRoom == null)

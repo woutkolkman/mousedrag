@@ -68,6 +68,11 @@ namespace FreeCam
             if (rcam?.room == null || game == null)
                 return;
 
+            if (rcam.voidSeaMode) {
+                VoidSeaMode();
+                return;
+            }
+
             float minDistFromEdge = 120f;
             float speed = 25f;
             Vector2 movement = MouseDirectionMethodB(minDistFromEdge) * speed;
@@ -145,6 +150,19 @@ namespace FreeCam
         }
 
 
+        //in void sea mode there are no predefined camera positions
+        private void VoidSeaMode()
+        {
+            float minDistFromEdge = 50f;
+            float speed = 40f;
+            float maxY = 240f - rcam.sSize.y; //magic number from game
+            Vector2 newPos = rcam.pos + MouseDirectionMethodB(minDistFromEdge) * speed;
+            newPos.y = Mathf.Min(newPos.y, maxY);
+            rcam.pos = newPos;
+            //TODO, getting the camera into void sea mode without having the player there first is not implemented yet
+        }
+
+
         //move to other screens when mouse is at edge of screen
         private void DefaultScreenChanger(RainWorldGame game)
         {
@@ -166,6 +184,11 @@ namespace FreeCam
 
             //lean camera feedback for user
             rcam.leanPos = targetDir;
+
+            if (rcam.voidSeaMode) {
+                VoidSeaMode();
+                return;
+            }
 
             //before changing position, scroll camera using SplitScreen Co-op
             if (Integration.splitScreenCoopEnabled && !Integration.sBCameraScrollEnabled) {

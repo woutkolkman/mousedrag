@@ -154,12 +154,13 @@ namespace FreeCam
         private void VoidSeaMode()
         {
             float minDistFromEdge = 50f;
-            float speed = 40f;
+            float speed = 60f;
             float maxY = 240f - rcam.sSize.y; //magic number from game
             Vector2 newPos = rcam.pos + MouseDirectionMethodB(minDistFromEdge) * speed;
             newPos.y = Mathf.Min(newPos.y, maxY);
             rcam.pos = newPos;
             //TODO, getting the camera into void sea mode without having the player there first is not implemented yet
+            //TODO, offset maxY maybe not correct in some SplitScreen Co-op SplitModes, but you can't really co-op down there anyway so why bother
         }
 
 

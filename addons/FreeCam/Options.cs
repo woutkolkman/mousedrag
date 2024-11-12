@@ -33,7 +33,7 @@ namespace FreeCam
             winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.NoChanges.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"" + CursorVisibilityTypes.NoChanges.ToString() + "\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, multiple cameras are supported.", null, "", "SplitScreen Co-op integration"));
-            sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, alternative camera zoom and camera scrolling are supported.", null, "", "SBCameraScroll integration"));
+            sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, alternative camera zoom and camera scrolling are supported. Requires restart.", null, "", "SBCameraScroll integration"));
             mouseDragIntegration = config.Bind(nameof(mouseDragIntegration), defaultValue: true, new ConfigurableInfo("If Mouse Drag is enabled, a new slot is added to the radial menu. Requires restart.", null, "", "Mouse Drag integration"));
 
             //refresh activated mods when config changes

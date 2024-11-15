@@ -10,6 +10,7 @@ namespace FreeCam
             (Input.GetMouseButtonDown(2) && Options.selectMMB?.Value == true) ||
             (Options.select?.Value != null && Input.GetKeyDown(Options.select.Value))
         );
+        public static bool holdWasPressed = false;
 
 
         //for every RoomCamera, create a FreeCam object
@@ -82,6 +83,14 @@ namespace FreeCam
             //game is paused
             if (game.GamePaused || game.pauseUpdate || !game.processActive)
                 return;
+
+            //toggle first freecam with hold keybind
+            bool holdIsPressed = Options.holdKey?.Value != null && Input.GetKey(Options.holdKey.Value);
+            if (holdIsPressed && !holdWasPressed && freeCams.Length > 0 && !freeCams[0].enabled)
+                freeCams[0].Toggle();
+            if (!holdIsPressed && holdWasPressed && freeCams.Length > 0 && freeCams[0].enabled)
+                freeCams[0].Toggle();
+            holdWasPressed = holdIsPressed;
 
             for (int i = 0; i < freeCams.Length; i++)
                 freeCams[i].Update(game);

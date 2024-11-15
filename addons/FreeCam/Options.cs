@@ -6,7 +6,7 @@ namespace FreeCam
 {
     public class Options : OptionInterface
     {
-        public static Configurable<KeyCode> activateKey;
+        public static Configurable<KeyCode> toggleKey, holdKey;
         public static Configurable<bool> selectLMB, selectMMB;
         public static Configurable<KeyCode> select;
         public static Configurable<string> winCursorVisType;
@@ -26,7 +26,8 @@ namespace FreeCam
 
         public Options()
         {
-            activateKey = config.Bind(nameof(activateKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate FreeCam.", null, "", "KeyBind"));
+            toggleKey = config.Bind(nameof(toggleKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle FreeCam.", null, "", "Toggle KeyBind"));
+            holdKey = config.Bind(nameof(holdKey), KeyCode.None, new ConfigurableInfo("Enable FreeCam while KeyBind is pressed. Works only on first camera.", null, "", "Hold KeyBind"));
             selectLMB = config.Bind(nameof(selectLMB), defaultValue: true, new ConfigurableInfo("Left mouse button is used to select pipes.", null, "", "LMB selects"));
             selectMMB = config.Bind(nameof(selectMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button is used to select pipes.", null, "", "MMB selects"));
             select = config.Bind(nameof(select), KeyCode.None, new ConfigurableInfo("KeyBind is used to select pipes, as an alternative to left mouse button.", null, "", "Select"));
@@ -56,7 +57,8 @@ namespace FreeCam
             float x = 90f;
             float y = 540f;
             float sepr = 40f;
-            AddKeyBinder(activateKey, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(toggleKey, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(holdKey, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(selectLMB, new Vector2(x, y -= sepr));
             AddCheckbox(selectMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(select, new Vector2(x, y -= sepr + 5f));

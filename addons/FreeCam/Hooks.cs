@@ -80,7 +80,7 @@ namespace FreeCam
 
             FreeCamManager.RawUpdate(self);
 
-            if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
+            if (Options.toggleKey?.Value != null && Input.GetKeyDown(Options.toggleKey.Value))
                 FreeCamManager.Toggle(self);
         }
 

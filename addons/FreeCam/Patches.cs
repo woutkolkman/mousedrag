@@ -219,7 +219,7 @@ namespace FreeCam
             //if value is true, skip camera control
             //TODO, this does not skip SplitScreenCoop camera control, because that code is inserted after this label
             //TODO, if changing this for SplitScreenCoop, a load order probably has to be applied also
-            //TODO, this means that currently secondary cameras change room when their abstractCreature changes room
+            //TODO, this means that currently secondary cameras change room when their followAbstractCreature changes room
             c.Emit(OpCodes.Brtrue_S, skipCond);
 
             //push ShortcutHandler on stack for next instructions

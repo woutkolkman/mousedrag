@@ -10,6 +10,7 @@ namespace FreeCam
         private int screenChangeStopTicks = 0;
         private Room loadingRoom = null; //room will be moved to when it is fully loaded
         private RoomCamera rcam;
+        public Vector2? sBCameraScrollNewPos = null; //used to correctly position screen in new room
 
 
         public FreeCam(RoomCamera rcam)
@@ -210,7 +211,7 @@ namespace FreeCam
                 }
                 //TODO, after changing the screen position, the screen is auto-centered
                 //TODO, maybe change the scroll to start nearby previous position?
-                //TODO, that way the screen scrolls more naturally
+                //TODO, that way the screen scrolls more naturally, or just enable SBCameraScroll
             }
 
             if (targetDir == Vector2.zero)
@@ -346,18 +347,11 @@ namespace FreeCam
                     Plugin.Logger.LogDebug("FreeCam.RoomChanger, CameraViewingNode call failed: " + ex?.ToString());
             }
 
-            //TODO, currently non functional
-            //TODO, SBCameraScroll changes camPos in a MoveCamera hook, maybe insert correct camPos by hooking RoomCameraMod.RoomCamera_MoveCamera2?
-            /*//apply initial camera position in new room for SBCameraScroll
-            if (Integration.sBCameraScrollEnabled) {
-                try {
-                    Integration.SBCameraScrollPreparePos(rcam, camPos);
-                } catch {
-                    Plugin.Logger.LogError("FreeCam.RoomChanger exception while writing SBCameraScroll, integration is now disabled");
-                    Integration.sBCameraScrollEnabled = false;
-                    throw; //throw original exception while preserving stack trace
-                }
-            }*/
+            //NOTE, SBCameraScroll ignores the camera position parameter passed to MoveCamera
+            //change camera position in new room after SBCameraScroll in SBCameraScrollRoomCameraMod_RoomCamera_ApplyPositionChange_RuntimeDetour
+            if (Integration.sBCameraScrollEnabled)
+                if (camPos >= 0 && camPos < loadingRoom.cameraPositions?.Length)
+                    sBCameraScrollNewPos = loadingRoom.cameraPositions[camPos];
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("FreeCam.RoomChanger, calling MoveCamera to room " + loadingRoom.abstractRoom.name + " camPos " + camPos);

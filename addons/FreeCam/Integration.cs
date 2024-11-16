@@ -166,6 +166,7 @@ namespace FreeCam
         //===================================================== Integration Hooks =====================================================
         public static class Hooks {
             static IDetour sBCameraScrollUpdateOnScreenPosition;
+            static IDetour sBCameraScrollRoomCamera_ApplyPositionChange;
             static IDetour detourMouseDragRunAction, detourMouseDragReloadSlots;
 
 
@@ -197,6 +198,12 @@ namespace FreeCam
                     typeof(SBCameraScroll.RoomCameraMod).GetMethod("UpdateOnScreenPosition", BindingFlags.Static | BindingFlags.Public),
                     typeof(Integration.Hooks).GetMethod("SBCameraScrollRoomCameraMod_UpdateOnScreenPosition_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
                 );
+
+                //hook that applies correct camera position after camera moved to a new room
+                sBCameraScrollRoomCamera_ApplyPositionChange = new Hook(
+                    typeof(SBCameraScroll.RoomCameraMod).GetMethod("RoomCamera_ApplyPositionChange", BindingFlags.Static | BindingFlags.NonPublic),
+                    typeof(Integration.Hooks).GetMethod("SBCameraScrollRoomCameraMod_RoomCamera_ApplyPositionChange_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+                );
             }
 
 
@@ -221,6 +228,8 @@ namespace FreeCam
             {
                 if (sBCameraScrollUpdateOnScreenPosition?.IsValid == true && sBCameraScrollUpdateOnScreenPosition?.IsApplied == true)
                     sBCameraScrollUpdateOnScreenPosition?.Dispose();
+                if (sBCameraScrollRoomCamera_ApplyPositionChange?.IsValid == true && sBCameraScrollRoomCamera_ApplyPositionChange?.IsApplied == true)
+                    sBCameraScrollRoomCamera_ApplyPositionChange?.Dispose();
                 if (detourMouseDragRunAction?.IsValid == true && detourMouseDragRunAction?.IsApplied == true)
                     detourMouseDragRunAction?.Dispose();
                 if (detourMouseDragReloadSlots?.IsValid == true && detourMouseDragReloadSlots?.IsApplied == true)
@@ -232,9 +241,42 @@ namespace FreeCam
             [MethodImpl(MethodImplOptions.NoInlining)]
             public static void SBCameraScrollRoomCameraMod_UpdateOnScreenPosition_RuntimeDetour(Action<RoomCamera> orig, RoomCamera room_camera)
             {
+                //NOTE, not calling Orig is not preferred, but SBCameraScroll does it a lot by itself so it should be fine here
                 if (FreeCamManager.IsEnabled(room_camera?.cameraNumber ?? -1))
                     return;
                 orig(room_camera);
+            }
+
+
+            //hook that applies correct camera position after camera moved to a new room
+            [MethodImpl(MethodImplOptions.NoInlining)]
+            public static void SBCameraScrollRoomCameraMod_RoomCamera_ApplyPositionChange_RuntimeDetour(Action<On.RoomCamera.orig_ApplyPositionChange, RoomCamera> orig, On.RoomCamera.orig_ApplyPositionChange csOrig, RoomCamera room_camera)
+            {
+                //this hook hooks another hook, maybe bad code but i couldn't think of another solution
+                orig(csOrig, room_camera);
+
+                //check if FreeCam is enabled, and a new position can be assigned
+                if (!FreeCamManager.IsEnabled(room_camera?.cameraNumber ?? -1))
+                    return;
+                FreeCam fc = FreeCamManager.freeCams[room_camera.cameraNumber];
+                if (fc?.sBCameraScrollNewPos == null)
+                    return;
+                Vector2 newPos = fc.sBCameraScrollNewPos.Value;
+                fc.sBCameraScrollNewPos = null;
+
+                //get attached fields from SBCameraScroll
+                var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(room_camera);
+                if (af == null) {
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogDebug("Integration.Hooks.SBCameraScrollRoomCameraMod_RoomCamera_ApplyPositionChange_RuntimeDetour, unable to set RoomCamera position");
+                    return;
+                }
+
+                //apply position
+                room_camera.lastPos = newPos;
+                room_camera.pos = newPos;
+                af.last_on_screen_position = newPos;
+                af.on_screen_position = newPos;
             }
 
 

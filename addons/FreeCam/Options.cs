@@ -26,7 +26,7 @@ namespace FreeCam
 
         public Options()
         {
-            toggleKey = config.Bind(nameof(toggleKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle FreeCam.", null, "", "Toggle KeyBind"));
+            toggleKey = config.Bind(nameof(toggleKey), KeyCode.Home, new ConfigurableInfo("KeyBind to toggle FreeCam. Works on all cameras.", null, "", "Toggle KeyBind"));
             holdKey = config.Bind(nameof(holdKey), KeyCode.None, new ConfigurableInfo("Enable FreeCam while KeyBind is pressed. Works only on first camera.", null, "", "Hold KeyBind"));
             selectLMB = config.Bind(nameof(selectLMB), defaultValue: true, new ConfigurableInfo("Left mouse button is used to select pipes.", null, "", "LMB selects"));
             selectMMB = config.Bind(nameof(selectMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button is used to select pipes.", null, "", "MMB selects"));

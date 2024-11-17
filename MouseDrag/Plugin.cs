@@ -27,7 +27,7 @@ namespace MouseDrag
 
             Logger = base.Logger;
             Hooks.Apply();
-            Patches.Apply();
+            ILHooks.Apply();
 
             //Rain Reloader re-initialize Options and sprites
             if (MachineConnector.IsThisModActive(GUID)) {
@@ -49,7 +49,7 @@ namespace MouseDrag
             isEnabled = false;
 
             Hooks.Unapply();
-            Patches.Unapply();
+            ILHooks.Unapply();
             MenuManager.UnloadSprites();
 
             Plugin.Logger.LogInfo("OnDisable called");

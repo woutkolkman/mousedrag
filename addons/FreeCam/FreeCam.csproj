@@ -42,7 +42,7 @@
     <Compile Include="FreeCamManager.cs" />
     <Compile Include="Integration.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="Patches.cs" />
+    <Compile Include="ILHooks.cs" />
     <Compile Include="FreeCam.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Hooks.cs" />

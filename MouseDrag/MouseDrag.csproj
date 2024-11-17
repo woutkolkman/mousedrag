@@ -51,7 +51,7 @@
     <Compile Include="Tools\Gravity.cs" />
     <Compile Include="Tools\Health.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="Patches.cs" />
+    <Compile Include="ILHooks.cs" />
     <Compile Include="Tools\Pause.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Hooks.cs" />

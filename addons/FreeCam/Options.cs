@@ -10,6 +10,7 @@ namespace FreeCam
         public static Configurable<bool> selectLMB, selectMMB;
         public static Configurable<KeyCode> select;
         public static Configurable<bool> cursorMovesScreen;
+        public static Configurable<KeyCode> up, right, down, left;
         public static Configurable<string> winCursorVisType;
         public static Configurable<bool> logDebug;
         public static Configurable<bool> splitScreenCoopIntegration, sBCameraScrollIntegration, mouseDragIntegration;
@@ -33,6 +34,10 @@ namespace FreeCam
             selectMMB = config.Bind(nameof(selectMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button is used to select pipes.", null, "", "MMB selects"));
             select = config.Bind(nameof(select), KeyCode.None, new ConfigurableInfo("KeyBind is used to select pipes, as an alternative to left mouse button.", null, "", "Select"));
             cursorMovesScreen = config.Bind(nameof(cursorMovesScreen), defaultValue: true, new ConfigurableInfo("Moving the cursor to an edge of your screen will move the camera in that direction.", null, "", "Cursor moves screen"));
+            up = config.Bind(nameof(up), KeyCode.None, new ConfigurableInfo("KeyBind to move screen up.", null, "", "Up"));
+            right = config.Bind(nameof(right), KeyCode.None, new ConfigurableInfo("KeyBind to move screen right.", null, "", "Right"));
+            down = config.Bind(nameof(down), KeyCode.None, new ConfigurableInfo("KeyBind to move screen down.", null, "", "Down"));
+            left = config.Bind(nameof(left), KeyCode.None, new ConfigurableInfo("KeyBind to move screen left.", null, "", "Left"));
             winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.NoChanges.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"" + CursorVisibilityTypes.NoChanges.ToString() + "\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, multiple cameras are supported.", null, "", "SplitScreen Co-op integration"));
@@ -65,6 +70,10 @@ namespace FreeCam
             AddCheckbox(selectMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(select, new Vector2(x, y -= sepr + 5f));
             AddCheckbox(cursorMovesScreen, new Vector2(x, y -= sepr));
+            AddKeyBinder(up, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(right, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(down, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(left, new Vector2(x, y -= sepr + 5f));
             AddComboBox(winCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
 
             x += 250f;

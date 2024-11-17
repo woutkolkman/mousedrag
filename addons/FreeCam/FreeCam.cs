@@ -10,6 +10,7 @@ namespace FreeCam
         private int screenChangeStopTicks = 0;
         private Room loadingRoom = null; //room will be moved to when it is fully loaded
         private RoomCamera rcam;
+        private bool moveScreenPressed = false; //immediately move screen after keypress from RawUpdate for Update
         public Vector2? sBCameraScrollNewPos = null; //used to correctly position screen in new room
 
 
@@ -58,8 +59,15 @@ namespace FreeCam
             } else {
                 DefaultScreenChanger(game);
             }
+            moveScreenPressed = false;
             PipeSelector(game);
             RoomChanger();
+        }
+
+
+        public void RawUpdate()
+        {
+            moveScreenPressed |= KeyDirectionDown();
         }
 
 
@@ -76,7 +84,13 @@ namespace FreeCam
 
             float minDistFromEdge = 120f;
             float speed = 25f;
-            Vector2 movement = MouseDirectionMethodB(minDistFromEdge) * speed;
+            Vector2 targetDir = new Vector2();
+            if (Options.cursorMovesScreen?.Value != false)
+                targetDir = MouseDirectionMethodB(minDistFromEdge);
+            Vector2 keyDir = KeyDirection();
+            if (keyDir != Vector2.zero)
+                targetDir = keyDir;
+            Vector2 movement = targetDir * speed;
 
             //mouse not near edge, no movement required
             if (movement == Vector2.zero)
@@ -99,7 +113,13 @@ namespace FreeCam
             float minDistFromEdge = 50f;
             float speed = 60f;
             float maxY = 240f - rcam.sSize.y; //magic number from game
-            Vector2 newPos = rcam.pos + MouseDirectionMethodB(minDistFromEdge) * speed;
+            Vector2 targetDir = new Vector2();
+            if (Options.cursorMovesScreen?.Value != false)
+                targetDir = MouseDirectionMethodB(minDistFromEdge);
+            Vector2 keyDir = KeyDirection();
+            if (keyDir != Vector2.zero)
+                targetDir = keyDir;
+            Vector2 newPos = rcam.pos + targetDir * speed;
             newPos.y = Mathf.Min(newPos.y, maxY);
             rcam.pos = newPos;
             //TODO, getting the camera into void sea mode without having the player there first is not implemented yet
@@ -114,7 +134,12 @@ namespace FreeCam
                 return;
 
             float minDistFromEdge = 50f;
-            Vector2 targetDir = MouseDirectionMethodC(minDistFromEdge);
+            Vector2 targetDir = new Vector2();
+            if (Options.cursorMovesScreen?.Value != false)
+                targetDir = MouseDirectionMethodC(minDistFromEdge);
+            Vector2 keyDir = KeyDirection();
+            if (keyDir != Vector2.zero)
+                targetDir = keyDir;
 
             if (rcam.voidSeaMode) {
                 VoidSeaMode();
@@ -124,7 +149,12 @@ namespace FreeCam
             //before changing position, scroll camera using SplitScreen Co-op
             if (Integration.splitScreenCoopEnabled && !Integration.sBCameraScrollEnabled) {
                 float speed = 15f;
-                Vector2 tryNewPos = rcam.pos + (MouseDirectionMethodA(minDistFromEdge) * speed);
+                Vector2 ssTargetDir = new Vector2();
+                if (Options.cursorMovesScreen?.Value != false)
+                    ssTargetDir = MouseDirectionMethodA(minDistFromEdge);
+                if (keyDir != Vector2.zero)
+                    ssTargetDir = keyDir;
+                Vector2 tryNewPos = rcam.pos + (ssTargetDir * speed);
                 bool inASplitScreenMode;
                 try {
                     inASplitScreenMode = Integration.SplitScreenCoopCheckBorders(rcam, ref tryNewPos);
@@ -137,6 +167,7 @@ namespace FreeCam
                     if (rcam.pos != tryNewPos)
                         screenChangeStopTicks = 20;
                     rcam.pos = tryNewPos;
+                    moveScreenPressed = false; //do allow to scroll first
                 }
                 //TODO, after changing the screen position, the screen is auto-centered
                 //TODO, maybe change the scroll to start nearby previous position?
@@ -145,7 +176,7 @@ namespace FreeCam
 
             if (targetDir == Vector2.zero)
                 screenChangeStopTicks = 40;
-            if (screenChangeStopTicks > 0) {
+            if (!moveScreenPressed && screenChangeStopTicks > 0) {
                 screenChangeStopTicks--;
                 return;
             }
@@ -364,6 +395,35 @@ namespace FreeCam
                 ret.y = 1.0f;
 
             return ret;
+        }
+
+
+        private Vector2 KeyDirection()
+        {
+            Vector2 ret = new Vector2();
+            if (Options.up?.Value != null && Input.GetKey(Options.up.Value))
+                ret.y = 1.0f;
+            if (Options.right?.Value != null && Input.GetKey(Options.right.Value))
+                ret.x = 1.0f;
+            if (Options.down?.Value != null && Input.GetKey(Options.down.Value))
+                ret.y = -1.0f;
+            if (Options.left?.Value != null && Input.GetKey(Options.left.Value))
+                ret.x = -1.0f;
+            return ret;
+        }
+
+
+        private bool KeyDirectionDown()
+        {
+            if (Options.up?.Value != null && Input.GetKeyDown(Options.up.Value))
+                return true;
+            if (Options.right?.Value != null && Input.GetKeyDown(Options.right.Value))
+                return true;
+            if (Options.down?.Value != null && Input.GetKeyDown(Options.down.Value))
+                return true;
+            if (Options.left?.Value != null && Input.GetKeyDown(Options.left.Value))
+                return true;
+            return false;
         }
     }
 }

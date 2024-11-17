@@ -106,6 +106,8 @@ namespace FreeCam
             if (freeCams[rcam.cameraNumber].enabled)
                 if (selectButtonDown())
                     freeCams[rcam.cameraNumber].mousePressed = true;
+            for (int i = 0; i < freeCams.Length; i++)
+                freeCams[i].RawUpdate();
         }
     }
 }

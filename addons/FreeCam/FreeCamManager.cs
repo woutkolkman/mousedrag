@@ -39,7 +39,7 @@ namespace FreeCam
         //toggle FreeCam for the RoomCamera the mouse is currently hovering over
         public static void Toggle(RainWorldGame game)
         {
-            RoomCamera rcam = Tools.MouseCamera(game);
+            RoomCamera rcam = Cursor.MouseCamera(game);
             if (rcam == null)
                 return;
             if (!(rcam.cameraNumber < freeCams.Length)) {
@@ -54,7 +54,7 @@ namespace FreeCam
         //return if FreeCam is enabled for the RoomCamera the mouse is currently hovering over
         public static bool IsEnabled(RainWorldGame game)
         {
-            RoomCamera rcam = Tools.MouseCamera(game);
+            RoomCamera rcam = Cursor.MouseCamera(game);
             if (rcam == null)
                 return false;
             if (!(rcam.cameraNumber < freeCams.Length)) {
@@ -100,7 +100,7 @@ namespace FreeCam
         //manage pipe selection for FreeCams only for the RoomCamera the mouse is currently hovering over
         public static void RawUpdate(RainWorldGame game)
         {
-            RoomCamera rcam = Tools.MouseCamera(game);
+            RoomCamera rcam = Cursor.MouseCamera(game);
             if (rcam == null || rcam.cameraNumber >= freeCams.Length)
                 return;
             if (freeCams[rcam.cameraNumber].enabled)

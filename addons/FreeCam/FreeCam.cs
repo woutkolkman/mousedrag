@@ -226,7 +226,7 @@ namespace FreeCam
                 game == null)
                 return;
             Room room = rcam.room;
-            Vector2 mousePos = Tools.MousePos(game);
+            Vector2 mousePos = Cursor.MousePos(game);
 
             //get shortcut which was clicked on
             ShortcutData scd = room.shortcutData(mousePos);

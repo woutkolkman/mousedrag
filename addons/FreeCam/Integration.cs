@@ -150,19 +150,6 @@ namespace FreeCam
         }
 
 
-        //use in try/catch so missing assembly does not crash the game
-        public static void SBCameraScrollPreparePos(RoomCamera rcam, int loadingCameraPos)
-        {
-            var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(rcam);
-            if (af == null) {
-                if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("Integration.SBCameraScrollPreparePos, unable to set pre_loaded_camera_index");
-                return;
-            }
-            af.pre_loaded_camera_index = loadingCameraPos;
-        }
-
-
         //===================================================== Integration Hooks =====================================================
         public static class Hooks {
             static IDetour sBCameraScrollUpdateOnScreenPosition;
@@ -241,7 +228,7 @@ namespace FreeCam
             [MethodImpl(MethodImplOptions.NoInlining)]
             public static void SBCameraScrollRoomCameraMod_UpdateOnScreenPosition_RuntimeDetour(Action<RoomCamera> orig, RoomCamera room_camera)
             {
-                //NOTE, not calling Orig is not preferred, but SBCameraScroll does it a lot by itself so it should be fine here
+                //NOTE, not calling orig is not preferred, but SBCameraScroll does it a lot by itself so it should be fine here
                 if (FreeCamManager.IsEnabled(room_camera?.cameraNumber ?? -1))
                     return;
                 orig(room_camera);

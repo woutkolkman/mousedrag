@@ -93,64 +93,6 @@ namespace FreeCam
         }
 
 
-        //easier to move screen at an angle
-        private Vector2 MouseDirectionMethodB(float minDistFromEdge)
-        {
-            Vector2 mouse = Futile.mousePosition;
-            Vector2 centerOfScreen = rcam.sSize / 2f;
-
-            Vector2 direction = (mouse - centerOfScreen).normalized;
-            float distFromEdgeX = Mathf.Abs(Mathf.Abs(mouse.x - centerOfScreen.x) - centerOfScreen.x);
-            float distFromEdgeY = Mathf.Abs(Mathf.Abs(mouse.y - centerOfScreen.y) - centerOfScreen.y);
-            distFromEdgeX = -distFromEdgeX + minDistFromEdge;
-            distFromEdgeY = -distFromEdgeY + minDistFromEdge;
-            float speed = Mathf.Max(distFromEdgeX, distFromEdgeY) / minDistFromEdge;
-            speed = Mathf.Max(speed, 0f);
-
-            return direction * speed;
-        }
-
-
-        //easier to move screen in a straight line
-        private Vector2 MouseDirectionMethodA(float minDistFromEdge)
-        {
-            Vector2 mouse = Futile.mousePosition;
-            Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
-
-            if (mouse.x < rcam.sSize.x / 2f) {
-                //mouse on left of screen
-                if (mouse.x >= 0f)
-                    distFromEdge.x = -mouse.x;
-            } else {
-                //mouse on right of screen
-                if (mouse.x <= rcam.sSize.x)
-                    distFromEdge.x = Mathf.Abs(mouse.x - rcam.sSize.x);
-            }
-
-            if (mouse.y < rcam.sSize.y / 2f) {
-                //mouse on bottom of screen
-                if (mouse.y >= 0f)
-                    distFromEdge.y = -mouse.y;
-            } else {
-                //mouse on top of screen
-                if (mouse.y <= rcam.sSize.y)
-                    distFromEdge.y = Mathf.Abs(mouse.y - rcam.sSize.y);
-            }
-
-            //mouse not within screen
-            if (distFromEdge.x == float.MaxValue || distFromEdge.y == float.MaxValue)
-                return Vector2.zero;
-
-            //calculate movement speed based on mouse distance from edge
-            Vector2 direction = new Vector2(
-                distFromEdge.x > 0f ? -Mathf.Min(0f, distFromEdge.x - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.x + minDistFromEdge),
-                distFromEdge.y > 0f ? -Mathf.Min(0f, distFromEdge.y - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.y + minDistFromEdge)
-            ) / minDistFromEdge;
-
-            return direction;
-        }
-
-
         //in void sea mode there are no predefined camera positions
         private void VoidSeaMode()
         {
@@ -171,21 +113,8 @@ namespace FreeCam
             if (rcam?.room == null || game == null)
                 return;
 
-            Vector2 mouse = Futile.mousePosition;
             float minDistFromEdge = 50f;
-
-            Vector2 targetDir = new Vector2();
-            if (mouse.x <= minDistFromEdge) //left
-                targetDir.x = -1.0f;
-            if (mouse.x >= rcam.sSize.x - minDistFromEdge) //right
-                targetDir.x = 1.0f;
-            if (mouse.y <= minDistFromEdge) //bottom
-                targetDir.y = -1.0f;
-            if (mouse.y >= rcam.sSize.y - minDistFromEdge) //top
-                targetDir.y = 1.0f;
-
-            //lean camera feedback for user
-            rcam.leanPos = targetDir;
+            Vector2 targetDir = MouseDirectionMethodC(minDistFromEdge);
 
             if (rcam.voidSeaMode) {
                 VoidSeaMode();
@@ -358,6 +287,83 @@ namespace FreeCam
             rcam.MoveCamera(loadingRoom, camPos);
 
             loadingRoom = null;
+        }
+
+
+        //easier to move screen in a straight line
+        private Vector2 MouseDirectionMethodA(float minDistFromEdge)
+        {
+            Vector2 mouse = Futile.mousePosition;
+            Vector2 distFromEdge = new Vector2(float.MaxValue, float.MaxValue);
+
+            if (mouse.x < rcam.sSize.x / 2f) {
+                //mouse on left of screen
+                if (mouse.x >= 0f)
+                    distFromEdge.x = -mouse.x;
+            } else {
+                //mouse on right of screen
+                if (mouse.x <= rcam.sSize.x)
+                    distFromEdge.x = Mathf.Abs(mouse.x - rcam.sSize.x);
+            }
+
+            if (mouse.y < rcam.sSize.y / 2f) {
+                //mouse on bottom of screen
+                if (mouse.y >= 0f)
+                    distFromEdge.y = -mouse.y;
+            } else {
+                //mouse on top of screen
+                if (mouse.y <= rcam.sSize.y)
+                    distFromEdge.y = Mathf.Abs(mouse.y - rcam.sSize.y);
+            }
+
+            //mouse not within screen
+            if (distFromEdge.x == float.MaxValue || distFromEdge.y == float.MaxValue)
+                return Vector2.zero;
+
+            //calculate movement speed based on mouse distance from edge
+            Vector2 direction = new Vector2(
+                distFromEdge.x > 0f ? -Mathf.Min(0f, distFromEdge.x - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.x + minDistFromEdge),
+                distFromEdge.y > 0f ? -Mathf.Min(0f, distFromEdge.y - minDistFromEdge) : -Mathf.Max(0f, distFromEdge.y + minDistFromEdge)
+            ) / minDistFromEdge;
+
+            return direction;
+        }
+
+
+        //easier to move screen at an angle
+        private Vector2 MouseDirectionMethodB(float minDistFromEdge)
+        {
+            Vector2 mouse = Futile.mousePosition;
+            Vector2 centerOfScreen = rcam.sSize / 2f;
+
+            Vector2 direction = (mouse - centerOfScreen).normalized;
+            float distFromEdgeX = Mathf.Abs(Mathf.Abs(mouse.x - centerOfScreen.x) - centerOfScreen.x);
+            float distFromEdgeY = Mathf.Abs(Mathf.Abs(mouse.y - centerOfScreen.y) - centerOfScreen.y);
+            distFromEdgeX = -distFromEdgeX + minDistFromEdge;
+            distFromEdgeY = -distFromEdgeY + minDistFromEdge;
+            float speed = Mathf.Max(distFromEdgeX, distFromEdgeY) / minDistFromEdge;
+            speed = Mathf.Max(speed, 0f);
+
+            return direction * speed;
+        }
+
+
+        //digital direction, no gradient
+        private Vector2 MouseDirectionMethodC(float minDistFromEdge)
+        {
+            Vector2 mouse = Futile.mousePosition;
+            Vector2 ret = new Vector2();
+
+            if (mouse.x <= minDistFromEdge) //left
+                ret.x = -1.0f;
+            if (mouse.x >= rcam.sSize.x - minDistFromEdge) //right
+                ret.x = 1.0f;
+            if (mouse.y <= minDistFromEdge) //bottom
+                ret.y = -1.0f;
+            if (mouse.y >= rcam.sSize.y - minDistFromEdge) //top
+                ret.y = 1.0f;
+
+            return ret;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace MouseDrag
 
         public static Configurable<KeyCode> destroyRoomDeadCreaturesKey, lockKey;
 
-        public static Configurable<KeyCode> gravityRoomKey, infoKey;
+        public static Configurable<KeyCode> gravityRoomKey, infoKey, loadRegionRoomsKey;
 
         public static Configurable<bool> pauseOneMenu, pauseRoomCreaturesMenu, unpauseAllMenu;
         public static Configurable<bool> pauseAllCreaturesMenu, pauseAllItemsMenu;
@@ -168,6 +168,7 @@ namespace MouseDrag
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.", null, "", "Gravity"));
             infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object which you're currently dragging, or the room if nothing is being dragged.", null, "", "Info"));
+            loadRegionRoomsKey = config.Bind(nameof(loadRegionRoomsKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player\nwill still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.", null, "", "Activate rooms\nin region"));
 
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             pauseRoomCreaturesMenu = config.Bind(nameof(pauseRoomCreaturesMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -418,6 +419,7 @@ namespace MouseDrag
             AddKeyBinder(infoKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragInfo");
             AddCheckbox(infoMenu, new Vector2(x - 56f, y + 3f));
+            AddKeyBinder(loadRegionRoomsKey, new Vector2(x, y -= sepr));
 
             /**************** Tool Settings ****************/
             curTab++;

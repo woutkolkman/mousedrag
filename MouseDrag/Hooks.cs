@@ -276,6 +276,9 @@ namespace MouseDrag
                     Info.DumpInfo(Drag.MouseCamera(self)?.room);
                 }
             }
+
+            if (Options.loadRegionRoomsKey?.Value != null && Input.GetKeyDown(Options.loadRegionRoomsKey.Value))
+                Special.ActivateRegionRooms(self);
         }
 
 

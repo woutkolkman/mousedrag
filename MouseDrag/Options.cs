@@ -254,24 +254,24 @@ namespace MouseDrag
             AddComboBox(activateType, new Vector2(190f, 503f), Enum.GetNames(typeof(ActivateTypes)), alH: FLabelAlignment.Left, width: 120f);
             AddKeyBinder(activateKey, new Vector2(330f, 500f));
 
-            AddCheckbox(deactivateEveryRestart, new Vector2(x, y -= sepr));
-            AddCheckbox(disVnlMouseDragger, new Vector2(x, y -= sepr));
-            AddCheckbox(logDebug, new Vector2(x, y -= sepr));
-            AddCheckbox(dragLMB, new Vector2(x, y -= sepr));
-            AddCheckbox(dragMMB, new Vector2(x, y -= sepr));
+            AddCheckBox(deactivateEveryRestart, new Vector2(x, y -= sepr));
+            AddCheckBox(disVnlMouseDragger, new Vector2(x, y -= sepr));
+            AddCheckBox(logDebug, new Vector2(x, y -= sepr));
+            AddCheckBox(dragLMB, new Vector2(x, y -= sepr));
+            AddCheckBox(dragMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(drag, new Vector2(x, y -= sepr + 5f));
-            AddCheckbox(disVnlCursor, new Vector2(x, y -= sepr));
+            AddCheckBox(disVnlCursor, new Vector2(x, y -= sepr));
             AddComboBox(winCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
 
             x += 250f;
             y = 460f;
-            AddCheckbox(throwWithMouse, new Vector2(x, y -= sepr));
-            AddCheckbox(throwAsPlayer, new Vector2(x, y -= sepr));
+            AddCheckBox(throwWithMouse, new Vector2(x, y -= sepr));
+            AddCheckBox(throwAsPlayer, new Vector2(x, y -= sepr));
             AddTextBox(throwThreshold, new Vector2(x, y -= sepr), 40f);
             AddTextBox(throwForce, new Vector2(x, y -= sepr), 40f);
             AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr + 5f));
-            AddCheckbox(velocityDrag, new Vector2(x, y -= sepr));
-            AddCheckbox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
+            AddCheckBox(velocityDrag, new Vector2(x, y -= sepr));
+            AddCheckBox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
             AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
             AddKeyBinder(selectItems, new Vector2(x, y -= sepr + 5f));
 
@@ -280,28 +280,28 @@ namespace MouseDrag
             x = 90f;
             y = 595f;
             sepr = 40f;
-            AddCheckbox(menuOpenRMB, new Vector2(x, y -= sepr));
-            AddCheckbox(menuOpenMMB, new Vector2(x, y -= sepr));
+            AddCheckBox(menuOpenRMB, new Vector2(x, y -= sepr));
+            AddCheckBox(menuOpenMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(menuOpen, new Vector2(x, y -= sepr + 5f));
-            AddCheckbox(menuSelectLMB, new Vector2(x, y -= sepr));
-            AddCheckbox(menuSelectMMB, new Vector2(x, y -= sepr));
+            AddCheckBox(menuSelectLMB, new Vector2(x, y -= sepr));
+            AddCheckBox(menuSelectMMB, new Vector2(x, y -= sepr));
             AddKeyBinder(menuSelect, new Vector2(x, y -= sepr + 5f));
 
             y = -19f; //from bottom up
-            AddCheckbox(beastMasterIntegration, new Vector2(x, y += sepr));
-            AddCheckbox(splitScreenCoopIntegration, new Vector2(x, y += sepr));
+            AddCheckBox(beastMasterIntegration, new Vector2(x, y += sepr));
+            AddCheckBox(splitScreenCoopIntegration, new Vector2(x, y += sepr));
 
             x += 250f;
             y = 595f;
-            AddCheckbox(showLabel, new Vector2(x, y -= sepr));
-            AddCheckbox(showTooltips, new Vector2(x, y -= sepr));
+            AddCheckBox(showLabel, new Vector2(x, y -= sepr));
+            AddCheckBox(showTooltips, new Vector2(x, y -= sepr));
             AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
-            AddCheckbox(menuFollows, new Vector2(x, y -= sepr));
-            AddCheckbox(menuMoveHover, new Vector2(x, y -= sepr));
+            AddCheckBox(menuFollows, new Vector2(x, y -= sepr));
+            AddCheckBox(menuMoveHover, new Vector2(x, y -= sepr));
 
             y = -19f; //from bottom up
-            AddCheckbox(sBCameraScrollIntegration, new Vector2(x, y += sepr));
-            AddCheckbox(regionKitIntegration, new Vector2(x, y += sepr));
+            AddCheckBox(sBCameraScrollIntegration, new Vector2(x, y += sepr));
+            AddCheckBox(regionKitIntegration, new Vector2(x, y += sepr));
 
             /**************** Tools ****************/
             curTab++;
@@ -310,94 +310,94 @@ namespace MouseDrag
             sepr = 42f;
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
-            AddCheckbox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(pauseRoomCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseCreatures");
-            AddCheckbox(pauseRoomCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(pauseRoomCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPlayAll");
-            AddCheckbox(unpauseAllMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(unpauseAllMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
-            AddCheckbox(pauseAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(pauseAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(pauseAllItemsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
-            AddCheckbox(pauseAllItemsMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(pauseAllItemsMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(killOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKill");
-            AddCheckbox(killOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(killOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(killRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKillCreatures");
-            AddCheckbox(killRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(killRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragRevive");
-            AddCheckbox(reviveOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(reviveOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(reviveRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragReviveCreatures");
-            AddCheckbox(reviveRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(reviveRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDuplicate");
-            AddCheckbox(duplicateOneMenu, new Vector2(x - 56f, y + 3f));
-            AddCheckbox(clipboardMenu, new Vector2(x - 56f, (y -= sepr) + 3f));
+            AddCheckBox(duplicateOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(clipboardMenu, new Vector2(x - 56f, (y -= sepr) + 3f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
             AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
-            AddCheckbox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
+            AddCheckBox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
             AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
-            AddCheckbox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tpItemsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
-            AddCheckbox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(controlKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragControl");
-            AddCheckbox(controlMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(controlMenu, new Vector2(x - 56f, y + 3f));
 
             x += 300f;
             y = 600f;
             AddKeyBinder(forcefieldKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragForceFieldOn");
-            AddCheckbox(forcefieldMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(forcefieldMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tameOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
-            AddCheckbox(tameOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(tameOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(tameRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeartCreatures");
-            AddCheckbox(tameRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(tameRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(clearRelOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnheart");
-            AddCheckbox(clearRelOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(clearRelOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(clearRelRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnheartCreatures");
-            AddCheckbox(clearRelRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(clearRelRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(stunOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStun");
-            AddCheckbox(stunOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(stunOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(stunRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStunAll");
-            AddCheckbox(stunRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(stunRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(unstunAllKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnstunAll");
-            AddCheckbox(unstunAllMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(unstunAllMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(stunAllKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStunGlobal");
-            AddCheckbox(stunAllMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(stunAllMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroy");
-            AddCheckbox(destroyOneMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(destroyOneMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyRoomCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 9f), "mousedragDestroyCreatures");
-            AddCheckbox(destroyRoomCreaturesMenu, new Vector2(x - 56f, y + 6f));
+            AddCheckBox(destroyRoomCreaturesMenu, new Vector2(x - 56f, y + 6f));
             AddIcon(new Vector2(x - 25f, y + (6f - sepr / 2f)), "mousedragDestroyItems");
-            AddCheckbox(destroyRoomItemsMenu, new Vector2(x - 56f, y + (3f - sepr / 2f)));
+            AddCheckBox(destroyRoomItemsMenu, new Vector2(x - 56f, y + (3f - sepr / 2f)));
             AddIcon(new Vector2(x - 25f, y + (3f - sepr)), "mousedragDestroyAll");
-            AddCheckbox(destroyRoomObjectsMenu, new Vector2(x - 56f, y - sepr));
+            AddCheckBox(destroyRoomObjectsMenu, new Vector2(x - 56f, y - sepr));
             AddKeyBinder(destroyRoomItemsKey, new Vector2(x, y -= sepr));
             AddKeyBinder(destroyRegionCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
-            AddCheckbox(destroyRegionCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(destroyRegionCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(destroyRegionItemsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
-            AddCheckbox(destroyRegionItemsMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(destroyRegionItemsMenu, new Vector2(x - 56f, y + 3f));
 
             /**************** Tools ****************/
             curTab++;
@@ -406,19 +406,19 @@ namespace MouseDrag
             sepr = 42f;
             AddKeyBinder(destroyRoomDeadCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyDeadCreatures");
-            AddCheckbox(destroyRoomDeadCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(destroyRoomDeadCreaturesMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(lockKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragLocked");
-            AddCheckbox(lockMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(lockMenu, new Vector2(x - 56f, y + 3f));
 
             x += 300f;
             y = 600f;
             AddKeyBinder(gravityRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragGravityOff");
-            AddCheckbox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(infoKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragInfo");
-            AddCheckbox(infoMenu, new Vector2(x - 56f, y + 3f));
+            AddCheckBox(infoMenu, new Vector2(x - 56f, y + 3f));
             AddKeyBinder(loadRegionRoomsKey, new Vector2(x, y -= sepr));
 
             /**************** Tool Settings ****************/
@@ -426,26 +426,26 @@ namespace MouseDrag
             x = 90f;
             y = 595f;
             sepr = 40f;
-            AddCheckbox(releaseGraspsPaused, new Vector2(x, y -= sepr));
-            AddCheckbox(lineageKill, new Vector2(x, y -= sepr));
-            AddCheckbox(killReleasesMask, new Vector2(x, y -= sepr));
-            AddCheckbox(healLimbs, new Vector2(x, y -= sepr));
-            AddCheckbox(adjustableLocks, new Vector2(x, y -= sepr));
-            AddCheckbox(forcefieldImmunityPlayers, new Vector2(x, y -= sepr));
-            AddCheckbox(forcefieldImmunityItems, new Vector2(x, y -= sepr));
+            AddCheckBox(releaseGraspsPaused, new Vector2(x, y -= sepr));
+            AddCheckBox(lineageKill, new Vector2(x, y -= sepr));
+            AddCheckBox(killReleasesMask, new Vector2(x, y -= sepr));
+            AddCheckBox(healLimbs, new Vector2(x, y -= sepr));
+            AddCheckBox(adjustableLocks, new Vector2(x, y -= sepr));
+            AddCheckBox(forcefieldImmunityPlayers, new Vector2(x, y -= sepr));
+            AddCheckBox(forcefieldImmunityItems, new Vector2(x, y -= sepr));
             AddTextBox(forcefieldRadius, new Vector2(x, y -= sepr), 50f);
             AddTextBox(infoDepth, new Vector2(x, y -= sepr), 40f);
 
             x += 250f;
             y = 595f;
-            AddCheckbox(copyID, new Vector2(x, y -= sepr));
-            AddCheckbox(exitGameOverMode, new Vector2(x, y -= sepr));
-            AddCheckbox(exceptSlugNPC, new Vector2(x, y -= sepr));
-            AddCheckbox(tameIncreasesRep, new Vector2(x, y -= sepr));
-            AddCheckbox(controlChangesCamera, new Vector2(x, y -= sepr));
-            AddCheckbox(controlOnlyOne, new Vector2(x, y -= sepr));
-            AddCheckbox(controlNoInput, new Vector2(x, y -= sepr));
-            AddCheckbox(controlStunsPlayers, new Vector2(x, y -= sepr));
+            AddCheckBox(copyID, new Vector2(x, y -= sepr));
+            AddCheckBox(exitGameOverMode, new Vector2(x, y -= sepr));
+            AddCheckBox(exceptSlugNPC, new Vector2(x, y -= sepr));
+            AddCheckBox(tameIncreasesRep, new Vector2(x, y -= sepr));
+            AddCheckBox(controlChangesCamera, new Vector2(x, y -= sepr));
+            AddCheckBox(controlOnlyOne, new Vector2(x, y -= sepr));
+            AddCheckBox(controlNoInput, new Vector2(x, y -= sepr));
+            AddCheckBox(controlStunsPlayers, new Vector2(x, y -= sepr));
         }
 
 
@@ -471,7 +471,7 @@ namespace MouseDrag
         }
 
 
-        private void AddCheckbox(Configurable<bool> option, Vector2 pos, Color? c = null)
+        private void AddCheckBox(Configurable<bool> option, Vector2 pos, Color? c = null)
         {
             if (c == null)
                 c = Menu.MenuColorEffect.rgbMediumGrey;

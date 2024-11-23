@@ -16,8 +16,8 @@ namespace MouseDrag
         public static int tempStopTicks = 0; //temporarily deactivate drag
         public static int playerNr = 0; //last dragged or selected player
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
-        public static bool dragButtonPressed(bool noRMB = false) => (
-            (Input.GetMouseButton(0) && Options.dragLMB?.Value == true) ||
+        public static bool dragButtonPressed(bool noLMB = false) => (
+            (Input.GetMouseButton(0) && Options.dragLMB?.Value == true && !noLMB) ||
             (Input.GetMouseButton(2) && Options.dragMMB?.Value == true) ||
             (Options.drag?.Value != null && Input.GetKey(Options.drag.Value))
         );
@@ -80,8 +80,11 @@ namespace MouseDrag
             if (room?.physicalObjects == null)
                 stop = true;
 
+            //dragging disabled when dev tools menu is opened, because it interferes with dragging sliders and decals
+            bool devToolsOpened = game.devUI != null;
+
             //drag button not pressed
-            if (!dragButtonPressed()) {
+            if (!dragButtonPressed(noLMB: devToolsOpened)) {
                 if (Options.throwWithMouse?.Value != false)
                     TryThrow(game, dragChunk?.owner);
                 stop = true;

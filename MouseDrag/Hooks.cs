@@ -93,6 +93,15 @@ namespace MouseDrag
 
             //hook gets called (for this mod) only when not using Rain Reloader
             Integration.RefreshActiveMods();
+
+            if (Integration.devConsoleEnabled) {
+                try {
+                    Integration.DevConsoleRegisterCommands();
+                } catch (System.Exception ex) {
+                    Plugin.Logger.LogError("RainWorldPostModsInitHook exception during registration of commands Dev Console, integration is now disabled: " + ex?.ToString());
+                    Integration.devConsoleEnabled = false;
+                }
+            }
         }
 
 

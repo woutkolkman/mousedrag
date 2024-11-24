@@ -111,7 +111,7 @@ namespace MouseDrag
         public static void DevConsoleRegisterCommands()
         {
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("DevConsoleRegisterCommands, register commands");
+                Plugin.Logger.LogDebug("DevConsoleRegisterCommands, finished registration of commands");
         }
     }
 }

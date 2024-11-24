@@ -54,11 +54,5 @@ namespace MouseDrag
 
             Plugin.Logger.LogInfo("OnDisable called");
         }
-
-
-        public void OnLoad()
-        {
-            Plugin.Logger.LogInfo("OnLoad called");
-        }
     }
 }

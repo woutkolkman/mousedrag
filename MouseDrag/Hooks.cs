@@ -163,7 +163,7 @@ namespace MouseDrag
                 Pause.TogglePauseObject(Drag.dragChunk?.owner);
 
             if (Options.pauseRoomCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseRoomCreaturesKey.Value))
-                Pause.PauseObjects(Drag.MouseCamera(self)?.room, true);
+                Pause.PauseObjects(Drag.MouseCamera(self)?.room, true, false);
 
             if (Options.pauseAllCreaturesKey?.Value != null && Input.GetKeyDown(Options.pauseAllCreaturesKey.Value)) {
                 Pause.pauseAllCreatures = !Pause.pauseAllCreatures;

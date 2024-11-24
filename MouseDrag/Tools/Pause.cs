@@ -80,18 +80,38 @@ namespace MouseDrag
         }
 
 
-        public static void PauseObjects(Room room, bool onlyCreatures)
+        public static void PauseObjects(Room room, bool creatures, bool items)
         {
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("PauseObjects, pause " + (onlyCreatures ? "creatures" : "objects") + " in room");
-            for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
-                    if ((room.physicalObjects[i][j] is Creature || !onlyCreatures))
-                        if (room.physicalObjects[i][j]?.abstractPhysicalObject != null && //null safety check
-                            !(room.physicalObjects[i][j] is Player && //don't pause when: creature is player and player is not SlugNPC (optional)
-                            (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
-                            if (!pausedObjects.Contains(room.physicalObjects[i][j].abstractPhysicalObject))
-                                pausedObjects.Add(room.physicalObjects[i][j].abstractPhysicalObject);
+            if (Options.logDebug?.Value != false) {
+                string logMsg = "PauseObjects, pause";
+                if (creatures && !items)
+                    logMsg += " creatures";
+                if (!creatures && items)
+                    logMsg += " items";
+                if (creatures && items)
+                    logMsg += " objects";
+                if (!creatures && !items)
+                    logMsg += " none";
+                logMsg += " in room";
+                Plugin.Logger.LogDebug(logMsg);
+            }
+            for (int i = 0; i < room?.physicalObjects?.Length; i++) {
+                for (int j = 0; j < room.physicalObjects[i].Count; j++) {
+                    if (room.physicalObjects[i][j] is Creature) {
+                        if (!creatures)
+                            continue;
+                    } else {
+                        if (!items)
+                            continue;
+                    }
+                    if (room.physicalObjects[i][j]?.abstractPhysicalObject == null) //null safety check
+                        continue;
+                    if (!(room.physicalObjects[i][j] is Player && //don't pause when: creature is player and player is not SlugNPC (optional)
+                        (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
+                        if (!pausedObjects.Contains(room.physicalObjects[i][j].abstractPhysicalObject))
+                            pausedObjects.Add(room.physicalObjects[i][j].abstractPhysicalObject);
+                }
+            }
         }
     }
 }

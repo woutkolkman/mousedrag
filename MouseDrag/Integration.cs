@@ -110,6 +110,48 @@ namespace MouseDrag
         //use in try/catch so missing assembly does not crash the game
         public static void DevConsoleRegisterCommands()
         {
+            new DevConsole.Commands.CommandBuilder("md_pause_all")
+            .Help("md_pause_all [position] [types]")
+            .RunGame((game, args) => {
+                if (args?.Length != 2) {
+                    DevConsole.GameConsole.WriteLine("Expected 2 arguments");
+                    return;
+                }
+                bool creatures = args[1] == "creatures" || args[1] == "objects";
+                bool items = args[1] == "items" || args[1] == "objects";
+                if (args[0] == "room") {
+                    Pause.PauseObjects(Drag.MouseCamera(game)?.room, creatures, items);
+                } else if (args[0] == "any") {
+                    if (creatures)
+                        Pause.pauseAllCreatures = true;
+                    if (items)
+                        Pause.pauseAllItems = true;
+                } else {
+                    DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                }
+            })
+            .AutoComplete(args => {
+                if (args.Length == 0)
+                    return new string[] { "room", "any" };
+                if (args.Length == 1)
+                    return new string[] { "creatures", "items", "objects" };
+                return null;
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_unpause_all")
+            .RunGame((game, args) => {
+                Pause.UnpauseAll();
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_load_region_rooms")
+            .RunGame((game, args) => {
+                DevConsole.GameConsole.WriteLine("Activating all rooms in current region. This might take a while.");
+                Special.ActivateRegionRooms(game);
+            })
+            .Register();
+
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("DevConsoleRegisterCommands, finished registration of commands");
         }

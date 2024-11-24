@@ -204,7 +204,7 @@ namespace MouseDrag
                 //menu on background
                 switch (slot.name)
                 {
-                    case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true); break;
+                    case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true, false); break;
                     case "mousedragPauseGlobal":
                     case "mousedragPlayGlobal":
                         if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllItemsMenu?.Value != false) {

@@ -32,7 +32,7 @@ namespace MouseDrag
         public static Configurable<bool> showLabel, showTooltips;
         public static Configurable<int> maxOnPage;
         public static Configurable<bool> menuFollows, menuMoveHover;
-        public static Configurable<bool> sBCameraScrollIntegration, regionKitIntegration;
+        public static Configurable<bool> sBCameraScrollIntegration, regionKitIntegration, devConsoleIntegration;
 
         public static Configurable<KeyCode> pauseOneKey, pauseRoomCreaturesKey, unpauseAllKey;
         public static Configurable<KeyCode> pauseAllCreaturesKey, pauseAllItemsKey;
@@ -133,6 +133,7 @@ namespace MouseDrag
             menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
             sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
             regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
+            devConsoleIntegration = config.Bind(nameof(devConsoleIntegration), defaultValue: true, new ConfigurableInfo("If Dev Console is enabled, additional commands are available via the console.", null, "", "Dev Console integration"));
 
             pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object which you're currently dragging.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
@@ -302,6 +303,7 @@ namespace MouseDrag
             y = -19f; //from bottom up
             AddCheckBox(sBCameraScrollIntegration, new Vector2(x, y += sepr));
             AddCheckBox(regionKitIntegration, new Vector2(x, y += sepr));
+            AddCheckBox(devConsoleIntegration, new Vector2(x, y += sepr));
 
             /**************** Tools ****************/
             curTab++;

@@ -12,6 +12,7 @@ Add references to files as described in the guide above:
 - [BeastMaster.dll](https://github.com/NoirCatto/BeastMaster)
 - [SplitScreen Co-op.dll](https://github.com/henpemaz/RemixMods)
 - [SBCameraScroll.dll](https://github.com/SchuhBaum/SBCameraScroll)
+- [DevConsole.dll](https://github.com/SlimeCubed/DevConsole)
 - BepInEx.dll
 - HOOKS-Assembly-CSharp.dll
 - Mono.Cecil.dll

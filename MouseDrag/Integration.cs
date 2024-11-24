@@ -8,6 +8,7 @@ namespace MouseDrag
         public static bool splitScreenCoopEnabled = false;
         public static bool sBCameraScrollEnabled = false;
         public static bool regionKitEnabled = false;
+        public static bool devConsoleEnabled = false;
 
 
         public static void RefreshActiveMods()
@@ -22,6 +23,8 @@ namespace MouseDrag
                     sBCameraScrollEnabled = Options.sBCameraScrollIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "regionkit")
                     regionKitEnabled = Options.regionKitIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "slime-cubed.devconsole")
+                    devConsoleEnabled = Options.devConsoleIntegration?.Value ?? true;
             }
         }
 
@@ -101,6 +104,14 @@ namespace MouseDrag
 
             //return true if mouse is inside menu + extra depth around it
             return magnitude > 50f && magnitude < (float)(50 + 50 * (2 + BeastMaster.BeastMaster.BMSInstance.currentDepth));
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static void DevConsoleRegisterCommands()
+        {
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("DevConsoleRegisterCommands, register commands");
         }
     }
 }

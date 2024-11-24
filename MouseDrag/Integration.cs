@@ -110,6 +110,36 @@ namespace MouseDrag
         //use in try/catch so missing assembly does not crash the game
         public static void DevConsoleRegisterCommands()
         {
+            new DevConsole.Commands.CommandBuilder("md_pause")
+            .Help("md_pause [selector] [state]")
+            .RunGame((game, args) => {
+                if (args?.Length != 2) {
+                    DevConsole.GameConsole.WriteLine("Expected 2 arguments");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                foreach (var apo in list) {
+                    if (args[1] == "toggle") {
+                        Pause.TogglePauseObject(apo);
+                    } else if (args[1] == "on") {
+                        if (!Pause.IsObjectPaused(apo))
+                            Pause.TogglePauseObject(apo);
+                    } else if (args[1] == "off") {
+                        if (Pause.IsObjectPaused(apo))
+                            Pause.TogglePauseObject(apo);
+                    } else {
+                        DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                        break;
+                    }
+                }
+            })
+            .AutoComplete(args => {
+                if (args.Length == 0) return DevConsole.Selection.Autocomplete;
+                if (args.Length == 1) return new string[] { "on", "off", "toggle" };
+                return null;
+            })
+            .Register();
+
             new DevConsole.Commands.CommandBuilder("md_pause_all")
             .Help("md_pause_all [position] [types]")
             .RunGame((game, args) => {
@@ -131,10 +161,8 @@ namespace MouseDrag
                 }
             })
             .AutoComplete(args => {
-                if (args.Length == 0)
-                    return new string[] { "room", "any" };
-                if (args.Length == 1)
-                    return new string[] { "creatures", "items", "objects" };
+                if (args.Length == 0) return new string[] { "room", "any" };
+                if (args.Length == 1) return new string[] { "creatures", "items", "objects" };
                 return null;
             })
             .Register();

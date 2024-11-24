@@ -58,10 +58,14 @@ namespace MouseDrag
 
         public static void TogglePauseObject(PhysicalObject obj)
         {
-            if (obj?.abstractPhysicalObject == null)
-                return;
-            AbstractPhysicalObject c = obj.abstractPhysicalObject;
+            TogglePauseObject(obj?.abstractPhysicalObject);
+        }
 
+
+        public static void TogglePauseObject(AbstractPhysicalObject c)
+        {
+            if (c == null)
+                return;
             if (pausedObjects.Contains(c)) {
                 pausedObjects.Remove(c);
             } else {

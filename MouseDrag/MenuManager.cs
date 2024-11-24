@@ -97,7 +97,12 @@ namespace MouseDrag
             } else if (lowPrioText?.Length > 0) {
                 menu.labelText = lowPrioText;
             } else if (menu.followChunk?.owner != null) {
-                menu.labelText = menu.followChunk?.owner.ToString();
+                menu.labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
+                var apo = menu.followChunk.owner.abstractPhysicalObject;
+                if (apo is AbstractCreature)
+                    menu.labelText = (apo as AbstractCreature).creatureTemplate?.name + " " + apo.ID.ToString();
+                if (apo != null && !(apo is AbstractCreature))
+                    menu.labelText = apo.type?.ToString() + " " + apo.ID.ToString();
             } else if (!string.IsNullOrEmpty(menu.roomName)) {
                 menu.labelText = menu.roomName;
             } else {

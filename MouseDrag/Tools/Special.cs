@@ -8,16 +8,22 @@
             if (!(self?.world?.abstractRooms?.Length > 0))
                 return;
 
+            int newR = 0;
             int totR = 0;
+
             foreach (AbstractRoom ar in self.world.abstractRooms) {
-                if (ar == null || ar.realizedRoom != null)
+                if (ar == null) //safety
+                    continue;
+                totR++;
+                if (ar.realizedRoom != null) //already activated
                     continue;
                 self.world.ActivateRoom(ar);
-                totR++;
+                newR++;
             }
 
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("ActivateRegionRooms, region: " + self.world.name + ", total activated rooms: " + totR);
+                Plugin.Logger.LogDebug("ActivateRegionRooms, region: " + self.world.name + 
+                    ", newly activated room count: " + newR + ", total room count: " + totR);
         }
     }
 }

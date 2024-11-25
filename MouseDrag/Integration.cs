@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -111,7 +112,7 @@ namespace MouseDrag
         public static void DevConsoleRegisterCommands()
         {
             new DevConsole.Commands.CommandBuilder("md_pause")
-            .Help("md_pause [selector] [state]")
+            .Help("md_pause [selector] [action]")
             .RunGame((game, args) => {
                 if (args?.Length != 2) {
                     DevConsole.GameConsole.WriteLine("Expected 2 arguments");
@@ -171,6 +172,62 @@ namespace MouseDrag
             .RunGame((game, args) => {
                 Pause.UnpauseAll();
             })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_duplicate")
+            .Help("md_duplicate [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Duplicate.DuplicateObject(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_clipboard_cut")
+            .Help("md_clipboard_cut [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Clipboard.CutObject(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_clipboard_copy")
+            .Help("md_clipboard_copy [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Clipboard.CopyObject(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_clipboard_paste")
+            .Help("md_clipboard_paste [pos]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                if (!DevConsole.Positioning.TryGetPosition(game, args[0], out var pos) || pos.Room?.realizedRoom == null)
+                    return;
+                Clipboard.PasteObject(game, pos.Room.realizedRoom, pos.Room.realizedRoom.GetWorldCoordinate(pos.Pos));
+            })
+            .AutoComplete(new string[][]{ DevConsole.Positioning.Autocomplete })
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_load_region_rooms")

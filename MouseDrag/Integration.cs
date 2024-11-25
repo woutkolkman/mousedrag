@@ -230,6 +230,38 @@ namespace MouseDrag
             .AutoComplete(new string[][]{ DevConsole.Positioning.Autocomplete })
             .Register();
 
+            new DevConsole.Commands.CommandBuilder("md_safari_toggle")
+            .Help("md_safari_toggle [selector] [player?]")
+            .RunGame((game, args) => {
+                if (args.Length < 1 || args.Length > 2) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 or 2 arguments");
+                    return;
+                }
+                if (args.Length > 1 && int.TryParse(args[1], out int pNr)) //TODO pass via parameter instead of indirectly
+                    Drag.playerNr = pNr; //indirectly set target player to control creature
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Control.ToggleControl(game, list.ElementAt(i)?.realizedObject as Creature);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_safari_release_all")
+            .Help("md_safari_release_all [player?]")
+            .RunGame((game, args) => {
+                int pNr = -1;
+                if (args.Length > 0 && int.TryParse(args[0], out int temp))
+                    pNr = temp;
+                Control.ReleaseControlAll(pNr);
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_safari_cycle_camera")
+            .RunGame((game, args) => {
+                Control.CycleCamera(game);
+            })
+            .Register();
+
             new DevConsole.Commands.CommandBuilder("md_load_region_rooms")
             .RunGame((game, args) => {
                 DevConsole.GameConsole.WriteLine("Activating all rooms in current region. This might take a while.");

@@ -169,7 +169,7 @@ namespace MouseDrag
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_unpause_all")
-            .RunGame((game, args) => {
+            .Run((args) => {
                 Pause.UnpauseAll();
             })
             .Register();
@@ -186,6 +186,13 @@ namespace MouseDrag
                     Duplicate.DuplicateObject(list.ElementAt(i)?.realizedObject);
             })
             .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_clipboard")
+            .Run((args) => {
+                foreach (var obj in Clipboard.cutObjects)
+                    DevConsole.GameConsole.WriteLine(obj?.ToString());
+            })
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_clipboard_cut")
@@ -248,7 +255,7 @@ namespace MouseDrag
 
             new DevConsole.Commands.CommandBuilder("md_safari_release_all")
             .Help("md_safari_release_all [player?]")
-            .RunGame((game, args) => {
+            .Run((args) => {
                 int pNr = -1;
                 if (args.Length > 0 && int.TryParse(args[0], out int temp))
                     pNr = temp;
@@ -260,6 +267,140 @@ namespace MouseDrag
             .RunGame((game, args) => {
                 Control.CycleCamera(game);
             })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_forcefield_toggle")
+            .Help("md_forcefield_toggle [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--) {
+                    BodyChunk bc = list.ElementAt(i)?.realizedObject?.firstChunk;
+                    if (list.ElementAt(i)?.realizedObject is Creature)
+                        bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk ?? bc;
+                    Forcefield.ToggleForcefield(bc);
+                }
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_forcefield_clear_all")
+            .Run((args) => {
+                Forcefield.ClearForcefields();
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_tame")
+            .Help("md_tame [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Tame.TameCreature(game, list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_untame")
+            .Help("md_untame [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Tame.ClearRelationships(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_stun_toggle")
+            .Help("md_stun_toggle [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Stun.ToggleStunObject(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_unstun_all")
+            .Run((args) => {
+                Stun.UnstunAll();
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_lock_toggle")
+            .Help("md_lock_toggle [selector]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--) {
+                    BodyChunk bc = list.ElementAt(i)?.realizedObject?.firstChunk;
+                    if (list.ElementAt(i)?.realizedObject is Creature)
+                        bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk ?? bc;
+                    Lock.ToggleLock(bc);
+                }
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_lock_clear_all")
+            .Run((args) => {
+                Lock.bodyChunks.Clear();
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_gravity")
+            .Help("md_gravity [type?]")
+            .Run((args) => {
+                if (args?.Length != 1) {
+                    DevConsole.GameConsole.WriteLine(Gravity.gravityType.ToString());
+                    return;
+                }
+                foreach (Gravity.GravityTypes val in System.Enum.GetValues(typeof(Gravity.GravityTypes)))
+                    if (System.String.Equals(args[0], val.ToString()))
+                        Gravity.gravityType = val;
+                //TODO custom float gravity?
+            })
+            .AutoComplete(args => {
+                if (args.Length == 0) return System.Enum.GetNames(typeof(Gravity.GravityTypes));
+                return null;
+            })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_info")
+            .Help("md_info [selector?]")
+            .RunGame((game, args) => {
+                if (args?.Length != 1) {
+                    Info.DumpInfo(Drag.MouseCamera(game)?.room);
+                    DevConsole.GameConsole.WriteLine("Copied room data to clipboard.");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                if (list.Count() <= 0)
+                    return;
+                //only copy one object, because clipboard would be overwritten otherwise
+                Info.DumpInfo(list.ElementAt(0)?.realizedObject);
+                DevConsole.GameConsole.WriteLine("Copied object data of first match to clipboard.");
+                //TODO maybe append strings? might become too resource intensive, or too much lag
+                //TODO custom depth parameter?
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_load_region_rooms")

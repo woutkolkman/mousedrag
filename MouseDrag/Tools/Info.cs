@@ -9,13 +9,14 @@ namespace MouseDrag
 {
     public static class Info
     {
-        public static void DumpInfo(object obj)
+        public static string DumpInfo(object obj)
         {
             string dumpedObject = ObjectDumper.Dump(obj, 2, Options.infoDepth?.Value ?? 3);
             //Plugin.Logger.LogDebug(dumpedObject);
             UniClipboard.SetText(dumpedObject);
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("Info.DumpInfo, copied to clipboard");
+            return dumpedObject;
         }
 
 

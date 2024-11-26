@@ -96,6 +96,7 @@ namespace MouseDrag
 
             if (Integration.devConsoleEnabled) {
                 try {
+                    //TODO, if Dev Console supports removing registered commands, support Rain Reloader
                     Integration.DevConsoleRegisterCommands();
                 } catch (System.Exception ex) {
                     Plugin.Logger.LogError("RainWorldPostModsInitHook exception during registration of commands Dev Console, integration is now disabled: " + ex?.ToString());

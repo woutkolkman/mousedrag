@@ -9,9 +9,12 @@ namespace MouseDrag
 {
     public static class Info
     {
-        public static string DumpInfo(object obj)
+        public static string DumpInfo(object obj, int? lvl = null)
         {
-            string dumpedObject = ObjectDumper.Dump(obj, 2, Options.infoDepth?.Value ?? 3);
+            int maxLevel = Options.infoDepth?.Value ?? 3;
+            if (lvl.HasValue)
+                maxLevel = lvl.Value;
+            string dumpedObject = ObjectDumper.Dump(obj, 2, maxLevel);
             //Plugin.Logger.LogDebug(dumpedObject);
             UniClipboard.SetText(dumpedObject);
             if (Options.logDebug?.Value != false)

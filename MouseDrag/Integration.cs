@@ -384,23 +384,34 @@ namespace MouseDrag
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_info")
-            .Help("md_info [selector?]")
+            .Help("md_info [max_level] [selector?]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
-                    Info.DumpInfo(Drag.MouseCamera(game)?.room);
+                if (args.Length < 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 or 2 arguments");
+                    return;
+                }
+                if (!int.TryParse(args[0], out int maxLevel)) {
+                    DevConsole.GameConsole.WriteLine("Parse max_level failed");
+                    return;
+                }
+                if (args.Length == 1) {
+                    Info.DumpInfo(Drag.MouseCamera(game)?.room, maxLevel);
                     DevConsole.GameConsole.WriteLine("Copied room data to clipboard.");
                     return;
                 }
-                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[1]);
                 if (list.Count() <= 0)
                     return;
                 //only copy one object, because clipboard would be overwritten otherwise
-                Info.DumpInfo(list.ElementAt(0)?.realizedObject);
+                Info.DumpInfo(list.ElementAt(0)?.realizedObject, maxLevel);
                 DevConsole.GameConsole.WriteLine("Copied object data of first match to clipboard.");
                 //TODO maybe append strings? might become too resource intensive, or too much lag
-                //TODO custom depth parameter?
             })
-            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .AutoComplete(args => {
+                if (args.Length == 0) return new string[] { "2", "3", "4" };
+                if (args.Length == 1) return DevConsole.Selection.Autocomplete;
+                return null;
+            })
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_load_region_rooms")

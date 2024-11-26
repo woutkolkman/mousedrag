@@ -114,7 +114,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_pause")
             .Help("md_pause [selector] [action]")
             .RunGame((game, args) => {
-                if (args?.Length != 2) {
+                if (args.Length != 2) {
                     DevConsole.GameConsole.WriteLine("Expected 2 arguments");
                     return;
                 }
@@ -144,7 +144,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_pause_all")
             .Help("md_pause_all [position] [types]")
             .RunGame((game, args) => {
-                if (args?.Length != 2) {
+                if (args.Length != 2) {
                     DevConsole.GameConsole.WriteLine("Expected 2 arguments");
                     return;
                 }
@@ -177,7 +177,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_duplicate")
             .Help("md_duplicate [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -198,7 +198,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_clipboard_cut")
             .Help("md_clipboard_cut [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -212,7 +212,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_clipboard_copy")
             .Help("md_clipboard_copy [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -226,7 +226,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_clipboard_paste")
             .Help("md_clipboard_paste [pos]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -272,7 +272,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_forcefield_toggle")
             .Help("md_forcefield_toggle [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -296,7 +296,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_tame")
             .Help("md_tame [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -310,7 +310,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_untame")
             .Help("md_untame [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -324,7 +324,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_stun_toggle")
             .Help("md_stun_toggle [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -344,7 +344,7 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_lock_toggle")
             .Help("md_lock_toggle [selector]")
             .RunGame((game, args) => {
-                if (args?.Length != 1) {
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine("Expected 1 argument");
                     return;
                 }
@@ -368,14 +368,28 @@ namespace MouseDrag
             new DevConsole.Commands.CommandBuilder("md_gravity")
             .Help("md_gravity [type?]")
             .Run((args) => {
-                if (args?.Length != 1) {
+                if (args.Length > 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 0 or 1 arguments");
+                    return;
+                }
+                if (args.Length != 1) {
                     DevConsole.GameConsole.WriteLine(Gravity.gravityType.ToString());
                     return;
                 }
-                foreach (Gravity.GravityTypes val in System.Enum.GetValues(typeof(Gravity.GravityTypes)))
-                    if (System.String.Equals(args[0], val.ToString()))
+                bool valChanged = false;
+                foreach (Gravity.GravityTypes val in System.Enum.GetValues(typeof(Gravity.GravityTypes))) {
+                    if (System.String.Equals(args[0], val.ToString())) {
                         Gravity.gravityType = val;
-                //TODO custom float gravity?
+                        valChanged = true;
+                    }
+                }
+                if (float.TryParse(args[0], out float custom)) {
+                    Gravity.gravityType = Gravity.GravityTypes.Custom;
+                    Gravity.custom = custom;
+                    valChanged = true;
+                }
+                if (!valChanged)
+                    DevConsole.GameConsole.WriteLine("Unknown argument");
             })
             .AutoComplete(args => {
                 if (args.Length == 0) return System.Enum.GetNames(typeof(Gravity.GravityTypes));

@@ -508,7 +508,8 @@ namespace MouseDrag
                             name = "mousedragGravityReset",
                             tooltip = tooltip
                         });
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Off) {
+                    } else if (Gravity.gravityType == Gravity.GravityTypes.Off || 
+                        Gravity.gravityType == Gravity.GravityTypes.Custom) {
                         slots.Add(new RadialMenu.Slot(menu) {
                             name = "mousedragGravityOff",
                             tooltip = tooltip

@@ -4,6 +4,7 @@ namespace MouseDrag
 {
     public static class Gravity
     {
+        public static float custom;
         public static GravityTypes gravityType;
 
         public enum GravityTypes
@@ -12,7 +13,8 @@ namespace MouseDrag
             Off,
             Low,
             On,
-            Inverse
+            Inverse,
+            Custom
         }
 
 
@@ -54,6 +56,8 @@ namespace MouseDrag
                 room.gravity = 1f;
             if (Gravity.gravityType == Gravity.GravityTypes.Inverse)
                 room.gravity = -1f;
+            if (Gravity.gravityType == Gravity.GravityTypes.Custom)
+                room.gravity = custom;
         }
     }
 }

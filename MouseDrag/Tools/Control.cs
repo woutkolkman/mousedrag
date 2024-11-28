@@ -14,7 +14,7 @@ namespace MouseDrag
         public static AbstractCreature loadCreatureRoom = null;
 
 
-        public static void ToggleControl(RainWorldGame game, Creature creature)
+        public static void ToggleControl(RainWorldGame game, Creature creature, int playerNr = -1)
         {
             //without downpour DLC the safari-controls just don't work
             if (!ModManager.MSC)
@@ -24,9 +24,13 @@ namespace MouseDrag
             if (ac == null || game == null)
                 return;
 
+            int pNr = Drag.playerNr;
+            if (playerNr >= 0)
+                pNr = playerNr;
+
             //if trying to safari control a player, clear all safari controls
             if (creature is Player && !(creature as Player).isNPC) {
-                ReleaseControlAll(Drag.playerNr);
+                ReleaseControlAll(pNr);
                 ReturnToCreature(game);
                 return;
             }
@@ -39,13 +43,13 @@ namespace MouseDrag
             //also check CreatureSafariControlInputUpdateHook
             if (ac.controlled && (null == ListContains(ac))) {
                 if (Options.controlOnlyOne?.Value == true)
-                    ReleaseControlAll(Drag.playerNr);
-                controlledCreatures.Add(new KeyValuePair<AbstractCreature, int>(ac, Drag.playerNr));
+                    ReleaseControlAll(pNr);
+                controlledCreatures.Add(new KeyValuePair<AbstractCreature, int>(ac, pNr));
 
                 //activate unused player input
-                if (game.rainWorld?.options?.controls?.Length > Drag.playerNr)
-                    if (game.rainWorld.options.controls[Drag.playerNr] != null)
-                        game.rainWorld.options.controls[Drag.playerNr].active = true;
+                if (game.rainWorld?.options?.controls?.Length > pNr)
+                    if (game.rainWorld.options.controls[pNr] != null)
+                        game.rainWorld.options.controls[pNr].active = true;
 
             } else if (!ac.controlled) {
                 ListRemove(ac);
@@ -130,9 +134,13 @@ namespace MouseDrag
         }
 
 
-        private static void ReturnToCreature(RainWorldGame game)
+        private static void ReturnToCreature(RainWorldGame game, int playerNr = -1)
         {
             AbstractCreature ac = null;
+
+            int pNr = Drag.playerNr;
+            if (playerNr >= 0)
+                pNr = playerNr;
 
             if (controlledCreatures.Count > 0) {
                 //there are creatures left to control
@@ -140,7 +148,7 @@ namespace MouseDrag
             } else if (game?.Players != null) {
                 //no creatures left, switch back to last dragged player
                 foreach (AbstractCreature abst in game.Players)
-                    if ((abst?.state as PlayerState)?.playerNumber == Drag.playerNr)
+                    if ((abst?.state as PlayerState)?.playerNumber == pNr)
                         ac = abst;
                 if (ac == null && game.Players.Count > 0) {
                     if (Options.logDebug?.Value != false)

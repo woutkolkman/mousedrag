@@ -244,11 +244,12 @@ namespace MouseDrag
                     DevConsole.GameConsole.WriteLine("Expected 1 or 2 arguments");
                     return;
                 }
-                if (args.Length > 1 && int.TryParse(args[1], out int pNr)) //TODO pass via parameter instead of indirectly
-                    Drag.playerNr = pNr; //indirectly set target player to control creature
+                int pNr = -1;
+                if (args.Length > 1 && int.TryParse(args[1], out int temp))
+                    pNr = temp;
                 var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
                 for (int i = list.Count() - 1; i >= 0; i--)
-                    Control.ToggleControl(game, list.ElementAt(i)?.realizedObject as Creature);
+                    Control.ToggleControl(game, list.ElementAt(i)?.realizedObject as Creature, pNr);
             })
             .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
             .Register();

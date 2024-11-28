@@ -29,13 +29,21 @@ namespace MouseDrag
             Hooks.Apply();
             ILHooks.Apply();
 
-            //Rain Reloader re-initialize Options and sprites
+            //Rain Reloader re-initialize Options, sprites and integration
             if (MachineConnector.IsThisModActive(GUID)) {
                 Plugin.Logger.LogDebug("OnEnable, re-initializing options interface and sprites");
                 MachineConnector.SetRegisteredOI(GUID, new Options());
                 MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
                 MenuManager.LoadSprites();
                 Integration.RefreshActiveMods();
+                if (Integration.devConsoleEnabled) {
+                    try {
+                        Integration.DevConsoleRegisterCommands();
+                    } catch (System.Exception ex) {
+                        Plugin.Logger.LogError("OnEnable exception during registration of commands Dev Console, integration is now disabled: " + ex?.ToString());
+                        Integration.devConsoleEnabled = false;
+                    }
+                }
             }
 
             Plugin.Logger.LogInfo("OnEnable called");

@@ -39,11 +39,6 @@ namespace MouseDrag
         //pauses creatures and objects (& gravity update)
         static void RoomUpdateIL(ILContext il)
         {
-            //original code:
-            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag)
-            //resulting code will be similar to:
-            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsObjectPaused(updatableAndDeletable))
-
             ILCursor c = new ILCursor(il);
 
             //changes for gravity update
@@ -52,6 +47,11 @@ namespace MouseDrag
             {
                 Gravity.Update(self);
             });
+
+            //original code:
+            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag)
+            //resulting code will be similar to:
+            //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsObjectPaused(updatableAndDeletable))
 
             try {
                 c.GotoNext(MoveType.After,
@@ -172,7 +172,7 @@ namespace MouseDrag
             c.Emit(OpCodes.Ldarg_1);
             c.EmitDelegate<Action<RainWorldGame, float>>((self, dt) =>
             {
-                if (self.GamePaused || self.pauseUpdate || !self.processActive)
+                if (self == null || self.GamePaused || self.pauseUpdate || !self.processActive)
                     return;
 
                 MenuManager.RawUpdate(self);

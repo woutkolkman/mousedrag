@@ -92,6 +92,7 @@ namespace MouseDrag
         //at tickrate
         static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
         {
+            //not IL because this code must run at the end of the function, and there's early returns added
             orig(self);
 
             if (State.activated)

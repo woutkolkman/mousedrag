@@ -128,8 +128,10 @@ namespace MouseDrag
         //use in try/catch so missing assembly does not crash the game
         public static void DevConsoleOpen(string selector = null)
         {
-            if (!string.IsNullOrEmpty(selector))
+            if (!string.IsNullOrEmpty(selector)) {
                 Menu.Remix.UniClipboard.SetText(selector);
+                DevConsole.GameConsole.WriteLine("Copied object selector to clipboard: " + selector);
+            }
             DevConsole.GameConsole.ForceOpen();
         }
 

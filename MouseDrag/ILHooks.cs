@@ -13,6 +13,9 @@ namespace MouseDrag
 
             //pause creatures and objects in not-loaded rooms
             IL.AbstractRoom.Update += AbstractRoomUpdateIL;
+
+            //draw menu graphics with timestacker
+            IL.RainWorldGame.GrafUpdate += RainWorldGameGrafUpdateIL;
         }
 
 
@@ -20,6 +23,7 @@ namespace MouseDrag
         {
             IL.Room.Update -= RoomUpdateIL;
             IL.AbstractRoom.Update -= AbstractRoomUpdateIL;
+            IL.RainWorldGame.GrafUpdate -= RainWorldGameGrafUpdateIL;
         }
 
 
@@ -111,6 +115,21 @@ namespace MouseDrag
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("AbstractRoomUpdateIL success");
+        }
+
+
+        //draw menu graphics with timestacker
+        static void RainWorldGameGrafUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_1);
+            c.EmitDelegate<Action<RainWorldGame, float>>((self, timeStacker) =>
+            {
+                MenuManager.DrawSprites(timeStacker);
+            });
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameGrafUpdateIL success");
         }
     }
 }

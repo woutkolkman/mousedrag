@@ -23,9 +23,6 @@ namespace MouseDrag
             //at framerate
             On.RainWorldGame.RawUpdate += RainWorldGameRawUpdateHook;
 
-            //draw menu graphics with timestacker
-            On.RainWorldGame.GrafUpdate += RainWorldGameGrafUpdateHook;
-
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
 
@@ -61,7 +58,6 @@ namespace MouseDrag
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
             On.RainWorldGame.Update -= RainWorldGameUpdateHook;
             On.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateHook;
-            On.RainWorldGame.GrafUpdate -= RainWorldGameGrafUpdateHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
             On.BodyChunk.Update += BodyChunkUpdateHook;
@@ -144,14 +140,6 @@ namespace MouseDrag
             if (State.activeType == Options.ActivateTypes.KeyBindPressed)
                 if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
                     State.activated = !State.activated;
-        }
-
-
-        //draw menu graphics with timestacker
-        static void RainWorldGameGrafUpdateHook(On.RainWorldGame.orig_GrafUpdate orig, RainWorldGame self, float timeStacker)
-        {
-            orig(self, timeStacker);
-            MenuManager.DrawSprites(timeStacker);
         }
 
 

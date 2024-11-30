@@ -192,6 +192,17 @@ namespace MouseDrag
                     case "mousedragDestroy":        Destroy.DestroyObject(chunk.owner); break;
                     case "mousedragLocked":
                     case "mousedragUnlocked":       Lock.ToggleLock(chunk); break;
+                    case "mousedragCLI":
+                        if (!Integration.devConsoleEnabled)
+                            break;
+                        try {
+                            Integration.DevConsoleOpen(Integration.DevConsoleGetSelector(chunk.owner.abstractPhysicalObject));
+                        } catch {
+                            Plugin.Logger.LogError("MenuManager.RunAction exception while writing Dev Console, integration is now disabled");
+                            Integration.devConsoleEnabled = false;
+                            throw; //throw original exception while preserving stack trace
+                        }
+                        break;
                     case "mousedragInfo":
                         Info.DumpInfo(chunk.owner);
                         highPrioText = "Object copied to clipboard";
@@ -241,6 +252,17 @@ namespace MouseDrag
                     case "mousedragDestroyAll":             Destroy.DestroyObjects(rcam?.room, creatures: true, items: true, onlyDead: false); break;
                     case "mousedragDestroyGlobal":          Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionItemsMenu?.Value == true); break;
                     case "mousedragDestroyDeadCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, items: false, onlyDead: true); break;
+                    case "mousedragCLI":
+                        if (!Integration.devConsoleEnabled)
+                            break;
+                        try {
+                            Integration.DevConsoleOpen();
+                        } catch {
+                            Plugin.Logger.LogError("MenuManager.RunAction exception while writing Dev Console, integration is now disabled");
+                            Integration.devConsoleEnabled = false;
+                            throw; //throw original exception while preserving stack trace
+                        }
+                        break;
                     case "mousedragGravityReset":
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
@@ -387,6 +409,12 @@ namespace MouseDrag
                         tooltip = unlocked ? "Lock position" : "Unlock position"
                     });
                 }
+                if (Options.copySelectorMenu?.Value != false && Integration.devConsoleEnabled) {
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragCLI",
+                        tooltip = "Copy selector & open console"
+                    });
+                }
                 if (Options.infoMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragInfo",
@@ -501,6 +529,12 @@ namespace MouseDrag
                         name = "mousedragDestroyDeadCreatures",
                         tooltip = "Destroy dead creatures in room"
                     });
+                if (Options.copySelectorMenu?.Value != false && Integration.devConsoleEnabled) {
+                    slots.Add(new RadialMenu.Slot(menu) {
+                        name = "mousedragCLI",
+                        tooltip = "Open console"
+                    });
+                }
                 if (Options.gravityRoomMenu?.Value != false) {
                     string tooltip = "Set gravity";
                     if (Gravity.gravityType == Gravity.GravityTypes.None) {

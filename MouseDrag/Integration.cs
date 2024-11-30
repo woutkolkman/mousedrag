@@ -108,6 +108,32 @@ namespace MouseDrag
         }
 
 
+        //value can be used in Dev Console to execute commands for a specific object
+        public static string DevConsoleGetSelector(AbstractPhysicalObject apo)
+        {
+            if (apo == null)
+                return "";
+            string selector = apo.ID.ToString();
+            if (apo is AbstractCreature && (apo as AbstractCreature).creatureTemplate != null) {
+                selector += ",type=" + (apo as AbstractCreature).creatureTemplate.type;
+            } else if (apo.type != null) {
+                selector += ",type=" + apo.type.ToString();
+            }
+            if (apo is AbstractCreature && (apo as AbstractCreature).state != null)
+                selector += (apo as AbstractCreature).state.alive ? ",alive" : ",dead";
+            return selector;
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static void DevConsoleOpen(string selector = null)
+        {
+            if (!string.IsNullOrEmpty(selector))
+                Menu.Remix.UniClipboard.SetText(selector);
+            DevConsole.GameConsole.ForceOpen();
+        }
+
+
         //use in try/catch so missing assembly does not crash the game
         public static void DevConsoleRegisterCommands()
         {

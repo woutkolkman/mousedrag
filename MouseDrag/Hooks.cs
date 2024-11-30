@@ -275,6 +275,16 @@ namespace MouseDrag
             if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
                 Lock.ToggleLock(Drag.dragChunk);
 
+            if (Options.copySelectorKey?.Value != null && Input.GetKeyDown(Options.copySelectorKey.Value) && Integration.devConsoleEnabled) {
+                try {
+                    Integration.DevConsoleOpen(Integration.DevConsoleGetSelector(Drag.dragChunk?.owner?.abstractPhysicalObject));
+                } catch {
+                    Plugin.Logger.LogError("RainWorldGameRawUpdateHook exception while writing Dev Console, integration is now disabled");
+                    Integration.devConsoleEnabled = false;
+                    throw; //throw original exception while preserving stack trace
+                }
+            }
+
             if (Options.gravityRoomKey?.Value != null && Input.GetKeyDown(Options.gravityRoomKey.Value))
                 Gravity.CycleGravity();
 

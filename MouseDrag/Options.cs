@@ -45,7 +45,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> destroyOneKey, destroyRoomCreaturesKey, destroyRoomItemsKey;
         public static Configurable<KeyCode> destroyRegionCreaturesKey, destroyRegionItemsKey;
 
-        public static Configurable<KeyCode> destroyRoomDeadCreaturesKey, lockKey;
+        public static Configurable<KeyCode> destroyRoomDeadCreaturesKey, lockKey, copySelectorKey;
 
         public static Configurable<KeyCode> gravityRoomKey, infoKey, loadRegionRoomsKey;
 
@@ -62,7 +62,7 @@ namespace MouseDrag
         public static Configurable<bool> destroyOneMenu, destroyRoomCreaturesMenu, destroyRoomItemsMenu, destroyRoomObjectsMenu;
         public static Configurable<bool> destroyRegionCreaturesMenu, destroyRegionItemsMenu;
 
-        public static Configurable<bool> destroyRoomDeadCreaturesMenu, lockMenu;
+        public static Configurable<bool> destroyRoomDeadCreaturesMenu, lockMenu, copySelectorMenu;
 
         public static Configurable<bool> gravityRoomMenu, infoMenu;
 
@@ -166,6 +166,7 @@ namespace MouseDrag
 
             destroyRoomDeadCreaturesKey = config.Bind(nameof(destroyRoomDeadCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all dead creatures in current room except Player and SlugNPC.", null, "", "Destroy dead\ncreatures in room"));
             lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object is reloaded.", null, "", "Lock position"));
+            copySelectorKey = config.Bind(nameof(copySelectorKey), KeyCode.None, new ConfigurableInfo("KeyBind to copy the selector of the object which you're currently dragging. Dev Console will also automatically be opened.\nOnly works if Dev Console integration is enabled.", null, "", "Copy selector &\nopen Dev Console"));
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.", null, "", "Gravity"));
             infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object which you're currently dragging, or the room if nothing is being dragged.", null, "", "Info"));
@@ -205,6 +206,7 @@ namespace MouseDrag
 
             destroyRoomDeadCreaturesMenu = config.Bind(nameof(destroyRoomDeadCreaturesMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             lockMenu = config.Bind(nameof(lockMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            copySelectorMenu = config.Bind(nameof(copySelectorMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
             gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             infoMenu = config.Bind(nameof(infoMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -412,6 +414,9 @@ namespace MouseDrag
             AddKeyBinder(lockKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragLocked");
             AddCheckBox(lockMenu, new Vector2(x - 56f, y + 3f));
+            AddKeyBinder(copySelectorKey, new Vector2(x, y -= sepr));
+            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCLI");
+            AddCheckBox(copySelectorMenu, new Vector2(x - 56f, y + 3f));
 
             x += 300f;
             y = 600f;

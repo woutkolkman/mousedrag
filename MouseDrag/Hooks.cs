@@ -29,9 +29,6 @@ namespace MouseDrag
             //at hibernate etc.
             On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
 
-            //forcefield
-            On.BodyChunk.Update += BodyChunkUpdateHook;
-
             //jolly co-op multiplayer safari control
             On.Creature.SafariControlInputUpdate += CreatureSafariControlInputUpdateHook;
 
@@ -60,7 +57,6 @@ namespace MouseDrag
             On.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
-            On.BodyChunk.Update += BodyChunkUpdateHook;
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
             On.Room.Update -= RoomUpdateHook;
             On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
@@ -167,15 +163,6 @@ namespace MouseDrag
             MenuManager.menu?.Destroy();
             MenuManager.menu = null;
             State.GameEnded();
-        }
-
-
-        //forcefield
-        static void BodyChunkUpdateHook(On.BodyChunk.orig_Update orig, BodyChunk self)
-        {
-            orig(self);
-            Forcefield.UpdateForcefield(self);
-            Lock.UpdatePosition(self);
         }
 
 

@@ -16,6 +16,9 @@ namespace MouseDrag
 
             //draw menu graphics with timestacker
             IL.RainWorldGame.GrafUpdate += RainWorldGameGrafUpdateIL;
+
+            //forcefield & locks
+            IL.BodyChunk.Update += BodyChunkUpdateIL;
         }
 
 
@@ -24,6 +27,7 @@ namespace MouseDrag
             IL.Room.Update -= RoomUpdateIL;
             IL.AbstractRoom.Update -= AbstractRoomUpdateIL;
             IL.RainWorldGame.GrafUpdate -= RainWorldGameGrafUpdateIL;
+            IL.BodyChunk.Update -= BodyChunkUpdateIL;
         }
 
 
@@ -130,6 +134,21 @@ namespace MouseDrag
             });
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RainWorldGameGrafUpdateIL success");
+        }
+
+
+        //forcefield & locks
+        static void BodyChunkUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<BodyChunk>>((self) =>
+            {
+                Forcefield.UpdateForcefield(self);
+                Lock.UpdatePosition(self);
+            });
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("BodyChunkUpdateIL success");
         }
     }
 }

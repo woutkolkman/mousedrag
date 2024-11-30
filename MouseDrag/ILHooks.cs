@@ -1,6 +1,7 @@
 ﻿using System;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -19,6 +20,9 @@ namespace MouseDrag
 
             //forcefield & locks
             IL.BodyChunk.Update += BodyChunkUpdateIL;
+
+            //delegate at framerate
+            IL.RainWorldGame.RawUpdate += RainWorldGameRawUpdateIL;
         }
 
 
@@ -28,6 +32,7 @@ namespace MouseDrag
             IL.AbstractRoom.Update -= AbstractRoomUpdateIL;
             IL.RainWorldGame.GrafUpdate -= RainWorldGameGrafUpdateIL;
             IL.BodyChunk.Update -= BodyChunkUpdateIL;
+            IL.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateIL;
         }
 
 
@@ -156,6 +161,36 @@ namespace MouseDrag
             });
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("BodyChunkUpdateIL success");
+        }
+
+
+        //delegate at framerate
+        static void RainWorldGameRawUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_1);
+            c.EmitDelegate<Action<RainWorldGame, float>>((self, dt) =>
+            {
+                if (self.GamePaused || self.pauseUpdate || !self.processActive)
+                    return;
+
+                MenuManager.RawUpdate(self);
+
+                if (State.activated && !State.keyBindToolsDisabled) {
+                    KeyBinds.RawUpdate(self);
+
+                    if (Teleport.UpdateTeleportObject(self))
+                        Drag.dragChunk = null;
+                }
+
+                //other checks are found in State.UpdateActivated
+                if (State.activeType == Options.ActivateTypes.KeyBindPressed)
+                    if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
+                        State.activated = !State.activated;
+            });
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameRawUpdateIL success");
         }
     }
 }

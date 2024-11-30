@@ -20,9 +20,6 @@ namespace MouseDrag
             //at tickrate
             On.RainWorldGame.Update += RainWorldGameUpdateHook;
 
-            //at framerate
-            On.RainWorldGame.RawUpdate += RainWorldGameRawUpdateHook;
-
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
 
@@ -51,7 +48,6 @@ namespace MouseDrag
             On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
             On.RainWorldGame.Update -= RainWorldGameUpdateHook;
-            On.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
@@ -108,30 +104,6 @@ namespace MouseDrag
                 KeyBinds.Update(self);
                 Control.Update(self);
             }
-        }
-
-
-        //at framerate
-        static void RainWorldGameRawUpdateHook(On.RainWorldGame.orig_RawUpdate orig, RainWorldGame self, float dt)
-        {
-            orig(self, dt);
-
-            if (self.GamePaused || self.pauseUpdate || !self.processActive)
-                return;
-
-            MenuManager.RawUpdate(self);
-
-            if (State.activated && !State.keyBindToolsDisabled) {
-                KeyBinds.RawUpdate(self);
-
-                if (Teleport.UpdateTeleportObject(self))
-                    Drag.dragChunk = null;
-            }
-
-            //other checks are found in State.UpdateActivated
-            if (State.activeType == Options.ActivateTypes.KeyBindPressed)
-                if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
-                    State.activated = !State.activated;
         }
 
 

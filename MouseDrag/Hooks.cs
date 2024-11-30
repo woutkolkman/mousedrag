@@ -110,11 +110,11 @@ namespace MouseDrag
         {
             orig(self);
 
-            State.UpdateActivated(self);
-            MenuManager.Update(self);
-
             if (State.activated)
                 Drag.DragObject(self);
+
+            State.UpdateActivated(self);
+            MenuManager.Update(self);
 
             if (State.activated && !State.keyBindToolsDisabled) {
                 KeyBinds.Update(self);

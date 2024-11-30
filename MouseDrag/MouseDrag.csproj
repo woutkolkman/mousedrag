@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Integration.cs" />
+    <Compile Include="KeyBinds.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="RadialMenu.cs" />
     <Compile Include="Tools\Info.cs" />

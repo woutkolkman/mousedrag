@@ -32,9 +32,6 @@ namespace MouseDrag
             //jolly co-op multiplayer safari control
             On.Creature.SafariControlInputUpdate += CreatureSafariControlInputUpdateHook;
 
-            //gravity
-            On.Room.Update += RoomUpdateHook;
-
             //anti smash-scug-into-wall
             On.RoomCamera.ApplyPositionChange += RoomCameraApplyPositionChangeHook;
 
@@ -58,7 +55,6 @@ namespace MouseDrag
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
-            On.Room.Update -= RoomUpdateHook;
             On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
             On.Menu.SandboxOverlay.Initiate -= MenuSandboxOverlayInitiateHook;
             if (MenuShowCursorHook.IsValid)
@@ -222,14 +218,6 @@ namespace MouseDrag
                 self.inputWithDiagonals = null;
                 self.lastInputWithDiagonals = null;
             }
-        }
-
-
-        //gravity
-        static void RoomUpdateHook(On.Room.orig_Update orig, Room self)
-        {
-            Gravity.Update(self);
-            orig(self);
         }
 
 

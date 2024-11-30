@@ -8,7 +8,7 @@ namespace MouseDrag
     {
         public static void Apply()
         {
-            //pauses creatures and objects
+            //pauses creatures and objects (& gravity update)
             IL.Room.Update += RoomUpdateIL;
 
             //pause creatures and objects in not-loaded rooms
@@ -31,7 +31,7 @@ namespace MouseDrag
         }
 
 
-        //pauses creatures and objects
+        //pauses creatures and objects (& gravity update)
         static void RoomUpdateIL(ILContext il)
         {
             //original code:
@@ -40,6 +40,13 @@ namespace MouseDrag
             //  if ((!this.game.pauseUpdate || updatableAndDeletable is IRunDuringDialog) && !flag && !IsObjectPaused(updatableAndDeletable))
 
             ILCursor c = new ILCursor(il);
+
+            //changes for gravity update
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<Room>>((self) =>
+            {
+                Gravity.Update(self);
+            });
 
             try {
                 c.GotoNext(MoveType.After,

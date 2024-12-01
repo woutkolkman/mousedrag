@@ -1,9 +1,9 @@
 {
   "id": "maxi-mol.mousedrag",
   "name": "Mouse Drag",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "authors": "Maxi Mol",
-  "description": "Tool which allows dragging/pausing/destroying/.. creatures and objects\noutside sandbox-mode using your mouse.",
+  "description": "Tool which allows editing in-game objects outside sandbox-mode using your mouse.",
   "requirements": [],
   "requirements_names": [],
   "tags": ["Tools"],

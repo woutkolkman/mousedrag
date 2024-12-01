@@ -23,6 +23,9 @@ namespace MouseDrag
 
             //delegate at framerate
             IL.RainWorldGame.RawUpdate += RainWorldGameRawUpdateIL;
+
+            //delegate at tickrate
+            IL.RainWorldGame.Update += RainWorldGameUpdateIL;
         }
 
 
@@ -33,6 +36,7 @@ namespace MouseDrag
             IL.RainWorldGame.GrafUpdate -= RainWorldGameGrafUpdateIL;
             IL.BodyChunk.Update -= BodyChunkUpdateIL;
             IL.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateIL;
+            IL.RainWorldGame.Update -= RainWorldGameUpdateIL;
         }
 
 
@@ -191,6 +195,47 @@ namespace MouseDrag
             });
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RainWorldGameRawUpdateIL success");
+        }
+
+
+        //delegate at tickrate
+        static void RainWorldGameUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            //move cursor somewhere after room update loop
+            try {
+                c.GotoNext(MoveType.Before,
+                    i => i.MatchLdfld<MainLoopProcess>("manager"),
+                    i => i.MatchLdfld<ProcessManager>("menuSetup"),
+                    i => i.MatchCallvirt<ProcessManager.MenuSetup>("get_FastTravelInitCondition")
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex.ToString());
+                return;
+            }
+
+            //use existing Ldarg_0 on stack
+            c.EmitDelegate<Action<RainWorldGame>>((self) =>
+            {
+                if (State.activated)
+                    Drag.DragObject(self);
+
+                State.UpdateActivated(self);
+                MenuManager.Update(self);
+
+                if (State.activated && !State.keyBindToolsDisabled) {
+                    KeyBinds.Update(self);
+                    Control.Update(self);
+                }
+            });
+
+            //emit Ldarg_0 for next statement
+            c.Emit(OpCodes.Ldarg_0);
+
+            //Plugin.Logger.LogDebug(il.ToString());
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameUpdateIL success");
         }
     }
 }

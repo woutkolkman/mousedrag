@@ -17,9 +17,6 @@ namespace MouseDrag
             //after mods initialized
             On.RainWorld.PostModsInit += RainWorldPostModsInitHook;
 
-            //at tickrate
-            On.RainWorldGame.Update += RainWorldGameUpdateHook;
-
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
 
@@ -47,7 +44,6 @@ namespace MouseDrag
         {
             On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
-            On.RainWorldGame.Update -= RainWorldGameUpdateHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
@@ -85,25 +81,6 @@ namespace MouseDrag
                     Plugin.Logger.LogError("RainWorldPostModsInitHook exception during registration of commands Dev Console, integration is now disabled: " + ex?.ToString());
                     Integration.devConsoleEnabled = false;
                 }
-            }
-        }
-
-
-        //at tickrate
-        static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
-        {
-            //not IL because this code must run at the end of the function, and there's early returns added
-            orig(self);
-
-            if (State.activated)
-                Drag.DragObject(self);
-
-            State.UpdateActivated(self);
-            MenuManager.Update(self);
-
-            if (State.activated && !State.keyBindToolsDisabled) {
-                KeyBinds.Update(self);
-                Control.Update(self);
             }
         }
 

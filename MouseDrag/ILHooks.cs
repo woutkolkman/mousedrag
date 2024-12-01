@@ -207,7 +207,7 @@ namespace MouseDrag
             bool failed = false;
             try {
                 c.GotoNext(MoveType.Before,
-                    //Ldarg_0
+                    //Ldarg_0 (RainWorldGame)
                     i => i.MatchLdfld<MainLoopProcess>("manager"),
                     i => i.MatchLdfld<ProcessManager>("menuSetup"),
                     i => i.MatchCallvirt<ProcessManager.MenuSetup>("get_FastTravelInitCondition")
@@ -222,7 +222,7 @@ namespace MouseDrag
                     Plugin.Logger.LogDebug("RainWorldGameUpdateIL, first GotoNext failed, trying to recover");
                 try {
                     c.GotoNext(MoveType.Before,
-                        //Ldarg_0
+                        //Ldarg_0 (RainWorldGame)
                         i => i.MatchCall<RainWorldGame>("get_FirstAlivePlayer"),
                         i => i.MatchStloc(1)
                     );
@@ -232,7 +232,7 @@ namespace MouseDrag
                 }
             }
 
-            //use existing Ldarg_0 on stack
+            //use existing Ldarg_0 (RainWorldGame) on stack
             c.EmitDelegate<Action<RainWorldGame>>((self) =>
             {
                 if (State.activated)
@@ -247,7 +247,7 @@ namespace MouseDrag
                 }
             });
 
-            //emit Ldarg_0 for next statement
+            //emit Ldarg_0 (RainWorldGame) for next statement
             c.Emit(OpCodes.Ldarg_0);
 
             //Plugin.Logger.LogDebug(il.ToString());

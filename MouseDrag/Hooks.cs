@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using MonoMod.RuntimeDetour;
+﻿using MonoMod.RuntimeDetour;
 using System.Reflection;
 
 namespace MouseDrag

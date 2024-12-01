@@ -1,6 +1,7 @@
 ﻿using System;
 using MonoMod.Cil;
 using Mono.Cecil.Cil;
+using UnityEngine;
 
 namespace FreeCam
 {
@@ -16,6 +17,12 @@ namespace FreeCam
 
             //prevent forced VirtualMicrophone position
             IL.VirtualMicrophone.Update += VirtualMicrophoneUpdateIL;
+
+            //delegate at framerate
+            IL.RainWorldGame.RawUpdate += RainWorldGameRawUpdateIL;
+
+            //delegate at tickrate
+            IL.RainWorldGame.Update += RainWorldGameUpdateIL;
         }
 
 
@@ -24,6 +31,8 @@ namespace FreeCam
             IL.RoomCamera.Update -= RoomCameraUpdateIL;
             IL.ShortcutHandler.Update -= ShortcutHandlerUpdateIL;
             IL.VirtualMicrophone.Update -= VirtualMicrophoneUpdateIL;
+            IL.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateIL;
+            IL.RainWorldGame.Update -= RainWorldGameUpdateIL;
         }
 
 
@@ -276,6 +285,42 @@ namespace FreeCam
 
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("VirtualMicrophoneUpdateIL success");
+        }
+
+
+        //delegate at framerate
+        static void RainWorldGameRawUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_1);
+            c.EmitDelegate<Action<RainWorldGame, float>>((self, dt) =>
+            {
+                if (self == null || self.GamePaused || self.pauseUpdate || !self.processActive)
+                    return;
+
+                FreeCamManager.RawUpdate(self);
+
+                if (Options.toggleKey?.Value != null && Input.GetKeyDown(Options.toggleKey.Value))
+                    FreeCamManager.Toggle(self);
+            });
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameRawUpdateIL success");
+        }
+
+
+        //delegate at tickrate
+        static void RainWorldGameUpdateIL(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<RainWorldGame>>((self) =>
+            {
+                FreeCamManager.Update(self);
+                Cursor.Update(self);
+            });
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameUpdateIL success");
         }
     }
 }

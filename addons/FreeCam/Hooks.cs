@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using MonoMod.RuntimeDetour;
-using System.Reflection;
-
-namespace FreeCam
+﻿namespace FreeCam
 {
     public static class Hooks
     {
@@ -13,12 +9,6 @@ namespace FreeCam
 
             //after mods initialized
             On.RainWorld.PostModsInit += RainWorldPostModsInitHook;
-
-            //at tickrate
-            On.RainWorldGame.Update += RainWorldGameUpdateHook;
-
-            //at framerate
-            On.RainWorldGame.RawUpdate += RainWorldGameRawUpdateHook;
 
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
@@ -32,8 +22,6 @@ namespace FreeCam
         {
             On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
-            On.RainWorldGame.Update -= RainWorldGameUpdateHook;
-            On.RainWorldGame.RawUpdate -= RainWorldGameRawUpdateHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
         }
@@ -58,30 +46,6 @@ namespace FreeCam
             //hook gets called (for this mod) only when not using Rain Reloader
             Integration.RefreshActiveMods();
             Integration.Hooks.Apply();
-        }
-
-
-        //at tickrate
-        static void RainWorldGameUpdateHook(On.RainWorldGame.orig_Update orig, RainWorldGame self)
-        {
-            orig(self);
-            FreeCamManager.Update(self);
-            Cursor.Update(self);
-        }
-
-
-        //at framerate
-        static void RainWorldGameRawUpdateHook(On.RainWorldGame.orig_RawUpdate orig, RainWorldGame self, float dt)
-        {
-            orig(self, dt);
-
-            if (self.GamePaused || self.pauseUpdate || !self.processActive)
-                return;
-
-            FreeCamManager.RawUpdate(self);
-
-            if (Options.toggleKey?.Value != null && Input.GetKeyDown(Options.toggleKey.Value))
-                FreeCamManager.Toggle(self);
         }
 
 

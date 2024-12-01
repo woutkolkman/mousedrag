@@ -204,15 +204,32 @@ namespace MouseDrag
             ILCursor c = new ILCursor(il);
 
             //move cursor somewhere after room update loop
+            bool failed = false;
             try {
                 c.GotoNext(MoveType.Before,
+                    //Ldarg_0
                     i => i.MatchLdfld<MainLoopProcess>("manager"),
                     i => i.MatchLdfld<ProcessManager>("menuSetup"),
                     i => i.MatchCallvirt<ProcessManager.MenuSetup>("get_FastTravelInitCondition")
                 );
             } catch (Exception ex) {
                 Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex.ToString());
-                return;
+                failed = true;
+            }
+            if (failed) {
+                failed = false;
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("RainWorldGameUpdateIL, first GotoNext failed, trying to recover");
+                try {
+                    c.GotoNext(MoveType.Before,
+                        //Ldarg_0
+                        i => i.MatchCall<RainWorldGame>("get_FirstAlivePlayer"),
+                        i => i.MatchStloc(1)
+                    );
+                } catch (Exception ex) {
+                    Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex.ToString());
+                    return;
+                }
             }
 
             //use existing Ldarg_0 on stack

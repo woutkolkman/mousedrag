@@ -48,7 +48,7 @@ namespace MouseDrag
                         (obj as Player).playerState.swallowedItem = (obj as Player).objectInStomach?.ToString();
                     }
                 } catch (Exception ex) {
-                    Plugin.Logger.LogWarning("Clipboard.CutObject exception: " + ex.ToString());
+                    Plugin.Logger.LogWarning("Clipboard.CutObject exception: " + ex?.ToString());
                 }
             }
 
@@ -130,7 +130,7 @@ namespace MouseDrag
                         (apo.realizedObject as Player).playerState.swallowedItem = "";
                     }
                 } catch (Exception ex) {
-                    Plugin.Logger.LogWarning("Clipboard.PasteObject exception: " + ex.ToString());
+                    Plugin.Logger.LogWarning("Clipboard.PasteObject exception: " + ex?.ToString());
                 }
             }
         }

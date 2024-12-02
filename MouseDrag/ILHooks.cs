@@ -65,7 +65,7 @@ namespace MouseDrag
                     i => i.Match(OpCodes.Brtrue_S)                          //brtrue.s      776 (09DF) ldloc.s V10 (10)
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RoomUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("RoomUpdateIL exception: " + ex?.ToString());
                 return;
             }
 
@@ -106,7 +106,7 @@ namespace MouseDrag
                     i => i.MatchCallvirt("AbstractWorldEntity", "Update")   //callvirt      instance void AbstractWorldEntity::Update(int32)
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("AbstractRoomUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("AbstractRoomUpdateIL exception: " + ex?.ToString());
                 return;
             }
 
@@ -117,7 +117,7 @@ namespace MouseDrag
             try {
                 c.GotoPrev(MoveType.Before, i => i.MatchLdarg(0));
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("AbstractRoomUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("AbstractRoomUpdateIL exception: " + ex?.ToString());
                 return;
             }
 
@@ -213,7 +213,7 @@ namespace MouseDrag
                     i => i.MatchCallvirt<ProcessManager.MenuSetup>("get_FastTravelInitCondition")
                 );
             } catch (Exception ex) {
-                Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex.ToString());
+                Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex?.ToString());
                 failed = true;
             }
             if (failed) {
@@ -227,7 +227,7 @@ namespace MouseDrag
                         i => i.MatchStloc(1)
                     );
                 } catch (Exception ex) {
-                    Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex.ToString());
+                    Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex?.ToString());
                     return;
                 }
             }

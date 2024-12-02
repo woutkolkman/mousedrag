@@ -91,8 +91,8 @@ namespace MouseDrag
                             object value = null;
                             try {
                                 value = fieldInfo != null ? fieldInfo.GetValue(element) : propertyInfo.GetValue(element, null);
-                            } catch (Exception e) { //added exception handler
-                                Plugin.Logger.LogWarning("Info.ObjectDumper.DumpElement exception while getting field or property info for a member: " + e.ToString());
+                            } catch (Exception ex) { //added exception handler
+                                Plugin.Logger.LogWarning("Info.ObjectDumper.DumpElement exception while getting field or property info for a member: " + ex?.ToString());
                             }
                             if (type.IsValueType || type == typeof(string)) {
                                 Write("{0}: {1}", memberInfo.Name, FormatValue(value));

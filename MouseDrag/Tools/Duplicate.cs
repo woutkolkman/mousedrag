@@ -47,7 +47,7 @@ namespace MouseDrag
                         newApo.ID = obj.room.game.GetNewID();
 
                 } catch (Exception ex) {
-                    Plugin.Logger.LogWarning("DuplicateObject exception: " + ex.ToString());
+                    Plugin.Logger.LogWarning("DuplicateObject exception: " + ex?.ToString());
                     return null;
                 }
                 newApo.pos = coord;

@@ -170,35 +170,31 @@ namespace MouseDrag
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_pause_all")
-            .Help("md_pause_all [position] [types]")
+            .Help("md_pause_all [types] [action]")
             .RunGame((game, args) => {
                 if (args.Length != 2) {
                     DevConsole.GameConsole.WriteLine("Expected 2 arguments");
                     return;
                 }
-                bool creatures = args[1] == "creatures" || args[1] == "objects";
-                bool items = args[1] == "items" || args[1] == "objects";
-                if (args[0] == "room") {
-                    Pause.PauseObjects(Drag.MouseCamera(game)?.room, creatures, items);
-                } else if (args[0] == "any") {
-                    if (creatures)
-                        Pause.pauseAllCreatures = true;
-                    if (items)
-                        Pause.pauseAllItems = true;
+                bool creatures = args[0] == "creatures" || args[0] == "objects";
+                bool items = args[0] == "items" || args[0] == "objects";
+                if (args[1] == "toggle") {
+                    if (creatures) Pause.pauseAllCreatures = !Pause.pauseAllCreatures;
+                    if (items) Pause.pauseAllItems = !Pause.pauseAllItems;
+                } else if (args[1] == "on") {
+                    if (creatures) Pause.pauseAllCreatures = true;
+                    if (items) Pause.pauseAllItems = true;
+                } else if (args[1] == "off") {
+                    if (creatures) Pause.pauseAllCreatures = false;
+                    if (items) Pause.pauseAllItems = false;
                 } else {
                     DevConsole.GameConsole.WriteLine("Unknown argument(s)");
                 }
             })
             .AutoComplete(args => {
-                if (args.Length == 0) return new string[] { "room", "any" };
-                if (args.Length == 1) return new string[] { "creatures", "items", "objects" };
+                if (args.Length == 0) return new string[] { "creatures", "items", "objects" };
+                if (args.Length == 1) return new string[] { "on", "off", "toggle" };
                 return null;
-            })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_unpause_all")
-            .Run((args) => {
-                Pause.UnpauseAll();
             })
             .Register();
 
@@ -304,6 +300,7 @@ namespace MouseDrag
                         bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk ?? bc;
                     Forcefield.ToggleForcefield(bc);
                 }
+                //TODO when toggling forcefield, do all bodychunks for this object
             })
             .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
             .Register();
@@ -376,6 +373,7 @@ namespace MouseDrag
                         bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk ?? bc;
                     Lock.ToggleLock(bc);
                 }
+                //TODO when unlocking, unlock all bodychunks of this object
             })
             .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
             .Register();

@@ -98,11 +98,9 @@ namespace MouseDrag
                 menu.labelText = lowPrioText;
             } else if (menu.followChunk?.owner != null) {
                 menu.labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
-                var apo = menu.followChunk.owner.abstractPhysicalObject;
-                if (apo is AbstractCreature)
-                    menu.labelText = (apo as AbstractCreature).creatureTemplate?.name + " " + apo.ID.ToString();
-                if (apo != null && !(apo is AbstractCreature))
-                    menu.labelText = apo.type?.ToString() + " " + apo.ID.ToString();
+                string text = Special.ConsistentName(menu.followChunk.owner.abstractPhysicalObject);
+                if (!string.IsNullOrEmpty(text))
+                    menu.labelText = text;
             } else if (!string.IsNullOrEmpty(menu.roomName)) {
                 menu.labelText = menu.roomName;
             } else {
@@ -460,7 +458,7 @@ namespace MouseDrag
                 if (Options.clipboardMenu?.Value != false) {
                     string tooltip = "Paste";
                     if (Clipboard.cutObjects.Count > 0)
-                        tooltip += " " + Clipboard.cutObjects[Clipboard.cutObjects.Count - 1]?.realizedObject?.ToString();
+                        tooltip += " " + Special.ConsistentName(Clipboard.cutObjects[Clipboard.cutObjects.Count - 1]);
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragPaste",
                         tooltip = tooltip,

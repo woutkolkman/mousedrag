@@ -14,7 +14,7 @@ namespace MouseDrag
                 return;
 
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("CutObject: " + obj.abstractPhysicalObject);
+                Plugin.Logger.LogDebug("CutObject: " + Special.ConsistentName(obj.abstractPhysicalObject));
 
             cutObjects.Add(obj.abstractPhysicalObject);
 
@@ -73,7 +73,7 @@ namespace MouseDrag
             AbstractPhysicalObject apo = cutObjects.Pop();
 
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("PasteObject: " + apo?.ToString());
+                Plugin.Logger.LogDebug("PasteObject: " + Special.ConsistentName(apo));
 
             if (apo == null)
                 return;

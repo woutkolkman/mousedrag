@@ -217,52 +217,44 @@ namespace MouseDrag
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_clipboard")
-            .Run((args) => {
-                foreach (var obj in Clipboard.cutObjects)
-                    DevConsole.GameConsole.WriteLine(obj?.ToString());
-            })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_clipboard_cut")
-            .Help("md_clipboard_cut [selector]")
+            .Help("md_clipboard [action?] [selector?/pos?]")
             .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                if (args.Length == 0) {
+                    foreach (AbstractPhysicalObject apo in Clipboard.cutObjects)
+                        DevConsole.GameConsole.WriteLine(Special.ConsistentName(apo));
                     return;
                 }
-                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
-                for (int i = list.Count() - 1; i >= 0; i--)
-                    Clipboard.CutObject(list.ElementAt(i)?.realizedObject);
-            })
-            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_clipboard_copy")
-            .Help("md_clipboard_copy [selector]")
-            .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                if (args.Length != 2) {
+                    DevConsole.GameConsole.WriteLine("Expected 0 or 2 arguments");
                     return;
                 }
-                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
-                for (int i = list.Count() - 1; i >= 0; i--)
-                    Clipboard.CopyObject(list.ElementAt(i)?.realizedObject);
-            })
-            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_clipboard_paste")
-            .Help("md_clipboard_paste [pos]")
-            .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
-                    return;
+                if (args[0] == "cut") {
+                    var list = DevConsole.Selection.SelectAbstractObjects(game, args[1]);
+                    for (int i = list.Count() - 1; i >= 0; i--)
+                        Clipboard.CutObject(list.ElementAt(i)?.realizedObject);
+                } else if (args[0] == "copy") {
+                    var list = DevConsole.Selection.SelectAbstractObjects(game, args[1]);
+                    for (int i = list.Count() - 1; i >= 0; i--)
+                        Clipboard.CopyObject(list.ElementAt(i)?.realizedObject);
+                } else if (args[0] == "paste") {
+                    if (!DevConsole.Positioning.TryGetPosition(game, args[1], out var pos) || pos.Room?.realizedRoom == null)
+                        return;
+                    Clipboard.PasteObject(game, pos.Room.realizedRoom, pos.Room.realizedRoom.GetWorldCoordinate(pos.Pos));
+                } else {
+                    DevConsole.GameConsole.WriteLine("Unknown argument(s)");
                 }
-                if (!DevConsole.Positioning.TryGetPosition(game, args[0], out var pos) || pos.Room?.realizedRoom == null)
-                    return;
-                Clipboard.PasteObject(game, pos.Room.realizedRoom, pos.Room.realizedRoom.GetWorldCoordinate(pos.Pos));
             })
-            .AutoComplete(new string[][]{ DevConsole.Positioning.Autocomplete })
+            .AutoComplete(args => {
+                if (args.Length == 0) return new string[] { "cut", "copy", "paste" };
+                if (args.Length == 1) {
+                    if (args[0] == "cut" || args[0] == "copy") {
+                        return DevConsole.Selection.Autocomplete;
+                    } else if (args[0] == "paste") {
+                        return DevConsole.Positioning.Autocomplete;
+                    }
+                }
+                return null;
+            })
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_safari_toggle")

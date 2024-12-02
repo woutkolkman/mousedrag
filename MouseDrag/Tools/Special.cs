@@ -25,5 +25,16 @@
                 Plugin.Logger.LogDebug("ActivateRegionRooms, region: " + self.world.name + 
                     ", newly activated room count: " + newR + ", total room count: " + totR);
         }
+
+
+        //abstract creature and abstract item printed with same format
+        public static string ConsistentName(AbstractPhysicalObject apo)
+        {
+            if (apo is AbstractCreature)
+                return (apo as AbstractCreature).creatureTemplate?.name + " " + apo.ID.ToString();
+            if (apo != null && !(apo is AbstractCreature))
+                return apo.type?.ToString() + " " + apo.ID.ToString();
+            return string.Empty;
+        }
     }
 }

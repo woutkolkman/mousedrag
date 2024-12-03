@@ -49,7 +49,7 @@ namespace MouseDrag
             if (shouldPause && apo.timeSpentHere == 0) {
                 apo.timeSpentHere++;
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("IsObjectPaused, updating object " + apo.ID.ToString() + " once before pausing");
+                    Plugin.Logger.LogDebug("IsObjectPaused, updating object " + Special.ConsistentName(apo) + " once before pausing");
                 return false;
             }
             return shouldPause;

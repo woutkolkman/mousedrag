@@ -339,23 +339,31 @@ namespace MouseDrag
             .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
             .Register();
 
-            new DevConsole.Commands.CommandBuilder("md_stun_toggle")
-            .Help("md_stun_toggle [selector]")
+            new DevConsole.Commands.CommandBuilder("md_stun")
+            .Help("md_stun [selector] [action]")
             .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                if (args.Length != 2) {
+                    DevConsole.GameConsole.WriteLine("Expected 2 arguments");
                     return;
                 }
                 var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
-                for (int i = list.Count() - 1; i >= 0; i--)
-                    Stun.ToggleStunObject(list.ElementAt(i)?.realizedObject);
+                if (args[1] == "toggle") {
+                    for (int i = list.Count() - 1; i >= 0; i--)
+                        Stun.StunObject(list.ElementAt(i), toggle: true, apply: true);
+                } else if (args[1] == "on") {
+                    for (int i = list.Count() - 1; i >= 0; i--)
+                        Stun.StunObject(list.ElementAt(i), toggle: false, apply: true);
+                } else if (args[1] == "off") {
+                    for (int i = list.Count() - 1; i >= 0; i--)
+                        Stun.StunObject(list.ElementAt(i), toggle: false, apply: false);
+                } else {
+                    DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                }
             })
-            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_unstun_all")
-            .Run((args) => {
-                Stun.UnstunAll();
+            .AutoComplete(args => {
+                if (args.Length == 0) return DevConsole.Selection.Autocomplete;
+                if (args.Length == 1) return new string[] { "on", "off", "toggle" };
+                return null;
             })
             .Register();
 

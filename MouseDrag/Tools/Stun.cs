@@ -43,19 +43,21 @@ namespace MouseDrag
         }
 
 
-        public static void ToggleStunObject(PhysicalObject obj)
+        public static void StunObject(AbstractPhysicalObject apo, bool toggle, bool apply)
         {
-            if (obj?.abstractPhysicalObject == null)
+            if (apo?.type == null)
                 return;
-            if (!(obj is Oracle) && !(obj is Creature))
+            if (apo.type != AbstractPhysicalObject.AbstractObjectType.Oracle && 
+                apo.type != AbstractPhysicalObject.AbstractObjectType.Creature)
                 return;
-            AbstractPhysicalObject c = (obj as PhysicalObject).abstractPhysicalObject;
 
-            if (stunnedObjects.Contains(c)) {
-                stunnedObjects.Remove(c);
-            } else {
-                stunnedObjects.Add(c);
-            }
+            bool contains = stunnedObjects.Contains(apo);
+            if (contains)
+                if (toggle || (!toggle && !apply))
+                    stunnedObjects.Remove(apo);
+            if (!contains)
+                if (toggle || (!toggle && apply))
+                    stunnedObjects.Add(apo);
         }
 
 

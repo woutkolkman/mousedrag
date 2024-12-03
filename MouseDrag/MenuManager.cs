@@ -186,7 +186,7 @@ namespace MouseDrag
                     case "mousedragHeart":          Tame.TameCreature(game, chunk.owner); break;
                     case "mousedragUnheart":        Tame.ClearRelationships(chunk.owner); break;
                     case "mousedragStun":
-                    case "mousedragUnstun":         Stun.ToggleStunObject(chunk.owner); break;
+                    case "mousedragUnstun":         Stun.StunObject(chunk.owner.abstractPhysicalObject, toggle: true, apply: true); break;
                     case "mousedragDestroy":        Destroy.DestroyObject(chunk.owner); break;
                     case "mousedragLocked":
                     case "mousedragUnlocked":       Lock.ToggleLock(chunk); break;

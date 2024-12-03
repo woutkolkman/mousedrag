@@ -104,7 +104,7 @@ namespace MouseDrag
                 Tame.ClearRelationships(Drag.MouseCamera(self)?.room);
 
             if (Options.stunOneKey?.Value != null && Input.GetKeyDown(Options.stunOneKey.Value))
-                Stun.ToggleStunObject(Drag.dragChunk?.owner);
+                Stun.StunObject(Drag.dragChunk?.owner?.abstractPhysicalObject, toggle: true, apply: true);
 
             if (Options.stunRoomKey?.Value != null && Input.GetKeyDown(Options.stunRoomKey.Value))
                 Stun.StunObjects(Drag.MouseCamera(self)?.room);

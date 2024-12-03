@@ -182,7 +182,7 @@ namespace MouseDrag
                         break;
                     case "mousedragUncontrol":      Control.ToggleControl(game, chunk.owner as Creature); break;
                     case "mousedragForceFieldOn":
-                    case "mousedragForceFieldOff":  Forcefield.ToggleForcefield(chunk); break;
+                    case "mousedragForceFieldOff":  Forcefield.SetForcefield(chunk, toggle: true, apply: true); break;
                     case "mousedragHeart":          Tame.TameCreature(game, chunk.owner); break;
                     case "mousedragUnheart":        Tame.ClearRelationships(chunk.owner); break;
                     case "mousedragStun":

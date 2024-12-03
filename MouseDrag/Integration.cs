@@ -286,11 +286,11 @@ namespace MouseDrag
             })
             .Register();
 
-            new DevConsole.Commands.CommandBuilder("md_forcefield_toggle")
-            .Help("md_forcefield_toggle [selector]")
+            new DevConsole.Commands.CommandBuilder("md_forcefield")
+            .Help("md_forcefield [selector] [action]")
             .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                if (args.Length != 2) {
+                    DevConsole.GameConsole.WriteLine("Expected 2 arguments");
                     return;
                 }
                 var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
@@ -298,16 +298,23 @@ namespace MouseDrag
                     BodyChunk bc = list.ElementAt(i)?.realizedObject?.firstChunk;
                     if (list.ElementAt(i)?.realizedObject is Creature)
                         bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk ?? bc;
-                    Forcefield.ToggleForcefield(bc);
+                    if (args[1] == "toggle") {
+                        Forcefield.SetForcefield(bc, toggle: true, apply: true);
+                    } else if (args[1] == "on") {
+                        Forcefield.SetForcefield(bc, toggle: false, apply: true);
+                    } else if (args[1] == "off") {
+                        Forcefield.SetForcefield(bc, toggle: false, apply: false);
+                    } else {
+                        DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                        break;
+                    }
                 }
                 //TODO when toggling forcefield, do all bodychunks for this object
             })
-            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_forcefield_clear_all")
-            .Run((args) => {
-                Forcefield.ClearForcefields();
+            .AutoComplete(args => {
+                if (args.Length == 0) return DevConsole.Selection.Autocomplete;
+                if (args.Length == 1) return new string[] { "on", "off", "toggle" };
+                return null;
             })
             .Register();
 

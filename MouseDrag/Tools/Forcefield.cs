@@ -60,16 +60,18 @@ namespace MouseDrag
         }
 
 
-        public static void ToggleForcefield(BodyChunk bodyChunk)
+        public static void SetForcefield(BodyChunk bodyChunk, bool toggle, bool apply)
         {
             if (bodyChunk?.owner == null)
                 return;
 
-            if (forcefieldChunks.Contains(bodyChunk)) {
-                forcefieldChunks.Remove(bodyChunk);
-            } else {
-                forcefieldChunks.Add(bodyChunk);
-            }
+            bool contains = forcefieldChunks.Contains(bodyChunk);
+            if (contains)
+                if (toggle || (!toggle && !apply))
+                    forcefieldChunks.Remove(bodyChunk);
+            if (!contains)
+                if (toggle || (!toggle && apply))
+                    forcefieldChunks.Add(bodyChunk);
         }
 
 

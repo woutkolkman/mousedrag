@@ -89,7 +89,7 @@ namespace MouseDrag
             }
 
             if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
-                Forcefield.ToggleForcefield(Drag.dragChunk);
+                Forcefield.SetForcefield(Drag.dragChunk, toggle: true, apply: true);
 
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 Tame.TameCreature(self, Drag.dragChunk?.owner);

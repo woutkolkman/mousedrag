@@ -305,6 +305,8 @@ namespace MouseDrag
                             bcs = new BodyChunk[] { (list.ElementAt(i).realizedObject as Creature).mainBodyChunk };
                     } else if (args[2] == "first") {
                         bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
+                    } else if (args[2] == "random") {
+                        bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.RandomChunk };
                     } else if (args[2] == "all") {
                         bcs = list.ElementAt(i).realizedObject.bodyChunks;
                     } else if (int.TryParse(args[2], out int bcI)) {
@@ -336,7 +338,7 @@ namespace MouseDrag
             .AutoComplete(args => {
                 if (args.Length == 0) return DevConsole.Selection.Autocomplete;
                 if (args.Length == 1) return new string[] { "on", "off", "toggle" };
-                if (args.Length == 2) return new string[] { "first", "main", "all" };
+                if (args.Length == 2) return new string[] { "main", "first", "random", "all" };
                 return null;
             })
             .Register();
@@ -416,6 +418,8 @@ namespace MouseDrag
                             bcs = new BodyChunk[] { (list.ElementAt(i).realizedObject as Creature).mainBodyChunk };
                     } else if (args[2] == "first") {
                         bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
+                    } else if (args[2] == "random") {
+                        bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.RandomChunk };
                     } else if (args[2] == "all") {
                         bcs = list.ElementAt(i).realizedObject.bodyChunks;
                     } else if (int.TryParse(args[2], out int bcI)) {
@@ -447,7 +451,7 @@ namespace MouseDrag
             .AutoComplete(args => {
                 if (args.Length == 0) return DevConsole.Selection.Autocomplete;
                 if (args.Length == 1) return new string[] { "on", "off", "toggle" };
-                if (args.Length == 2) return new string[] { "main", "first", "all" };
+                if (args.Length == 2) return new string[] { "main", "first", "random", "all" };
                 return null;
             })
             .Register();

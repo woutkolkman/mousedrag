@@ -397,28 +397,58 @@ namespace MouseDrag
             })
             .Register();
 
-            new DevConsole.Commands.CommandBuilder("md_lock_toggle")
-            .Help("md_lock_toggle [selector]")
+            new DevConsole.Commands.CommandBuilder("md_lock")
+            .Help("md_lock [selector] [action] [bodychunk?]")
             .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                if (args.Length < 2 || args.Length > 3) {
+                    DevConsole.GameConsole.WriteLine("Expected 2 or 3 arguments");
                     return;
                 }
                 var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
                 for (int i = list.Count() - 1; i >= 0; i--) {
-                    BodyChunk bc = list.ElementAt(i)?.realizedObject?.firstChunk;
-                    if (list.ElementAt(i)?.realizedObject is Creature)
-                        bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk ?? bc;
-                    Lock.ToggleLock(bc);
+                    if (list.ElementAt(i)?.realizedObject?.bodyChunks == null)
+                        continue;
+                    BodyChunk[] bcs = null;
+                    if (args.Length < 3 || args[2] == "main") {
+                        bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
+                        if (list.ElementAt(i).realizedObject is Creature && 
+                            (list.ElementAt(i).realizedObject as Creature).mainBodyChunk != null)
+                            bcs = new BodyChunk[] { (list.ElementAt(i).realizedObject as Creature).mainBodyChunk };
+                    } else if (args[2] == "first") {
+                        bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
+                    } else if (args[2] == "all") {
+                        bcs = list.ElementAt(i).realizedObject.bodyChunks;
+                    } else if (int.TryParse(args[2], out int bcI)) {
+                        if (bcI >= 0 && bcI < list.ElementAt(i).realizedObject.bodyChunks.Length) {
+                            bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.bodyChunks[bcI] };
+                        } else {
+                            DevConsole.GameConsole.WriteLine("BodyChunk with index " + bcI + " does not exist for " + Special.ConsistentName(list.ElementAt(i)));
+                            continue;
+                        }
+                    } else {
+                        DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                        break;
+                    }
+                    if (args[1] != "toggle" && args[1] != "on" && args[1] != "off") {
+                        DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                        break;
+                    }
+                    for (int j = 0; j < bcs?.Length; j++) {
+                        if (args[1] == "toggle") {
+                            Lock.SetLock(bcs[j], toggle: true, apply: true);
+                        } else if (args[1] == "on") {
+                            Lock.SetLock(bcs[j], toggle: false, apply: true);
+                        } else if (args[1] == "off") {
+                            Lock.SetLock(bcs[j], toggle: false, apply: false);
+                        }
+                    }
                 }
-                //TODO when unlocking, unlock all bodychunks of this object
             })
-            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
-            .Register();
-
-            new DevConsole.Commands.CommandBuilder("md_lock_clear_all")
-            .Run((args) => {
-                Lock.bodyChunks.Clear();
+            .AutoComplete(args => {
+                if (args.Length == 0) return DevConsole.Selection.Autocomplete;
+                if (args.Length == 1) return new string[] { "on", "off", "toggle" };
+                if (args.Length == 2) return new string[] { "main", "first", "all" };
+                return null;
             })
             .Register();
 

@@ -19,15 +19,18 @@ namespace MouseDrag
         }
 
 
-        public static void ToggleLock(BodyChunk bc)
+        public static void SetLock(BodyChunk bc, bool toggle, bool apply)
         {
             if (bc == null)
                 return;
-            if (ListContains(bc) == null) {
-                bodyChunks.Add(new KeyValuePair<BodyChunk, Vector2>(bc, bc.pos));
-            } else {
-                ListRemove(bc);
-            }
+
+            bool contains = ListContains(bc) != null;
+            if (contains)
+                if (toggle || (!toggle && !apply))
+                    ListRemove(bc);
+            if (!contains)
+                if (toggle || (!toggle && apply))
+                    bodyChunks.Add(new KeyValuePair<BodyChunk, Vector2>(bc, bc.pos));
         }
 
 
@@ -58,7 +61,7 @@ namespace MouseDrag
             if (bc == null)
                 return;
             if (ListRemove(bc))
-                ToggleLock(bc);
+                SetLock(bc, toggle: false, apply: true);
         }
     }
 }

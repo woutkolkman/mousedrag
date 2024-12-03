@@ -137,7 +137,7 @@ namespace MouseDrag
                 Destroy.DestroyObjects(Drag.MouseCamera(self)?.room, creatures: true, items: false, onlyDead: true);
 
             if (Options.lockKey?.Value != null && Input.GetKeyDown(Options.lockKey.Value))
-                Lock.ToggleLock(Drag.dragChunk);
+                Lock.SetLock(Drag.dragChunk, toggle: true, apply: true);
 
             if (Options.copySelectorKey?.Value != null && Input.GetKeyDown(Options.copySelectorKey.Value) && Integration.devConsoleEnabled) {
                 try {

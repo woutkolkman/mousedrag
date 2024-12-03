@@ -189,7 +189,7 @@ namespace MouseDrag
                     case "mousedragUnstun":         Stun.StunObject(chunk.owner.abstractPhysicalObject, toggle: true, apply: true); break;
                     case "mousedragDestroy":        Destroy.DestroyObject(chunk.owner); break;
                     case "mousedragLocked":
-                    case "mousedragUnlocked":       Lock.ToggleLock(chunk); break;
+                    case "mousedragUnlocked":       Lock.SetLock(chunk, toggle: true, apply: true); break;
                     case "mousedragCLI":
                         if (!Integration.devConsoleEnabled)
                             break;

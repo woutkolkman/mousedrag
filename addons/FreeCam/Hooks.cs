@@ -30,9 +30,10 @@
         //initialize options & load sprites
         static void RainWorldOnModsInitHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
         {
+            //hook gets called (for this mod) only when not using Rain Reloader
+
             orig(self);
 
-            //hook gets called (for this mod) only when not using Rain Reloader
             Plugin.Logger.LogDebug("RainWorldOnModsInitHook, first time initializing options interface");
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
         }
@@ -41,10 +42,10 @@
         //after mods initialized
         static void RainWorldPostModsInitHook(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
+            //hook gets called (for this mod) only when not using Rain Reloader
+
             orig(self);
 
-            //hook gets called (for this mod) only when not using Rain Reloader
-            Integration.RefreshActiveMods();
             Integration.Hooks.Apply();
         }
 

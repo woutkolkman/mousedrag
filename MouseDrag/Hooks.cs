@@ -52,9 +52,10 @@ namespace MouseDrag
         //initialize options & load sprites
         static void RainWorldOnModsInitHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
         {
+            //hook gets called (for this mod) only when not using Rain Reloader
+
             orig(self);
 
-            //hook gets called (for this mod) only when not using Rain Reloader
             Plugin.Logger.LogDebug("RainWorldOnModsInitHook, first time initializing options interface and sprites");
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
             MenuManager.LoadSprites();

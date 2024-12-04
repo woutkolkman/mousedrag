@@ -34,7 +34,6 @@ namespace FreeCam
                 Plugin.Logger.LogDebug("OnEnable, re-initializing options interface and sprites");
                 MachineConnector.SetRegisteredOI(GUID, new Options());
                 MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
-                Integration.RefreshActiveMods();
                 Integration.Hooks.Apply();
             }
 

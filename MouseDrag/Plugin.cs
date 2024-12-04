@@ -35,7 +35,6 @@ namespace MouseDrag
                 MachineConnector.SetRegisteredOI(GUID, new Options());
                 MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
                 MenuManager.LoadSprites();
-                Integration.RefreshActiveMods();
                 if (Integration.devConsoleEnabled) {
                     try {
                         Integration.DevConsoleRegisterCommands();

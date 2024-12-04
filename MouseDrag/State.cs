@@ -64,13 +64,16 @@ namespace MouseDrag
                 Cursor.visible = true;
                 State.prevMousePos = Vector2.zero;
             }
+
+            if (Options.deactivateEveryRestart?.Value != false)
+                State.activated = false;
         }
 
 
-        public static void GameStarted()
+        public static void InitEnums() //is called via Options EventHandler
         {
-            if (Options.deactivateEveryRestart?.Value != false)
-                State.activated = false;
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("State.InitEnums called");
 
             //read enum settings from config
             if (Options.activateType?.Value != null)

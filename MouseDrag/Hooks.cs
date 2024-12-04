@@ -16,9 +16,6 @@ namespace MouseDrag
             //after mods initialized
             On.RainWorld.PostModsInit += RainWorldPostModsInitHook;
 
-            //at new game
-            On.RainWorldGame.ctor += RainWorldGameCtorHook;
-
             //at hibernate etc.
             On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
 
@@ -43,7 +40,6 @@ namespace MouseDrag
         {
             On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
-            On.RainWorldGame.ctor -= RainWorldGameCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
             On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
@@ -68,10 +64,9 @@ namespace MouseDrag
         //after mods initialized
         static void RainWorldPostModsInitHook(On.RainWorld.orig_PostModsInit orig, RainWorld self)
         {
-            orig(self);
-
             //hook gets called (for this mod) only when not using Rain Reloader
-            Integration.RefreshActiveMods();
+
+            orig(self);
 
             if (Integration.devConsoleEnabled) {
                 try {
@@ -84,23 +79,6 @@ namespace MouseDrag
         }
 
 
-        //at new game
-        static void RainWorldGameCtorHook(On.RainWorldGame.orig_ctor orig, RainWorldGame self, ProcessManager manager)
-        {
-            orig(self, manager);
-
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("RainWorldGameCtorHook, resetting values");
-            Pause.UnpauseAll();
-            Stun.UnstunAll();
-            Forcefield.ClearForcefields();
-            Control.ReleaseControlAll();
-            Gravity.gravityType = Gravity.GravityTypes.None;
-            Lock.bodyChunks.Clear();
-            State.GameStarted();
-        }
-
-
         //at hibernate etc.
         static void RainWorldGameShutDownProcessHook(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
         {
@@ -108,6 +86,15 @@ namespace MouseDrag
             MenuManager.menu?.Destroy();
             MenuManager.menu = null;
             State.GameEnded();
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("RainWorldGameShutDownProcessHook, resetting values");
+            Pause.UnpauseAll();
+            Stun.UnstunAll();
+            Forcefield.ClearForcefields();
+            Control.ReleaseControlAll();
+            Gravity.gravityType = Gravity.GravityTypes.None;
+            Lock.bodyChunks.Clear();
         }
 
 

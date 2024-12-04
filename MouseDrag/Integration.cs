@@ -12,8 +12,11 @@ namespace MouseDrag
         public static bool devConsoleEnabled = false;
 
 
-        public static void RefreshActiveMods()
+        public static void RefreshActiveMods() //is called via Options EventHandler
         {
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Integration.RefreshActiveMods called");
+
             //check if mods are enabled
             for (int i = 0; i < ModManager.ActiveMods.Count; i++) {
                 if (ModManager.ActiveMods[i].id == "fyre.BeastMaster")

@@ -233,6 +233,7 @@ namespace MouseDrag
             //refresh activated mods when config changes
             var onConfigChanged = typeof(OptionInterface).GetEvent("OnConfigChanged");
             onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(Integration).GetMethod("RefreshActiveMods")));
+            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(State).GetMethod("InitEnums")));
         }
 
 

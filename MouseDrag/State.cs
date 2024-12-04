@@ -55,6 +55,18 @@ namespace MouseDrag
         }
 
 
+        public static void GamePaused()
+        {
+            //prevent invisible mouse in pause menu, also if ForceInvisible is used while Rain World cursor is also invisible
+            if (State.winCursorVisType != Options.CursorVisibilityTypes.NoChanges && 
+                (State.winCursorVisType != Options.CursorVisibilityTypes.ForceInvisible || Options.disVnlCursor?.Value != false))
+            {
+                Cursor.visible = true;
+                State.prevMousePos = Vector2.zero;
+            }
+        }
+
+
         public static void GameEnded()
         {
             //prevent invisible mouse in main menu, also if ForceInvisible is used while Rain World cursor is also invisible

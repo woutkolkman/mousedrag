@@ -13,6 +13,9 @@
             //at new game
             On.RainWorldGame.ctor += RainWorldGameCtorHook;
 
+            //at pause game
+            On.Menu.PauseMenu.ctor += MenuPauseMenuCtorHook;
+
             //at hibernate etc.
             On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
         }
@@ -23,6 +26,7 @@
             On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
             On.RainWorldGame.ctor -= RainWorldGameCtorHook;
+            On.Menu.PauseMenu.ctor -= MenuPauseMenuCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
         }
 
@@ -59,12 +63,20 @@
         }
 
 
+        //at pause game
+        static void MenuPauseMenuCtorHook(On.Menu.PauseMenu.orig_ctor orig, Menu.PauseMenu self, ProcessManager manager, RainWorldGame game)
+        {
+            orig(self, manager, game);
+            Cursor.NoUpdateShow();
+        }
+
+
         //at hibernate etc.
         static void RainWorldGameShutDownProcessHook(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
         {
             orig(self);
             FreeCamManager.Deinit();
-            Cursor.Deinit();
+            Cursor.NoUpdateShow();
         }
     }
 }

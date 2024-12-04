@@ -16,6 +16,9 @@ namespace MouseDrag
             //after mods initialized
             On.RainWorld.PostModsInit += RainWorldPostModsInitHook;
 
+            //at pause game
+            On.Menu.PauseMenu.ctor += MenuPauseMenuCtorHook;
+
             //at hibernate etc.
             On.RainWorldGame.ShutDownProcess += RainWorldGameShutDownProcessHook;
 
@@ -40,6 +43,7 @@ namespace MouseDrag
         {
             On.RainWorld.OnModsInit -= RainWorldOnModsInitHook;
             On.RainWorld.PostModsInit -= RainWorldPostModsInitHook;
+            On.Menu.PauseMenu.ctor -= MenuPauseMenuCtorHook;
             On.RainWorldGame.ShutDownProcess -= RainWorldGameShutDownProcessHook;
             On.Creature.SafariControlInputUpdate -= CreatureSafariControlInputUpdateHook;
             On.RoomCamera.ApplyPositionChange -= RoomCameraApplyPositionChangeHook;
@@ -77,6 +81,14 @@ namespace MouseDrag
                     Integration.devConsoleEnabled = false;
                 }
             }
+        }
+
+
+        //at pause game
+        static void MenuPauseMenuCtorHook(On.Menu.PauseMenu.orig_ctor orig, Menu.PauseMenu self, ProcessManager manager, RainWorldGame game)
+        {
+            orig(self, manager, game);
+            State.GamePaused();
         }
 
 

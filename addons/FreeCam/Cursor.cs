@@ -47,9 +47,9 @@ namespace FreeCam
         }
 
 
-        public static void Deinit()
+        public static void NoUpdateShow()
         {
-            //prevent invisible mouse in main menu, also if ForceInvisible is used while Rain World cursor is also invisible
+            //prevent invisible mouse in main menu
             if (winCursorVisType != Options.CursorVisibilityTypes.NoChanges) {
                 UnityEngine.Cursor.visible = true;
                 prevMousePos = Vector2.zero;

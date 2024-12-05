@@ -13,7 +13,7 @@ namespace FreeCam
         public static Configurable<KeyCode> up, right, down, left;
         public static Configurable<string> winCursorVisType;
         public static Configurable<bool> logDebug;
-        public static Configurable<bool> splitScreenCoopIntegration, sBCameraScrollIntegration, mouseDragIntegration;
+        public static Configurable<bool> splitScreenCoopIntegration, sBCameraScrollIntegration, mouseDragIntegration, devConsoleIntegration;
 
         public int curTab;
 
@@ -43,6 +43,7 @@ namespace FreeCam
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, multiple cameras are supported.", null, "", "SplitScreen Co-op integration"));
             sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, alternative camera zoom and camera scrolling are supported. Requires restart.", null, "", "SBCameraScroll integration"));
             mouseDragIntegration = config.Bind(nameof(mouseDragIntegration), defaultValue: true, new ConfigurableInfo("If Mouse Drag is enabled, a new slot is added to the radial menu. Requires restart.", null, "", "Mouse Drag integration"));
+            devConsoleIntegration = config.Bind(nameof(devConsoleIntegration), defaultValue: true, new ConfigurableInfo("If Dev Console is enabled, additional commands are available via the console. Requires restart.\nAll commands added by " + Plugin.Name + " start with \"fc_\".", null, "", "Dev Console integration"));
 
             //refresh activated mods when config changes
             var onConfigChanged = typeof(OptionInterface).GetEvent("OnConfigChanged");
@@ -82,6 +83,7 @@ namespace FreeCam
             AddCheckbox(splitScreenCoopIntegration, new Vector2(x, y -= sepr));
             AddCheckbox(sBCameraScrollIntegration, new Vector2(x, y -= sepr));
             AddCheckbox(mouseDragIntegration, new Vector2(x, y -= sepr));
+            AddCheckbox(devConsoleIntegration, new Vector2(x, y -= sepr));
         }
 
 

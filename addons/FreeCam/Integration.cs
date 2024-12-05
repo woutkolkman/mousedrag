@@ -13,6 +13,7 @@ namespace FreeCam
         public static bool sBCameraScrollEnabled = false;
         public static bool mouseDragEnabled = false;
         public static bool jollyCoopEnabled = false;
+        public static bool devConsoleEnabled = false;
 
 
         public static void RefreshActiveMods() //is called via Options EventHandler
@@ -30,6 +31,8 @@ namespace FreeCam
                     mouseDragEnabled = Options.mouseDragIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "jollycoop")
                     jollyCoopEnabled = true;
+                if (ModManager.ActiveMods[i].id == "slime-cubed.devconsole")
+                    devConsoleEnabled = Options.devConsoleIntegration?.Value ?? true;
             }
         }
 
@@ -150,6 +153,43 @@ namespace FreeCam
             //also write SBCameraScroll camera position
             af.last_on_screen_position = rcam.lastPos;
             af.on_screen_position = rcam.pos;
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static void DevConsoleRegisterCommands()
+        {
+            new DevConsole.Commands.CommandBuilder("fc_freecam")
+            .Help("fc_freecam [camera?]")
+            .RunGame((game, args) => {
+                int camNr = 0;
+                if (args.Length > 0) {
+                    if (int.TryParse(args[0], out int temp)) {
+                        camNr = temp;
+                    } else {
+                        DevConsole.GameConsole.WriteLine("Parse camera failed");
+                        return;
+                    }
+                }
+                if (camNr < 0 || camNr >= FreeCamManager.freeCams.Length) {
+                    DevConsole.GameConsole.WriteLine("No FreeCam object initialized for RoomCamera " + camNr + ".");
+                    return;
+                }
+                FreeCamManager.Toggle(game, camNr);
+                if (FreeCamManager.freeCams[camNr].enabled) {
+                    DevConsole.GameConsole.WriteLine("Enabled freecam for RoomCamera " + camNr + ".");
+                } else {
+                    DevConsole.GameConsole.WriteLine("Disabled freecam for RoomCamera " + camNr + ".");
+                }
+            })
+            .AutoComplete(args => {
+                if (args.Length == 0) return new string[] { "0", "1", "2", "3" };
+                return null;
+            })
+            .Register();
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("DevConsoleRegisterCommands, finished registration of commands");
         }
 
 

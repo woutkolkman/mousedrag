@@ -37,17 +37,23 @@ namespace FreeCam
 
 
         //toggle FreeCam for the RoomCamera the mouse is currently hovering over
-        public static void Toggle(RainWorldGame game)
+        public static void Toggle(RainWorldGame game, int cameraNumber = -1)
         {
-            RoomCamera rcam = Cursor.MouseCamera(game);
-            if (rcam == null)
-                return;
-            if (!(rcam.cameraNumber < freeCams.Length)) {
+            int camNr;
+            if (cameraNumber >= 0) {
+                camNr = cameraNumber;
+            } else {
+                RoomCamera rcam = Cursor.MouseCamera(game);
+                if (rcam == null)
+                    return;
+                camNr = rcam.cameraNumber;
+            }
+            if (!(camNr < freeCams.Length)) {
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("FreeCamManager.Toggle, no FreeCam for RoomCamera " + rcam.cameraNumber);
+                    Plugin.Logger.LogDebug("FreeCamManager.Toggle, no FreeCam for RoomCamera " + camNr);
                 return;
             }
-            freeCams[rcam.cameraNumber].Toggle();
+            freeCams[camNr].Toggle();
         }
 
 

@@ -35,6 +35,14 @@ namespace FreeCam
                 MachineConnector.SetRegisteredOI(GUID, new Options());
                 MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
                 Integration.Hooks.Apply();
+                if (Integration.devConsoleEnabled) {
+                    try {
+                        Integration.DevConsoleRegisterCommands();
+                    } catch (System.Exception ex) {
+                        Plugin.Logger.LogError("OnEnable exception during registration of commands Dev Console, integration is now disabled: " + ex?.ToString());
+                        Integration.devConsoleEnabled = false;
+                    }
+                }
             }
 
             Plugin.Logger.LogInfo("OnEnable called");

@@ -18,7 +18,7 @@ Source code is here: https://github.com/woutkolkman/mousedrag
 - After returning from a safari-controlled creature and the player room was reloaded, you cannot open your map. Jolly Co-op will keep the player's room loaded and prevent this from happening. 
 
 [h3]Reporting[/h3]
-Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord (https://discord.gg/rainworld): Maxi Mol#3079 
+Please report any bug, problem, change or feature request via the Discussions, or message me on the Rain World Discord ( https://discord.gg/rainworld ): @.maximol 
 If reporting a problem, also include the steps to recreate it & the following file(s): 
 - "exceptionLog.txt" (C:\Program Files (x86)\Steam\steamapps\common\Rain World\exceptionLog.txt) 
 - "LogOutput.txt" (C:\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\LogOutput.txt) 

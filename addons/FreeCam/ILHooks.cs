@@ -313,12 +313,47 @@ namespace FreeCam
         static void RainWorldGameUpdateIL(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            c.Emit(OpCodes.Ldarg_0);
+
+            //move cursor somewhere after room update loop
+            bool failed = false;
+            try {
+                c.GotoNext(MoveType.Before,
+                    //Ldarg_0 (RainWorldGame)
+                    i => i.MatchLdfld<MainLoopProcess>("manager"),
+                    i => i.MatchLdfld<ProcessManager>("menuSetup"),
+                    i => i.MatchCallvirt<ProcessManager.MenuSetup>("get_FastTravelInitCondition")
+                );
+            } catch (Exception ex) {
+                Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex?.ToString());
+                failed = true;
+            }
+            if (failed) {
+                failed = false;
+                if (Options.logDebug?.Value != false)
+                    Plugin.Logger.LogDebug("RainWorldGameUpdateIL, first GotoNext failed, trying to recover");
+                try {
+                    c.GotoNext(MoveType.Before,
+                        //Ldarg_0 (RainWorldGame)
+                        i => i.MatchCall<RainWorldGame>("get_FirstAlivePlayer"),
+                        i => i.MatchStloc(1)
+                    );
+                } catch (Exception ex) {
+                    Plugin.Logger.LogWarning("RainWorldGameUpdateIL exception: " + ex?.ToString());
+                    return;
+                }
+            }
+
+            //use existing Ldarg_0 (RainWorldGame) on stack
             c.EmitDelegate<Action<RainWorldGame>>((self) =>
             {
                 FreeCamManager.Update(self);
                 Cursor.Update(self);
             });
+
+            //emit Ldarg_0 (RainWorldGame) for next statement
+            c.Emit(OpCodes.Ldarg_0);
+
+            //Plugin.Logger.LogDebug(il.ToString());
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("RainWorldGameUpdateIL success");
         }

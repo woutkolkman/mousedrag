@@ -12,6 +12,7 @@ namespace FreeCam
         private RoomCamera rcam;
         private bool moveScreenPressed = false; //immediately move screen after keypress from RawUpdate for Update
         public Vector2? sBCameraScrollNewPos = null; //used to correctly position screen in new room
+        FSprite loadingIndicator = null; //used to show that a room is loading
 
 
         public FreeCam(RoomCamera rcam)
@@ -270,6 +271,13 @@ namespace FreeCam
                 if (Options.logDebug?.Value != false)
                     Plugin.Logger.LogDebug("FreeCam.PipeSelector, realizedRoom still null after ActivateRoom call");
             loadingRoom = destAR.realizedRoom;
+
+            //add visual indicator of room loading
+            loadingIndicator = new FSprite("Menu_Symbol_Repeats") { //failed sprite is Menu_Symbol_Clear_All
+                color = Color.green
+            };
+            loadingIndicator.SetPosition(room.MiddleOfTile(scd.StartTile) - rcam.pos);
+            rcam.ReturnFContainer("Foreground").AddChild(loadingIndicator);
         }
 
 
@@ -278,9 +286,15 @@ namespace FreeCam
             if (loadingRoom == null)
                 return;
 
+            if (loadingIndicator != null)
+                loadingIndicator.rotation += 10f;
+
             //room is still loading
             if (!loadingRoom.fullyLoaded || !loadingRoom.ReadyForPlayer)
                 return;
+
+            loadingIndicator?.RemoveFromContainer();
+            loadingIndicator = null;
 
             //defensive programming checks
             if (rcam?.room?.world == null || 

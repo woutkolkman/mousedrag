@@ -64,13 +64,10 @@ namespace FreeCam
             Vector2 pos = (Vector2)Futile.mousePosition - offset + rcam?.pos ?? new Vector2();
             if (!Integration.sBCameraScrollEnabled)
                 return pos;
-            try
-            {
+            try {
                 pos += Integration.SBCameraScrollExtraOffset(rcam, Futile.mousePosition, out _);
-            }
-            catch
-            {
-                Plugin.Logger.LogError("Tools.MousePos exception while reading SBCameraScroll, integration is now disabled");
+            } catch {
+                Plugin.Logger.LogError("Cursor.MousePos exception while reading SBCameraScroll, integration is now disabled");
                 Integration.sBCameraScrollEnabled = false;
                 throw; //throw original exception while preserving stack trace
             }
@@ -87,13 +84,10 @@ namespace FreeCam
                 return null;
             if (!Integration.splitScreenCoopEnabled)
                 return game.cameras[0];
-            try
-            {
+            try {
                 return Integration.SplitScreenCoopCam(game, out offset);
-            }
-            catch
-            {
-                Plugin.Logger.LogError("Tools.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled");
+            } catch {
+                Plugin.Logger.LogError("Cursor.MouseCamera exception while reading SplitScreen Co-op, integration is now disabled");
                 Integration.splitScreenCoopEnabled = false;
                 throw; //throw original exception while preserving stack trace
             }

@@ -278,6 +278,8 @@ namespace FreeCam
             };
             loadingIndicator.SetPosition(room.MiddleOfTile(scd.StartTile) - rcam.pos);
             rcam.ReturnFContainer("Foreground").AddChild(loadingIndicator);
+
+            //TODO, add invalid shortcut sprite if procedure failed?
         }
 
 

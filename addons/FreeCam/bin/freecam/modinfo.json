@@ -1,7 +1,7 @@
 {
   "id": "maxi-mol.freecam",
   "name": "FreeCam",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "authors": "Maxi Mol",
   "description": "Navigate in and to rooms with your mouse by clicking on pipes.\nDefault KeyBind is the \"Home\" key.\nSupports SBCameraScroll, SplitScreen Co-op, and more camera mods.",
   "requirements": [],

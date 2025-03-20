@@ -67,6 +67,7 @@ Mouse Drag
 - Biography mod support which allows copying ID in-game?
 
 FreeCam
+- Fix bug in arena mode / single screen rooms where roomcamera position is moved but screen isn't changed, lock campos in this case?
 - Add visual feedback when a pipe to another room is selected and loading that room failed (red X on pipe tile)
 - Add deadband tolerance thing to the mouse visibility initial movement change
 - Add keybind for Warp Menu to freecam in specific rooms within the same region, or via Dev Console?

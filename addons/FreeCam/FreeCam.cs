@@ -290,6 +290,7 @@ namespace FreeCam
 
             if (loadingIndicator != null)
                 loadingIndicator.rotation += 10f;
+            //TODO apply loadingIndicator position each tick?
 
             //room is still loading
             if (!loadingRoom.fullyLoaded || !loadingRoom.ReadyForPlayer)

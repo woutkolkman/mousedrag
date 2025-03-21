@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -33,24 +34,48 @@ namespace MouseDrag
             if (!Drag.dragButtonDown()) //TODO, should be changed (or ||) to new menuSelectButton?
                 return false;
 
+            //don't run when selecting multiple chunks before teleport
+            if (Options.multipleSelect?.Value != null && Input.GetKey(Options.multipleSelect.Value))
+                return false;
+
             var rcam = Drag.MouseCamera(game);
             Vector2 offs = Vector2.zero;
             BodyChunk chunk = Drag.GetClosestChunk(rcam?.room, Drag.MousePos(game), ref offs);
-            PhysicalObject obj = chunk?.owner;
-
-            //obj is not valid
-            if (obj?.room == null)
-                return false;
 
             //remove waypoint if dragging in another room
-            if (obj.room != crosshair.room) {
+            if (rcam?.room != crosshair.room) {
                 crosshair.Destroy();
                 crosshair = null;
                 return false;
             }
 
-            SetObjectPosition(obj, crosshair.curPos);
-            return true;
+            List<BodyChunk> chunks = new List<BodyChunk>();
+            if (chunk != null && Select.selectedChunks.Contains(chunk)) {
+                chunks = Select.selectedChunks;
+            } else if (chunk != null) {
+                chunks.Add(chunk);
+            }
+
+            //gather objects from bodychunks
+            List<PhysicalObject> objs = new List<PhysicalObject>();
+            foreach (var bc in chunks)
+                if (bc.owner != null && !objs.Contains(bc.owner))
+                    objs.Add(bc.owner);
+
+            bool aPositionIsSet = false;
+            foreach (var obj in objs) {
+                //obj is not valid
+                if (obj.room == null)
+                    continue;
+
+                //skip if object is in another room
+                if (obj.room != crosshair.room)
+                    continue;
+
+                SetObjectPosition(obj, crosshair.curPos);
+                aPositionIsSet = true;
+            }
+            return aPositionIsSet;
         }
 
 
@@ -130,7 +155,7 @@ namespace MouseDrag
                 pos = Drag.MousePos(game);
 
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     if (!(room.physicalObjects[i][j] is Player && //don't teleport when: creature is player and player is not SlugNPC (optional)
                         (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
                         if ((room.physicalObjects[i][j] is Creature && creatures) ||

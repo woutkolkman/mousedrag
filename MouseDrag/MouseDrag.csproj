@@ -53,6 +53,7 @@
     <Compile Include="Tools\Health.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="ILHooks.cs" />
+    <Compile Include="Tools\Select.cs" />
     <Compile Include="Tools\Special.cs" />
     <Compile Include="Tools\Pause.cs" />
     <Compile Include="Plugin.cs" />

@@ -73,6 +73,7 @@ namespace MouseDrag
 
             orig(self);
 
+            Integration.Hooks.Apply();
             if (Integration.devConsoleEnabled) {
                 try {
                     Integration.DevConsoleRegisterCommands();

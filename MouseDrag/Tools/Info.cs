@@ -8,17 +8,22 @@ namespace MouseDrag
 {
     public static class Info
     {
-        public static string DumpInfo(object obj, int? lvl = null)
+        public static string GetInfo(object obj, int? lvl = null)
         {
             int maxLevel = Options.infoDepth?.Value ?? 3;
             if (lvl.HasValue)
                 maxLevel = lvl.Value;
             string dumpedObject = ObjectDumper.Dump(obj, 2, maxLevel);
             //Plugin.Logger.LogDebug(dumpedObject);
-            Menu.Remix.UniClipboard.SetText(dumpedObject);
-            if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("Info.DumpInfo, copied to clipboard");
             return dumpedObject;
+        }
+
+
+        public static void CopyToClipboard(string s)
+        {
+            Menu.Remix.UniClipboard.SetText(s);
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Info.CopyToClipboard, copied to clipboard");
         }
 
 

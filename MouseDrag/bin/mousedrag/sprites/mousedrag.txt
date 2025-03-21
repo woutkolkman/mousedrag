@@ -45,7 +45,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDestroy.png":
+"mousedragDashA.png":
 {
 	"frame": {"x":90,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -54,7 +54,7 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"mousedragDestroyAll.png":
+"mousedragDashB.png":
 {
 	"frame": {"x":108,"y":0,"w":18,"h":18},
 	"rotated": false,
@@ -63,9 +63,27 @@
 	"sourceSize": {"w":18,"h":18},
 	"pivot": {"x":0.5,"y":0.5}
 },
+"mousedragDestroy.png":
+{
+	"frame": {"x":126,"y":0,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"mousedragDestroyAll.png":
+{
+	"frame": {"x":144,"y":0,"w":18,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
+	"sourceSize": {"w":18,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
 "mousedragDestroyCreatures.png":
 {
-	"frame": {"x":0,"y":18,"w":18,"h":18},
+	"frame": {"x":162,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -74,7 +92,7 @@
 },
 "mousedragDestroyDeadCreatures.png":
 {
-	"frame": {"x":18,"y":18,"w":18,"h":18},
+	"frame": {"x":180,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -83,7 +101,7 @@
 },
 "mousedragDestroyGlobal.png":
 {
-	"frame": {"x":36,"y":18,"w":18,"h":18},
+	"frame": {"x":198,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -92,7 +110,7 @@
 },
 "mousedragDestroyItems.png":
 {
-	"frame": {"x":54,"y":18,"w":18,"h":18},
+	"frame": {"x":216,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -101,7 +119,7 @@
 },
 "mousedragDuplicate.png":
 {
-	"frame": {"x":72,"y":18,"w":18,"h":18},
+	"frame": {"x":234,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -110,7 +128,7 @@
 },
 "mousedragForceFieldOff.png":
 {
-	"frame": {"x":90,"y":18,"w":18,"h":18},
+	"frame": {"x":252,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -119,7 +137,7 @@
 },
 "mousedragForceFieldOn.png":
 {
-	"frame": {"x":108,"y":18,"w":18,"h":18},
+	"frame": {"x":270,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -128,7 +146,7 @@
 },
 "mousedragGraphicsOff.png":
 {
-	"frame": {"x":0,"y":36,"w":18,"h":18},
+	"frame": {"x":288,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -137,7 +155,7 @@
 },
 "mousedragGraphicsOn.png":
 {
-	"frame": {"x":18,"y":36,"w":18,"h":18},
+	"frame": {"x":306,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -146,7 +164,7 @@
 },
 "mousedragGravityHalf.png":
 {
-	"frame": {"x":36,"y":36,"w":18,"h":18},
+	"frame": {"x":324,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -155,7 +173,7 @@
 },
 "mousedragGravityInverse.png":
 {
-	"frame": {"x":54,"y":36,"w":18,"h":18},
+	"frame": {"x":342,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -164,7 +182,7 @@
 },
 "mousedragGravityOff.png":
 {
-	"frame": {"x":72,"y":36,"w":18,"h":18},
+	"frame": {"x":360,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -173,7 +191,7 @@
 },
 "mousedragGravityOn.png":
 {
-	"frame": {"x":90,"y":36,"w":18,"h":18},
+	"frame": {"x":378,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -182,7 +200,7 @@
 },
 "mousedragGravityReset.png":
 {
-	"frame": {"x":108,"y":36,"w":18,"h":18},
+	"frame": {"x":396,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -191,7 +209,7 @@
 },
 "mousedragHeart.png":
 {
-	"frame": {"x":0,"y":54,"w":18,"h":18},
+	"frame": {"x":414,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -200,7 +218,7 @@
 },
 "mousedragHeartCreatures.png":
 {
-	"frame": {"x":18,"y":54,"w":18,"h":18},
+	"frame": {"x":432,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -209,7 +227,7 @@
 },
 "mousedragInfo.png":
 {
-	"frame": {"x":36,"y":54,"w":18,"h":18},
+	"frame": {"x":450,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -218,7 +236,7 @@
 },
 "mousedragKill.png":
 {
-	"frame": {"x":54,"y":54,"w":18,"h":18},
+	"frame": {"x":468,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -227,7 +245,7 @@
 },
 "mousedragKillCreatures.png":
 {
-	"frame": {"x":72,"y":54,"w":18,"h":18},
+	"frame": {"x":486,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -236,7 +254,7 @@
 },
 "mousedragLocked.png":
 {
-	"frame": {"x":90,"y":54,"w":18,"h":18},
+	"frame": {"x":504,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -245,7 +263,7 @@
 },
 "mousedragMove.png":
 {
-	"frame": {"x":108,"y":54,"w":18,"h":18},
+	"frame": {"x":522,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -254,7 +272,7 @@
 },
 "mousedragPaste.png":
 {
-	"frame": {"x":0,"y":72,"w":18,"h":18},
+	"frame": {"x":540,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -263,7 +281,7 @@
 },
 "mousedragPause.png":
 {
-	"frame": {"x":18,"y":72,"w":18,"h":18},
+	"frame": {"x":558,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -272,7 +290,7 @@
 },
 "mousedragPauseCreatures.png":
 {
-	"frame": {"x":36,"y":72,"w":18,"h":18},
+	"frame": {"x":576,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -281,7 +299,7 @@
 },
 "mousedragPauseGlobal.png":
 {
-	"frame": {"x":54,"y":72,"w":18,"h":18},
+	"frame": {"x":594,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -290,7 +308,7 @@
 },
 "mousedragPlay.png":
 {
-	"frame": {"x":72,"y":72,"w":18,"h":18},
+	"frame": {"x":612,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -299,7 +317,7 @@
 },
 "mousedragPlayAll.png":
 {
-	"frame": {"x":90,"y":72,"w":18,"h":18},
+	"frame": {"x":630,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -308,7 +326,7 @@
 },
 "mousedragPlayGlobal.png":
 {
-	"frame": {"x":108,"y":72,"w":18,"h":18},
+	"frame": {"x":648,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -317,7 +335,7 @@
 },
 "mousedragRevive.png":
 {
-	"frame": {"x":0,"y":90,"w":18,"h":18},
+	"frame": {"x":666,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -326,7 +344,7 @@
 },
 "mousedragReviveCreatures.png":
 {
-	"frame": {"x":18,"y":90,"w":18,"h":18},
+	"frame": {"x":684,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -335,7 +353,7 @@
 },
 "mousedragStun.png":
 {
-	"frame": {"x":36,"y":90,"w":18,"h":18},
+	"frame": {"x":702,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -344,7 +362,7 @@
 },
 "mousedragStunAll.png":
 {
-	"frame": {"x":54,"y":90,"w":18,"h":18},
+	"frame": {"x":720,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -353,7 +371,7 @@
 },
 "mousedragStunGlobal.png":
 {
-	"frame": {"x":72,"y":90,"w":18,"h":18},
+	"frame": {"x":738,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -362,7 +380,7 @@
 },
 "mousedragTarget.png":
 {
-	"frame": {"x":90,"y":90,"w":18,"h":18},
+	"frame": {"x":756,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -371,7 +389,7 @@
 },
 "mousedragUncontrol.png":
 {
-	"frame": {"x":108,"y":90,"w":18,"h":18},
+	"frame": {"x":774,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -380,7 +398,7 @@
 },
 "mousedragUnheart.png":
 {
-	"frame": {"x":0,"y":108,"w":18,"h":18},
+	"frame": {"x":792,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -389,7 +407,7 @@
 },
 "mousedragUnheartCreatures.png":
 {
-	"frame": {"x":18,"y":108,"w":18,"h":18},
+	"frame": {"x":810,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -398,7 +416,7 @@
 },
 "mousedragUnlocked.png":
 {
-	"frame": {"x":36,"y":108,"w":18,"h":18},
+	"frame": {"x":828,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -407,7 +425,7 @@
 },
 "mousedragUnmove.png":
 {
-	"frame": {"x":54,"y":108,"w":18,"h":18},
+	"frame": {"x":846,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -416,7 +434,7 @@
 },
 "mousedragUnstun.png":
 {
-	"frame": {"x":72,"y":108,"w":18,"h":18},
+	"frame": {"x":864,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -425,7 +443,7 @@
 },
 "mousedragUnstunAll.png":
 {
-	"frame": {"x":90,"y":108,"w":18,"h":18},
+	"frame": {"x":882,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -434,7 +452,7 @@
 },
 "mousedragUnstunGlobal.png":
 {
-	"frame": {"x":108,"y":108,"w":18,"h":18},
+	"frame": {"x":900,"y":0,"w":18,"h":18},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":18},
@@ -446,8 +464,8 @@
 	"version": "1.0",
 	"image": "mousedrag.png",
 	"format": "RGBA8888",
-	"size": {"w":126,"h":126},
+	"size": {"w":918,"h":18},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:9ff319030cd584e5271408e181e4edeb:2c4018ae00f329a5018fba7eb1ca7946:be538780073871c978a7b9c49ce14dca$"
+	"smartupdate": "$TexturePacker:SmartUpdate:476f5e355f490ef012eb394ef4d3672d:ae899fc476d9931c597a69e27c4bd3a9:be538780073871c978a7b9c49ce14dca$"
 }
 }

@@ -35,6 +35,7 @@ namespace MouseDrag
                 MachineConnector.SetRegisteredOI(GUID, new Options());
                 MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
                 MenuManager.LoadSprites();
+                Integration.Hooks.Apply();
                 if (Integration.devConsoleEnabled) {
                     try {
                         Integration.DevConsoleRegisterCommands();
@@ -57,6 +58,7 @@ namespace MouseDrag
 
             Hooks.Unapply();
             ILHooks.Unapply();
+            Integration.Hooks.Unapply();
             MenuManager.UnloadSprites();
 
             Plugin.Logger.LogInfo("OnDisable called");

@@ -35,7 +35,7 @@
                     ", items?" + items.ToString() + 
                     ", onlyDead?" + onlyDead.ToString());
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     if ((room.physicalObjects[i][j] is Creature && creatures && 
                         (!onlyDead || (room.physicalObjects[i][j] as Creature).dead)) || 
                         (!(room.physicalObjects[i][j] is Creature) && items))

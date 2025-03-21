@@ -146,6 +146,7 @@ namespace MouseDrag
             c.Emit(OpCodes.Ldarg_1);
             c.EmitDelegate<Action<RainWorldGame, float>>((self, timeStacker) =>
             {
+                Select.DrawSprites(timeStacker);
                 MenuManager.DrawSprites(timeStacker);
             });
             if (Options.logDebug?.Value != false)
@@ -179,13 +180,17 @@ namespace MouseDrag
                 if (self == null || self.GamePaused || self.pauseUpdate || !self.processActive)
                     return;
 
+                if (State.activated)
+                    Drag.RawUpdate(self);
+
+                Select.RawUpdate(self);
                 MenuManager.RawUpdate(self);
 
                 if (State.activated && !State.keyBindToolsDisabled) {
                     KeyBinds.RawUpdate(self);
 
                     if (Teleport.UpdateTeleportObject(self))
-                        Drag.dragChunk = null;
+                        Drag.ReleaseAll(); //don't accidentally drag the teleported object back
                 }
 
                 //other checks are found in State.UpdateActivated
@@ -236,9 +241,10 @@ namespace MouseDrag
             c.EmitDelegate<Action<RainWorldGame>>((self) =>
             {
                 if (State.activated)
-                    Drag.DragObject(self);
+                    Drag.Update(self);
 
-                State.UpdateActivated(self);
+                Select.Update(self);
+                State.Update(self);
                 MenuManager.Update(self);
 
                 if (State.activated && !State.keyBindToolsDisabled) {

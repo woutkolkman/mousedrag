@@ -75,7 +75,7 @@ namespace MouseDrag
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("StunObjects, stun all in room");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     if ((room.physicalObjects[i][j] is Oracle) || (room.physicalObjects[i][j] is Creature))
                         if (room.physicalObjects[i][j]?.abstractPhysicalObject != null && //null safety check
                             !(room.physicalObjects[i][j] is Player && //don't stun when: object is player and player is not SlugNPC (optional)

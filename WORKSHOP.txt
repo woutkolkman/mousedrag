@@ -1,6 +1,5 @@
 [h3]Description[/h3]
-Tool which allows dragging creatures/objects outside sandbox-mode using your mouse, also known as the Sandbox Mouse. Includes options to pause, destroy, duplicate, tame, stun, teleport, cut/paste, safari-control, kill & revive individual creatures, players and objects. Also allows you to activate and throw items like bombs and spears. 
-Press right mouse button on an object or the background to open one of two radial menus. Hold left control (default) to only select or drag creatures, and left alt (default) for objects. 
+Tool which allows dragging creatures/objects outside sandbox-mode using your mouse, also known as the Sandbox Mouse. Includes options to pause, destroy, duplicate, tame, stun, teleport, cut/paste, safari-control, kill & revive individual creatures, players and objects. Also allows you to activate and throw items like bombs and spears. Press right mouse button on an object or the background to open one of two radial menus. Hold left control (default) to select multiple objects, or to use a selection-rectangle. While dragging use the scroll wheel to rotate objects. 
 
 Credits:
 - Fyre & Noir for the BeastMaster menu trianglemesh code 

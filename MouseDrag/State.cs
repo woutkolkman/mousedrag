@@ -17,7 +17,7 @@ namespace MouseDrag
         public static bool keyBindToolsDisabled = false; //another mod disables all keybind tools
 
 
-        public static void UpdateActivated(RainWorldGame game)
+        public static void Update(RainWorldGame game)
         {
             //set activated controls, keybind is checked in RainWorldGameRawUpdateHook
             if (activeType == Options.ActivateTypes.DevToolsActive)

@@ -49,7 +49,11 @@ namespace MouseDrag
         public static void UpdatePosition(BodyChunk bc)
         {
             var pair = ListContains(bc);
-            if (pair == null || bc == null || bc == Drag.dragChunk)
+            bool dragging = false;
+            foreach (var draggable in Drag.dragChunks)
+                if (draggable.chunk == bc)
+                    dragging = true;
+            if (pair == null || bc == null || dragging)
                 return;
             bc.pos = pair.Value.Value;
             bc.vel = Vector2.zero;

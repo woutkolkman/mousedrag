@@ -32,7 +32,7 @@ namespace MouseDrag
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("KillCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     if (!(room.physicalObjects[i][j] is Player && //don't kill when: creature is player and player is not SlugNPC (optional)
                         (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
                         KillCreature(game, room.physicalObjects[i][j]);
@@ -134,7 +134,7 @@ namespace MouseDrag
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ReviveCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     ReviveCreature(room.physicalObjects[i][j]);
         }
 

@@ -21,7 +21,8 @@ namespace MouseDrag
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<KeyCode> throwWeapon;
         public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
-        public static Configurable<KeyCode> selectCreatures, selectItems;
+        public static Configurable<KeyCode> onlySelectCreatures, onlySelectItems;
+        public static Configurable<KeyCode> multipleSelect;
 
         public static Configurable<bool> menuOpenRMB, menuOpenMMB;
         public static Configurable<KeyCode> menuOpen;
@@ -99,7 +100,7 @@ namespace MouseDrag
             activateKey = config.Bind(nameof(activateKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
 
             deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
-            disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some rare issues while dragging in sandbox.", null, "", "Disable sandbox mouse"));
+            disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.", null, "", "Disable sandbox mouse"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
             dragLMB = config.Bind(nameof(dragLMB), defaultValue: true, new ConfigurableInfo("Left mouse button is used to drag objects.", null, "", "LMB drags"));
             dragMMB = config.Bind(nameof(dragMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button is used to drag objects.", null, "", "MMB drags"));
@@ -112,10 +113,11 @@ namespace MouseDrag
             throwThreshold = config.Bind(nameof(throwThreshold), defaultValue: 40f, new ConfigurableInfo("Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.", null, "", "Throw threshold"));
             throwForce = config.Bind(nameof(throwForce), defaultValue: 2f, new ConfigurableInfo("Force at which weapons are thrown.", null, "", "Throw force"));
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).", null, "", "Throw weapon"));
-            velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.\nYou will also always drag the center of a BodyChunk. Sandbox mouse might interfere (if initialized).", null, "", "Velocity drag"));
+            velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.\nSandbox mouse might interfere (if initialized).", null, "", "Velocity drag"));
             velocityDragAtScreenChange = config.Bind(nameof(velocityDragAtScreenChange), defaultValue: true, new ConfigurableInfo("Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.", null, "", "Velocity drag at screen change"));
-            selectCreatures = config.Bind(nameof(selectCreatures), KeyCode.LeftControl, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
-            selectItems = config.Bind(nameof(selectItems), KeyCode.LeftAlt, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
+            onlySelectCreatures = config.Bind(nameof(onlySelectCreatures), KeyCode.None, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
+            onlySelectItems = config.Bind(nameof(onlySelectItems), KeyCode.None, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
+            multipleSelect = config.Bind(nameof(multipleSelect), KeyCode.LeftControl, new ConfigurableInfo("Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.", null, "", "Multiple select"));
 
             menuOpenRMB = config.Bind(nameof(menuOpenRMB), defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
             menuOpenMMB = config.Bind(nameof(menuOpenMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
@@ -133,43 +135,43 @@ namespace MouseDrag
             menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
             sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
             regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
-            devConsoleIntegration = config.Bind(nameof(devConsoleIntegration), defaultValue: true, new ConfigurableInfo("If Dev Console is enabled, additional commands are available via the console. Requires restart.\nAll commands added by " + Plugin.Name + " start with \"md_\".", null, "", "Dev Console integration"));
+            devConsoleIntegration = config.Bind(nameof(devConsoleIntegration), defaultValue: true, new ConfigurableInfo("If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.\nAll commands/selectors added by " + Plugin.Name + " start with \"md_\".", null, "", "Dev Console integration"));
 
-            pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the object which you're currently dragging.", null, "", "Pause"));
+            pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the selected objects.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));
             unpauseAllKey = config.Bind(nameof(unpauseAllKey), KeyCode.None, new ConfigurableInfo("KeyBind to unpause all objects, including individually paused objects.", null, "", "Unpause all"));
             pauseAllCreaturesKey = config.Bind(nameof(pauseAllCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.\nIndividually (un)paused creatures remain paused.", null, "", "Pause all creatures"));
             pauseAllItemsKey = config.Bind(nameof(pauseAllItemsKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause all items, including items that still need to spawn.\nIndividually (un)paused items remain paused.", null, "", "Pause all items"));
-            killOneKey = config.Bind(nameof(killOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to kill the creature which you're currently dragging. Can also trigger items like bombs.", null, "", "Kill"));
+            killOneKey = config.Bind(nameof(killOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to kill the selected creatures. Can also trigger items like bombs.", null, "", "Kill"));
             killRoomKey = config.Bind(nameof(killRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to kill all creatures in current room except Player and SlugNPC.", null, "", "Kill in room"));
-            reviveOneKey = config.Bind(nameof(reviveOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the creature which you're currently dragging. Can also reset items like popcorn plants.", null, "", "Revive/heal"));
+            reviveOneKey = config.Bind(nameof(reviveOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.", null, "", "Revive/heal"));
             reviveRoomKey = config.Bind(nameof(reviveRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to revive and heal all creatures in current room.", null, "", "Revive/heal\nin room"));
-            duplicateOneKey = config.Bind(nameof(duplicateOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the object which you're currently dragging. Hold button to repeat.", null, "", "Duplicate"));
+            duplicateOneKey = config.Bind(nameof(duplicateOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to duplicate the selected objects. Hold button to repeat.", null, "", "Duplicate"));
             tpCreaturesKey = config.Bind(nameof(tpCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.", null, "", "Teleport creatures\nin room"));
             tpItemsKey = config.Bind(nameof(tpItemsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all items in current room to the mouse position.", null, "", "Teleport items\nin room"));
-            controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the creature which you're currently dragging, or to cycle between creatures if not dragging. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.", null, "", "Safari-control"));
+            controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.", null, "", "Safari-control"));
 
-            forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the currently dragged BodyChunk. Forcefield is lost if BodyChunk is reloaded.\nA forcefield will push away objects within the configured radius.", null, "", "Forcefield"));
-            tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the creature which you're currently dragging.", null, "", "Tame"));
+            forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.\nA forcefield will push away objects within the configured radius.", null, "", "Forcefield"));
+            tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the selected creatures.", null, "", "Tame"));
             tameRoomKey = config.Bind(nameof(tameRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame in room"));
-            clearRelOneKey = config.Bind(nameof(clearRelOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the creature which you're currently dragging.", null, "", "Clear relationships"));
+            clearRelOneKey = config.Bind(nameof(clearRelOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the selected creatures.", null, "", "Clear relationships"));
             clearRelRoomKey = config.Bind(nameof(clearRelRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.", null, "", "Clear relationships\nin room"));
-            stunOneKey = config.Bind(nameof(stunOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun the object which you're currently dragging.", null, "", "Stun"));
+            stunOneKey = config.Bind(nameof(stunOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun the selected objects.", null, "", "Stun"));
             stunRoomKey = config.Bind(nameof(stunRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to stun all objects except Player and SlugNPC, only currently in this room.\nAllows unstunning individual objects.", null, "", "Stun in room"));
             unstunAllKey = config.Bind(nameof(unstunAllKey), KeyCode.None, new ConfigurableInfo("KeyBind to unstun all objects, including individually stunned objects.", null, "", "Unstun all"));
             stunAllKey = config.Bind(nameof(stunAllKey), KeyCode.None, new ConfigurableInfo("KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.\nIndividually (un)stunned objects remain stunned.", null, "", "Stun all"));
-            destroyOneKey = config.Bind(nameof(destroyOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy the object which you're currently dragging.\nTo make creatures respawn, or to properly update trackers, kill and then destroy them.", null, "", "Destroy"));
+            destroyOneKey = config.Bind(nameof(destroyOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy the selected objects.\nTo make creatures respawn, or to properly update trackers, kill and then destroy them.", null, "", "Destroy"));
             destroyRoomCreaturesKey = config.Bind(nameof(destroyRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current room except Player and SlugNPC.\nTo make creatures respawn, or to properly update trackers, kill and then destroy them.", null, "", "Destroy creatures\nin room"));
             destroyRoomItemsKey = config.Bind(nameof(destroyRoomItemsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all items in current room.", null, "", "Destroy items\nin room"));
             destroyRegionCreaturesKey = config.Bind(nameof(destroyRegionCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.\nWARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.", null, "", "Destroy creatures\nin region"));
             destroyRegionItemsKey = config.Bind(nameof(destroyRegionItemsKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.", null, "", "Destroy items\nin region"));
 
             destroyRoomDeadCreaturesKey = config.Bind(nameof(destroyRoomDeadCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to destroy all dead creatures in current room except Player and SlugNPC.", null, "", "Destroy dead\ncreatures in room"));
-            lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the BodyChunk which you're currently dragging. A lock is lost if the object is reloaded.", null, "", "Lock position"));
-            copySelectorKey = config.Bind(nameof(copySelectorKey), KeyCode.None, new ConfigurableInfo("KeyBind to copy the selector of the object which you're currently dragging. Dev Console will also automatically be opened.\nOnly works if Dev Console integration is enabled.", null, "", "Copy selector &\nopen Dev Console"));
+            lockKey = config.Bind(nameof(lockKey), KeyCode.None, new ConfigurableInfo("KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.", null, "", "Lock position"));
+            copySelectorKey = config.Bind(nameof(copySelectorKey), KeyCode.None, new ConfigurableInfo("KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.\nDev Console will also automatically be opened. Only works if Dev Console integration is enabled.", null, "", "Copy selector &\nopen Dev Console"));
 
             gravityRoomKey = config.Bind(nameof(gravityRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.", null, "", "Gravity"));
-            infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the object which you're currently dragging, or the room if nothing is being dragged.", null, "", "Info"));
+            infoKey = config.Bind(nameof(infoKey), KeyCode.None, new ConfigurableInfo("KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.", null, "", "Info"));
             loadRegionRoomsKey = config.Bind(nameof(loadRegionRoomsKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player\nwill still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.", null, "", "Activate rooms\nin region"));
 
             pauseOneMenu = config.Bind(nameof(pauseOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -183,7 +185,7 @@ namespace MouseDrag
             reviveRoomMenu = config.Bind(nameof(reviveRoomMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             duplicateOneMenu = config.Bind(nameof(duplicateOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             clipboardMenu = config.Bind(nameof(clipboardMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nCut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.", null, "", ""));
-            clipboardCtrlXCV = config.Bind(nameof(clipboardCtrlXCV), defaultValue: false, new ConfigurableInfo("Using Control + X/C/V will cut, copy or paste the object which you're currently dragging.", null, "", "Ctrl + X/C/V"));
+            clipboardCtrlXCV = config.Bind(nameof(clipboardCtrlXCV), defaultValue: false, new ConfigurableInfo("Using Control + X/C/V will cut, copy or paste the selected objects.", null, "", "Ctrl + X/C/V"));
             tpWaypointBgMenu = config.Bind(nameof(tpWaypointBgMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSet/reset a waypoint using this option. Click any object to teleport it to this waypoint.", null, "", ""));
             tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a BodyChunk.", null, "", ""));
             controlMenu = config.Bind(nameof(controlMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -276,8 +278,9 @@ namespace MouseDrag
             AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr + 5f));
             AddCheckBox(velocityDrag, new Vector2(x, y -= sepr));
             AddCheckBox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
-            AddKeyBinder(selectCreatures, new Vector2(x, y -= sepr + 5f));
-            AddKeyBinder(selectItems, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(onlySelectCreatures, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(onlySelectItems, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(multipleSelect, new Vector2(x, y -= sepr + 5f));
 
             /**************** General ****************/
             curTab++;

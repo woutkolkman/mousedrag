@@ -142,6 +142,19 @@ namespace MouseDrag
                 return;
             }
 
+            //multi-select, get list of objects to edit
+            List<BodyChunk> chunks = new List<BodyChunk>();
+            List<PhysicalObject> objects = new List<PhysicalObject>();
+            if (chunk?.owner != null) {
+                if (Select.selectedChunks.Contains(chunk)) {
+                    chunks = Select.selectedChunks;
+                    objects = Select.selectedObjects;
+                } else {
+                    chunks.Add(chunk);
+                    objects.Add(chunk.owner);
+                }
+            }
+
             //submenu for selecting player number which will safari control creature
             if (subMenuType == SubMenuTypes.SafariPlayer) {
                 subMenuType = SubMenuTypes.None;
@@ -150,67 +163,88 @@ namespace MouseDrag
                     return;
                 }
                 Drag.playerNr = pI - 1;
-                Control.ToggleControl(game, chunk?.owner as Creature);
+                foreach (PhysicalObject obj in objects)
+                    Control.ToggleControl(game, obj as Creature);
                 return;
             }
 
-            if (chunk?.owner != null) {
-                //menu follows object
-                switch (slot.name)
-                {
-                    case "mousedragPause":
-                    case "mousedragPlay":           Pause.TogglePauseObject(chunk.owner); break;
-                    case "mousedragKill":
-                        Health.KillCreature(game, chunk.owner);
-                        Health.TriggerItem(chunk.owner);
-                        break;
-                    case "mousedragRevive":
-                        Health.ReviveCreature(chunk.owner);
-                        Health.ResetItem(chunk.owner);
-                        break;
-                    case "mousedragDuplicate":      Duplicate.DuplicateObject(chunk.owner); break;
-                    case "mousedragCut":            Clipboard.CutObject(chunk.owner); break;
-                    case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, chunk); break;
-                    case "mousedragControl":
-                        if (chunk.owner is Player && !(chunk.owner as Player).isNPC) {
-                            //skip selection and uncontrol all
-                            Control.ToggleControl(game, chunk.owner as Creature);
-                        } else if (chunk.owner is Creature) {
-                            //creature can be controlled
-                            subMenuType = SubMenuTypes.SafariPlayer;
-                        }
-                        break;
-                    case "mousedragUncontrol":      Control.ToggleControl(game, chunk.owner as Creature); break;
-                    case "mousedragForceFieldOn":
-                    case "mousedragForceFieldOff":  Forcefield.SetForcefield(chunk, toggle: true, apply: true); break;
-                    case "mousedragHeart":          Tame.TameCreature(game, chunk.owner); break;
-                    case "mousedragUnheart":        Tame.ClearRelationships(chunk.owner); break;
-                    case "mousedragStun":
-                    case "mousedragUnstun":         Stun.StunObject(chunk.owner.abstractPhysicalObject, toggle: true, apply: true); break;
-                    case "mousedragDestroy":        Destroy.DestroyObject(chunk.owner); break;
-                    case "mousedragLocked":
-                    case "mousedragUnlocked":       Lock.SetLock(chunk, toggle: true, apply: true); break;
-                    case "mousedragCLI":
-                        if (!Integration.devConsoleEnabled)
-                            break;
-                        try {
-                            Integration.DevConsoleOpen(Integration.DevConsoleGetSelector(chunk.owner.abstractPhysicalObject));
-                        } catch {
-                            Plugin.Logger.LogError("MenuManager.RunAction exception while writing Dev Console, integration is now disabled");
-                            Integration.devConsoleEnabled = false;
-                            throw; //throw original exception while preserving stack trace
-                        }
-                        break;
-                    case "mousedragInfo":
-                        Info.DumpInfo(chunk.owner);
-                        highPrioText = "Object copied to clipboard";
-                        break;
-                }
+            if (chunks.Count > 0) { //menu follows object
+                bool clearSelectionList = false;
+                string dumpedInfo = "";
 
-            } else {
+                foreach (PhysicalObject obj in objects) {
+                    //run actions based on objects
+                    switch (slot.name)
+                    {
+                        case "mousedragPause":
+                        case "mousedragPlay":           Pause.TogglePauseObject(obj); break;
+                        case "mousedragKill":
+                            Health.KillCreature(game, obj);
+                            Health.TriggerItem(obj);
+                            break;
+                        case "mousedragRevive":
+                            Health.ReviveCreature(obj);
+                            Health.ResetItem(obj);
+                            break;
+                        case "mousedragDuplicate":      Duplicate.DuplicateObject(obj); break;
+                        case "mousedragCut":
+                            Clipboard.CutObject(obj);
+                            clearSelectionList = true; //prevents ghost selections
+                            break;
+                        case "mousedragControl":
+                            if (obj is Player && !(obj as Player).isNPC) {
+                                //skip selection and uncontrol all
+                                Control.ToggleControl(game, obj as Creature);
+                            } else if (obj is Creature) {
+                                //creature can be controlled
+                                subMenuType = SubMenuTypes.SafariPlayer;
+                            }
+                            break;
+                        case "mousedragUncontrol":      Control.ToggleControl(game, obj as Creature); break;
+                        case "mousedragHeart":          Tame.TameCreature(game, obj); break;
+                        case "mousedragUnheart":        Tame.ClearRelationships(obj); break;
+                        case "mousedragStun":
+                        case "mousedragUnstun":         Stun.StunObject(obj.abstractPhysicalObject, toggle: true, apply: true); break;
+                        case "mousedragDestroy":
+                            Destroy.DestroyObject(obj);
+                            clearSelectionList = true; //prevents ghost selections
+                            break;
+                        case "mousedragCLI":
+                            if (!Integration.devConsoleEnabled)
+                                break;
+                            try {
+                                Integration.DevConsoleOpen(Integration.DevConsoleGetSelector(obj.abstractPhysicalObject));
+                            } catch {
+                                Plugin.Logger.LogError("MenuManager.RunAction exception while writing Dev Console, integration is now disabled");
+                                Integration.devConsoleEnabled = false;
+                                throw; //throw original exception while preserving stack trace
+                            }
+                            break;
+                        case "mousedragInfo":
+                            highPrioText = "Object" + (dumpedInfo == "" ? " " : "s ") + "copied to clipboard";
+                            dumpedInfo += Info.GetInfo(obj);
+                            break;
+                    }
+                }
+                foreach (BodyChunk bc in chunks) {
+                    //run actions based on bodychunks
+                    switch (slot.name)
+                    {
+                        case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, bc); break;
+                        case "mousedragForceFieldOn":
+                        case "mousedragForceFieldOff":  Forcefield.SetForcefield(bc, toggle: true, apply: true); break;
+                        case "mousedragLocked":
+                        case "mousedragUnlocked":       Lock.SetLock(bc, toggle: true, apply: true); break;
+                    }
+                }
+                if (clearSelectionList)
+                    chunks.Clear();
+                if (!string.IsNullOrEmpty(dumpedInfo))
+                    Info.CopyToClipboard(dumpedInfo);
+
+            } else { //menu on background
                 var rcam = Drag.MouseCamera(game);
 
-                //menu on background
                 switch (slot.name)
                 {
                     case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true, false); break;
@@ -267,7 +301,7 @@ namespace MouseDrag
                     case "mousedragGravityOn":
                     case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
                     case "mousedragInfo":
-                        Info.DumpInfo(rcam?.room);
+                        Info.CopyToClipboard(Info.GetInfo(rcam?.room));
                         highPrioText = "Room copied to clipboard";
                         break;
                 }

@@ -65,7 +65,7 @@
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("TameCreatures");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     TameCreature(game, room.physicalObjects[i][j]);
         }
 
@@ -101,7 +101,7 @@
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ClearRelationships");
             for (int i = 0; i < room?.physicalObjects?.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     if (!(room.physicalObjects[i][j] is Player && //don't clear when: creature is player and player is not SlugNPC (optional)
                         (Options.exceptSlugNPC?.Value != false || !(room.physicalObjects[i][j] as Player).isNPC)))
                         ClearRelationships(room.physicalObjects[i][j]);

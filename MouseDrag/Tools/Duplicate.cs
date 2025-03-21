@@ -92,7 +92,8 @@ namespace MouseDrag
             //rapidly duplicate after one second feature
             if (Options.duplicateOneKey?.Value != null && Input.GetKey(Options.duplicateOneKey.Value)) {
                 if (duplicateHoldCount >= duplicateHoldMin)
-                    Duplicate.DuplicateObject(Drag.dragChunk?.owner);
+                    foreach (var obj in Select.selectedObjects)
+                        Duplicate.DuplicateObject(obj);
                 duplicateHoldCount++;
             } else {
                 duplicateHoldCount = 0;

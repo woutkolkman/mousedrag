@@ -12,10 +12,10 @@ namespace MouseDrag
         public float outRad = 60f;
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
-        private bool mouseIsWithinMenu;
+        public bool mouseIsWithinMenu { get; private set; }
         private RoomCamera prevRCam = null; //just to detect SplitScreen Co-op camera change
         public List<Slot> slots = new List<Slot>();
-        public Crosshair crosshair = null;
+        public Select.Crosshair crosshair = null;
         public FLabel label = null;
         public string labelText = ""; //update label text using this field
         public string roomName { get; private set; } = null; //outgoing name of room where menu is located currently
@@ -52,8 +52,10 @@ namespace MouseDrag
                 Futile.stage.AddChild(container); //backup / original code
             container.MoveToFront();
 
-            crosshair = new Crosshair(this);
-            crosshair.InitiateSprites(container);
+            crosshair = new Select.Crosshair();
+            crosshair.prevPos = displayPos;
+            crosshair.curPos = displayPos;
+            crosshair.InitiateSprites(container, 4);
 
             label = new FLabel(Custom.GetFont(), "");
             container.AddChild(label);
@@ -122,7 +124,7 @@ namespace MouseDrag
                 bool followTarget = Options.menuFollows?.Value != false; //menu follows if doing nothing
                 followTarget &= 
                     !mouseIsWithinMenu || //move menu if mouse is not within menu, stop follow if hovering over menu
-                    Drag.dragChunk != null || //move menu if dragging something with your mouse (menu selected object)
+                    Drag.dragChunks.Count > 0 || //move menu if dragging something with your mouse (menu selected object)
                     Options.menuMoveHover?.Value == true; //always move menu even if hovering over it
                 followTarget |= menuOpenButtonPressed(); //menu always follows if menu-open button is pressed
                 if (followTarget)
@@ -144,10 +146,10 @@ namespace MouseDrag
 
             prevDisplayPos = displayPos;
             displayPos = menuPos - rcam?.pos ?? new Vector2();
+            float bgScale = 1f;
             if (Integration.sBCameraScrollEnabled) {
                 try {
-                    displayPos -= Integration.SBCameraScrollExtraOffset(rcam, displayPos, out float scale) / (1f / scale);
-                    crosshair.bgScale = scale;
+                    displayPos -= Integration.SBCameraScrollExtraOffset(rcam, displayPos, out bgScale) / (1f / bgScale);
                 } catch {
                     Plugin.Logger.LogError("RadialMenu.Update exception while reading SBCameraScroll, integration is now disabled");
                     Integration.sBCameraScrollEnabled = false;
@@ -182,7 +184,17 @@ namespace MouseDrag
                     selectedSlot = slots[i];
             }
             hoverSlot = selectedSlot;
+
             crosshair.Update();
+
+            //scale offset from menu based on SBCameraScroll zoom factor
+            Vector2 curCHPos = displayPos;
+            if (followChunk != null)
+                curCHPos -= (menuPos - followChunk.pos) * bgScale;
+            crosshair.curPos = curCHPos;
+
+            //crosshair invisible when followChunk is part of multiple-select
+            crosshair.visible = followChunk != null && !Select.selectedChunks.Contains(followChunk);
 
             if (!mousePressed)
                 return null;
@@ -315,70 +327,6 @@ namespace MouseDrag
             {
                 icon?.RemoveFromContainer();
                 background?.RemoveFromContainer();
-            }
-        }
-
-
-        public class Crosshair
-        {
-            public RadialMenu menu;
-            public Vector2 curPos, prevPos;
-            public bool enabled = true;
-            private bool visible;
-            private int rotation = 0;
-            public int rotationSpeed = 3;
-            public float radius = 16f;
-            public float scale = 0.5f;
-            public FSprite[] icons = new FSprite[4];
-            public float bgScale = 1f; //changed when SBCameraScroll zoom is active
-
-
-            public Crosshair(RadialMenu menu)
-            {
-                this.menu = menu;
-                prevPos = menu.displayPos;
-                curPos = menu.displayPos;
-            }
-            ~Crosshair() { Destroy(); }
-
-
-            public void Update()
-            {
-                prevPos = curPos;
-                curPos = menu.displayPos;
-                if (menu.followChunk != null)
-                    curPos -= (menu.menuPos - menu.followChunk.pos) * bgScale;
-                visible = menu.followChunk != null && enabled;
-                rotation += rotationSpeed;
-            }
-
-
-            public void InitiateSprites(FContainer container)
-            {
-                for (int i = 0; i < icons.Length; i++) {
-                    icons[i] = new FSprite("mousedragArrow", true);
-                    container.AddChild(icons[i]);
-                }
-            }
-
-
-            public void DrawSprites(float timeStacker)
-            {
-                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
-                float tsRotation = Mathf.Lerp(rotation - rotationSpeed, rotation, timeStacker) % 360f;
-                for (int i = 0; i < icons.Length; i++) {
-                    icons[i].isVisible = visible;
-                    icons[i].SetPosition(tsPos + (Custom.RotateAroundOrigo(Vector2.up, 90f * i + tsRotation) * radius));
-                    icons[i].rotation = 90f * i + tsRotation;
-                    icons[i].scale = scale;
-                }
-            }
-
-
-            public void Destroy()
-            {
-                for (int i = 0; i < icons.Length; i++)
-                    icons[i].RemoveFromContainer();
             }
         }
     }

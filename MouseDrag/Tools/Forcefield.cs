@@ -13,6 +13,8 @@ namespace MouseDrag
                 return;
 
             for (int i = 0; i < bodyChunk.owner?.room?.physicalObjects?.Length; i++) {
+                if (bodyChunk.owner.room.physicalObjects[i] == null)
+                    continue;
                 foreach (PhysicalObject po in bodyChunk.owner.room.physicalObjects[i]) {
                     if (po == bodyChunk.owner || po == null)
                         continue;

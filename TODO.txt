@@ -1,15 +1,20 @@
 Mouse Drag
 - Add secondary menu which replaces the radial menu, and which looks more like a Windows context menu. Or use a Dev Tools dropdown (?) menu
 - Add deadband tolerance thing to the mouse visibility initial movement change
-- Cut/paste multi select after pressing the ctrl+z/c/v keys without having to drag the mouse first (similar to Factorio)
 - Check/fix the effect of RainWorldOnModsInitHook being called multiple times when certain mods are enabled (Rain Meadow)
 - Rain Meadow multiplayer support? Configurable options for hosts to allow/disallow tools for other players?
 - Change safari overseer selection when selecting a creature with Mouse Drag? Also pipe selection with mouse pointer in the same room
 - Add option which can spawn a safari overseer with can be used to freecam in the current gamemode
 - Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc.
 - Lock tool, add optional visual indicator when a bodychunk is locked? Or only if the mouse or radial menu selects this object
-- Group drag mode which allows dragging a box around selected bodychunks allowing you to simultaneously move them or execute an action on them. Implement multiple select by dragging a box over objects, when dragging one of the selected objects, all of them are dragged with the same distance compared to each other. Select objects with a drag box?
+- Edit velocity drag so you can still drag bodychunks through walls
 === Forget list ===:
+- Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
+- Add keybind to swap between velocity drag and normal positional mouse dragging?
+- Add multi-select crosshairs in different color when hovering over bodychunks? Or when bodychunks are about to be selected with the selection-rectangle?
+- Add ctrl+z keybind to undo the last action? Mouse Drag code currently is not really structured to track actions well..
+- Add alternative multi-select rectangle which is freeform and can be activated with left alt instead of left control (by default)
+- If multi-select is active and objects are copied to the clipboard, when pasting these objects, paste the whole group at the same time (with original offsets?)?
 - Double click select objects of the same type in the same room, with highlighting? To drag/execute actions
 - Invincible creature tool? Probably uses too many hooks, and Dev Console already has this
 - For every tool in the radial menu, add an preferred index which allows you to sort the tool within the radial menu. Implement before the code where tools are divided into pages

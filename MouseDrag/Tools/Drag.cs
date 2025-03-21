@@ -8,12 +8,42 @@ namespace MouseDrag
 {
     public static class Drag
     {
-        public static BodyChunk dragChunk; //owner is reference to the physicalobject which is dragged
-        public static Vector2 dragOffset;
+        public class DragData {
+            public BodyChunk chunk = null; //chunk which is dragged
+            public PhysicalObject owner => chunk?.owner; //reference to the physicalobject which is dragged
+            public Vector2 offset = Vector2.zero; //offset from mouse position
+        }
+
+
+        public static List<DragData> dragChunks = new List<DragData>(); //chunks in this list are actively being dragged
+        public static BodyChunk dragChunk { //backwards compatibility, first and only chunk being dragged
+            get {
+                return dragChunks.Count > 0 ? dragChunks[0].chunk : null;
+            }
+            set {
+                if (value != null)
+                    dragChunks.Add(new DragData { chunk = value });
+                if (value == null)
+                    dragChunks.Clear();
+            }
+        }
+        public static List<PhysicalObject> dragObjects {
+            get {
+                List<PhysicalObject> ret = new List<PhysicalObject>();
+                foreach (var data in dragChunks)
+                    if (data.owner != null && !ret.Contains(data.owner))
+                        ret.Add(data.owner);
+                return ret;
+            }
+        }
+
+
         private static Vector2 dampingPos; //only used when velocityDrag == true
+        private static float scrollDir;
         public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
         public static bool tempVelocityDrag; //temporary velocityDrag until LMB is released
-        public static int tempStopTicks = 0; //temporarily deactivate drag
+        public static int tempStopDragTicks = 0; //temporarily deactivate drag and drop all
+        public static int tempStopGrabTicks = 0; //temporarily deactivate grab/drag new chunks
         public static int playerNr = 0; //last dragged or selected player
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
         public static bool dragButtonPressed(bool noLMB = false) => (
@@ -65,7 +95,7 @@ namespace MouseDrag
         }
 
 
-        public static void DragObject(RainWorldGame game)
+        public static void Update(RainWorldGame game)
         {
             bool stop = false;
             Vector2 mousePos = MousePos(game);
@@ -86,17 +116,16 @@ namespace MouseDrag
             //drag button not pressed
             if (!dragButtonPressed(noLMB: devToolsOpened)) {
                 if (Options.throwWithMouse?.Value != false)
-                    TryThrow(game, dragChunk?.owner);
+                    foreach (var obj in dragObjects)
+                        TryThrow(game, obj);
                 stop = true;
             }
 
-            //dragchunk not in this room
-            if (dragChunk?.owner?.room != null && dragChunk.owner.room != room)
-                stop = true;
-
             //temporarily deactivated
-            if (tempStopTicks > 0) {
-                tempStopTicks--;
+            if (tempStopGrabTicks > 0)
+                tempStopGrabTicks--;
+            if (tempStopDragTicks > 0) {
+                tempStopDragTicks--;
                 stop = true;
             }
 
@@ -110,67 +139,110 @@ namespace MouseDrag
 
             if (stop) {
                 if (Options.adjustableLocks?.Value != false)
-                    Lock.ResetLock(dragChunk);
-                dragChunk = null;
+                    foreach (var draggable in dragChunks)
+                        Lock.ResetLock(draggable.chunk);
+                ReleaseAll();
                 tempVelocityDrag = false;
                 return;
             }
 
-            //search all objects for closest chunk
-            if (dragChunk == null)
-                dragChunk = GetClosestChunk(room, mousePos, ref dragOffset);
+            //grab new bodychunks to drag, if one is close enough
+            if (tempStopGrabTicks <= 0 && dragChunks.Count <= 0) {
+                //search all objects for closest chunk
+                Vector2 offset = Vector2.zero;
+                BodyChunk chunk = GetClosestChunk(room, mousePos, ref offset);
 
-            //drag this chunk
-            if (dragChunk == null)
-                return;
+                //selection is being dragged, fill dragChunks with all selectedChunks
+                //Select.RawUpdate (runs first) made sure that the BodyChunk where the mouse is currently located is part of selectedChunks, OR selectedChunks is empty
+                if (chunk != null && Select.selectedChunks.Contains(chunk)) {
+                    foreach (var bc in Select.selectedChunks)
+                        dragChunks.Add(new DragData { chunk = bc, offset = bc.pos - mousePos });
 
-            if (ShouldRelease(dragChunk.owner)) {
-                dragChunk = null;
-                return;
-            }
+                //nothing was selected, so only drag the closest chunk
+                } else if (chunk != null) {
+                    dragChunks.Add(new DragData { chunk = chunk, offset = offset });
 
-            bool paused = Pause.IsObjectPaused(dragChunk.owner);
-            bool isWeaponAndNotFree = dragChunk.owner is Weapon && (dragChunk.owner as Weapon).mode != Weapon.Mode.Free;
-
-            //this drag functionality might (be) affect(ed by) sandbox mouse
-            dragChunk.vel += mousePos + dragOffset - dragChunk.pos;
-            if ((Options.velocityDrag?.Value != true && !tempVelocityDrag) || paused || isWeaponAndNotFree)
-                dragChunk.pos += mousePos + dragOffset - dragChunk.pos;
-
-            if (paused) {
-                //do not launch creature after pause
-                dragChunk.vel = new Vector2();
-
-                //reduces visual bugs
-                dragChunk.lastPos = dragChunk.pos;
-            }
-
-            //velocity drag with BodyChunk at center of mousePos
-            if (Options.velocityDrag?.Value == true || tempVelocityDrag) {
-                dragChunk.vel = (dampingPos - dragChunk.pos) / 2f;
-
-                //reduce max speed of player
-                if (dragChunk.owner is Player && (!(dragChunk.owner as Player).isNPC || Options.exceptSlugNPC?.Value != false))
-                    dragChunk.vel = Vector2.ClampMagnitude(dragChunk.vel, maxVelocityPlayer);
-            }
-
-            //pull spears from walls & grasps
-            if (Custom.Dist(dragChunk.pos, dragChunk.lastPos) > 15f) {
-                if (isWeaponAndNotFree) {
-                    if (dragChunk.owner is Spear) {
-                        //prevent spear leaving invisible beams behind
-                        (dragChunk.owner as Spear).resetHorizontalBeamState();
-
-                        //drop spear from back
-                        if (game.Players != null)
-                            foreach (AbstractCreature ac in game.Players)
-                                if (dragChunk.owner == (ac?.realizedCreature as Player)?.spearOnBack?.spear)
-                                    (ac.realizedCreature as Player).spearOnBack.DropSpear();
-                    }
-                    (dragChunk.owner as Weapon).ChangeMode(Weapon.Mode.Free);
+                    //selectedChunks did not contain this chunk, so add newly dragged chunk to selected chunks for tools
+                    if (Select.selectedChunks.Count <= 0)
+                        Select.selectedChunks.Add(chunk);
                 }
-                dragChunk.owner.AllGraspsLetGoOfThisObject(true);
             }
+
+            //release current objects not in this room
+            for (int i = dragChunks.Count - 1; i >= 0; i--)
+                if (dragChunks[i].owner?.room == null || dragChunks[i].owner.room != room)
+                    dragChunks.RemoveAt(i);
+
+            for (int i = dragChunks.Count - 1; i >= 0; i--)
+                if (ShouldRelease(dragChunks[i].owner))
+                    dragChunks.RemoveAt(i);
+
+            //drag remaining chunks
+            foreach (var draggable in dragChunks) {
+                BodyChunk bc = draggable.chunk;
+
+                bool paused = Pause.IsObjectPaused(bc.owner);
+                bool isWeaponAndNotFree = bc.owner is Weapon && (bc.owner as Weapon).mode != Weapon.Mode.Free;
+
+                //this drag functionality might (be) affect(ed by) sandbox mouse
+                bc.vel += mousePos + draggable.offset - bc.pos;
+                if ((Options.velocityDrag?.Value != true && !tempVelocityDrag) || paused || isWeaponAndNotFree)
+                    bc.pos += mousePos + draggable.offset - bc.pos;
+
+                if (paused) {
+                    //do not launch creature after pause
+                    bc.vel = new Vector2();
+
+                    //reduces visual bugs
+                    bc.lastPos = bc.pos;
+                }
+
+                //velocity dragging
+                if (Options.velocityDrag?.Value == true || tempVelocityDrag) {
+                    bc.vel = (dampingPos + draggable.offset - bc.pos) / 2f;
+
+                    //reduce max speed of player
+                    if (bc.owner is Player && (!(bc.owner as Player).isNPC || Options.exceptSlugNPC?.Value != false))
+                        bc.vel = Vector2.ClampMagnitude(bc.vel, maxVelocityPlayer);
+                }
+
+                //pull spears from walls & grasps
+                if (Custom.Dist(bc.pos, bc.lastPos) > 15f) {
+                    if (isWeaponAndNotFree) {
+                        if (bc.owner is Spear) {
+                            //prevent spear leaving invisible beams behind
+                            (bc.owner as Spear).resetHorizontalBeamState();
+
+                            //drop spear from back
+                            if (game.Players != null)
+                                foreach (AbstractCreature ac in game.Players)
+                                    if (bc.owner == (ac?.realizedCreature as Player)?.spearOnBack?.spear)
+                                        (ac.realizedCreature as Player).spearOnBack.DropSpear();
+                        }
+                        (bc.owner as Weapon).ChangeMode(Weapon.Mode.Free);
+                    }
+                    bc.owner.AllGraspsLetGoOfThisObject(true);
+                }
+            }
+
+            //rotate chunks around mouse position using scroll wheel
+            if (scrollDir != 0f) {
+                foreach (var draggable in dragChunks)
+                    draggable.offset = Custom.RotateAroundOrigo(draggable.offset, scrollDir * 5f);
+                scrollDir = 0f;
+            }
+        }
+
+
+        public static void RawUpdate(RainWorldGame game)
+        {
+            //game is paused
+            if (game.GamePaused || game.pauseUpdate || !game.processActive)
+                return;
+
+            //record scroll wheel direction for rotating chunks around mouse position
+            if (scrollDir == 0f)
+                scrollDir = Input.mouseScrollDelta.y;
         }
 
 
@@ -189,11 +261,11 @@ namespace MouseDrag
                 if (ShouldRelease(obj))
                     return;
 
-                //only select or drag creatures or objects
-                if (Options.selectCreatures?.Value != null && Input.GetKey(Options.selectCreatures.Value))
+                //only select or drag creatures or items
+                if (Options.onlySelectCreatures?.Value != null && Input.GetKey(Options.onlySelectCreatures.Value))
                     if (!(obj is Creature))
                         return;
-                if (Options.selectItems?.Value != null && Input.GetKey(Options.selectItems.Value))
+                if (Options.onlySelectItems?.Value != null && Input.GetKey(Options.onlySelectItems.Value))
                     if (obj is Creature)
                         return;
 
@@ -208,8 +280,8 @@ namespace MouseDrag
                 }
             }
 
-            for (int i = 0; i < room.physicalObjects.Length; i++)
-                for (int j = 0; j < room.physicalObjects[i].Count; j++)
+            for (int i = 0; i < room.physicalObjects?.Length; i++)
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
                     closestChunk(room.physicalObjects[i][j]);
 
             //store current player nr
@@ -224,7 +296,7 @@ namespace MouseDrag
         }
 
 
-        //object should not be dragged any longer
+        //check if object should not be dragged any longer
         public static bool ShouldRelease(PhysicalObject obj)
         {
             //object is being deleted
@@ -235,6 +307,12 @@ namespace MouseDrag
             if (obj is Creature && (obj as Creature).enteringShortCut != null)
                 return true;
             return false;
+        }
+
+
+        public static void ReleaseAll()
+        {
+            dragChunks.Clear();
         }
 
 
@@ -256,8 +334,10 @@ namespace MouseDrag
 
             //force release object from mouse drag
             //useful if keybind is used in the future
-            if (obj is Weapon && obj == dragChunk?.owner)
-                dragChunk = null;
+            if (obj is Weapon)
+                for (int i = dragChunks.Count - 1; i >= 0; i--)
+                    if (obj == dragChunks[i].owner)
+                        dragChunks.RemoveAt(i);
 
             //vulture grub is special
             if (obj is VultureGrub)

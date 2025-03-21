@@ -100,7 +100,7 @@ namespace MouseDrag
                 Plugin.Logger.LogDebug(logMsg);
             }
             for (int i = 0; i < room?.physicalObjects?.Length; i++) {
-                for (int j = 0; j < room.physicalObjects[i].Count; j++) {
+                for (int j = 0; j < room.physicalObjects[i]?.Count; j++) {
                     if (room.physicalObjects[i][j] is Creature) {
                         if (!creatures)
                             continue;

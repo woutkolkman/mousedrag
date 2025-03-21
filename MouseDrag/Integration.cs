@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿using MonoMod.RuntimeDetour;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System;
 using UnityEngine;
 
 namespace MouseDrag
@@ -414,7 +419,9 @@ namespace MouseDrag
                     if (list.ElementAt(i)?.realizedObject?.bodyChunks == null)
                         continue;
                     BodyChunk[] bcs = null;
-                    if (args.Length < 3 || args[2] == "main") {
+                    if (args.Length < 3 || args[2] == "all") {
+                        bcs = list.ElementAt(i).realizedObject.bodyChunks;
+                    } else if (args[2] == "main") {
                         bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
                         if (list.ElementAt(i).realizedObject is Creature && 
                             (list.ElementAt(i).realizedObject as Creature).mainBodyChunk != null)
@@ -423,8 +430,6 @@ namespace MouseDrag
                         bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
                     } else if (args[2] == "random") {
                         bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.RandomChunk };
-                    } else if (args[2] == "all") {
-                        bcs = list.ElementAt(i).realizedObject.bodyChunks;
                     } else if (int.TryParse(args[2], out int bcI)) {
                         if (bcI >= 0 && bcI < list.ElementAt(i).realizedObject.bodyChunks.Length) {
                             bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.bodyChunks[bcI] };
@@ -454,7 +459,7 @@ namespace MouseDrag
             .AutoComplete(args => {
                 if (args.Length == 0) return DevConsole.Selection.Autocomplete;
                 if (args.Length == 1) return new string[] { "on", "off", "toggle" };
-                if (args.Length == 2) return new string[] { "main", "first", "random", "all" };
+                if (args.Length == 2) return new string[] { "all", "main", "first", "random" };
                 return null;
             })
             .Register();
@@ -503,17 +508,18 @@ namespace MouseDrag
                     return;
                 }
                 if (args.Length == 1) {
-                    Info.DumpInfo(Drag.MouseCamera(game)?.room, maxLevel);
+                    Info.CopyToClipboard(Info.GetInfo(Drag.MouseCamera(game)?.room, maxLevel));
                     DevConsole.GameConsole.WriteLine("Copied room data to clipboard.");
                     return;
                 }
                 var list = DevConsole.Selection.SelectAbstractObjects(game, args[1]);
-                if (list.Count() <= 0)
+                if (!(list?.Count() > 0))
                     return;
-                //only copy one object, because clipboard would be overwritten otherwise
-                Info.DumpInfo(list.ElementAt(0)?.realizedObject, maxLevel);
-                DevConsole.GameConsole.WriteLine("Copied object data of first match to clipboard.");
-                //TODO maybe append strings? might become too resource intensive, or too much lag
+                string allInfo = "";
+                foreach (var obj in list)
+                    allInfo += Info.GetInfo(obj?.realizedObject, maxLevel);
+                Info.CopyToClipboard(allInfo);
+                DevConsole.GameConsole.WriteLine("Copied data from object" + (list.Count() > 1 ? "s " : " ") + "to clipboard.");
             })
             .AutoComplete(args => {
                 if (args.Length == 0) return new string[] { "2", "3", "4" };
@@ -532,5 +538,76 @@ namespace MouseDrag
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("DevConsoleRegisterCommands, finished registration of commands");
         }
+
+
+        //===================================================== Integration Hooks =====================================================
+        public static class Hooks
+        {
+            static IDetour devConsoleSelection_FindBaseAbstractObjects;
+            static IDetour devConsoleSelection_Autocomplete;
+
+
+            public static void Apply()
+            {
+                if (devConsoleEnabled) {
+                    try {
+                        ApplyDevConsole();
+                    } catch (System.Exception ex) {
+                        Plugin.Logger.LogError("Integration.Hooks.Apply exception, unable to apply Dev Console hooks: " + ex?.ToString());
+                    }
+                }
+                Plugin.Logger.LogDebug("Integration.Hooks.Apply, finished applying enabled integration hook(s)");
+            }
+
+
+            //use in try/catch so missing assembly does not crash the game
+            public static void ApplyDevConsole()
+            {
+                //hook returns this mod's selection when md_sel is used as selector
+                devConsoleSelection_FindBaseAbstractObjects = new Hook(
+                    typeof(DevConsole.Selection).GetMethod("FindBaseAbstractObjects", BindingFlags.Static | BindingFlags.NonPublic),
+                    typeof(Integration.Hooks).GetMethod("DevConsoleSelection_FindBaseAbstractObjects_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+                );
+
+                //hook adds a new selector to Autocomplete for newly created commands
+                //TODO at this point the built-in Dev Console commands are already initialized and won't receive the updated Autocomplete list
+                devConsoleSelection_Autocomplete = new Hook(
+                    typeof(DevConsole.Selection).GetProperty("Autocomplete", BindingFlags.Static | BindingFlags.Public).GetGetMethod(),
+                    typeof(Integration.Hooks).GetMethod("DevConsoleSelection_Autocomplete_get", BindingFlags.Static | BindingFlags.Public)
+                );
+            }
+
+
+            public static void Unapply()
+            {
+                if (devConsoleSelection_FindBaseAbstractObjects?.IsValid == true && devConsoleSelection_FindBaseAbstractObjects?.IsApplied == true)
+                    devConsoleSelection_FindBaseAbstractObjects?.Dispose();
+                if (devConsoleSelection_Autocomplete?.IsValid == true && devConsoleSelection_Autocomplete?.IsApplied == true)
+                    devConsoleSelection_Autocomplete?.Dispose();
+            }
+
+
+            //hook returns this mod's selection when md_sel is used as selector
+            [MethodImpl(MethodImplOptions.NoInlining)]
+            public static IEnumerable<AbstractPhysicalObject> DevConsoleSelection_FindBaseAbstractObjects_RuntimeDetour(Func<RainWorldGame, string, IEnumerable<AbstractPhysicalObject>> orig, RainWorldGame game, string arg)
+            {
+                var ret = orig(game, arg);
+                if ((ret == null || ret.Count() <= 0) && arg?.ToLower() == "md_sel")
+                    ret = Select.selectedObjects.Select(po => po.abstractPhysicalObject);
+                return ret;
+            }
+
+
+            //hook adds a new selector to Autocomplete for newly created commands
+            [MethodImpl(MethodImplOptions.NoInlining)]
+            public static string[] DevConsoleSelection_Autocomplete_get(Func<string[]> orig)
+            {
+                var ret = orig();
+                if (ret != null)
+                    return ret.Concat(new string[] { "md_sel" }).ToArray();
+                return ret;
+            }
+        }
+        //=============================================================================================================================
     }
 }

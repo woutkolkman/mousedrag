@@ -8,6 +8,8 @@ Mouse Drag
 - Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc.
 - Lock tool, add optional visual indicator when a bodychunk is locked? Or only if the mouse or radial menu selects this object
 - Edit velocity drag so you can still drag bodychunks through walls
+- Show more relationship info in label when hovering over radialmenu tame/clear relationships tools
+- Configurable drag/radialmenu selection radius to select moving creatures more easily?
 === Forget list ===:
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
 - Add keybind to swap between velocity drag and normal positional mouse dragging?

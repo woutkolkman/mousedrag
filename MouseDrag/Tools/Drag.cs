@@ -42,6 +42,7 @@ namespace MouseDrag
         private static float scrollDir;
         public static float maxVelocityPlayer = 25f; //only used when velocityDrag == true
         public static bool tempVelocityDrag; //temporary velocityDrag until LMB is released
+        public static bool keyVelocityDrag; //key toggle velocityDrag
         public static int tempStopDragTicks = 0; //temporarily deactivate drag and drop all
         public static int tempStopGrabTicks = 0; //temporarily deactivate grab/drag new chunks
         public static int playerNr = 0; //last dragged or selected player
@@ -177,7 +178,7 @@ namespace MouseDrag
                 if (ShouldRelease(dragChunks[i].owner))
                     dragChunks.RemoveAt(i);
 
-            bool velocityDrag = Options.velocityDrag?.Value == true || tempVelocityDrag;
+            bool velocityDrag = Options.velocityDrag?.Value == true || tempVelocityDrag || keyVelocityDrag;
 
             //drag remaining chunks
             foreach (var draggable in dragChunks) {
@@ -245,6 +246,10 @@ namespace MouseDrag
             //record scroll wheel direction for rotating chunks around mouse position
             if (scrollDir == 0f)
                 scrollDir = Input.mouseScrollDelta.y;
+
+            //toggle velocityDrag
+            if (Options.velocityDragKey?.Value != null && Input.GetKeyDown(Options.velocityDragKey.Value))
+                keyVelocityDrag = !keyVelocityDrag;
         }
 
 

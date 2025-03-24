@@ -16,13 +16,14 @@ namespace MouseDrag
         public static Configurable<KeyCode> drag;
         public static Configurable<bool> disVnlCursor;
         public static Configurable<string> winCursorVisType;
+        public static Configurable<KeyCode> onlySelectCreatures, onlySelectItems;
+        public static Configurable<KeyCode> multipleSelect;
 
         public static Configurable<bool> throwWithMouse, throwAsPlayer;
         public static Configurable<float> throwThreshold, throwForce;
         public static Configurable<KeyCode> throwWeapon;
         public static Configurable<bool> velocityDrag, velocityDragAtScreenChange;
-        public static Configurable<KeyCode> onlySelectCreatures, onlySelectItems;
-        public static Configurable<KeyCode> multipleSelect;
+        public static Configurable<KeyCode> velocityDragKey;
 
         public static Configurable<bool> menuOpenRMB, menuOpenMMB;
         public static Configurable<KeyCode> menuOpen;
@@ -107,6 +108,9 @@ namespace MouseDrag
             drag = config.Bind(nameof(drag), KeyCode.None, new ConfigurableInfo("KeyBind is used to drag objects, as an alternative to left mouse button.", null, "", "Drag"));
             disVnlCursor = config.Bind(nameof(disVnlCursor), defaultValue: false, new ConfigurableInfo("Disables Rain World cursor. Solves the double mouse pointers in sandbox.", null, "", "Hide Rain World cursor"));
             winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.Moved2Seconds.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"" + CursorVisibilityTypes.NoChanges.ToString() + "\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
+            onlySelectCreatures = config.Bind(nameof(onlySelectCreatures), KeyCode.None, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
+            onlySelectItems = config.Bind(nameof(onlySelectItems), KeyCode.None, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
+            multipleSelect = config.Bind(nameof(multipleSelect), KeyCode.LeftControl, new ConfigurableInfo("Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.", null, "", "Multiple select"));
 
             throwWithMouse = config.Bind(nameof(throwWithMouse), defaultValue: true, new ConfigurableInfo("Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.", null, "", "Throw with mouse"));
             throwAsPlayer = config.Bind(nameof(throwAsPlayer), defaultValue: false, new ConfigurableInfo("Throwing weapons with the mouse will use Player as thrower.", null, "", "Throw as Player"));
@@ -115,9 +119,7 @@ namespace MouseDrag
             throwWeapon = config.Bind(nameof(throwWeapon), KeyCode.None, new ConfigurableInfo("KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).", null, "", "Throw weapon"));
             velocityDrag = config.Bind(nameof(velocityDrag), defaultValue: false, new ConfigurableInfo("Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.\nSandbox mouse might interfere (if initialized).", null, "", "Velocity drag"));
             velocityDragAtScreenChange = config.Bind(nameof(velocityDragAtScreenChange), defaultValue: true, new ConfigurableInfo("Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.", null, "", "Velocity drag at screen change"));
-            onlySelectCreatures = config.Bind(nameof(onlySelectCreatures), KeyCode.None, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
-            onlySelectItems = config.Bind(nameof(onlySelectItems), KeyCode.None, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
-            multipleSelect = config.Bind(nameof(multipleSelect), KeyCode.LeftControl, new ConfigurableInfo("Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.", null, "", "Multiple select"));
+            velocityDragKey = config.Bind(nameof(velocityDragKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.", null, "", "Velocity drag"));
 
             menuOpenRMB = config.Bind(nameof(menuOpenRMB), defaultValue: true, new ConfigurableInfo("Right mouse button opens menu on object or background.", null, "", "RMB opens menu"));
             menuOpenMMB = config.Bind(nameof(menuOpenMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button opens menu on object or background.", null, "", "MMB opens menu"));
@@ -268,6 +270,9 @@ namespace MouseDrag
             AddKeyBinder(drag, new Vector2(x, y -= sepr + 5f));
             AddCheckBox(disVnlCursor, new Vector2(x, y -= sepr));
             AddComboBox(winCursorVisType, new Vector2(x, y -= sepr), Enum.GetNames(typeof(CursorVisibilityTypes)), alH: FLabelAlignment.Right, width: 120f);
+            AddKeyBinder(onlySelectCreatures, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(onlySelectItems, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(multipleSelect, new Vector2(x, y -= sepr + 5f));
 
             x += 250f;
             y = 460f;
@@ -278,9 +283,7 @@ namespace MouseDrag
             AddKeyBinder(throwWeapon, new Vector2(x, y -= sepr + 5f));
             AddCheckBox(velocityDrag, new Vector2(x, y -= sepr));
             AddCheckBox(velocityDragAtScreenChange, new Vector2(x, y -= sepr));
-            AddKeyBinder(onlySelectCreatures, new Vector2(x, y -= sepr + 5f));
-            AddKeyBinder(onlySelectItems, new Vector2(x, y -= sepr + 5f));
-            AddKeyBinder(multipleSelect, new Vector2(x, y -= sepr + 5f));
+            AddKeyBinder(velocityDragKey, new Vector2(x, y -= sepr + 5f));
 
             /**************** General ****************/
             curTab++;

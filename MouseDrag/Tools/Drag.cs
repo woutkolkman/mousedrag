@@ -177,6 +177,8 @@ namespace MouseDrag
                 if (ShouldRelease(dragChunks[i].owner))
                     dragChunks.RemoveAt(i);
 
+            bool velocityDrag = Options.velocityDrag?.Value == true || tempVelocityDrag;
+
             //drag remaining chunks
             foreach (var draggable in dragChunks) {
                 BodyChunk bc = draggable.chunk;
@@ -186,7 +188,7 @@ namespace MouseDrag
 
                 //this drag functionality might (be) affect(ed by) sandbox mouse
                 bc.vel += mousePos + draggable.offset - bc.pos;
-                if ((Options.velocityDrag?.Value != true && !tempVelocityDrag) || paused || isWeaponAndNotFree)
+                if (!velocityDrag || paused || isWeaponAndNotFree)
                     bc.pos += mousePos + draggable.offset - bc.pos;
 
                 if (paused) {
@@ -198,7 +200,7 @@ namespace MouseDrag
                 }
 
                 //velocity dragging
-                if (Options.velocityDrag?.Value == true || tempVelocityDrag) {
+                if (velocityDrag) {
                     bc.vel = (dampingPos + draggable.offset - bc.pos) / 2f;
 
                     //reduce max speed of player

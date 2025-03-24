@@ -21,7 +21,8 @@ namespace MouseDrag
             if (Options.throwWeapon?.Value != null && Input.GetKeyDown(Options.throwWeapon.Value)) {
                 foreach (var obj in Drag.dragObjects)
                     Drag.TryThrow(self, obj, overrideThreshold: true);
-                Drag.tempStopGrabTicks = 20;
+//                Drag.tempStopGrabTicks = 20; //only stops grabbing new objects, keep hold of non-weapons
+                Drag.tempStopDragTicks = 20; //stops dragging all objects
             }
 
             if (Options.pauseOneKey?.Value != null && Input.GetKeyDown(Options.pauseOneKey.Value))

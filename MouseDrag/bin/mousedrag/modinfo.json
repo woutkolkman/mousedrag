@@ -1,7 +1,7 @@
 {
   "id": "maxi-mol.mousedrag",
   "name": "Mouse Drag",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "authors": "Maxi Mol",
   "description": "Tool which allows editing in-game objects outside sandbox-mode using your mouse.",
   "requirements": [],

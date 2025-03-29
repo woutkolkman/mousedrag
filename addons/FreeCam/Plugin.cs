@@ -13,7 +13,7 @@ namespace FreeCam
         //metadata
         public const string GUID = "maxi-mol.freecam";
         public const string Name = "FreeCam";
-        public const string Version = "0.1.3"; //also edit version in "modinfo.json"
+        public const string Version = "1.0.0"; //also edit version in "modinfo.json"
 
         public static new ManualLogSource Logger { get; private set; } = null;
         private static bool isEnabled = false;

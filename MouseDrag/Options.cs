@@ -80,9 +80,9 @@ namespace MouseDrag
 
         public enum ActivateTypes
         {
+            AlwaysActive,
             DevToolsActive,
             KeyBindPressed,
-            AlwaysActive,
             SandboxAndSafari
         }
 

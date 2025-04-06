@@ -4,7 +4,7 @@ namespace MouseDrag
 {
     public static class State
     {
-        public static Options.ActivateTypes activeType = Options.ActivateTypes.DevToolsActive;
+        public static Options.ActivateTypes activeType = Options.ActivateTypes.AlwaysActive;
         public static Options.CursorVisibilityTypes winCursorVisType = Options.CursorVisibilityTypes.Moved2Seconds;
         public static bool activated = false; //true --> all tools & menu are available
         public static Vector2 prevMousePos = Vector2.zero;

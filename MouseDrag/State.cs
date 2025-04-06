@@ -19,11 +19,11 @@ namespace MouseDrag
 
         public static void Update(RainWorldGame game)
         {
-            //set activated controls, keybind is checked in RainWorldGameRawUpdateHook
-            if (activeType == Options.ActivateTypes.DevToolsActive)
-                activated = game.devToolsActive;
+            //set activated controls, keybind is checked in RainWorldGameRawUpdateIL
             if (activeType == Options.ActivateTypes.AlwaysActive)
                 activated = true;
+            if (activeType == Options.ActivateTypes.DevToolsActive)
+                activated = game.devToolsActive;
             if (activeType == Options.ActivateTypes.SandboxAndSafari)
                 if (game.rainWorld?.safariMode == true || game.GetArenaGameSession is SandboxGameSession)
                     activated = true;

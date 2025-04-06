@@ -193,7 +193,7 @@ namespace MouseDrag
                         Drag.ReleaseAll(); //don't accidentally drag the teleported object back
                 }
 
-                //other checks are found in State.UpdateActivated
+                //other checks are found in State.Update
                 if (State.activeType == Options.ActivateTypes.KeyBindPressed)
                     if (Options.activateKey?.Value != null && Input.GetKeyDown(Options.activateKey.Value))
                         State.activated = !State.activated;

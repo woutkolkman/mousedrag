@@ -84,7 +84,8 @@ namespace MouseDrag
 
                     //invert selection
                     if (selectedChunks.Contains(bc)) {
-                        selectedChunks.Remove(bc);
+                        if (Options.selectionXOR?.Value == true)
+                            selectedChunks.Remove(bc);
                     } else {
                         selectedChunks.Add(bc);
                     }

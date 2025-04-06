@@ -1,4 +1,6 @@
 Mouse Drag
+- Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
+- Constantly refresh/update radialmenu health tooltip, so changes in health are shown immediately?
 - Add secondary menu which replaces the radial menu, and which looks more like a Windows context menu. Or use a Dev Tools dropdown (?) menu
 - Add deadband tolerance thing to the mouse visibility initial movement change
 - Check/fix the effect of RainWorldOnModsInitHook being called multiple times when certain mods are enabled (Rain Meadow)

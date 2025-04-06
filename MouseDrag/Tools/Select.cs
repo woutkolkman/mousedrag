@@ -64,6 +64,7 @@ namespace MouseDrag
                 selectRect = null;
                 Room room = rcam?.room;
                 Vector2 rectEndPos = Drag.MousePos(game);
+                List<BodyChunk> tempChunks = new List<BodyChunk>(); //fixes SeedCob select bug
 
                 void bodyChunkSelection(BodyChunk bc)
                 {
@@ -72,6 +73,8 @@ namespace MouseDrag
                     if (!IsWithinRect(bc, rectStartPos, rectEndPos))
                         return;
                     if (Vector2.Distance(rectStartPos, rectEndPos) < 10f)
+                        return;
+                    if (tempChunks.Contains(bc))
                         return;
 
                     //only select creatures or items
@@ -89,6 +92,7 @@ namespace MouseDrag
                     } else {
                         selectedChunks.Add(bc);
                     }
+                    tempChunks.Add(bc);
                 }
 
                 //add bodychunks in room within rectangle to selection

@@ -25,6 +25,7 @@ namespace MouseDrag
         public static Vector2 rectStartPos;
         public static Rectangle selectRect = null;
         public static List<Crosshair> crosshairs = new List<Crosshair>(); //shows which objects are selected
+        private static bool refreshCrosshairs;
 
 
         public static void Update(RainWorldGame game)
@@ -124,7 +125,7 @@ namespace MouseDrag
         public static void UpdateCrosshairs(RoomCamera rcam, bool selectActive)
         {
             //create/destroy selection crosshairs
-            if (selectedChunks.Count != crosshairs.Count) {
+            if (selectedChunks.Count != crosshairs.Count || refreshCrosshairs) {
                 for (int i = crosshairs.Count; i > selectedChunks.Count; i--)
                     crosshairs.Pop().Destroy();
                 var container = rcam?.ReturnFContainer("HUD");
@@ -137,6 +138,7 @@ namespace MouseDrag
                     crosshairs[i].InitiateSprites(container, spriteCount);
                     crosshairs[i].rotationSpeed = 3f * (10f / selectedChunks[i].rad);
                 }
+                refreshCrosshairs = false;
             }
 
             bool selectedByMenu = MenuManager.menu?.followChunk != null && selectedChunks.Contains(MenuManager.menu.followChunk);
@@ -196,6 +198,7 @@ namespace MouseDrag
                     if (bc == null || !selectedChunks.Contains(bc))
                         selectedChunks.Clear();
                 }
+                refreshCrosshairs = true; //refresh in the case where new bodychunk count is the same as the old count
             }
         }
 

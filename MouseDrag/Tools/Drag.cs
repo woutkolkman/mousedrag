@@ -47,12 +47,12 @@ namespace MouseDrag
         public static int tempStopGrabTicks = 0; //temporarily deactivate grab/drag new chunks
         public static int playerNr = 0; //last dragged or selected player
         public static void SetPlayerNr(int i) => playerNr = i; //dev console tool
-        public static bool dragButtonPressed(bool noLMB = false) => (
+        public static bool dragButtonPressed(bool noLMB = false) => ( //stays true while pressed
             (Input.GetMouseButton(0) && Options.dragLMB?.Value == true && !noLMB) ||
             (Input.GetMouseButton(2) && Options.dragMMB?.Value == true) ||
             (Options.drag?.Value != null && Input.GetKey(Options.drag.Value))
         );
-        public static bool dragButtonDown() => (
+        public static bool dragButtonDown() => ( //true for a single frame
             (Input.GetMouseButtonDown(0) && Options.dragLMB?.Value == true) ||
             (Input.GetMouseButtonDown(2) && Options.dragMMB?.Value == true) ||
             (Options.drag?.Value != null && Input.GetKeyDown(Options.drag.Value))

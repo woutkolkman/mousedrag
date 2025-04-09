@@ -535,6 +535,19 @@ namespace MouseDrag
             })
             .Register();
 
+            new DevConsole.Commands.CommandBuilder("md_select")
+            .Help("md_select [selector]")
+            .RunGame((game, args) => {
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                Select.selectedChunks = list.SelectMany(apo => apo?.realizedObject?.bodyChunks ?? new BodyChunk[0]).ToList();
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("DevConsoleRegisterCommands, finished registration of commands");
         }

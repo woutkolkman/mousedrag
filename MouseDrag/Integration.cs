@@ -536,16 +536,48 @@ namespace MouseDrag
             .Register();
 
             new DevConsole.Commands.CommandBuilder("md_select")
-            .Help("md_select [selector]")
+            .Help("md_select [selector] [bodychunk?]")
             .RunGame((game, args) => {
-                if (args.Length != 1) {
-                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                if (args.Length < 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 or 2 arguments");
                     return;
                 }
+                Select.selectedChunks = new List<BodyChunk>(); //clear current selection
                 var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
-                Select.selectedChunks = list.SelectMany(apo => apo?.realizedObject?.bodyChunks ?? new BodyChunk[0]).ToList();
+                for (int i = list.Count() - 1; i >= 0; i--) {
+                    if (list.ElementAt(i)?.realizedObject?.bodyChunks == null)
+                        continue;
+                    if (args.Length < 2 || args[1] == "all") {
+                        foreach (var bc in list.ElementAt(i).realizedObject.bodyChunks)
+                            Select.selectedChunks.Add(bc);
+                    } else if (args[1] == "main") {
+                        var bc = list.ElementAt(i).realizedObject.firstChunk;
+                        if (list.ElementAt(i).realizedObject is Creature &&
+                            (list.ElementAt(i).realizedObject as Creature).mainBodyChunk != null)
+                            bc = (list.ElementAt(i).realizedObject as Creature).mainBodyChunk;
+                        Select.selectedChunks.Add(bc);
+                    } else if (args[1] == "first") {
+                        Select.selectedChunks.Add(list.ElementAt(i).realizedObject.firstChunk);
+                    } else if (args[1] == "random") {
+                        Select.selectedChunks.Add(list.ElementAt(i).realizedObject.RandomChunk);
+                    } else if (int.TryParse(args[1], out int bcI)) {
+                        if (bcI >= 0 && bcI < list.ElementAt(i).realizedObject.bodyChunks.Length) {
+                            Select.selectedChunks.Add(list.ElementAt(i).realizedObject.bodyChunks[bcI]);
+                        } else {
+                            DevConsole.GameConsole.WriteLine("BodyChunk with index " + bcI + " does not exist for " + Special.ConsistentName(list.ElementAt(i)));
+                        }
+                    } else {
+                        DevConsole.GameConsole.WriteLine("Unknown argument(s)");
+                        break;
+                    }
+                }
+                DevConsole.GameConsole.WriteLine("Selected " + Select.selectedObjects.Count + " PhysicalObjects, " + Select.selectedChunks.Count + " BodyChunks.");
             })
-            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .AutoComplete(args => {
+                if (args.Length == 0) return DevConsole.Selection.Autocomplete;
+                if (args.Length == 1) return new string[] { "all", "main", "first", "random" };
+                return null;
+            })
             .Register();
 
             if (Options.logDebug?.Value != false)

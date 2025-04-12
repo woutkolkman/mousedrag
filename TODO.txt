@@ -13,6 +13,7 @@ Mouse Drag
 - Show more relationship info in label when hovering over radialmenu tame/clear relationships tools
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
 === Forget list ===:
+- Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
 - Add keybind to swap between velocity drag and normal positional mouse dragging?
 - Add multi-select crosshairs in different color when hovering over bodychunks? Or when bodychunks are about to be selected with the selection-rectangle?

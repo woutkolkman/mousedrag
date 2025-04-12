@@ -192,6 +192,9 @@ namespace MouseDrag
             if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
                 (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 1;
 
+            if (obj is Pomegranate)
+                (obj as Pomegranate).EnterSmashedMode();
+
             if (obj is Oracle)
             {
                 if (obj.room?.game?.GetStorySession?.saveState?.deathPersistentSaveData != null) {
@@ -313,6 +316,11 @@ namespace MouseDrag
 
             if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
                 (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 3;
+
+            if (obj is Pomegranate) {
+                (obj as Pomegranate).smashed = false;
+                (obj as Pomegranate).refreshSprites = true;
+            }
 
             if (obj is Oracle)
             {

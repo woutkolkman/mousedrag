@@ -318,8 +318,16 @@ namespace MouseDrag
                 (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 3;
 
             if (obj is Pomegranate) {
-                (obj as Pomegranate).smashed = false;
                 (obj as Pomegranate).refreshSprites = true;
+                (obj as Pomegranate).smashed = false;
+//                (obj as Pomegranate).disconnected = false;
+//                (obj as Pomegranate).spearmasterStabbed = false;
+                if ((obj as Pomegranate).AbstrPomegranate != null) {
+                    (obj as Pomegranate).AbstrPomegranate.smashed = false;
+//                    (obj as Pomegranate).AbstrPomegranate.disconnected = false;
+//                    (obj as Pomegranate).AbstrPomegranate.spearmasterStabbed = false;
+                }
+                //TODO reset ReportConsumedItem
             }
 
             if (obj is Oracle)

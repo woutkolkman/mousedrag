@@ -34,12 +34,19 @@ namespace MouseDrag
 
             } else {
                 try {
-                    newApo = SaveState.AbstractPhysicalObjectFromString(oldApo.world, oldApo.ToString());
-
-                    //specials
-                    if (oldApo is SeedCob.AbstractSeedCob) //popcorn plant
+                    if (oldApo is SeedCob.AbstractSeedCob) { //popcorn plant
                         newApo = DuplicateObjectSeedCob(oldApo);
-                    if (obj is Oracle) //iterator
+                    } else if (oldApo is Pomegranate.AbstractPomegranate) { //watermelon
+                        newApo = new Pomegranate.AbstractPomegranate(
+                            oldApo.world, null, oldApo.pos, oldApo.ID, (oldApo as Pomegranate.AbstractPomegranate).originRoom, 
+                            -1, null, (oldApo as Pomegranate.AbstractPomegranate).smashed, 
+                            (oldApo as Pomegranate.AbstractPomegranate).disconnected, 
+                            (oldApo as Pomegranate.AbstractPomegranate).spearmasterStabbed
+                        );
+                    } else { //everything else
+                        newApo = SaveState.AbstractPhysicalObjectFromString(oldApo.world, oldApo.ToString());
+                    }
+                    if (obj is Oracle) //iterator extra step
                         newApo.realizedObject = new Oracle(newApo, obj.room);
 
                     //must get new id?

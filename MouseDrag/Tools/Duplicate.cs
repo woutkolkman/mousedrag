@@ -36,12 +36,32 @@ namespace MouseDrag
                 try {
                     if (oldApo is SeedCob.AbstractSeedCob) { //popcorn plant
                         newApo = DuplicateObjectSeedCob(oldApo);
-                    } else if (oldApo is Pomegranate.AbstractPomegranate) { //watermelon
+                    } else if (oldApo is Pomegranate.AbstractPomegranate) { //vine watermelon
                         newApo = new Pomegranate.AbstractPomegranate(
                             oldApo.world, null, oldApo.pos, oldApo.ID, (oldApo as Pomegranate.AbstractPomegranate).originRoom, 
                             -1, null, (oldApo as Pomegranate.AbstractPomegranate).smashed, 
                             (oldApo as Pomegranate.AbstractPomegranate).disconnected, 
                             (oldApo as Pomegranate.AbstractPomegranate).spearmasterStabbed
+                        );
+                    } else if (oldApo is LobeTree.AbstractLobeTree) { //outer rim trees
+                        PlacedObject newPo = new PlacedObject(PlacedObject.Type.LobeTree, null);
+                        if ((oldApo as LobeTree.AbstractLobeTree).placedObjectIndex >= 0 &&
+                            (oldApo as LobeTree.AbstractLobeTree).placedObjectIndex < obj.room.roomSettings?.placedObjects?.Count) {
+                            var oldPo = obj.room.roomSettings.placedObjects[(oldApo as LobeTree.AbstractLobeTree).placedObjectIndex];
+                            newPo.pos = oldPo.pos;
+                            newPo.data = oldPo.data;
+                        } else {
+                            //peeked at Dev Console code
+                            float radius = 60f;
+                            float rotation = 0f;
+                            float stemX = -200f;
+                            float stemY = 0f;
+                            newPo.pos = oldApo.pos.Tile.ToVector2() * 20f + new Vector2(10f, 10f);
+                            (newPo.data as LobeTree.LobeTreeData).handlePos = RWCustom.Custom.DegToVec(rotation) * radius;
+                            (newPo.data as LobeTree.LobeTreeData).rootOffset = new Vector2(stemX, stemY);
+                        }
+                        newApo = new LobeTree.AbstractLobeTree(
+                            oldApo.world, AbstractPhysicalObject.AbstractObjectType.LobeTree, null, oldApo.pos, oldApo.ID, newPo
                         );
                     } else { //everything else
                         newApo = SaveState.AbstractPhysicalObjectFromString(oldApo.world, oldApo.ToString());

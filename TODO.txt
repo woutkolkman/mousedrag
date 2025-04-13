@@ -1,19 +1,19 @@
 Mouse Drag
-- Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
 - Constantly refresh/update radialmenu health tooltip, so changes in health are shown immediately?
-- Add secondary menu which replaces the radial menu, and which looks more like a Windows context menu. Or use a Dev Tools dropdown (?) menu
 - Add deadband tolerance thing to the mouse visibility initial movement change
 - Check/fix the effect of RainWorldOnModsInitHook being called multiple times when certain mods are enabled (Rain Meadow)
 - Rain Meadow multiplayer support? Configurable options for hosts to allow/disallow tools for other players?
 - Change safari overseer selection when selecting a creature with Mouse Drag? Also pipe selection with mouse pointer in the same room
 - Add option which can spawn a safari overseer with can be used to freecam in the current gamemode
-- Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc.
 - Lock tool, add optional visual indicator when a bodychunk is locked? Or only if the mouse or radial menu selects this object
 - Edit velocity drag so you can still drag bodychunks through walls
 - Show more relationship info in label when hovering over radialmenu tame/clear relationships tools
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
-- Release KarmaFlower/Mushroom/etc. from terrain when dragged?
 === Forget list ===:
+- Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc. --> already implemented by Unity Explorer and addons
+- Release KarmaFlower/Mushroom/etc. from terrain when dragged?
+- Add secondary menu which replaces the radial menu, and which looks more like a Windows context menu. Or use a Dev Tools dropdown (?) menu
+- Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
 - Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
 - Add keybind to swap between velocity drag and normal positional mouse dragging?

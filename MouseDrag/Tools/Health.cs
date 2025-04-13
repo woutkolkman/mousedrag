@@ -195,6 +195,12 @@ namespace MouseDrag
             if (obj is Pomegranate)
                 (obj as Pomegranate).EnterSmashedMode();
 
+            if (obj is Watcher.UrbanToys.SpinToy) {
+                (obj as Watcher.UrbanToys.SpinToy).ChargeSpin(
+                    Random.Range((obj as Watcher.UrbanToys.SpinToy).minSpinTime, (obj as Watcher.UrbanToys.SpinToy).maxSpinTime)
+                );
+            }
+
             if (obj is Oracle)
             {
                 if (obj.room?.game?.GetStorySession?.saveState?.deathPersistentSaveData != null) {
@@ -328,6 +334,16 @@ namespace MouseDrag
 //                    (obj as Pomegranate).AbstrPomegranate.spearmasterStabbed = false;
                 }
                 //TODO reset ReportConsumedItem
+            }
+
+            if (obj is Watcher.UrbanToys.SpinToy) {
+                (obj as Watcher.UrbanToys.SpinToy).randomOffset = 0f;
+                (obj as Watcher.UrbanToys.SpinToy).backForth = 0f;
+                (obj as Watcher.UrbanToys.SpinToy).leftRight = 0f;
+                (obj as Watcher.UrbanToys.SpinToy).unstable = 0f;
+                (obj as Watcher.UrbanToys.SpinToy).spin = 0f;
+                (obj as Watcher.UrbanToys.SpinToy).topBottom = 0f;
+                (obj as Watcher.UrbanToys.SpinToy).spinTimer?.SetToMin();
             }
 
             if (obj is Oracle)

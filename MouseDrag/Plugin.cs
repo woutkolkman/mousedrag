@@ -13,7 +13,7 @@ namespace MouseDrag
         //metadata
         public const string GUID = "maxi-mol.mousedrag";
         public const string Name = "Mouse Drag";
-        public const string Version = "1.0.0"; //also edit version in "modinfo.json"
+        public const string Version = "1.0.2"; //also edit version in "modinfo.json"
 
         public static new ManualLogSource Logger { get; private set; } = null;
         private static bool isEnabled = false;

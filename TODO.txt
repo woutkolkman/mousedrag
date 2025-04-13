@@ -8,6 +8,7 @@ Mouse Drag
 - Lock tool, add optional visual indicator when a bodychunk is locked? Or only if the mouse or radial menu selects this object
 - Edit velocity drag so you can still drag bodychunks through walls
 - Show more relationship info in label when hovering over radialmenu tame/clear relationships tools
+- Change info tool to also dump contents of structs, like creature personality
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
 === Forget list ===:
 - Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc. --> already implemented by Unity Explorer and addons
@@ -39,7 +40,7 @@ Mouse Drag
 - Fix possible bug: when a slugpup is going into a pipe and you drag the pup away at the right moment, you might be able to break graphical update?
 - Allow safari control tool to work if DLC is not enabled? Requires changes for every creature class, and maybe not allowed by the game devs
 - Implement fix for Dev Tools V (player dragging) for SplitScreen Co-op? Maybe task for that mod to fix
-- Add respawn icon with playernumber selection to respawn specific players? Might be possible with Dev Console already. Optionally configurable slugcat class?
+- Add respawn icon with playernumber selection to respawn specific players? Or only player 1? Might be possible with Dev Console already. Optionally configurable slugcat class?
 - Loading bar graphic around the edge of the radial menu for options like delete in region, so you need to hold the mouse button for longer
 - Add option where MMB can select within radial menu, and scroll can highlight tools?
 - Change page icon in radial menu "+" to "1/3" etc.?

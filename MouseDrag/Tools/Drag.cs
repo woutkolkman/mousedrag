@@ -147,8 +147,23 @@ namespace MouseDrag
                 return;
             }
 
+            //temporarily disable dragging new chunks
+            bool preventNewDrag = tempStopGrabTicks > 0;
+
+            //prevent dragging new chunks if mouse is selecting a button on the radialmenu
+            //allow dragging new chunks if drag button is different from menu select button
+            preventNewDrag |= MenuManager.menu?.mouseIsOnMenuBG == true && (
+                (Options.dragLMB?.Value == true && Options.menuSelectLMB?.Value == true) 
+                || (Options.dragMMB?.Value == true && Options.menuSelectMMB?.Value == true) 
+                || (
+                    Options.menuSelect?.Value != null && Options.menuSelect.Value != KeyCode.None && 
+                    Options.drag?.Value != null && Options.drag.Value != KeyCode.None && 
+                    Options.menuSelect.Value == Options.drag.Value
+                )
+            );
+
             //grab new bodychunks to drag, if one is close enough
-            if (tempStopGrabTicks <= 0 && dragChunks.Count <= 0) {
+            if (dragChunks.Count <= 0 && !preventNewDrag) {
                 //search all objects for closest chunk
                 Vector2 offset = Vector2.zero;
                 BodyChunk chunk = GetClosestChunk(room, mousePos, ref offset);

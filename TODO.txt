@@ -12,6 +12,7 @@ Mouse Drag
 - Edit velocity drag so you can still drag bodychunks through walls
 - Show more relationship info in label when hovering over radialmenu tame/clear relationships tools
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
+- Release KarmaFlower/Mushroom/etc. from terrain when dragged?
 === Forget list ===:
 - Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor

@@ -13,6 +13,7 @@ namespace MouseDrag
         public float inRad = 20f; //same value as Drag.GetClosestChunk rad
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
         public bool mouseIsWithinMenu { get; private set; }
+        public bool mouseIsOnMenuBG { get; private set; }
         private RoomCamera prevRCam = null; //just to detect SplitScreen Co-op camera change
         public List<Slot> slots = new List<Slot>();
         public Select.Crosshair crosshair = null;
@@ -23,12 +24,12 @@ namespace MouseDrag
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
         public bool snapToChunk = true;
-        public static bool menuOpenButtonPressed(bool noRMB = false) => (
+        public static bool menuOpenButtonPressed(bool noRMB = false) => ( //stays true while pressed
             (Input.GetMouseButton(1) && Options.menuOpenRMB?.Value == true && !noRMB) ||
             (Input.GetMouseButton(2) && Options.menuOpenMMB?.Value == true) ||
             (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))
         );
-        public static bool menuSelectButtonDown() => (
+        public static bool menuSelectButtonDown() => ( //true for a single frame
             (Input.GetMouseButtonDown(0) && Options.menuSelectLMB?.Value == true) ||
             (Input.GetMouseButtonDown(2) && Options.menuSelectMMB?.Value == true) ||
             (Options.menuSelect?.Value != null && Input.GetKeyDown(Options.menuSelect.Value))
@@ -162,6 +163,7 @@ namespace MouseDrag
             //determine if mouse is in a valid position in the menu
             float? angle = null;
             mouseIsWithinMenu = false;
+            mouseIsOnMenuBG = false;
             if (angleVect != Vector2.zero && Custom.DistLess(displayPos, mouse, outRad)) {
                 mouseIsWithinMenu = true;
                 if (!Custom.DistLess(displayPos, mouse, inRad)) {
@@ -169,6 +171,7 @@ namespace MouseDrag
                     if (angle < 0)
                         angle += 360f;
                 }
+                mouseIsOnMenuBG = !Custom.DistLess(displayPos, mouse, inRad);
             }
 
             //determine which slot is hovered over

@@ -162,6 +162,9 @@ namespace MouseDrag
                 )
             );
 
+            //don't drag new bodychunks when selection can be made with either multiselect + drag button or selection-rectangle
+            preventNewDrag |= Options.multipleSelect?.Value != null && Input.GetKey(Options.multipleSelect.Value);
+
             //grab new bodychunks to drag, if one is close enough
             if (dragChunks.Count <= 0 && !preventNewDrag) {
                 //search all objects for closest chunk

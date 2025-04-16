@@ -46,10 +46,6 @@ namespace MouseDrag
                 return;
             }
 
-            //don't drag new bodychunks when selection can be made with either multiselect + drag button or selection-rectangle
-            if (Drag.tempStopGrabTicks < 2)
-                Drag.tempStopGrabTicks = 2;
-
             //select multiple objects using selection-rectangle
             bool dragPressed = Drag.dragButtonPressed();
 

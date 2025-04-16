@@ -164,14 +164,15 @@ namespace MouseDrag
             float? angle = null;
             mouseIsWithinMenu = false;
             mouseIsOnMenuBG = false;
+            bool mouseIsWithinInRad = Custom.DistLess(displayPos, mouse, inRad);
             if (angleVect != Vector2.zero && Custom.DistLess(displayPos, mouse, outRad)) {
                 mouseIsWithinMenu = true;
-                if (!Custom.DistLess(displayPos, mouse, inRad)) {
+                if (!mouseIsWithinInRad) {
+                    mouseIsOnMenuBG = true;
                     angle = Custom.VecToDeg(angleVect);
                     if (angle < 0)
                         angle += 360f;
                 }
-                mouseIsOnMenuBG = !Custom.DistLess(displayPos, mouse, inRad);
             }
 
             //determine which slot is hovered over
@@ -204,7 +205,7 @@ namespace MouseDrag
             mousePressed = false;
 
             //close menu if mouse is pressed outside of menu
-            if (selected < 0 && !Custom.DistLess(displayPos, mouse, inRad))
+            if (selected < 0 && !mouseIsWithinInRad)
                 closed = true;
             return selectedSlot;
         }

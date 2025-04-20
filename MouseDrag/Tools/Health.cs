@@ -53,6 +53,9 @@ namespace MouseDrag
             ac.state.alive = true;
             (obj as Creature).dead = false;
             (obj as Creature).stun = 0; //makes player immediately controllable
+            (obj as Creature).Hypothermia = 0f;
+            (obj as Creature).HypothermiaExposure = 0f;
+            (obj as Creature).injectedPoison = 0f;
 
             //heal limbs/tentacles/wings
             if (Options.healLimbs?.Value != false) {

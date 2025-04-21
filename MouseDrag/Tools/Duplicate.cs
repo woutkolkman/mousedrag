@@ -117,9 +117,12 @@ namespace MouseDrag
             sgb.SetNetwork(sgn);
             sgn.burrows.Add(sgb);
 
-            //add bigsandgrub to burrow
+            //add BigSandGrub to burrow
             sgb.grub = po;
             po.burrow = sgb;
+
+            //TODO burrow and network are deleted from room after room is reloaded, 
+            //this causes the grub to bug out and fall out of the room
         }
 
 

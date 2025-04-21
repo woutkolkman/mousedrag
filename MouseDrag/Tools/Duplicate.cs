@@ -84,7 +84,42 @@ namespace MouseDrag
                 Plugin.Logger.LogDebug("DuplicateObject, AddEntity " + newApo.type + " at " + coord.SaveToString());
             obj.room.abstractRoom.AddEntity(newApo);
             newApo.RealizeInRoom(); //actually places object/creature
+
+            if (newApo.realizedObject is Watcher.SandGrub)
+                BigSandGrubPostRealization(newApo.realizedObject as Watcher.SandGrub);
+
             return newApo.realizedObject;
+        }
+
+
+        public static void BigSandGrubPostRealization(Watcher.SandGrub po)
+        {
+            if (po?.room == null || po?.abstractCreature?.creatureTemplate != StaticWorld.GetCreatureTemplate(Watcher.WatcherEnums.CreatureTemplateType.BigSandGrub))
+                return;
+            Room room = po.room;
+            Vector2 pos = po.DangerPos;
+
+            //get or create a sandgrub network if it doesn't exist yet
+            Watcher.SandGrubNetwork sgn = (Watcher.SandGrubNetwork)room?.updateList?.FirstOrDefault(x => x is Watcher.SandGrubNetwork);
+            if (sgn == null) {
+                sgn = new Watcher.SandGrubNetwork(pos, 0f, 0f, 0f, false);
+                sgn.scanForBurrows = false;
+                room.AddObject(sgn);
+            }
+
+            //create a new burrow at the current position
+            Watcher.SandGrubBurrow sgb = new Watcher.SandGrubBurrow(null);
+            sgb.pos = room.FindGroundBelow(pos, out sgb.dir, 200f);
+            sgb.room = room;
+            room.AddObject(sgb);
+
+            //add burrow to network, an empty network is destroyed automatically in the first update call
+            sgb.SetNetwork(sgn);
+            sgn.burrows.Add(sgb);
+
+            //add bigsandgrub to burrow
+            sgb.grub = po;
+            po.burrow = sgb;
         }
 
 

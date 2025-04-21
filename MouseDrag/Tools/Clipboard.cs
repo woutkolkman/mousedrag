@@ -133,6 +133,9 @@ namespace MouseDrag
                     Plugin.Logger.LogWarning("Clipboard.PasteObject exception: " + ex?.ToString());
                 }
             }
+
+            if (apo.realizedObject is Watcher.SandGrub)
+                Duplicate.BigSandGrubPostRealization(apo.realizedObject as Watcher.SandGrub);
         }
     }
 }

@@ -15,6 +15,9 @@
                 (obj as SporePlant).stalk = null;
             }
 
+            if (obj is Watcher.Prince)
+                (obj as Watcher.Prince).stem.Destroy();
+
             if (obj is Spear) //prevent spear leaving invisible beams behind
                 (obj as Spear).resetHorizontalBeamState();
 

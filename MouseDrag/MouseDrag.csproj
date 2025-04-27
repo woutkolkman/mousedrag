@@ -64,6 +64,7 @@
     <Compile Include="Tools\Stun.cs" />
     <Compile Include="Tools\Tame.cs" />
     <Compile Include="Tools\Teleport.cs" />
+    <Compile Include="Translations.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

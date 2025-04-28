@@ -315,7 +315,7 @@ namespace MouseDrag
             AddTextBox(maxOnPage, new Vector2(x, y -= sepr), 40f);
             AddCheckBox(menuFollows, new Vector2(x, y -= sepr));
             AddCheckBox(menuMoveHover, new Vector2(x, y -= sepr));
-            AddComboBox(language, new Vector2(x, y -= sepr), Translations.GetLanguagesFromPaths(Translations.GetAvailableLanguagePaths()), alH: FLabelAlignment.Right, width: 120f);
+            AddComboBox(language, new Vector2(x, y -= sepr), Texts.GetLanguagesFromPaths(Texts.GetAvailableLanguagePaths()), alH: FLabelAlignment.Right, width: 120f);
 
             y = -19f; //from bottom up
             AddCheckBox(sBCameraScrollIntegration, new Vector2(x, y += sepr));
@@ -613,19 +613,19 @@ namespace MouseDrag
                 var field = (ConfigurableBase) fi?.GetValue(null);
                 if (field?.info?.description == null)
                     continue;
-                field.info.description = Translations.Translate(field.info.description);
+                field.info.description = Texts.Translate(field.info.description);
                 if (!(field.info.Tags?.Count() > 0))
                     continue;
                 for (int i = 0; i < field.info.Tags.Count(); i++) {
                     if (field.info.Tags[i] is string)
-                        field.info.Tags[i] = Translations.Translate((string) field.info.Tags[i]);
+                        field.info.Tags[i] = Texts.Translate((string) field.info.Tags[i]);
                 }
             }
 
             for (int i = 0; i < Tabs?.Length; i++) {
                 if (Tabs[i] == null)
                     continue;
-                Tabs[i].name = Translations.Translate(Tabs[i].name);
+                Tabs[i].name = Texts.Translate(Tabs[i].name);
             }
 
             if (Options.logDebug?.Value != false)

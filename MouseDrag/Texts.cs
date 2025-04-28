@@ -8,9 +8,9 @@ using System.Reflection;
 
 namespace MouseDrag
 {
-    public static class Translations
+    public static class Texts
     {
-        public static Dictionary<string, string> translationDict = null;
+        private static Dictionary<string, string> translationDict = null;
         public const string filenameExtension = ".txt";
         public const char translationSeparatorChar = '|';
 

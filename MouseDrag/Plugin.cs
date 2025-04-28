@@ -35,7 +35,7 @@ namespace MouseDrag
                 MachineConnector.SetRegisteredOI(GUID, new Options());
                 MachineConnector.ReloadConfig(MachineConnector.GetRegisteredOI(GUID));
                 MenuManager.LoadSprites();
-                Translations.LoadLanguage(RWCustom.Custom.rainWorld);
+                Texts.LoadLanguage(RWCustom.Custom.rainWorld);
                 Integration.Hooks.Apply();
                 if (Integration.devConsoleEnabled) {
                     try {

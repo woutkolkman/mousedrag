@@ -63,7 +63,7 @@ namespace MouseDrag
             Plugin.Logger.LogDebug("RainWorldOnModsInitHook, first time initializing options interface and sprites");
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
             MenuManager.LoadSprites();
-            Translations.LoadLanguage(self);
+            Texts.LoadLanguage(self);
         }
 
 

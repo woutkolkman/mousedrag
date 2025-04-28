@@ -221,7 +221,11 @@ namespace MouseDrag
                             }
                             break;
                         case "mousedragInfo":
-                            highPrioText = "Object" + (dumpedInfo == "" ? " " : "s ") + "copied to clipboard";
+                            if (dumpedInfo == "") { //first object?
+                                highPrioText = Texts.Translate("Object copied to clipboard");
+                            } else {
+                                highPrioText = Texts.Translate("Objects copied to clipboard");
+                            }
                             dumpedInfo += Info.GetInfo(obj);
                             break;
                     }
@@ -302,7 +306,7 @@ namespace MouseDrag
                     case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
                     case "mousedragInfo":
                         Info.CopyToClipboard(Info.GetInfo(rcam?.room));
-                        highPrioText = "Room copied to clipboard";
+                        highPrioText = Texts.Translate("Room copied to clipboard");
                         break;
                 }
             }
@@ -319,25 +323,25 @@ namespace MouseDrag
                 //add all selectable gravity types to submenu
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityReset",
-                    tooltip = "Reset gravity"
+                    tooltip = Texts.Translate("Reset gravity")
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityOff",
-                    tooltip = "Gravity off"
+                    tooltip = Texts.Translate("Gravity off")
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityHalf",
-                    tooltip = "Gravity low"
+                    tooltip = Texts.Translate("Gravity low")
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityOn",
-                    tooltip = "Gravity on"
+                    tooltip = Texts.Translate("Gravity on")
                 });
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityInverse",
-                    tooltip = "Gravity inversed"
+                    tooltip = Texts.Translate("Gravity inversed")
                 });
-                lowPrioText = "Select gravity type";
+                lowPrioText = Texts.Translate("Select gravity type");
 
             } else if (subMenuType == SubMenuTypes.SafariPlayer) {
                 //do not add sprites
@@ -348,13 +352,13 @@ namespace MouseDrag
                     bool paused = Pause.IsObjectPaused(chunk.owner);
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = paused ? "mousedragPlay" : "mousedragPause",
-                        tooltip = paused ? "Unpause" : "Pause"
+                        tooltip = paused ? Texts.Translate("Unpause") : Texts.Translate("Pause")
                     });
                 }
                 if (Options.killOneMenu?.Value != false) {
-                    string tooltip = "Trigger";
+                    string tooltip = Texts.Translate("Trigger");
                     if (chunk.owner is Creature) {
-                        tooltip = "Kill";
+                        tooltip = Texts.Translate("Kill");
                         if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
                             tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
                     }
@@ -364,9 +368,9 @@ namespace MouseDrag
                     });
                 }
                 if (Options.reviveOneMenu?.Value != false) {
-                    string tooltip = "Reset";
+                    string tooltip = Texts.Translate("Reset");
                     if (chunk.owner is Creature) {
-                        tooltip = "Revive/heal";
+                        tooltip = Texts.Translate("Revive/heal");
                         if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
                             tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
                     }
@@ -378,17 +382,17 @@ namespace MouseDrag
                 if (Options.duplicateOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDuplicate",
-                        tooltip = "Duplicate"
+                        tooltip = Texts.Translate("Duplicate")
                     });
                 if (Options.clipboardMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragCut",
-                        tooltip = "Cut"
+                        tooltip = Texts.Translate("Cut")
                     });
                 if (Options.tpWaypointCrMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragCrosshair",
-                        tooltip = Teleport.crosshair == null ? "Set teleport position" : "Cancel teleportation"
+                        tooltip = Teleport.crosshair == null ? Texts.Translate("Set teleport position") : Texts.Translate("Cancel teleportation")
                     });
                 if (Options.controlMenu?.Value != false) {
                     bool isControlled = (chunk.owner.abstractPhysicalObject as AbstractCreature)?.controlled == true;
@@ -398,7 +402,7 @@ namespace MouseDrag
                         hasControl = Control.PlayerHasControl((chunk.owner as Player).playerState?.playerNumber ?? -1);
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = isControlled ? "mousedragUncontrol" : "mousedragControl",
-                        tooltip = isPlayer ? "Release all for this player" : (isControlled ? "Release control" : "Safari-control"),
+                        tooltip = isPlayer ? Texts.Translate("Release all for this player") : (isControlled ? Texts.Translate("Release control") : Texts.Translate("Safari-control")),
                         curIconColor = chunk.owner.abstractPhysicalObject is AbstractCreature && (!isPlayer || hasControl) ? Color.white : Color.grey
                     });
                 }
@@ -406,51 +410,51 @@ namespace MouseDrag
                     bool forcefield = Forcefield.HasForcefield(chunk);
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = forcefield ? "mousedragForceFieldOff" : "mousedragForceFieldOn",
-                        tooltip = forcefield ? "Disable forcefield" : "Enable forcefield"
+                        tooltip = forcefield ? Texts.Translate("Disable forcefield") : Texts.Translate("Enable forcefield")
                     });
                 }
                 if (Options.tameOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragHeart",
-                        tooltip = "Tame",
+                        tooltip = Texts.Translate("Tame"),
                         curIconColor = Tame.IsTamable(game, chunk.owner) ? Color.white : Color.grey
                     });
                 if (Options.clearRelOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragUnheart",
-                        tooltip = "Clear relationships",
+                        tooltip = Texts.Translate("Clear relationships"),
                         curIconColor = Tame.IsTamable(game, chunk.owner) ? Color.white : Color.grey
                     });
                 if (Options.stunOneMenu?.Value != false) {
                     bool stunned = Stun.IsObjectStunned(chunk.owner);
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = stunned ? "mousedragUnstun" : "mousedragStun",
-                        tooltip = stunned ? "Unstun" : "Stun",
+                        tooltip = stunned ? Texts.Translate("Unstun") : Texts.Translate("Stun"),
                         curIconColor = chunk.owner is Oracle || chunk.owner is Creature ? Color.white : Color.grey
                     });
                 }
                 if (Options.destroyOneMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroy",
-                        tooltip = "Destroy"
+                        tooltip = Texts.Translate("Destroy")
                     });
                 if (Options.lockMenu?.Value != false) {
                     bool unlocked = Lock.ListContains(chunk) == null;
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = unlocked ? "mousedragLocked" : "mousedragUnlocked",
-                        tooltip = unlocked ? "Lock position" : "Unlock position"
+                        tooltip = unlocked ? Texts.Translate("Lock position") : Texts.Translate("Unlock position")
                     });
                 }
                 if (Options.copySelectorMenu?.Value != false && Integration.devConsoleEnabled) {
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragCLI",
-                        tooltip = "Copy selector & open console"
+                        tooltip = Texts.Translate("Copy selector & open console")
                     });
                 }
                 if (Options.infoMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragInfo",
-                        tooltip = "Copy info"
+                        tooltip = Texts.Translate("Copy info")
                     });
 
             } else {
@@ -458,39 +462,39 @@ namespace MouseDrag
                 if (Options.pauseRoomCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragPauseCreatures",
-                        tooltip = "Pause creatures in room"
+                        tooltip = Texts.Translate("Pause creatures in room")
                     });
                 if (Options.pauseAllCreaturesMenu?.Value != false) {
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Pause.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
                         tooltip = Options.pauseAllItemsMenu?.Value != false ? 
-                        (Pause.pauseAllCreatures ? "Unpause all" : "Pause all") : 
-                        (Pause.pauseAllCreatures ? "Unpause all creatures" : "Pause all creatures")
+                        (Pause.pauseAllCreatures ? Texts.Translate("Unpause all") : Texts.Translate("Pause all")) : 
+                        (Pause.pauseAllCreatures ? Texts.Translate("Unpause all creatures") : Texts.Translate("Pause all creatures"))
                     });
                 } else if (Options.pauseAllItemsMenu?.Value != false) {
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Pause.pauseAllItems ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
-                        tooltip = Pause.pauseAllItems ? "Unpause all items" : "Pause all items"
+                        tooltip = Pause.pauseAllItems ? Texts.Translate("Unpause all items") : Texts.Translate("Pause all items")
                     });
                 }
                 if (Options.unpauseAllMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragPlayAll",
-                        tooltip = "Unpause all",
+                        tooltip = Texts.Translate("Unpause all"),
                         curIconColor = Pause.pausedObjects.Count > 0 || Pause.pauseAllCreatures || Pause.pauseAllItems ? Color.white : Color.grey
                     });
                 if (Options.killRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragKillCreatures",
-                        tooltip = "Kill in room"
+                        tooltip = Texts.Translate("Kill in room")
                     });
                 if (Options.reviveRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragReviveCreatures",
-                        tooltip = "Revive/heal in room"
+                        tooltip = Texts.Translate("Revive/heal in room")
                     });
                 if (Options.clipboardMenu?.Value != false) {
-                    string tooltip = "Paste";
+                    string tooltip = Texts.Translate("Paste");
                     if (Clipboard.cutObjects.Count > 0)
                         tooltip += " " + Special.ConsistentName(Clipboard.cutObjects[Clipboard.cutObjects.Count - 1]);
                     slots.Add(new RadialMenu.Slot(menu) {
@@ -502,55 +506,55 @@ namespace MouseDrag
                 if (Options.tpWaypointBgMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragCrosshair",
-                        tooltip = Teleport.crosshair == null ? "Set teleport position" : "Cancel teleportation"
+                        tooltip = Teleport.crosshair == null ? Texts.Translate("Set teleport position") : Texts.Translate("Cancel teleportation")
                     });
                 if (Options.tameRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragHeartCreatures",
-                        tooltip = "Tame in room"
+                        tooltip = Texts.Translate("Tame in room")
                     });
                 if (Options.clearRelRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragUnheartCreatures",
-                        tooltip = "Clear relationships in room"
+                        tooltip = Texts.Translate("Clear relationships in room")
                     });
                 if (Options.stunRoomMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragStunAll",
-                        tooltip = "Stun in room"
+                        tooltip = Texts.Translate("Stun in room")
                     });
                 if (Options.unstunAllMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragUnstunAll",
-                        tooltip = "Unstun all",
+                        tooltip = Texts.Translate("Unstun all"),
                         curIconColor = Stun.stunnedObjects.Count > 0 || Stun.stunAll ? Color.white : Color.grey
                     });
                 if (Options.stunAllMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal",
-                        tooltip = Stun.stunAll ? "Unstun all" : "Stun all"
+                        tooltip = Stun.stunAll ? Texts.Translate("Unstun all") : Texts.Translate("Stun all")
                     });
                 if (Options.destroyRoomCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyCreatures",
-                        tooltip = "Destroy creatures in room"
+                        tooltip = Texts.Translate("Destroy creatures in room")
                     });
                 if (Options.destroyRoomItemsMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyItems",
-                        tooltip = "Destroy items in room"
+                        tooltip = Texts.Translate("Destroy items in room")
                     });
                 if (Options.destroyRoomObjectsMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyAll",
-                        tooltip = "Destroy all in room"
+                        tooltip = Texts.Translate("Destroy all in room")
                     });
                 if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionItemsMenu?.Value != false) {
-                    string tooltip = "Destroy all in region";
+                    string tooltip = Texts.Translate("Destroy all in region");
                     if (!(Options.destroyRegionCreaturesMenu?.Value != false))
-                        tooltip = "Destroy items in region";
+                        tooltip = Texts.Translate("Destroy items in region");
                     if (!(Options.destroyRegionItemsMenu?.Value != false))
-                        tooltip = "Destroy creatures in region";
+                        tooltip = Texts.Translate("Destroy creatures in region");
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyGlobal",
                         tooltip = tooltip
@@ -559,16 +563,16 @@ namespace MouseDrag
                 if (Options.destroyRoomDeadCreaturesMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragDestroyDeadCreatures",
-                        tooltip = "Destroy dead creatures in room"
+                        tooltip = Texts.Translate("Destroy dead creatures in room")
                     });
                 if (Options.copySelectorMenu?.Value != false && Integration.devConsoleEnabled) {
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragCLI",
-                        tooltip = "Open console"
+                        tooltip = Texts.Translate("Open console")
                     });
                 }
                 if (Options.gravityRoomMenu?.Value != false) {
-                    string tooltip = "Set gravity";
+                    string tooltip = Texts.Translate("Set gravity");
                     if (Gravity.gravityType == Gravity.GravityTypes.None) {
                         slots.Add(new RadialMenu.Slot(menu) {
                             name = "mousedragGravityReset",
@@ -600,7 +604,7 @@ namespace MouseDrag
                 if (Options.infoMenu?.Value != false)
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragInfo",
-                        tooltip = "Copy room info"
+                        tooltip = Texts.Translate("Copy room info")
                     });
             }
 
@@ -612,7 +616,7 @@ namespace MouseDrag
                         name = (i + 1).ToString(),
                         isLabel = true
                     });
-                lowPrioText = "Select safari player";
+                lowPrioText = Texts.Translate("Select safari player");
             }
 
             return slots;
@@ -645,7 +649,7 @@ namespace MouseDrag
             }
             slots.Add(new RadialMenu.Slot(menu) {
                 name = "+",
-                tooltip = "Next page (" + (page + 1) + "/" + (((count - 1) / maxOnPage) + 1) + ")",
+                tooltip = Texts.Translate("Next page") + " (" + (page + 1) + "/" + (((count - 1) / maxOnPage) + 1) + ")",
                 isLabel = true
             });
         }
@@ -657,7 +661,7 @@ namespace MouseDrag
                 if (slots[i].name == "+") //for pages to work
                     continue;
                 slots[i].curIconColor = Color.grey;
-                slots[i].tooltip = "Disabled";
+                slots[i].tooltip = Texts.Translate("Disabled");
                 slots[i].actionEnabled = false;
             }
         }

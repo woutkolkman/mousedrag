@@ -90,12 +90,16 @@ namespace MouseDrag
             }
 
             //change label text
+            bool translate = false;
             if (highPrioText?.Length > 0) {
                 menu.labelText = highPrioText;
+                translate = true;
             } else if (!string.IsNullOrEmpty(hoverSlot?.tooltip) && Options.showTooltips?.Value != false) {
                 menu.labelText = hoverSlot.tooltip;
+                translate = !hoverSlot.skipTranslateTooltip;
             } else if (lowPrioText?.Length > 0) {
                 menu.labelText = lowPrioText;
+                translate = true;
             } else if (menu.followChunk?.owner != null) {
                 menu.labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
                 string text = Special.ConsistentName(menu.followChunk.owner.abstractPhysicalObject);
@@ -106,6 +110,11 @@ namespace MouseDrag
             } else {
                 menu.labelText = "";
             }
+
+            //live translate label text
+            if (translate && !String.IsNullOrEmpty(menu.labelText) && game?.rainWorld?.inGameTranslator != null)
+                menu.labelText = game.rainWorld.inGameTranslator.Translate(menu.labelText);
+            //TODO don't translate this line of text every tick to save performance?
         }
 
 
@@ -221,7 +230,11 @@ namespace MouseDrag
                             }
                             break;
                         case "mousedragInfo":
-                            highPrioText = "Object" + (dumpedInfo == "" ? " " : "s ") + "copied to clipboard";
+                            if (dumpedInfo == "") { //first object?
+                                highPrioText = "Object copied to clipboard";
+                            } else {
+                                highPrioText = "Objects copied to clipboard";
+                            }
                             dumpedInfo += Info.GetInfo(obj);
                             break;
                     }
@@ -352,27 +365,29 @@ namespace MouseDrag
                     });
                 }
                 if (Options.killOneMenu?.Value != false) {
-                    string tooltip = "Trigger";
+                    string tooltip = game?.rainWorld?.inGameTranslator?.Translate("Trigger") ?? "Trigger";
                     if (chunk.owner is Creature) {
-                        tooltip = "Kill";
+                        tooltip = game?.rainWorld?.inGameTranslator?.Translate("Kill") ?? "Kill";
                         if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
                             tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
                     }
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragKill",
-                        tooltip = tooltip
+                        tooltip = tooltip,
+                        skipTranslateTooltip = true
                     });
                 }
                 if (Options.reviveOneMenu?.Value != false) {
-                    string tooltip = "Reset";
+                    string tooltip = game?.rainWorld?.inGameTranslator?.Translate("Reset") ?? "Reset";
                     if (chunk.owner is Creature) {
-                        tooltip = "Revive/heal";
+                        tooltip = game?.rainWorld?.inGameTranslator?.Translate("Revive/heal") ?? "Revive/heal";
                         if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
                             tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
                     }
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragRevive",
-                        tooltip = tooltip
+                        tooltip = tooltip,
+                        skipTranslateTooltip = true
                     });
                 }
                 if (Options.duplicateOneMenu?.Value != false)
@@ -490,13 +505,14 @@ namespace MouseDrag
                         tooltip = "Revive/heal in room"
                     });
                 if (Options.clipboardMenu?.Value != false) {
-                    string tooltip = "Paste";
+                    string tooltip = game?.rainWorld?.inGameTranslator?.Translate("Paste") ?? "Paste";
                     if (Clipboard.cutObjects.Count > 0)
                         tooltip += " " + Special.ConsistentName(Clipboard.cutObjects[Clipboard.cutObjects.Count - 1]);
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragPaste",
                         tooltip = tooltip,
-                        curIconColor = Clipboard.cutObjects.Count > 0 ? Color.white : Color.grey
+                        curIconColor = Clipboard.cutObjects.Count > 0 ? Color.white : Color.grey,
+                        skipTranslateTooltip = true
                     });
                 }
                 if (Options.tpWaypointBgMenu?.Value != false)
@@ -643,10 +659,13 @@ namespace MouseDrag
                     continue;
                 slots.RemoveAt(i);
             }
+            string tooltip = RWCustom.Custom.rainWorld?.inGameTranslator?.Translate("Next page") ?? "Next page";
+            tooltip += " (" + (page + 1) + "/" + (((count - 1) / maxOnPage) + 1) + ")";
             slots.Add(new RadialMenu.Slot(menu) {
                 name = "+",
-                tooltip = "Next page (" + (page + 1) + "/" + (((count - 1) / maxOnPage) + 1) + ")",
-                isLabel = true
+                tooltip = tooltip,
+                isLabel = true,
+                skipTranslateTooltip = true
             });
         }
 
@@ -659,6 +678,7 @@ namespace MouseDrag
                 slots[i].curIconColor = Color.grey;
                 slots[i].tooltip = "Disabled";
                 slots[i].actionEnabled = false;
+                slots[i].skipTranslateTooltip = false;
             }
         }
 

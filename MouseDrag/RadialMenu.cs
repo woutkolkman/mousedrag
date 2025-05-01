@@ -258,6 +258,7 @@ namespace MouseDrag
             public FNode icon = null;
             public string name = "pixel";
             public string tooltip = null;
+            public bool skipTranslateTooltip = false;
             public bool isLabel = false;
             Color hoverBgColor = new Color(1f, 1f, 1f, 0.4f);
             Color noneBgColor = new Color(0f, 0f, 0f, 0.2f);

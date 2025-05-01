@@ -1,6 +1,7 @@
 ﻿using Menu.Remix.MixedUI;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace MouseDrag
 {
@@ -240,6 +241,7 @@ namespace MouseDrag
             var onConfigChanged = typeof(OptionInterface).GetEvent("OnConfigChanged");
             onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(Integration).GetMethod("RefreshActiveMods")));
             onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(State).GetMethod("InitEnums")));
+            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, this, "PostTranslate"));
         }
 
 
@@ -591,6 +593,36 @@ namespace MouseDrag
                 component,
                 label
             });
+        }
+
+
+        public void PostTranslate() //is called via Options EventHandler
+        {
+            var list = this.GetType()
+                .GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+                .Where(f => f.FieldType.IsGenericType && f.FieldType.GetGenericTypeDefinition() == typeof(Configurable<>));
+
+            if (RWCustom.Custom.rainWorld?.inGameTranslator == null || list == null)
+                return;
+
+            foreach (var fi in list) {
+                var field = (ConfigurableBase) fi?.GetValue(null);
+                if (!String.IsNullOrEmpty(field?.info?.description))
+                    field.info.description = RWCustom.Custom.rainWorld.inGameTranslator.Translate(field.info.description);
+                for (int i = 0; i < field?.info?.Tags?.Count(); i++) {
+                    if (!String.IsNullOrEmpty(field.info.Tags[i] as string))
+                        field.info.Tags[i] = RWCustom.Custom.rainWorld.inGameTranslator.Translate((string) field.info.Tags[i]);
+                }
+            }
+
+            for (int i = 0; i < Tabs?.Length; i++) {
+                if (Tabs[i] == null || String.IsNullOrEmpty(Tabs[i].name))
+                    continue;
+                Tabs[i].name = RWCustom.Custom.rainWorld.inGameTranslator.Translate(Tabs[i].name);
+            }
+
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Options.PostTranslate, completed translation of options");
         }
     }
 }

@@ -1,4 +1,5 @@
 Mouse Drag
+- Change velocity drag at screen change, so the velocity drag mode is turned off again if the main dragged object is close to the mouse position, or on a counter 2-3s?
 - Constantly refresh/update radialmenu health tooltip, so changes in health are shown immediately?
 - Add deadband tolerance thing to the mouse visibility initial movement change
 - Check/fix the effect of RainWorldOnModsInitHook being called multiple times when certain mods are enabled (Rain Meadow)
@@ -11,6 +12,10 @@ Mouse Drag
 - Change info tool to also dump contents of structs, like creature personality
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
 === Forget list ===:
+- Try to fix BigSandGrub spawn issue where room is reloaded and its SandGrubBurrow is deleted and the SandGrub falls out of the room
+- Add secondary type of integration that doesn't need complex/slow function hooks, and that registers new radialmenu slots using functions (like Dev Console)? Current integration will become legacy.
+- Add lambda expression pointer to radialmenu slots to continually set label text? Might be resource intensive
+- Translations, add 'unique' identifier "md_" at start of each translation to avoid issues with words having multiple translations/meanings in other languaages?
 - Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc. --> already implemented by Unity Explorer and addons
 - Release KarmaFlower/Mushroom/etc. from terrain when dragged?
 - Add secondary menu which replaces the radial menu, and which looks more like a Windows context menu. Or use a Dev Tools dropdown (?) menu
@@ -27,7 +32,6 @@ Mouse Drag
 - For every tool in the radial menu, add an preferred index which allows you to sort the tool within the radial menu. Implement before the code where tools are divided into pages
 - Check if Pause list must become a weakreference list to avoid memory leaks? At every game end the list is emptied anyway, so no big deal
 - Change Dev Console command 'md_safari_toggle' to 'md_safari' with new parameters? Might require relatively many safari code changes
-- Add translations? Implement system to handle the translations
 - Try to support Parasitic Slugcat safari controls & changes to creature movement when safari control tool is used https://steamcommunity.com/sharedfiles/filedetails/?id=2972537492 
 - Teleport players with SplitScreen Co-op if dragging them to another camera? Already possible with clipboard tool
 - Divide every radial menu tool in sub-categories? Requires another menu overhaul

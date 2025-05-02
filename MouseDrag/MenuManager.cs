@@ -369,7 +369,7 @@ namespace MouseDrag
                     if (chunk.owner is Creature) {
                         tooltip = game?.rainWorld?.inGameTranslator?.Translate("Kill") ?? "Kill";
                         if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
-                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
+                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health.ToString("0.###") + "/1)";
                     }
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragKill",
@@ -382,7 +382,7 @@ namespace MouseDrag
                     if (chunk.owner is Creature) {
                         tooltip = game?.rainWorld?.inGameTranslator?.Translate("Revive/heal") ?? "Revive/heal";
                         if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
-                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health + "/1)";
+                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health.ToString("0.###") + "/1)";
                     }
                     slots.Add(new RadialMenu.Slot(menu) {
                         name = "mousedragRevive",

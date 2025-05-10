@@ -100,16 +100,16 @@ namespace MouseDrag
         public Options()
         {
             activateType = config.Bind(nameof(activateType), defaultValue: ActivateTypes.AlwaysActive.ToString(), new ConfigurableInfo("Controls are active when this condition is met. Always active if sandbox mouse dragger is available.", null, "", "Active when"));
-            activateKey = config.Bind(nameof(activateKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"" + ActivateTypes.KeyBindPressed.ToString() + "\" is selected.", null, "", "KeyBind"));
+            activateKey = config.Bind(nameof(activateKey), KeyCode.None, new ConfigurableInfo("KeyBind to activate controls when \"KeyBindPressed\" is selected.", null, "", "KeyBind"));
 
-            deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when 'Active when' is 'KeyBindPressed')", null, "", "Deactivate every restart"));
+            deactivateEveryRestart = config.Bind(nameof(deactivateEveryRestart), defaultValue: true, new ConfigurableInfo("Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when \"Active when\" is \"KeyBindPressed\")", null, "", "Deactivate every restart"));
             disVnlMouseDragger = config.Bind(nameof(disVnlMouseDragger), defaultValue: true, new ConfigurableInfo("Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.", null, "", "Disable sandbox mouse"));
             logDebug = config.Bind(nameof(logDebug), defaultValue: true, new ConfigurableInfo("Useful for debugging if you share your log files.", null, "", "Log debug"));
             dragLMB = config.Bind(nameof(dragLMB), defaultValue: true, new ConfigurableInfo("Left mouse button is used to drag objects.", null, "", "LMB drags"));
             dragMMB = config.Bind(nameof(dragMMB), defaultValue: false, new ConfigurableInfo("Middle mouse (scroll) button is used to drag objects.", null, "", "MMB drags"));
             drag = config.Bind(nameof(drag), KeyCode.None, new ConfigurableInfo("KeyBind is used to drag objects, as an alternative to left mouse button.", null, "", "Drag"));
             disVnlCursor = config.Bind(nameof(disVnlCursor), defaultValue: false, new ConfigurableInfo("Disables Rain World cursor. Solves the double mouse pointers in sandbox.", null, "", "Hide Rain World cursor"));
-            winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.Moved2Seconds.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"" + CursorVisibilityTypes.NoChanges.ToString() + "\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
+            winCursorVisType = config.Bind(nameof(winCursorVisType), defaultValue: CursorVisibilityTypes.Moved2Seconds.ToString(), new ConfigurableInfo("Change visibility of Windows cursor in-game. Set to \"NoChanges\" to allow other mods to manage cursor visibility.", null, "", "Windows\ncursor"));
             onlySelectCreatures = config.Bind(nameof(onlySelectCreatures), KeyCode.None, new ConfigurableInfo("Hold this key to only select or drag creatures.", null, "", "Select creatures"));
             onlySelectItems = config.Bind(nameof(onlySelectItems), KeyCode.None, new ConfigurableInfo("Hold this key to select or drag anything except creatures.", null, "", "Select items"));
 
@@ -140,7 +140,7 @@ namespace MouseDrag
             menuMoveHover = config.Bind(nameof(menuMoveHover), defaultValue: false, new ConfigurableInfo("If checked, menu follows target also when hovering over it. Unused if \"Menu follows target\" is unchecked.", null, "", "Menu moves if hovering"));
             sBCameraScrollIntegration = config.Bind(nameof(sBCameraScrollIntegration), defaultValue: true, new ConfigurableInfo("If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.", null, "", "SBCameraScroll integration"));
             regionKitIntegration = config.Bind(nameof(regionKitIntegration), defaultValue: true, new ConfigurableInfo("If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.\nThis is added because Iggy uses right mouse button to display tips.", null, "", "RegionKit integration"));
-            devConsoleIntegration = config.Bind(nameof(devConsoleIntegration), defaultValue: true, new ConfigurableInfo("If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.\nAll commands/selectors added by " + Plugin.Name + " start with \"md_\".", null, "", "Dev Console integration"));
+            devConsoleIntegration = config.Bind(nameof(devConsoleIntegration), defaultValue: true, new ConfigurableInfo("If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.\nAll commands/selectors added by Mouse Drag start with \"md_\".", null, "", "Dev Console integration"));
 
             pauseOneKey = config.Bind(nameof(pauseOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause/unpause the selected objects.", null, "", "Pause"));
             pauseRoomCreaturesKey = config.Bind(nameof(pauseRoomCreaturesKey), KeyCode.None, new ConfigurableInfo("KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.\nAllows unpausing individual creatures.", null, "", "Pause creatures\nin room"));

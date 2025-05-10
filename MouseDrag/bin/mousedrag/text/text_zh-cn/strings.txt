@@ -1,0 +1,233 @@
+Controls are active when this condition is met. Always active if sandbox mouse dragger is available.|你的设定会在满足这个条件时被启用。当沙盒中的鼠标拖动可用时，设定总会启用。
+Active when|何时启用
+KeyBind to activate controls when "KeyBindPressed" is selected.|当选取“按下按键”时，激活设定需要按下的按键。
+KeyBind|绑定按键
+Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when "Active when" is "KeyBindPressed")|在雨循环结束或游戏重启后关闭工具, 和雨世界拓展一样。 (只有在"何时启用"设定为"按下按键"时有效)
+Deactivate every restart|每次重启时都关闭
+Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.|关闭原版沙盒的鼠标拖动，因为它被这个mod代替了。可以解决一些在沙盒中拖动物体时出现的问题。
+Disable sandbox mouse|关闭沙盒鼠标拖动
+Useful for debugging if you share your log files.|分享你的日志文件可以方便排查错误。
+Log debug|错误日志
+Left mouse button is used to drag objects.|鼠标左键被用来拖拽物体。
+LMB drags|左键拖拽
+Middle mouse (scroll) button is used to drag objects.|鼠标中键（滚轮）被用来拖拽物体。
+MMB drags|中键拖拽
+KeyBind is used to drag objects, as an alternative to left mouse button.|绑定的按键被用来拖拽物体，可以代替鼠标左键。
+Drag|拖拽
+Disables Rain World cursor. Solves the double mouse pointers in sandbox.|关闭雨世界鼠标指针。解决沙盒中会出现两个鼠标指针的问题。
+Hide Rain World cursor|隐藏雨世界指针
+Change visibility of Windows cursor in-game. Set to "NoChanges" to allow other mods to manage cursor visibility.|修改游戏中Windows默认指针的可见性。设置为“不更改”来允许其他mod管理鼠标指针可见性。
+Windows<LINE>cursor|Windows<LINE>cursor
+Hold this key to only select or drag creatures.|长按此按钮时，只选择或拖动生物。
+Select creatures|选择生物
+Hold this key to select or drag anything except creatures.|长按此按键时，只选择和拖动所有不是生物的东西。
+Select items|选择物品
+Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.|快速地拖动和释放武器会使它们向那个方向被扔出。替代绑定按键。
+Throw with mouse|用鼠标扔东西
+Throwing weapons with the mouse will use Player as thrower.|使用鼠标扔东西的时候，会使用玩家来扔。
+Throw as Player|用玩家扔东西
+Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.|当鼠标释放时，使武器被扔出的最小速度。使用键盘绑定按键时无效。
+Throw threshold|投掷阈值
+Force at which weapons are thrown.|武器被扔出的力度。
+Throw force|投掷力度
+KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).|KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).
+Throw weapon|Throw weapon
+Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).
+Velocity drag|Velocity drag
+Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.
+Velocity drag at screen change|Velocity drag at screen change
+KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.
+Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.
+Multiple select|多选
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.
+Selection XOR|Selection XOR
+Right mouse button opens menu on object or background.|在物体或背景上按下鼠标右键来打开菜单。
+RMB opens menu|右键打开菜单
+Middle mouse (scroll) button opens menu on object or background.|在物体或背景上按下鼠标中键（滚轮）来打开菜单。
+MMB opens menu|中键打开菜单
+KeyBind opens menu on object or background, as an alternative to right mouse button.|在物体或背景上按下绑定的按键来打开菜单，代替右键。
+Open menu|打开菜单
+Left mouse button selects actions in menu.|用鼠标左键在菜单里选择行为。
+LMB selects in menu|菜单内左键选择
+Middle mouse (scroll) button selects actions in menu.|用鼠标中键（滚轮）在菜单里选择行为。
+MMB selects in menu|菜单内中键选择
+KeyBind selects actions in menu, as an alternative to left mouse button.|用绑定的键盘按键在菜单里选择行为，代替鼠标左键。
+Select in menu|在菜单中选择
+If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.|If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.
+BeastMaster integration|BeastMaster integration
+If SplitScreen Co-op is enabled, dragging on other cameras is supported.|If SplitScreen Co-op is enabled, dragging on other cameras is supported.
+SplitScreen Co-op integration|SplitScreen Co-op integration
+Show label above menu with name of selected object, and other text.|Show label above menu with name of selected object, and other text.
+Show label|Show label
+The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.|The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.
+Show tooltips|显示小贴士
+Max amount of tools on a single menu page.|每页最多能显示的工具数量。
+Max on page|每页最多显示数量
+If checked, menu follows the target object on which actions are performed.|If checked, menu follows the target object on which actions are performed.
+Menu follows target|菜单跟随物体
+If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.
+Menu moves if hovering|Menu moves if hovering
+Select the display language for this mod. Requires restart.|为此mod选择显示语言。需要重启。
+Language|语言
+If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.
+SBCameraScroll integration|SBCameraScroll integration
+If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.
+RegionKit integration|RegionKit integration
+If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".
+Dev Console integration|Dev Console integration
+KeyBind to pause/unpause the selected objects.|KeyBind to pause/unpause the selected objects.
+Pause|Pause
+KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.
+Pause creatures<LINE>in room|Pause creatures<LINE>in room
+KeyBind to unpause all objects, including individually paused objects.|KeyBind to unpause all objects, including individually paused objects.
+Unpause all|Unpause all
+KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.
+Pause all creatures|Pause all creatures
+KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.
+Pause all items|Pause all items
+KeyBind to kill the selected creatures. Can also trigger items like bombs.|KeyBind to kill the selected creatures. Can also trigger items like bombs.
+Kill|Kill
+KeyBind to kill all creatures in current room except Player and SlugNPC.|KeyBind to kill all creatures in current room except Player and SlugNPC.
+Kill in room|Kill in room
+KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.
+Revive/heal|Revive/heal
+KeyBind to revive and heal all creatures in current room.|KeyBind to revive and heal all creatures in current room.
+Revive/heal<LINE>in room|Revive/heal<LINE>in room
+KeyBind to duplicate the selected objects. Hold button to repeat.|KeyBind to duplicate the selected objects. Hold button to repeat.
+Duplicate|Duplicate
+KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.
+Teleport creatures<LINE>in room|Teleport creatures<LINE>in room
+KeyBind to teleport all items in current room to the mouse position.|KeyBind to teleport all items in current room to the mouse position.
+Teleport items<LINE>in room|Teleport items<LINE>in room
+KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.
+Safari-control|Safari-control
+KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.
+Forcefield|Forcefield
+KeyBind to tame the selected creatures.|KeyBind to tame the selected creatures.
+Tame|Tame
+KeyBind to tame all creatures in current room.|KeyBind to tame all creatures in current room.
+Tame in room|Tame in room
+KeyBind to clear all relationships of the selected creatures.|KeyBind to clear all relationships of the selected creatures.
+Clear relationships|Clear relationships
+KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.
+Clear relationships<LINE>in room|Clear relationships<LINE>in room
+KeyBind to stun/unstun the selected objects.|KeyBind to stun/unstun the selected objects.
+Stun|Stun
+KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.
+Stun in room|Stun in room
+KeyBind to unstun all objects, including individually stunned objects.|KeyBind to unstun all objects, including individually stunned objects.
+Unstun all|Unstun all
+KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.
+Stun all|Stun all
+KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
+Destroy|Destroy
+KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
+Destroy creatures<LINE>in room|Destroy creatures<LINE>in room
+KeyBind to destroy all items in current room.|KeyBind to destroy all items in current room.
+Destroy items<LINE>in room|Destroy items<LINE>in room
+KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.
+Destroy creatures<LINE>in region|Destroy creatures<LINE>in region
+KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.
+Destroy items<LINE>in region|Destroy items<LINE>in region
+KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|KeyBind to destroy all dead creatures in current room except Player and SlugNPC.
+Destroy dead<LINE>creatures in room|Destroy dead<LINE>creatures in room
+KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.
+Lock position|Lock position
+KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.
+Copy selector &<LINE>open Dev Console|Copy selector &<LINE>open Dev Console
+KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.
+Gravity|Gravity
+KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.
+Info|Info
+KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.
+Activate rooms<LINE>in region|Activate rooms<LINE>in region
+Add action to menu.|Add action to menu.
+Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.
+Using Control + X/C/V will cut, copy or paste the selected objects.|Using Control + X/C/V will cut, copy or paste the selected objects.
+Ctrl + X/C/V|Ctrl + X/C/V
+Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.
+Add action to menu.<LINE>Same as above, but on a BodyChunk.|Add action to menu.<LINE>Same as above, but on a BodyChunk.
+Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
+Add action to menu. Destroy all items in current room.|Add action to menu. Destroy all items in current room.
+Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
+When creature is paused, all grasps (creatures/items) are released.|When creature is paused, all grasps (creatures/items) are released.
+Pausing releases grasps|Pausing releases grasps
+When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.
+Lineage when killed|Lineage when killed
+Killing elite scavengers or vultures with this tool will release their masks.|Killing elite scavengers or vultures with this tool will release their masks.
+Kill releases mask|Kill releases mask
+Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.
+Heal limbs|Heal limbs
+BodyChunks can be adjusted while locked in-place.|BodyChunks can be adjusted while locked in-place.
+Adjustable locks|Adjustable locks
+Players and SlugNPCs are unaffected by forcefields.|Players and SlugNPCs are unaffected by forcefields.
+Forcefield immunity players|Forcefield immunity players
+Items (except thrown weapons) are unaffected by forcefields.|Items (except thrown weapons) are unaffected by forcefields.
+Forcefield immunity items|Forcefield immunity items
+Forcefield radius|Forcefield radius
+Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.
+Info depth|Info depth
+Creates an exact copy of the previous object when duplicating.|Creates an exact copy of the previous object when duplicating.
+Copy ID duplicate|Copy ID duplicate
+Try to exit game over mode when reviving player. Might be incompatible with some other mods.|Try to exit game over mode when reviving player. Might be incompatible with some other mods.
+Exit game over mode|Exit game over mode
+If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.
+Except SlugNPC|Except SlugNPC
+Taming creatures using this tool also increases global reputation.|Taming creatures using this tool also increases global reputation.
+Taming global +rep|Taming global +rep
+Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).
+Safari-control changes camera|Safari-control changes camera
+Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.
+Safari-control only one creature|Safari-control only one creature
+While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.
+Reset other safari-control input|Reset other safari-control input
+Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.
+Safari-control stuns players|Safari-control stuns players
+Object copied to clipboard|Object copied to clipboard
+Objects copied to clipboard|Objects copied to clipboard
+Room copied to clipboard|Room copied to clipboard
+Reset gravity|Reset gravity
+Gravity off|Gravity off
+Gravity low|Gravity low
+Gravity on|Gravity on
+Gravity inversed|Gravity inversed
+Select gravity type|Select gravity type
+Unpause|Unpause
+Trigger|Trigger
+Reset|Reset
+Cut|Cut
+Set teleport position|Set teleport position
+Cancel teleportation|Cancel teleportation
+Release all for this player|Release all for this player
+Release control|Release control
+Disable forcefield|Disable forcefield
+Enable forcefield|Enable forcefield
+Unstun|Unstun
+Unlock position|Unlock position
+Copy selector & open console|Copy selector & open console
+Copy info|Copy info
+Pause creatures in room|Pause creatures in room
+Pause all|Pause all
+Unpause all creatures|Unpause all creatures
+Unpause all items|Unpause all items
+Revive/heal in room|Revive/heal in room
+Paste|粘贴
+Clear relationships in room|Clear relationships in room
+Destroy creatures in room|Destroy creatures in room
+Destroy items in room|Destroy items in room
+Destroy all in room|Destroy all in room
+Destroy all in region|Destroy all in region
+Destroy items in region|Destroy items in region
+Destroy creatures in region|Destroy creatures in region
+Destroy dead creatures in room|Destroy dead creatures in room
+Open console|Open console
+Set gravity|Set gravity
+Copy room info|Copy room info
+Select safari player|Select safari player
+Next page|下一页
+Disabled|已禁用
+General 1|通用设置1
+General 2|通用设置2
+Tools 1|工具1
+Tools 2|工具2
+Tool Settings|工具设置

@@ -31,9 +31,9 @@
         public static string ConsistentName(AbstractPhysicalObject apo)
         {
             if (apo is AbstractCreature)
-                return (apo as AbstractCreature).creatureTemplate?.name + " " + apo.ID.ToString();
+                return (apo as AbstractCreature).creatureTemplate?.name + " " + apo.ID.ToString() + (apo.ID.altSeed > -1 ? "." + apo.ID.altSeed : "");
             if (apo != null && !(apo is AbstractCreature))
-                return apo.type?.ToString() + " " + apo.ID.ToString();
+                return apo.type?.ToString() + " " + apo.ID.ToString() + (apo.ID.altSeed > -1 ? "." + apo.ID.altSeed : "");
             return string.Empty;
         }
     }

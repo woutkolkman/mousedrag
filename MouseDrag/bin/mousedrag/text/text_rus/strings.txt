@@ -1,0 +1,233 @@
+Controls are active when this condition is met. Always active if sandbox mouse dragger is available.|Элементы управления становятся активными при выполнении этого условия. Всегда активны, если доступен перетаскиватель мыши в песочнице.
+Active when|Активен, когда
+KeyBind to activate controls when "KeyBindPressed" is selected.|KeyBind для активации элементов управления при выборе "KeyBindPressed".
+KeyBind|KeyBind
+Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when "Active when" is "KeyBindPressed")|Деактивируйте инструменты при завершении цикла или перезапуске игры, как и Dev Tools. (используется только в том случае, если параметр "Активен при" имеет значение "KeyBindPressed")
+Deactivate every restart|Деактивировать при каждом перезапуске
+Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.|Отключите перетаскиватель мыши в ванильной песочнице, потому что он заменен этим модом. Может решить некоторые проблемы при перетаскивании объектов в песочнице.
+Disable sandbox mouse|Отключите мышь в песочнице
+Useful for debugging if you share your log files.|Пригодится для отладки, если вы поделитесь своими лог-файлами.
+Log debug|Отладка журнала
+Left mouse button is used to drag objects.|Левая кнопка мыши используется для перетаскивания объектов.
+LMB drags|LMB тащит
+Middle mouse (scroll) button is used to drag objects.|Средняя кнопка мыши (прокрутка) используется для перетаскивания объектов.
+MMB drags|MMB тащит
+KeyBind is used to drag objects, as an alternative to left mouse button.|KeyBind используется для перетаскивания объектов, как альтернатива левой кнопке мыши.
+Drag|Drag
+Disables Rain World cursor. Solves the double mouse pointers in sandbox.|Отключает курсор в мире дождя. Решает проблему двойных указателей мыши в песочнице.
+Hide Rain World cursor|Скрыть проклятие мира дождя
+Change visibility of Windows cursor in-game. Set to "NoChanges" to allow other mods to manage cursor visibility.|Изменение видимости курсора Windows в игре. Установите значение "NoChanges", чтобы позволить другим модам управлять видимостью курсора.
+Windows<LINE>cursor|Windows<LINE>курсор
+Hold this key to only select or drag creatures.|Удерживайте эту клавишу, чтобы только выбрать или перетащить существ.
+Select creatures|Выберите существ
+Hold this key to select or drag anything except creatures.|Удерживайте эту клавишу, чтобы выбрать или перетащить все, кроме существ.
+Select items|Выберите элементы
+Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.|Быстрое перетаскивание и отпускание оружия бросит его в этом направлении. Альтернатива KeyBind.
+Throw with mouse|Бросок с помощью мыши
+Throwing weapons with the mouse will use Player as thrower.|При метании оружия с помощью мыши игрок будет использоваться в качестве метателя.
+Throw as Player|Бросок в роли игрока
+Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.|Минимальная скорость, с которой оружие выбрасывается при отпускании мыши. Не используется через KeyBind.
+Throw threshold|Порог броска
+Force at which weapons are thrown.|Сила, с которой метается оружие.
+Throw force|Сила броска
+KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).|KeyBind, чтобы бросить оружие, которое вы в данный момент перетаскиваете. Прицеливание по-прежнему определяется направлением перетаскивания. Мышь в песочнице может мешать (если инициализирована).
+Throw weapon|Метательное оружие
+Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|Альтернативный метод перетаскивания, использующий скорость, а не положение. Перетаскиваемые объекты не будут (легко) перемещаться через стены.<LINE>Мышь в песочнице может мешать (если инициализирована).
+Velocity drag|Тяга к скорости
+Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|Временно включите перетаскивание скорости при смене экрана, пока вы не отпустите LMB. Таким образом, вы не разобьете свой scug об стену.
+Velocity drag at screen change|Перетаскивание скорости при смене экрана
+KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|KeyBind для переключения между скоростным и позиционным перетаскиванием. Убедитесь, что перетаскивание по скорости не включено постоянно с помощью других опций.
+Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|Удерживая эту клавишу, щелкните на нескольких блоках тела, чтобы выделить их. Или, удерживая эту клавишу, перетащите прямоугольник выделения вокруг BodyChunks, чтобы выделить их.
+Multiple select|Множественный выбор
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|При использовании выделения-прямоугольника удалите из выделения BodyChunks внутри прямоугольника, если они уже были выделены. В противном случае просто сохраните выделение.
+Selection XOR|Выбор XOR
+Right mouse button opens menu on object or background.|Правая кнопка мыши открывает меню на объекте или фоне.
+RMB opens menu|RMB открывает меню
+Middle mouse (scroll) button opens menu on object or background.|Средняя кнопка мыши (прокрутка) открывает меню на объекте или фоне.
+MMB opens menu|MMB открывает меню
+KeyBind opens menu on object or background, as an alternative to right mouse button.|KeyBind открывает меню на объекте или фоне, как альтернатива правой кнопке мыши.
+Open menu|Открыть меню
+Left mouse button selects actions in menu.|Левая кнопка мыши выбирает действия в меню.
+LMB selects in menu|LMB выбирает в меню
+Middle mouse (scroll) button selects actions in menu.|Средняя кнопка мыши (прокрутка) выбирает действия в меню.
+MMB selects in menu|MMB выбирает в меню
+KeyBind selects actions in menu, as an alternative to left mouse button.|KeyBind выбирает действия в меню, как альтернатива левой кнопке мыши.
+Select in menu|Выберите в меню
+If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.|Если BeastMaster включен, щелчок правой кнопкой мыши по его меню не откроет меню этого мода.
+BeastMaster integration|Интеграция с BeastMaster
+If SplitScreen Co-op is enabled, dragging on other cameras is supported.|Если включена функция SplitScreen Co-op, поддерживается перетаскивание на другие камеры.
+SplitScreen Co-op integration|Интеграция SplitScreen Co-op
+Show label above menu with name of selected object, and other text.|Отображение над меню ярлыка с названием выбранного объекта и другим текстом.
+Show label|Показать этикетку
+The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.|На ярлыке над меню также будет отображаться информация о выбранном инструменте или действии. Отключите ее, если она слишком отвлекает.
+Show tooltips|Показать всплывающие подсказки
+Max amount of tools on a single menu page.|Максимальное количество инструментов на одной странице меню.
+Max on page|Макс на стр.
+If checked, menu follows the target object on which actions are performed.|Если флажок установлен, меню следует за целевым объектом, над которым выполняются действия.
+Menu follows target|Меню следует за целью
+If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|Если флажок установлен, меню будет следовать за целью и при наведении на нее. Не используется, если флажок "Меню следует за целью" снят.
+Menu moves if hovering|Меню перемещается при наведении курсора
+Select the display language for this mod. Requires restart.|Выберите язык отображения для этого мода. Требуется перезапуск.
+Language|Язык
+If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|Если включена функция SBCameraScroll, поддерживается перетаскивание с альтернативным зумом камеры.
+SBCameraScroll integration|Интеграция SBCameraScroll
+If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|Если RegionKit включен, правая кнопка мыши не будет открывать радиальное меню за меню Dev Tools.<LINE>Это добавлено, потому что Iggy использует правую кнопку мыши для отображения подсказок.
+RegionKit integration|Интеграция с RegionKit
+If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|Если включена Dev Console, дополнительные команды/селекторы доступны через консоль. Требуется перезагрузка.<LINE>Все команды/селекторы, добавляемые с помощью Mouse Drag, начинаются с "md_".
+Dev Console integration|Интеграция с консолью Dev Console
+KeyBind to pause/unpause the selected objects.|Привязка клавиш для приостановки/отключения выбранных объектов.
+Pause|Пауза
+KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|Привязка клавиш позволяет поставить на паузу всех существ, кроме Player и SlugNPC, только в этой комнате.<LINE>Позволяет снять паузу с отдельных существ.
+Pause creatures<LINE>in room|Приостановить существ<LINE>в комнате
+KeyBind to unpause all objects, including individually paused objects.|Привяжите клавишу, чтобы снять паузу со всех объектов, включая индивидуально приостановленные объекты.
+Unpause all|Снять с паузы все
+KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|Привязка клавиш позволяет приостановить/отключить паузу всех существ, кроме Player и SlugNPC, включая существ, которым еще нужно спауниться.<LINE>Индивидуально (не)приостановленные существа остаются приостановленными.
+Pause all creatures|Остановите всех существ
+KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|Привязка клавиш позволяет приостановить/отпустить все предметы, включая предметы, которые еще должны спауниться.<LINE> Отдельно (не)приостановленные предметы остаются приостановленными.
+Pause all items|Приостановить все элементы
+KeyBind to kill the selected creatures. Can also trigger items like bombs.|Привяжите клавишу, чтобы убить выбранных существ. Также можно запускать предметы, например бомбы.
+Kill|Убить
+KeyBind to kill all creatures in current room except Player and SlugNPC.|KeyBind, чтобы убить всех существ в текущей комнате, кроме игрока и SlugNPC.
+Kill in room|Убить в номере
+KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|Привяжите клавиши, чтобы оживить и вылечить выбранных существ. Также можно сбрасывать предметы, например, растения попкорна.
+Revive/heal|Восстановить/исцелить
+KeyBind to revive and heal all creatures in current room.|KeyBind оживляет и исцеляет всех существ в текущей комнате.
+Revive/heal<LINE>in room|Восстановить/исцелить<LINE> в комнате
+KeyBind to duplicate the selected objects. Hold button to repeat.|KeyBind для дублирования выбранных объектов. Удерживайте кнопку, чтобы повторить.
+Duplicate|Дубликат
+KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|KeyBind телепортирует всех существ в текущей комнате в позицию мыши, кроме Player и SlugNPC.
+Teleport creatures<LINE>in room|Телепортировать существ<LINE>в комнату
+KeyBind to teleport all items in current room to the mouse position.|Привязка клавиш для телепортации всех предметов в текущей комнате в позицию мыши.
+Teleport items<LINE>in room|Телепортировать предметы<LINE>в комнату
+KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|Привяжите клавиши, чтобы управлять выбранными существами в сафари или переходить от одного существа к другому, если ничего не выбрано. Требуется DLC "Ливень". Контролируемые существа не участвуют в открытии карты.
+Safari-control|Safari-control
+KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|Привязка клавиш для включения силового поля на выбранных BodyChunks. Силовое поле пропадает при перезагрузке BodyChunk.<LINE>Силовое поле будет отталкивать объекты в пределах заданного радиуса.
+Forcefield|Силовое поле
+KeyBind to tame the selected creatures.|Привяжите клавишу, чтобы приручить выбранных существ.
+Tame|Приручить
+KeyBind to tame all creatures in current room.|Привяжите клавишу, чтобы приручить всех существ в текущей комнате.
+Tame in room|Прирученный в комнате
+KeyBind to clear all relationships of the selected creatures.|Привяжите клавишу, чтобы очистить все отношения выбранных существ.
+Clear relationships|Четкие взаимоотношения
+KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|KeyBind очищает все отношения всех существ в текущей комнате, кроме Игрока и SlugNPC.
+Clear relationships<LINE>in room|Выяснение отношений<LINE>в комнате
+KeyBind to stun/unstun the selected objects.|Привязка клавиш для оглушения/оглушения выбранных объектов.
+Stun|Электрошокер
+KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|Привязка клавиш, чтобы оглушить все объекты, кроме Player и SlugNPC, только в этой комнате.<LINE>Позволяет отменить оглушение отдельных объектов.
+Stun in room|Оглушение в комнате
+KeyBind to unstun all objects, including individually stunned objects.|KeyBind, чтобы снять оглушение со всех объектов, включая индивидуально оглушенные объекты.
+Unstun all|Разрядить все
+KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|KeyBind для оглушения/разрушения всех объектов, кроме Player и SlugNPC, включая объекты, которые еще должны спауниться.<LINE>Индивидуально (не)оглушенные объекты остаются оглушенными.
+Stun all|Ошеломить всех
+KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind для уничтожения выбранных объектов.<LINE>Чтобы заставить существ возродиться или правильно обновить трекеры, убейте, а затем уничтожьте их.
+Destroy|Уничтожить
+KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind уничтожает всех существ в текущей комнате, кроме Player и SlugNPC.<LINE>Чтобы заставить существ возродиться или правильно обновить трекеры, убейте, а затем уничтожьте их.
+Destroy creatures<LINE>in room|Уничтожить существ<LINE>в комнате
+KeyBind to destroy all items in current room.|Привязка клавиш для уничтожения всех предметов в текущей комнате.
+Destroy items<LINE>in room|Уничтожить предметы<LINE>в комнате
+KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|KeyBind уничтожает всех существ в текущем регионе, кроме Player и SlugNPC. Некоторые существа будут добавлены автоматически или добавятся позже.<LINE>ПРЕДУПРЕЖДЕНИЕ: Если после этого вы впадете в спячку, большинство существ в регионе также исчезнут в следующем цикле. Лучше не использовать это в 
+Destroy creatures<LINE>in region|Уничтожить существ<LINE>в регионе
+KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|KeyBind, чтобы уничтожить все предметы в текущем регионе. Большинство предметов будут добавлены автоматически или добавятся позже.
+Destroy items<LINE>in region|Уничтожить элементы<LINE>в регионе
+KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|KeyBind, чтобы уничтожить всех мертвых существ в текущей комнате, кроме игрока и SlugNPC.
+Destroy dead<LINE>creatures in room|Уничтожьте мертвых<LINE> существ в комнате
+KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|KeyBind, чтобы применить блокировку позиции к выбранным BodyChunks. Фиксация теряется при перезагрузке объекта.
+Lock position|Положение блокировки
+KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|KeyBind для копирования селектора выбранного объекта. Если выбрано несколько объектов, будет скопирован селектор только первого объекта.<LINE>Консоль разработчика также будет автоматически открыта. Работает, только если включена интеграция с Dev Console.
+Copy selector &<LINE>open Dev Console|Скопируйте селектор &<LINE>откройте консоль Dev Console
+KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|KeyBind для переключения гравитации во всех комнатах. Можно назначить 5 состояний: Нет/Выключено/Низкое/Включено/Инверсное.
+Gravity|Гравитация
+KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|Клавиша KeyBind сбрасывает в буфер обмена все данные о выбранных объектах или о комнате, если ничего не выбрано.
+Info|Информация
+KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|KeyBind для активации/загрузки всех комнат (включая объекты!) в текущем регионе. Комнаты, которые посетил игрок<LINE>, все равно будут отслеживаться и выгружаться при выходе. ПРЕДУПРЕЖДЕНИЕ: Это будет тормозить ваш компьютер.
+Activate rooms<LINE>in region|Активировать номера<LINE>в регионе
+Add action to menu.|Добавьте действие в меню.
+Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|Добавьте действие в меню.<LINE>Вырезать/вставить объекты с помощью буфера обмена (LIFO-буфер). Буфер обмена теряется при закрытии игры.
+Using Control + X/C/V will cut, copy or paste the selected objects.|С помощью Control + X/C/V можно вырезать, скопировать или вставить выбранные объекты.
+Ctrl + X/C/V|Ctrl + X/C/V
+Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|Добавить действие в меню.<LINE> Установите/сбросьте путевую точку с помощью этой опции. Щелкните любой объект, чтобы телепортировать его в эту путевую точку.
+Add action to menu.<LINE>Same as above, but on a BodyChunk.|Добавьте действие в меню.<LINE>Так же, как и выше, но в BodyChunk.
+Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Добавить действие в меню. Уничтожить всех существ в текущей комнате, кроме Игрока и SlugNPC.<LINE>Чтобы заставить существ возродиться или правильно обновить трекеры, убейте, а затем уничтожьте их.
+Add action to menu. Destroy all items in current room.|Добавить действие в меню. Уничтожить все предметы в текущей комнате.
+Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Добавить действие в меню. Уничтожить все объекты в текущей комнате, кроме Игрока и SlugNPC.<LINE>Чтобы заставить существ возродиться или правильно обновить трекеры, убейте, а затем уничтожьте их.
+When creature is paused, all grasps (creatures/items) are released.|Когда существо приостанавливается, все хватки (существ/предметов) разжимаются.
+Pausing releases grasps|Пауза освобождает от захвата
+When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|Убивая существ с помощью инструментов, установите killTag на первого игрока, чтобы существа могли выстроиться в линию.<LINE>Уничтожение существ без их убийства не приводит к выстраиванию линии.
+Lineage when killed|Линия, когда убит
+Killing elite scavengers or vultures with this tool will release their masks.|Убийство элитных падальщиков или стервятников с помощью этого инструмента освободит их маски.
+Kill releases mask|Убийство выпускает маску
+Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|Исцеление или оживление существ с помощью инструментов также исцелит их конечности/крылья/щупальца.
+Heal limbs|Исцеление конечностей
+BodyChunks can be adjusted while locked in-place.|BodyChunks можно регулировать, пока они зафиксированы на месте.
+Adjustable locks|Регулируемые замки
+Players and SlugNPCs are unaffected by forcefields.|Игроки и SlugNPC не подвержены влиянию силовых полей.
+Forcefield immunity players|Игроки с иммунитетом к силовому полю
+Items (except thrown weapons) are unaffected by forcefields.|На предметы (кроме метательного оружия) силовые поля не действуют.
+Forcefield immunity items|Элементы иммунитета к силовому полю
+Forcefield radius|Радиус силового поля
+Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|Максимальный уровень, которого может достичь ObjectDumper с помощью информационного инструмента.<LINE>Оставьте это значение низким, чтобы избежать копирования "всей игры" в буфер обмена.
+Info depth|Глубина информации
+Creates an exact copy of the previous object when duplicating.|При дублировании создается точная копия предыдущего объекта.
+Copy ID duplicate|Копия дубликата удостоверения личности
+Try to exit game over mode when reviving player. Might be incompatible with some other mods.|Попробуйте выйти из режима game over при оживлении игрока. Может быть несовместим с некоторыми другими модами.
+Exit game over mode|Выход из режима завершения игры
+If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|Если флажок установлен, не приостанавливайте/разрушайте/убивайте слизняков при приостановке/разрушении/убивании всех существ.
+Except SlugNPC|Кроме SlugNPC
+Taming creatures using this tool also increases global reputation.|Приручение существ с помощью этого инструмента также повышает глобальную репутацию.
+Taming global +rep|Укрощение глобального +rep
+Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|Существа, управляемые из сафари, будут менять, за каким существом следует камера. Может плохо работать с другими модами камеры/мультиплеера. Не работает в сафари из-за надсмотрщика (если не удален).
+Safari-control changes camera|Safari-контроль меняет камеру
+Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|Сафари-контроль над другим существом (уже контролирующим существо) снимет контроль с первого существа, поэтому одновременно вы будете контролировать только одно существо.
+Safari-control only one creature|Сафари - контролирует только одно существо
+While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|При управлении существами в сафари перемещаться будет только то существо, за которым следит камера. Не используется, если флажок "Сафари-контроль меняет камеру" снят.
+Reset other safari-control input|Сброс других входов управления сафари
+Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|Существа, контролирующие сафари, оглушат игрока (последнего перетащенного), так как теперь этот игрок будет контролировать существо.
+Safari-control stuns players|Safari-контроль ошеломляет игроков
+Object copied to clipboard|Объект, скопированный в буфер обмена
+Objects copied to clipboard|Объекты, скопированные в буфер обмена
+Room copied to clipboard|Комната скопирована в буфер обмена
+Reset gravity|Сбросить гравитацию
+Gravity off|Гравитация отключена
+Gravity low|Гравитация низкая
+Gravity on|Гравитация на
+Gravity inversed|Гравитация в обратном направлении
+Select gravity type|Выберите тип гравитации
+Unpause|Снимите с паузы
+Trigger|Триггер
+Reset|Сброс
+Cut|Разрез
+Set teleport position|Установить позицию телепорта
+Cancel teleportation|Отменить телепортацию
+Release all for this player|Выпустить все для этого игрока
+Release control|Контроль выпуска
+Disable forcefield|Отключить силовое поле
+Enable forcefield|Включить силовое поле
+Unstun|Unstun
+Unlock position|Положение разблокировки
+Copy selector & open console|Копирование селектора и открытая консоль
+Copy info|Информация о копии
+Pause creatures in room|Остановите существ в комнате
+Pause all|Приостановить все
+Unpause all creatures|Снимите с паузы всех существ
+Unpause all items|Снять с паузы все элементы
+Revive/heal in room|Восстановление/лечение в комнате
+Paste|Паста
+Clear relationships in room|Чистые отношения в комнате
+Destroy creatures in room|Уничтожьте существ в комнате
+Destroy items in room|Уничтожьте предметы в комнате
+Destroy all in room|Уничтожьте все в комнате
+Destroy all in region|Уничтожить все в регионе
+Destroy items in region|Уничтожить предметы в регионе
+Destroy creatures in region|Уничтожить существ в регионе
+Destroy dead creatures in room|Уничтожьте мертвых существ в комнате
+Open console|Открытая консоль
+Set gravity|Установить гравитацию
+Copy room info|Информация о копировальном зале
+Select safari player|Выберите проигрыватель сафари
+Next page|Следующая страница
+Disabled|Инвалид
+General 1|Генерал 1
+General 2|Генерал 2
+Tools 1|Инструменты 1
+Tools 2|Инструменты 2
+Tool Settings|Настройки инструмента

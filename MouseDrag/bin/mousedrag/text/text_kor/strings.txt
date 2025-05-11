@@ -1,0 +1,233 @@
+Controls are active when this condition is met. Always active if sandbox mouse dragger is available.|이 조건이 충족되면 컨트롤이 활성화됩니다. 샌드박스 마우스 드래거를 사용할 수 있는 경우 항상 활성화됩니다.
+Active when|언제 활성화
+KeyBind to activate controls when "KeyBindPressed" is selected.|키 바인딩을 선택하면 "키 바인드 프레스"가 선택되었을 때 컨트롤이 활성화됩니다.
+KeyBind|키 바인드
+Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when "Active when" is "KeyBindPressed")|개발 도구와 마찬가지로 사이클이 종료되거나 게임이 다시 시작되면 도구를 비활성화합니다. ("Active when"가 "KeyBindPressed"일 때만 사용됨)
+Deactivate every restart|다시 시작할 때마다 비활성화
+Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.|바닐라 샌드박스 마우스 드래거가 이 모드로 대체되었으므로 비활성화합니다. 샌드박스에서 오브젝트를 드래그하는 동안 일부 문제를 해결할 수 있습니다.
+Disable sandbox mouse|샌드박스 마우스 비활성화
+Useful for debugging if you share your log files.|로그 파일을 공유하는 경우 디버깅에 유용합니다.
+Log debug|로그 디버그
+Left mouse button is used to drag objects.|마우스 왼쪽 버튼은 개체를 드래그하는 데 사용됩니다.
+LMB drags|LMB 드래그
+Middle mouse (scroll) button is used to drag objects.|마우스 가운데(스크롤) 버튼은 개체를 드래그하는 데 사용됩니다.
+MMB drags|MMB 드래그
+KeyBind is used to drag objects, as an alternative to left mouse button.|키 바인딩은 마우스 왼쪽 버튼 대신 개체를 드래그하는 데 사용됩니다.
+Drag|드래그
+Disables Rain World cursor. Solves the double mouse pointers in sandbox.|레인 월드 커서를 비활성화합니다. 샌드박스에서 더블 마우스 포인터를 해결합니다.
+Hide Rain World cursor|레인 월드 커서 숨기기
+Change visibility of Windows cursor in-game. Set to "NoChanges" to allow other mods to manage cursor visibility.|게임 내 Windows 커서 가시성을 변경합니다. 다른 모드에서 커서 표시 여부를 관리할 수 있도록 하려면 "NoChanges"로 설정합니다.
+Windows<LINE>cursor|Windows<LINE>커서
+Hold this key to only select or drag creatures.|크리처만 선택하거나 드래그하려면 이 키를 길게 누릅니다.
+Select creatures|생물 선택
+Hold this key to select or drag anything except creatures.|이 키를 누른 채로 크리처를 제외한 모든 것을 선택하거나 드래그합니다.
+Select items|항목 선택
+Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.|무기를 빠르게 드래그했다가 놓으면 해당 방향으로 던집니다. 키 바인딩의 대안입니다.
+Throw with mouse|마우스로 던지기
+Throwing weapons with the mouse will use Player as thrower.|마우스로 무기를 던지면 플레이어가 던지는 사람으로 사용됩니다.
+Throw as Player|플레이어로 던지기
+Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.|마우스를 놓았을 때 무기가 던져지는 최소 속도입니다. 키 바인딩을 통해서는 사용되지 않습니다.
+Throw threshold|던지기 임계값
+Force at which weapons are thrown.|무기를 던지는 힘입니다.
+Throw force|던지는 힘
+KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).|현재 드래그하고 있는 무기를 던지려면 키바인드를 누릅니다. 조준은 여전히 드래그 방향에 따라 결정됩니다. 샌드박스 마우스가 방해할 수 있습니다(초기화된 경우).
+Throw weapon|무기 던지기
+Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|위치 대신 속도를 사용하는 대체 드래그 방법. 드래그한 오브젝트는 벽을 통해 (쉽게) 이동하지 않습니다.<LINE>샌드박스 마우스가 (초기화된 경우) 간섭할 수 있습니다.
+Velocity drag|속도 드래그
+Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|화면이 변경될 때 일시적으로 속도 드래그를 활성화하고 LMB를 놓을 때까지 기다립니다. 이렇게 하면 스커그가 벽에 부딪히지 않습니다.
+Velocity drag at screen change|화면 변경 시 속도 드래그
+KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|키 바인딩을 사용하여 속도와 위치 드래그 사이를 전환합니다. 다른 옵션을 사용하여 속도 드래그가 영구적으로 활성화되어 있지 않은지 확인하세요.
+Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|이 키를 누른 상태에서 여러 개의 바디청크를 클릭하여 선택합니다. 또는 이 키를 누른 상태에서 선택 사각형을 바디청크 주위로 드래그하여 선택합니다.
+Multiple select|다중 선택
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|선택 사각형을 사용할 때 사각형을 이미 선택한 경우 사각형 내의 바디청크를 선택 영역에서 제거합니다. 그렇지 않으면 선택 영역을 그대로 유지합니다.
+Selection XOR|선택 XOR
+Right mouse button opens menu on object or background.|마우스 오른쪽 버튼을 클릭하면 개체 또는 배경의 메뉴가 열립니다.
+RMB opens menu|RMB 메뉴 열기
+Middle mouse (scroll) button opens menu on object or background.|마우스 가운데(스크롤) 버튼으로 개체 또는 배경의 메뉴를 엽니다.
+MMB opens menu|MMB 메뉴 열기
+KeyBind opens menu on object or background, as an alternative to right mouse button.|키 바인딩은 마우스 오른쪽 버튼 대신 개체 또는 배경에서 메뉴를 엽니다.
+Open menu|메뉴 열기
+Left mouse button selects actions in menu.|마우스 왼쪽 버튼으로 메뉴에서 작업을 선택합니다.
+LMB selects in menu|메뉴에서 LMB 선택
+Middle mouse (scroll) button selects actions in menu.|마우스 가운데(스크롤) 버튼으로 메뉴에서 작업을 선택합니다.
+MMB selects in menu|메뉴에서 MMB 선택
+KeyBind selects actions in menu, as an alternative to left mouse button.|키 바인딩은 마우스 왼쪽 버튼 대신 메뉴에서 작업을 선택합니다.
+Select in menu|메뉴에서 선택
+If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.|비스트마스터가 활성화된 경우, 해당 메뉴를 마우스 오른쪽 버튼으로 클릭하면 이 모드의 메뉴가 열리지 않습니다.
+BeastMaster integration|BeastMaster 통합
+If SplitScreen Co-op is enabled, dragging on other cameras is supported.|화면 분할 협동이 활성화된 경우 다른 카메라로 드래그가 지원됩니다.
+SplitScreen Co-op integration|SplitScreen Co-op 통합
+Show label above menu with name of selected object, and other text.|메뉴 위에 선택한 객체의 이름 및 기타 텍스트가 포함된 레이블을 표시합니다.
+Show label|레이블 표시
+The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.|메뉴 위의 레이블에는 선택한 도구 또는 작업에 대한 정보도 표시됩니다. 너무 산만하다면 이 기능을 비활성화하세요.
+Show tooltips|도구 설명 표시
+Max amount of tools on a single menu page.|단일 메뉴 페이지의 최대 도구 수.
+Max on page|최대 페이지 수
+If checked, menu follows the target object on which actions are performed.|선택하면 메뉴는 작업이 수행되는 대상 개체를 따릅니다.
+Menu follows target|메뉴는 대상을 따릅니다.
+If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|선택하면 메뉴가 대상 위로 마우스를 가져가도 대상을 따라갑니다. "메뉴가 대상을 따라오기"를 선택하지 않으면 사용되지 않습니다.
+Menu moves if hovering|마우스를 가리키면 메뉴 이동
+Select the display language for this mod. Requires restart.|이 모드의 표시 언어를 선택합니다. 다시 시작해야 합니다.
+Language|언어
+If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|SBCameraScroll이 활성화된 경우 대체 카메라 줌으로 드래그가 지원됩니다.
+SBCameraScroll integration|SBCameraScroll 통합
+If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|RegionKit을 활성화하면 마우스 오른쪽 버튼으로 개발 도구 메뉴 뒤의 방사형 메뉴가 열리지 않습니다.<LINE>이 기능은 Iggy가 마우스 오른쪽 버튼을 사용하여 팁을 표시하기 때문에 추가된 기능입니다.
+RegionKit integration|RegionKit 통합
+If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|개발자 콘솔이 활성화된 경우 콘솔을 통해 추가 명령/선택기를 사용할 수 있습니다. 재시작이 필요합니다.<LINE>마우스 드래그로 추가된 모든 명령/선택기는 "md_"로 시작합니다.
+Dev Console integration|개발자 콘솔 통합
+KeyBind to pause/unpause the selected objects.|키 바인딩을 사용하여 선택한 개체를 일시 중지/일시 해제합니다.
+Pause|일시 중지
+KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|키바인딩하면 현재 이 방에 있는 플레이어와 슬러그NPC를 제외한 모든 크리처를 일시정지합니다.<LINE>개별 크리처의 일시정지를 해제할 수 있습니다.
+Pause creatures<LINE>in room|방에 있는 생물 일시정지
+KeyBind to unpause all objects, including individually paused objects.|개별적으로 일시 중지된 개체를 포함한 모든 개체의 일시 중지를 해제하려면 KeyBind를 클릭합니다.
+Unpause all|모두 일시 중지 해제
+KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|키바인딩하여 플레이어와 슬러그NPC를 제외한 모든 크리처를 일시정지/일시해제하고, 아직 스폰해야 하는 크리처를 포함합니다.<LINE> 개별적으로 (언)일시정지된 크리처는 일시정지된 상태로 유지됩니다.
+Pause all creatures|모든 생물 일시 중지
+KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|아직 스폰해야 하는 아이템을 포함한 모든 아이템을 일시 중지/일시 해제하려면 키 바인딩합니다.<LINE>개별적으로 (언)일시 중지된 아이템은 일시 중지된 상태로 유지됩니다.
+Pause all items|모든 항목 일시 중지
+KeyBind to kill the selected creatures. Can also trigger items like bombs.|키바인딩하여 선택한 생물을 죽입니다. 폭탄과 같은 아이템을 발동시킬 수도 있습니다.
+Kill|Kill
+KeyBind to kill all creatures in current room except Player and SlugNPC.|키바인딩하여 플레이어와 슬러그NPC를 제외한 현재 방에 있는 모든 생물을 죽입니다.
+Kill in room|방에서 죽이기
+KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|키바인딩하여 선택한 생물을 부활시키고 치유합니다. 팝콘 식물과 같은 아이템을 초기화할 수도 있습니다.
+Revive/heal|부활/치유
+KeyBind to revive and heal all creatures in current room.|현재 방에 있는 모든 생물을 부활시키고 치유하려면 키바인딩합니다.
+Revive/heal<LINE>in room|방에서 부활/치유하기
+KeyBind to duplicate the selected objects. Hold button to repeat.|키 바인딩을 눌러 선택한 개체를 복제합니다. 버튼을 길게 누르면 반복됩니다.
+Duplicate|중복
+KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|키바인딩하면 현재 방에 있는 모든 생물체를 플레이어와 슬러그NPC를 제외한 마우스 위치로 텔레포트합니다.
+Teleport creatures<LINE>in room|방에 있는 생물 텔레포트
+KeyBind to teleport all items in current room to the mouse position.|현재 방의 모든 항목을 마우스 위치로 텔레포트하려면 키바인딩합니다.
+Teleport items<LINE>in room|방에 있는 아이템 텔레포트
+KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|키 바인딩하여 선택한 생물을 사파리로 제어하거나, 아무것도 선택하지 않은 경우 생물 사이를 순환합니다. 다운푸어 DLC가 필요합니다. 제어된 생물은 지도 검색에 기여하지 않습니다.
+Safari-control|사파리 제어
+KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|키바인딩하여 선택한 바디청크의 포스필드를 토글합니다. 바디청크를 다시 로드하면 포스필드가 손실됩니다.<LINE>포스필드는 구성된 반경 내의 오브젝트를 밀어냅니다.
+Forcefield|포스필드
+KeyBind to tame the selected creatures.|키바인딩하여 선택한 생물을 길들이세요.
+Tame|길들이기
+KeyBind to tame all creatures in current room.|현재 방에 있는 모든 생물을 길들이려면 키바인딩하세요.
+Tame in room|방에서 길들이기
+KeyBind to clear all relationships of the selected creatures.|선택한 크리처의 모든 관계를 지우려면 키 바인딩하세요.
+Clear relationships|명확한 관계
+KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|현재 방에 있는 플레이어와 슬러그NPC를 제외한 모든 크리처의 모든 관계를 지우려면 키바인딩합니다.
+Clear relationships<LINE>in room|방에서 관계 지우기
+KeyBind to stun/unstun the selected objects.|키 바인딩을 사용하여 선택한 오브젝트를 기절/기절 해제합니다.
+Stun|스턴
+KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|현재 이 방에 있는 플레이어와 슬러그NPC를 제외한 모든 오브젝트를 기절시키려면 키바인딩합니다.<LINE>개별 오브젝트의 기절을 해제할 수 있습니다.
+Stun in room|방에서 기절
+KeyBind to unstun all objects, including individually stunned objects.|개별적으로 기절된 오브젝트를 포함한 모든 오브젝트의 기절을 해제하려면 키바인드를 누르세요.
+Unstun all|모두 기절 해제
+KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|아직 스폰해야 하는 오브젝트를 포함하여 플레이어와 슬러그NPC를 제외한 모든 오브젝트를 기절/기절 해제하려면 키바인딩합니다.<LINE>개별적으로 (기절 해제된) 오브젝트는 기절 상태를 유지합니다.
+Stun all|모두 기절
+KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|키 바인딩하여 선택한 오브젝트를 파괴합니다.<LINE>크리처를 부활시키거나 트래커를 올바르게 업데이트하려면 죽인 다음 파괴합니다.
+Destroy|파괴
+KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|현재 방에 있는 플레이어와 슬러그NPC를 제외한 모든 생물을 파괴하려면 키바인딩합니다.<LINE>생물을 부활시키거나 트래커를 제대로 업데이트하려면 죽인 다음 파괴합니다.
+Destroy creatures<LINE>in room|방에 있는 생물 파괴
+KeyBind to destroy all items in current room.|현재 방의 모든 아이템을 파괴하려면 키 바인딩합니다.
+Destroy items<LINE>in room|방에 있는 아이템 파괴
+KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|플레이어와 슬러그NPC를 제외한 현재 지역의 모든 생물을 파괴하려면 키바인딩하세요. 일부 생명체는 자동으로 다시 추가되거나 나중에 추가됩니다.<LINE>경고: 이후 동면하면 다음 사이클에 해당 지역의 대부분의 생명체도 사라집니다. 사파리에서는 사용하지 않는 것이 좋습니다.
+Destroy creatures<LINE>in region|지역 내 생물 파괴
+KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|현재 영역에 있는 모든 아이템을 파괴하려면 키 바인딩을 누르세요. 대부분의 아이템은 자동으로 다시 추가되거나 나중에 추가됩니다.
+Destroy items<LINE>in region|지역 내 아이템 파괴
+KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|키바인딩하여 플레이어와 슬러그NPC를 제외한 현재 방에 있는 모든 죽은 생물을 파괴합니다.
+Destroy dead<LINE>creatures in room|방에 있는 죽은<LINE>생물을 파괴합니다.
+KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|키 바인딩을 눌러 선택한 바디 청크에 위치 잠금을 적용합니다. 객체를 다시 로드하면 잠금이 사라집니다.
+Lock position|잠금 위치
+KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|KeyBind를 눌러 선택한 개체의 선택기를 복사합니다. 여러 개체를 선택한 경우 첫 번째 개체의 선택기만 복사됩니다.<LINE>개발 콘솔도 자동으로 열립니다. 개발자 콘솔 통합이 활성화된 경우에만 작동합니다.
+Copy selector &<LINE>open Dev Console|복사 선택기 &<LINE>개발 콘솔 열기
+KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|모든 방에서 중력을 토글하려면 키 바인딩하세요. 5가지 상태를 지정할 수 있습니다: 없음/끄기/낮게/켜기/반전.
+Gravity|Gravity
+KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|모든 데이터를 선택한 개체의 클립보드에 덤프하거나 아무것도 선택되지 않은 경우 방에 덤프하려면 키 바인딩을 누르세요.
+Info|정보
+KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|현재 지역에 있는 모든 방(오브젝트 포함!)을 활성화/로드하려면 키 바인딩하세요. 플레이어가 방문한 방 은 퇴장 시에도 계속 추적되고 언로드됩니다. 경고: 이 경우 PC가 지연됩니다.
+Activate rooms<LINE>in region|지역 내 객실 활성화
+Add action to menu.|메뉴에 액션을 추가합니다.
+Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|메뉴에 동작 추가.<LINE>클립보드로 개체 잘라내기/붙여넣기(LIFO 버퍼). 게임을 닫으면 클립보드가 손실됩니다.
+Using Control + X/C/V will cut, copy or paste the selected objects.|Control + X/C/V를 사용하면 선택한 개체를 잘라내거나 복사 또는 붙여넣을 수 있습니다.
+Ctrl + X/C/V|Ctrl + X/C/V
+Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|메뉴에 동작 추가.<LINE>이 옵션을 사용하여 웨이포인트를 설정/재설정합니다. 개체를 클릭하여 이 웨이포인트로 순간이동합니다.
+Add action to menu.<LINE>Same as above, but on a BodyChunk.|메뉴에 액션을 추가합니다.<LINE>위와 동일하지만 바디청크에 추가합니다.
+Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|메뉴에 액션을 추가합니다. 플레이어와 슬러그NPC를 제외한 현재 방의 모든 생물을 파괴합니다.<LINE>생물을 부활시키거나 트래커를 제대로 업데이트하려면, 죽인 다음 파괴하세요.
+Add action to menu. Destroy all items in current room.|메뉴에 동작을 추가합니다. 현재 방에 있는 모든 아이템을 삭제합니다.
+Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|메뉴에 액션을 추가합니다. 플레이어와 슬러그NPC를 제외한 현재 방의 모든 오브젝트를 파괴합니다.<LINE>생물을 부활시키거나 트래커를 제대로 업데이트하려면, 죽인 다음 파괴하세요.
+When creature is paused, all grasps (creatures/items) are released.|생물이 일시 정지되면 모든 잡기(생물/아이템)가 해제됩니다.
+Pausing releases grasps|일시 중지하면 그립이 해제됩니다.
+When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|도구를 사용하여 생물을 죽일 때, 생물이 혈통을 이어갈 수 있도록 killTag를 첫 번째 플레이어로 설정하세요.<LINE>생물을 죽이지 않고 파괴하면 혈통이 이어지지 않습니다.
+Lineage when killed|사망 시 계보
+Killing elite scavengers or vultures with this tool will release their masks.|이 도구로 정예 스캐빈저나 독수리를 처치하면 가면이 해제됩니다.
+Kill releases mask|킬 릴리스 마스크
+Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|도구를 사용하여 생물을 치유하거나 부활시키면 팔다리/날개/촉수도 치유됩니다.
+Heal limbs|사지 치유
+BodyChunks can be adjusted while locked in-place.|바디청크는 제자리에 고정된 상태에서 조정할 수 있습니다.
+Adjustable locks|조절 가능한 잠금 장치
+Players and SlugNPCs are unaffected by forcefields.|플레이어와 슬러그NPC는 역장의 영향을 받지 않습니다.
+Forcefield immunity players|포스필드 면역 플레이어
+Items (except thrown weapons) are unaffected by forcefields.|아이템(투척 무기 제외)은 역장의 영향을 받지 않습니다.
+Forcefield immunity items|포스필드 면역 아이템
+Forcefield radius|포스필드 반경
+Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|오브젝트 덤퍼가 정보 도구를 사용하여 도달할 수 있는 최대 레벨입니다.<LINE>'전체 게임'을 클립보드에 복사하지 않으려면 이 값을 낮게 유지합니다.
+Info depth|정보 깊이
+Creates an exact copy of the previous object when duplicating.|복제할 때 이전 개체의 정확한 복사본을 만듭니다.
+Copy ID duplicate|ID 중복 복사
+Try to exit game over mode when reviving player. Might be incompatible with some other mods.|플레이어를 부활시킬 때 게임 오버 모드를 종료하세요. 일부 다른 모드와 호환되지 않을 수 있습니다.
+Exit game over mode|게임 오버 모드 종료
+If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|체크하면 모든 생물을 일시정지/파괴/사살할 때 민달팽이를 일시정지/파괴/사살하지 않습니다.
+Except SlugNPC|SlugNPC 제외
+Taming creatures using this tool also increases global reputation.|이 도구를 사용하여 크리처를 길들이면 글로벌 평판도 높아집니다.
+Taming global +rep|글로벌 + rep 길들이기
+Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|사파리 제어 크리처는 카메라가 따라가는 크리처를 변경합니다. 다른 카메라/멀티플레이어 모드와 잘 작동하지 않을 수 있습니다. 감독자 때문에 사파리에서 작동하지 않습니다(삭제하지 않는 한).
+Safari-control changes camera|사파리 제어로 카메라 변경
+Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|이미 생물을 제어하고 있는 상태에서 다른 생물을 사파리로 제어하면 첫 번째 생물의 제어권이 제거되므로, 한 번에 한 생물만 제어할 수 있습니다.
+Safari-control only one creature|사파리 - 하나의 생물만 제어
+While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|사파리로 생물을 제어하는 동안에는 카메라가 따라다니는 생물만 움직입니다. "사파리 제어로 카메라 변경"을 선택하지 않은 경우 사용되지 않습니다.
+Reset other safari-control input|다른 사파리 제어 입력 재설정
+Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|사파리를 조종하는 생물이 (마지막으로 드래그한) 플레이어를 기절시키면, 이 플레이어가 생물을 조종하게 됩니다.
+Safari-control stuns players|사파리 제어로 플레이어 기절
+Object copied to clipboard|클립보드에 복사된 개체
+Objects copied to clipboard|클립보드에 복사된 개체
+Room copied to clipboard|방이 클립보드에 복사됨
+Reset gravity|중력 초기화
+Gravity off|중력 해제
+Gravity low|중력 낮음
+Gravity on|중력 켜기
+Gravity inversed|중력 반전
+Select gravity type|중력 유형 선택
+Unpause|일시 중지
+Trigger|트리거
+Reset|초기화
+Cut|컷
+Set teleport position|텔레포트 위치 설정
+Cancel teleportation|순간이동 취소
+Release all for this player|이 플레이어에 대해 모두 해제
+Release control|릴리스 제어
+Disable forcefield|포스필드 비활성화
+Enable forcefield|포스필드 활성화
+Unstun|언스턴
+Unlock position|위치 잠금 해제
+Copy selector & open console|복사 선택기 및 콘솔 열기
+Copy info|정보 복사
+Pause creatures in room|방에 있는 크리처 일시 정지
+Pause all|모두 일시 중지
+Unpause all creatures|모든 생물 일시정지 해제
+Unpause all items|모든 항목 일시 중지 해제
+Revive/heal in room|방에서 부활/치유
+Paste|붙여넣기
+Clear relationships in room|공간 내 관계 정리
+Destroy creatures in room|방에 있는 생물 파괴
+Destroy items in room|방에 있는 아이템 파괴
+Destroy all in room|방에서 모두 파괴
+Destroy all in region|지역 내 모든 파괴
+Destroy items in region|지역 내 아이템 파괴
+Destroy creatures in region|지역 내 생물 파괴
+Destroy dead creatures in room|방에 있는 죽은 생물 파괴
+Open console|콘솔 열기
+Set gravity|중력 설정
+Copy room info|객실 정보 복사
+Select safari player|사파리 플레이어 선택
+Next page|다음 페이지
+Disabled|장애인
+General 1|일반 1
+General 2|일반 2
+Tools 1|도구 1
+Tools 2|도구 2
+Tool Settings|도구 설정

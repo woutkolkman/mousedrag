@@ -1,0 +1,233 @@
+Controls are active when this condition is met. Always active if sandbox mouse dragger is available.|この条件を満たすとコントロールがアクティブになる。サンドボックスマウスドラッガーが利用可能な場合は常にアクティブ。
+Active when|アクティブ時
+KeyBind to activate controls when "KeyBindPressed" is selected.|KeyBindPressed "が選択されたときにコントロールをアクティブにするキーバインド。
+KeyBind|キーバインド
+Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when "Active when" is "KeyBindPressed")|Dev Toolsのように、サイクルが終了するかゲームが再起動されると、ツールを非アクティブにする。(Active when "が "KeyBindPressed "のときのみ使用)
+Deactivate every restart|再起動ごとに無効化
+Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.|バニラのサンドボックスマウスドラッガーは、このMODによって置き換えられるので、無効にしてください。サンドボックスでオブジェクトをドラッグする際のいくつかの問題を解決できます。
+Disable sandbox mouse|サンドボックスマウスを無効にする
+Useful for debugging if you share your log files.|ログファイルを共有するとデバッグに便利です。
+Log debug|ログデバッグ
+Left mouse button is used to drag objects.|マウスの左ボタンでオブジェクトをドラッグする。
+LMB drags|LMBドラッグ
+Middle mouse (scroll) button is used to drag objects.|マウスの中（スクロール）ボタンは、オブジェクトのドラッグに使用します。
+MMB drags|MMBドラッグ
+KeyBind is used to drag objects, as an alternative to left mouse button.|KeyBindは、マウスの左ボタンの代わりとして、オブジェクトをドラッグするのに使われる。
+Drag|ドラッグ
+Disables Rain World cursor. Solves the double mouse pointers in sandbox.|Rain Worldカーソルを無効にする。サンドボックスでマウスポインタが二重になる問題を解決。
+Hide Rain World cursor|雨の世界のカーソルを隠す
+Change visibility of Windows cursor in-game. Set to "NoChanges" to allow other mods to manage cursor visibility.|ゲーム中のWindowsカーソルの可視性を変更する。他のMODでカーソルの可視性を管理できるようにするには、"NoChanges "に設定します。
+Windows<LINE>cursor|Windows<LINE>カーソル
+Hold this key to only select or drag creatures.|このキーを押し続けると、クリーチャーを選択またはドラッグするだけになります。
+Select creatures|クリーチャーを選ぶ
+Hold this key to select or drag anything except creatures.|このキーを押したまま、クリーチャー以外のものを選択またはドラッグします。
+Select items|アイテムを選択
+Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.|武器を素早くドラッグして離すと、その方向に投げられる。KeyBindの代替。
+Throw with mouse|マウスで投げる
+Throwing weapons with the mouse will use Player as thrower.|マウスで武器を投げると、プレイヤーが投げ手として使用されます。
+Throw as Player|選手として投げる
+Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.|マウスを離したときに武器を投げる最小速度。キーバインドでは使用されない。
+Throw threshold|スロー閾値
+Force at which weapons are thrown.|武器を投げる力。
+Throw force|投球力
+KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).|キーバインドで、現在ドラッグしている武器を投げる。狙いはドラッグの方向によって決まります。サンドボックスマウスは干渉するかもしれません（初期化されている場合）。
+Throw weapon|投擲武器
+Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|位置の代わりに速度を使用する別のドラッグ方法。<LINE>サンドボックスマウスが干渉する可能性があります（初期化されている場合）。
+Velocity drag|速度ドラッグ
+Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|LMBを離すまで、画面が変わったときのベロシティドラッグを一時的に有効にする。こうすることで、スカッグを壁にぶつけることがなくなる。
+Velocity drag at screen change|画面切り替え時の速度ドラッグ
+KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|キーバインドで速度ドラッグと位置ドラッグを切り替える。他のオプションを使用して、ベロシティドラッグが恒久的に有効になっていないことを確認してください。
+Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|このキーを押しながら、複数の BodyChunk をクリックして選択する。または、このキーを押したまま、BodyChunks の周りを選択矩形でドラッグして選択します。
+Multiple select|複数選択
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|セレクション矩形を使用する場合、矩形内の BodyChunk がすでに選択されていれば、選択範囲から取り除く。そうでない場合は、選択範囲を維持します。
+Selection XOR|セレクションXOR
+Right mouse button opens menu on object or background.|マウスの右ボタンで、オブジェクトまたは背景のメニューを開きます。
+RMB opens menu|RMBがメニューを開く
+Middle mouse (scroll) button opens menu on object or background.|マウスの中央（スクロール）ボタンで、オブジェクトまたは背景のメニューを開きます。
+MMB opens menu|MMBがメニューを開く
+KeyBind opens menu on object or background, as an alternative to right mouse button.|KeyBindは、マウスの右ボタンの代わりとして、オブジェクトまたは背景上でメニューを開きます。
+Open menu|メニューを開く
+Left mouse button selects actions in menu.|マウスの左ボタンでメニューのアクションを選択。
+LMB selects in menu|LMBでメニュー選択
+Middle mouse (scroll) button selects actions in menu.|マウスの中（スクロール）ボタンでメニューのアクションを選択します。
+MMB selects in menu|MMBがメニューで選択
+KeyBind selects actions in menu, as an alternative to left mouse button.|KeyBindは、マウスの左ボタンの代わりに、メニュー内のアクションを選択します。
+Select in menu|メニューで選択
+If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.|BeastMasterが有効になっている場合、そのメニューを右クリックしてもこのMODのメニューは開きません。
+BeastMaster integration|ビーストマスター統合
+If SplitScreen Co-op is enabled, dragging on other cameras is supported.|SplitScreen Co-opが有効な場合、他のカメラへのドラッグがサポートされます。
+SplitScreen Co-op integration|SplitScreen Co-opの統合
+Show label above menu with name of selected object, and other text.|メニューの上に、選択されたオブジェクトの名前とその他のテキストを含むラベルを表示する。
+Show label|ラベルを表示する
+The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.|メニューの上のラベルには、選択したツールやアクションに関する情報も表示されます。邪魔な場合は無効にしてください。
+Show tooltips|ツールチップの表示
+Max amount of tools on a single menu page.|1つのメニューページに表示できるツールの最大数。
+Max on page|ページのマックス
+If checked, menu follows the target object on which actions are performed.|チェックされている場合、メニューはアクションが実行されるターゲットオブジェクトに従う。
+Menu follows target|メニューは目標に従う
+If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|チェックした場合、メニューはターゲットにカーソルを合わせても追従します。Menu follows target "がチェックされていない場合は使用されません。
+Menu moves if hovering|カーソルを合わせるとメニューが動く
+Select the display language for this mod. Requires restart.|このMODの表示言語を選択します。再起動が必要です。
+Language|言語
+If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|SBCameraScrollが有効な場合、代替カメラズームでのドラッグがサポートされます。
+SBCameraScroll integration|SBCameraScrollの統合
+If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|RegionKitが有効な場合、マウスの右ボタンはDev Toolsメニューの後ろにあるradialメニューを開きません。<LINE>これはIggyがマウスの右ボタンでヒントを表示するために追加されました。
+RegionKit integration|RegionKitの統合
+If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|Dev Consoleが有効になっている場合、追加のコマンド/セレクタがコンソールから利用できるようになります。再起動が必要です。<LINE>Mouse Dragによって追加されたコマンド/セレクタはすべて "md_"で始まります。
+Dev Console integration|開発コンソールの統合
+KeyBind to pause/unpause the selected objects.|キーバインドで選択オブジェクトを一時停止／一時停止解除。
+Pause|ポーズ
+KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|キーバインドでPlayerとSlugNPCを除く全てのクリーチャーを一時停止。
+Pause creatures<LINE>in room|部屋の中の生き物<LINE>を一時停止する
+KeyBind to unpause all objects, including individually paused objects.|個別に一時停止しているオブジェクトも含め、すべてのオブジェクトの一時停止を解除するキーバインド。
+Unpause all|すべての一時停止を解除する
+KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|キーバインドでPlayerとSlugNPC以外のすべてのクリーチャーを一時停止／一時停止解除できます。
+Pause all creatures|すべての生き物を一時停止する
+KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|キーバインドで、まだスポーンする必要があるアイテムを含む、すべてのアイテムを一時停止/一時停止解除します。<LINE>個別に一時停止された（一時停止されていない）アイテムは、一時停止されたままです。
+Pause all items|すべての項目を一時停止する
+KeyBind to kill the selected creatures. Can also trigger items like bombs.|キーバインドで選択したクリーチャーを殺す。爆弾のようなアイテムを発動させることもできる。
+Kill|キル
+KeyBind to kill all creatures in current room except Player and SlugNPC.|KeyBindでPlayerとSlugNPC以外のクリーチャーを殺す。
+Kill in room|部屋で殺す
+KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|キーバインドで選択したクリーチャーを復活させたり回復させたりできる。ポップコーンのようなアイテムをリセットすることもできる。
+Revive/heal|復活/回復
+KeyBind to revive and heal all creatures in current room.|キーバインドで現在の部屋にいるすべてのクリーチャーを復活させ回復させる。
+Revive/heal<LINE>in room|部屋での復活/回復
+KeyBind to duplicate the selected objects. Hold button to repeat.|キーバインドで選択オブジェクトを複製。ボタンを押したままにすると繰り返します。
+Duplicate|重複
+KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|キーバインドで、PlayerとSlugNPCを除く、現在の部屋のすべてのクリーチャーをマウスの位置にテレポートさせる。
+Teleport creatures<LINE>in room|部屋にいるクリーチャーをテレポートさせる
+KeyBind to teleport all items in current room to the mouse position.|キーバインドで、現在の部屋のすべてのアイテムをマウスの位置にテレポートする。
+Teleport items<LINE>in room|部屋内のアイテム<LINE>をテレポート
+KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|キーバインドで選択したクリーチャーをサファリコントロールしたり、何も選択されていない場合はクリーチャー間を循環させることができる。Downpour DLCが必要。コントロールされているクリーチャーはマップ発見には貢献しない。
+Safari-control|サファリコントロール
+KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|選択されたBodyChunksのフォースフィールドを切り替えるキーバインド。フォースフィールドはBodyChunkがリロードされると失われます。<LINE>フォースフィールドは設定された半径内のオブジェクトを押しのけます。
+Forcefield|フォースフィールド
+KeyBind to tame the selected creatures.|キーバインドで選択したクリーチャーを手なずける。
+Tame|テイム
+KeyBind to tame all creatures in current room.|キーバインドで現在の部屋にいるすべてのクリーチャーを手なずける。
+Tame in room|部屋で飼いならされる
+KeyBind to clear all relationships of the selected creatures.|キーバインドで、選択したクリーチャーのリレーションシップをすべてクリアする。
+Clear relationships|明確な関係
+KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|PlayerとSlugNPCを除く、現在のルームにいるすべてのクリーチャーの関係をクリアするキーバインド。
+Clear relationships<LINE>in room|室内の人間関係
+KeyBind to stun/unstun the selected objects.|キーバインドで選択オブジェクトをスタン/アンスタンする。
+Stun|スタン
+KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|キーバインドでPlayerとSlugNPCを除く全てのオブジェクトを気絶させる。
+Stun in room|部屋でスタン
+KeyBind to unstun all objects, including individually stunned objects.|キーバインドで、個別に気絶したオブジェクトを含むすべてのオブジェクトの気絶を解除する。
+Unstun all|スタン解除
+KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|まだスポーンする必要があるオブジェクトを含む、PlayerとSlugNPCを除くすべてのオブジェクトをスタン/アンスタンするためにキーバインドします。<LINE>個別に（アン）スタンされたオブジェクトはスタンのままです。
+Stun all|スタン・オール
+KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|キーバインドで選択したオブジェクトを破壊する。<LINE>クリーチャーをリスポーンさせたり、トラッカーを適切に更新するには、クリーチャーを殺して破壊する。
+Destroy|破壊する
+KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|<LINE>クリーチャーをリスポーンさせたり、トラッカーを適切に更新するには、クリーチャーを殺して破壊してください。
+Destroy creatures<LINE>in room|部屋のクリーチャー<LINE>を破壊する
+KeyBind to destroy all items in current room.|キーバインドで現在の部屋のすべてのアイテムを破壊する。
+Destroy items<LINE>in room|部屋のアイテム<LINE>を破壊する
+KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|KeyBindでPlayerとSlugNPC以外のすべてのクリーチャーを破壊する。一部のクリーチャーは自動的に再追加されるか、後で追加されます。<LINE>警告: この後ハイバネーションすると、次のサイクルではリージョン内のほとんどのクリーチャーも消えてしまいます。サファリでは使わないほうがよい。
+Destroy creatures<LINE>in region|リージョン内のクリーチャー<LINE>を破壊する
+KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|キーバインドで現在のリージョン内のすべてのアイテムを破棄する。ほとんどのアイテムは自動的に再追加されるか、後で追加される。
+Destroy items<LINE>in region|リージョン内のアイテム<LINE>を破棄する
+KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|KeyBindで、PlayerとSlugNPCを除く、現在の部屋のすべての死んだクリーチャーを破壊する。
+Destroy dead<LINE>creatures in room|部屋の中の死んだ<LINE>クリーチャーを破壊する
+KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|KeyBindで、選択したBodyChunksにポジションロックをかける。ロックはオブジェクトがリロードされると失われます。
+Lock position|ロック位置
+KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|キーバインドで選択オブジェクトのセレクタをコピーします。複数のオブジェクトが選択されている場合、最初のオブジェクトのセレクタのみがコピーされます。<LINE>Dev Console も自動的に開きます。Dev Console統合が有効になっている場合のみ動作します。
+Copy selector &<LINE>open Dev Console|セレクタをコピー &<LINE>Devコンソールを開く
+KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|キーバインドで全室の重力を切り替え。5つの状態を割り当て可能：None/Off/Low/On/Inverse。
+Gravity|重力
+KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|キーバインドすると、選択されたオブジェクトのすべてのデータがクリップボードにダンプされます。
+Info|インフォメーション
+KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|キーバインドで、現在のリージョンにあるすべての部屋（オブジェクトを含む！）をアクティブにしたり、ロードしたりすることができます。プレイヤー<LINE>が訪問した部屋は追跡され、退出時にアンロードされます。警告：これはあなたのPCにラグを与えます。
+Activate rooms<LINE>in region|地域内の部屋<LINE>をアクティブにする
+Add action to menu.|メニューにアクションを追加
+Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|メニューにアクションを追加。<LINE>クリップボード（LIFOバッファ）でオブジェクトをカット/ペースト。ゲームを閉じるとクリップボードが失われます。
+Using Control + X/C/V will cut, copy or paste the selected objects.|Control + X/C/Vを使用すると、選択したオブジェクトをカット、コピー、ペーストすることができます。
+Ctrl + X/C/V|Ctrl + X/C/V
+Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|メニューにアクションを追加する<LINE>このオプションを使ってウェイポイントを設定/リセットする。任意のオブジェクトをクリックすると、このウェイポイントにテレポートします。
+Add action to menu.<LINE>Same as above, but on a BodyChunk.|menuにアクションを追加する。<LINE>上記と同じですが、BodyChunkに追加します。
+Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|メニューにアクションを追加。<LINE>クリーチャーをリスポーンさせたり、トラッカーを正しく更新するには、クリーチャーを殺して破壊する。
+Add action to menu. Destroy all items in current room.|メニューにアクションを追加する。現在の部屋のアイテムをすべて破壊する。
+Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|メニューにアクションを追加。<LINE>クリーチャーをリスポーンさせたり、トラッカーを正しく更新するには、クリーチャーを殺して破壊してください。
+When creature is paused, all grasps (creatures/items) are released.|クリーチャーが一時停止すると、すべてのグラップ（クリーチャー／アイテム）が解放される。
+Pausing releases grasps|ポーズがつかみから解放する
+When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|道具を使ってクリーチャーを殺す場合、killTagを最初のプレイヤーに設定することで、クリーチャーは血統を残すことができます。<LINE>クリーチャーを殺さずに破壊しても、血統は残りません。
+Lineage when killed|死亡時の血統
+Killing elite scavengers or vultures with this tool will release their masks.|この道具でエリート・スカベンジャーやハゲワシを殺すと、彼らのマスクが外れる。
+Kill releases mask|キルがマスクをリリース
+Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|道具を使ってクリーチャーを癒したり蘇生させたりすると、その手足／翼／触手も癒える。
+Heal limbs|手足を治す
+BodyChunks can be adjusted while locked in-place.|BodyChunksは所定の位置に固定された状態で調整できる。
+Adjustable locks|調整可能なロック
+Players and SlugNPCs are unaffected by forcefields.|プレイヤーとSlugNPCはフォースフィールドの影響を受けない。
+Forcefield immunity players|フォースフィールド免疫選手
+Items (except thrown weapons) are unaffected by forcefields.|アイテム（投擲武器を除く）はフォースフィールドの影響を受けない。
+Forcefield immunity items|フォースフィールド免疫アイテム
+Forcefield radius|フォースフィールド半径
+Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|<LINE>クリップボードに「ゲーム全体」がコピーされるのを避けるために、この値を低く保ってください。
+Info depth|情報深度
+Creates an exact copy of the previous object when duplicating.|複製時に、前のオブジェクトの完全なコピーを作成します。
+Copy ID duplicate|コピーID重複
+Try to exit game over mode when reviving player. Might be incompatible with some other mods.|プレイヤー復活時にゲームオーバーモードを終了するようにしてください。他のMODとの相性が悪いかもしれません。
+Exit game over mode|ゲームオーバーモードを終了する
+If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|チェックした場合、すべてのクリーチャーを一時停止/破壊/キルする際にナメクジの仔を一時停止/破壊/キルしない。
+Except SlugNPC|スラッグNPCを除く
+Taming creatures using this tool also increases global reputation.|このツールを使ってクリーチャーを飼いならすと、世界的な評価も高まる。
+Taming global +rep|グローバル+repを飼いならす
+Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|サファリを操作するクリーチャーはカメラが追うクリーチャーを変える。他のカメラ/マルチプレイヤーMODとは相性が悪いかもしれません。サファリではオーバーサーのため動作しません（削除しない限り）。
+Safari-control changes camera|サファリコントロールがカメラを変更
+Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|すでにクリーチャーをコントロールしている状態で）他のクリーチャーをサファリ・コントロールすると、最初のクリーチャーからコントロールが取り除かれるので、一度にコントロールできるのは1体だけである。
+Safari-control only one creature|サファリ-クリーチャー1体のみをコントロールする
+While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|サファリコントロール中、カメラが追っているクリーチャーだけが動く。Safari-control changes camera "がチェックされていない場合は未使用。
+Reset other safari-control input|他のサファリコントロール入力をリセットする
+Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|サファリをコントロールしているクリーチャーは、（最後にドラッグした）プレイヤーを気絶させる。
+Safari-control stuns players|サファリ・コントロールが選手を唖然とさせる
+Object copied to clipboard|クリップボードにコピーされたオブジェクト
+Objects copied to clipboard|クリップボードにコピーされたオブジェクト
+Room copied to clipboard|クリップボードにコピーされた部屋
+Reset gravity|重力をリセット
+Gravity off|重力オフ
+Gravity low|重力が低い
+Gravity on|重力
+Gravity inversed|重力が逆
+Select gravity type|重力タイプを選択
+Unpause|一時停止解除
+Trigger|トリガー
+Reset|リセット
+Cut|カット
+Set teleport position|テレポート位置の設定
+Cancel teleportation|テレポートのキャンセル
+Release all for this player|この選手のすべてを解放する
+Release control|リリースコントロール
+Disable forcefield|フォースフィールドを無効にする
+Enable forcefield|力場を有効にする
+Unstun|アンスタン
+Unlock position|ロック解除位置
+Copy selector & open console|セレクタをコピーしてコンソールを開く
+Copy info|コピー情報
+Pause creatures in room|部屋の中の生き物を一時停止させる
+Pause all|一時停止
+Unpause all creatures|すべてのクリーチャーの一時停止を解除する
+Unpause all items|すべてのアイテムの一時停止を解除する
+Revive/heal in room|部屋で復活/回復
+Paste|ペースト
+Clear relationships in room|室内における明確な人間関係
+Destroy creatures in room|部屋のクリーチャーを破壊する
+Destroy items in room|部屋のアイテムを破壊する
+Destroy all in room|部屋のすべてを破壊する
+Destroy all in region|地域内のすべてを破壊する
+Destroy items in region|地域のアイテムを破壊する
+Destroy creatures in region|地域のクリーチャーを破壊する
+Destroy dead creatures in room|部屋の中の死んだ生き物を破壊する
+Open console|オープンコンソール
+Set gravity|重力を設定する
+Copy room info|コピールーム情報
+Select safari player|サファリプレーヤーを選択
+Next page|次のページ
+Disabled|無効
+General 1|一般1
+General 2|一般2
+Tools 1|ツール1
+Tools 2|ツール2
+Tool Settings|ツール設定

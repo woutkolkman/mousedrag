@@ -5,8 +5,10 @@ Credits:
 - Fyre & Noir for the BeastMaster menu trianglemesh code 
 - IdleFire Guardian for playtesting 
 - heerxingen for Simplified Chinese translation 
+- CreativeGamer03 for help with DeepL placeholder translations 
 
 Source code is here: https://github.com/woutkolkman/mousedrag 
+If you see any mistakes in the translations you'd like to see fixed, it would be helpful to create a pull request with corrections for the translation file: https://github.com/woutkolkman/mousedrag/tree/master/MouseDrag/bin/mousedrag/text 
 
 [h3]Known issues/bugs[/h3]
 - Pausing a deer while you're on it will make you slide off. You need to jump to be able to move again. 

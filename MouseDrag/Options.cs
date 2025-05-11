@@ -608,17 +608,17 @@ namespace MouseDrag
             foreach (var fi in list) {
                 var field = (ConfigurableBase) fi?.GetValue(null);
                 if (!String.IsNullOrEmpty(field?.info?.description))
-                    field.info.description = RWCustom.Custom.rainWorld.inGameTranslator.Translate(field.info.description);
+                    field.info.description = RWCustom.Custom.rainWorld.inGameTranslator.Translate(field.info.description.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
                 for (int i = 0; i < field?.info?.Tags?.Count(); i++) {
                     if (!String.IsNullOrEmpty(field.info.Tags[i] as string))
-                        field.info.Tags[i] = RWCustom.Custom.rainWorld.inGameTranslator.Translate((string) field.info.Tags[i]);
+                        field.info.Tags[i] = RWCustom.Custom.rainWorld.inGameTranslator.Translate(((string) field.info.Tags[i]).Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
                 }
             }
 
             for (int i = 0; i < Tabs?.Length; i++) {
                 if (Tabs[i] == null || String.IsNullOrEmpty(Tabs[i].name))
                     continue;
-                Tabs[i].name = RWCustom.Custom.rainWorld.inGameTranslator.Translate(Tabs[i].name);
+                Tabs[i].name = RWCustom.Custom.rainWorld.inGameTranslator.Translate(Tabs[i].name.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
             }
 
             if (Options.logDebug?.Value != false)

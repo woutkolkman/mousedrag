@@ -1,0 +1,233 @@
+Controls are active when this condition is met. Always active if sandbox mouse dragger is available.|Die Steuerelemente sind aktiv, wenn diese Bedingung erfüllt ist. Immer aktiv, wenn Sandbox-Maus-Dragger verfügbar ist.
+Active when|Aktiv wenn
+KeyBind to activate controls when "KeyBindPressed" is selected.|KeyBind zur Aktivierung von Steuerelementen, wenn "KeyBindPressed" ausgewählt ist.
+KeyBind|KeyBind
+Deactivate tools when cycle ends or game is restarted, just like Dev Tools. (only used when "Active when" is "KeyBindPressed")|Deaktivieren Sie Tools, wenn der Zyklus endet oder das Spiel neu gestartet wird, genau wie Dev Tools. (nur verwendet, wenn "Aktiv wenn" "KeyBindPressed" ist)
+Deactivate every restart|Deaktivieren bei jedem Neustart
+Disable vanilla sandbox mouse dragger, because it is replaced by this mod. Can solve some issues while dragging objects in sandbox.|Deaktivieren Sie Vanilla Sandbox Maus Dragger, weil es durch diese Mod ersetzt wird. Kann einige Probleme beim Ziehen von Objekten in der Sandbox lösen.
+Disable sandbox mouse|Sandkastenmaus deaktivieren
+Useful for debugging if you share your log files.|Nützlich für die Fehlersuche, wenn Sie Ihre Protokolldateien freigeben.
+Log debug|Debuggen protokollieren
+Left mouse button is used to drag objects.|Die linke Maustaste wird zum Ziehen von Objekten verwendet.
+LMB drags|LMB zieht
+Middle mouse (scroll) button is used to drag objects.|Die mittlere Maustaste (Bildlauftaste) wird zum Ziehen von Objekten verwendet.
+MMB drags|MMB schleppt
+KeyBind is used to drag objects, as an alternative to left mouse button.|KeyBind wird verwendet, um Objekte zu ziehen, als Alternative zur linken Maustaste.
+Drag|Ziehen
+Disables Rain World cursor. Solves the double mouse pointers in sandbox.|Deaktiviert den Regenwelt-Cursor. Behebt die doppelten Mauszeiger in der Sandbox.
+Hide Rain World cursor|Regenwelt-Cursor ausblenden
+Change visibility of Windows cursor in-game. Set to "NoChanges" to allow other mods to manage cursor visibility.|Ändert die Sichtbarkeit des Windows-Cursors im Spiel. Setzen Sie diese Option auf "NoChanges", damit andere Mods die Sichtbarkeit des Cursors verwalten können.
+Windows<LINE>cursor|Windows<LINE>Cursor
+Hold this key to only select or drag creatures.|Halten Sie diese Taste gedrückt, um nur Kreaturen auszuwählen oder zu ziehen.
+Select creatures|Kreaturen auswählen
+Hold this key to select or drag anything except creatures.|Halten Sie diese Taste gedrückt, um alles außer Kreaturen auszuwählen oder zu ziehen.
+Select items|Artikel auswählen
+Quickly dragging and releasing weapons will throw them in that direction. Alternative to KeyBind.|Durch schnelles Ziehen und Loslassen werden die Waffen in die entsprechende Richtung geworfen. Alternative zu KeyBind.
+Throw with mouse|Werfen mit der Maus
+Throwing weapons with the mouse will use Player as thrower.|Beim Werfen von Waffen mit der Maus wird der Spieler zum Werfer.
+Throw as Player|Wurf als Spieler
+Minimum speed at which weapons are thrown when the mouse is released. Not used via KeyBind.|Mindestgeschwindigkeit, mit der Waffen geworfen werden, wenn die Maus losgelassen wird. Wird nicht über KeyBind verwendet.
+Throw threshold|Wurfschwelle
+Force at which weapons are thrown.|Kraft, mit der Waffen geworfen werden.
+Throw force|Wurfkraft
+KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).|KeyBind, um die Waffe zu werfen, die du gerade ziehst. Das Zielen wird weiterhin durch die Ziehrichtung bestimmt. Die Sandbox-Maus kann stören (falls initialisiert).
+Throw weapon|Wurfwaffe
+Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|Alternative Methode zum Ziehen, die die Geschwindigkeit statt der Position verwendet. Gezogene Objekte bewegen sich nicht (leicht) durch Wände <LINE>Die Sandbox-Maus könnte stören (falls initialisiert).
+Velocity drag|Strömungswiderstand
+Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|Aktiviere vorübergehend das Ziehen mit der Geschwindigkeit, wenn sich der Bildschirm ändert, bis du LMB loslässt. Auf diese Weise werden Sie nicht Ihr scug in eine Wand zerschmettern.
+Velocity drag at screen change|Geschwindigkeitswiderstand beim<LINE>Bildschirmwechsel
+KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|KeyBind, um zwischen Anschlagsdynamik und Positionsdragging umzuschalten. Vergewissern Sie sich, dass das Ziehen mit Anschlagsgeschwindigkeit nicht dauerhaft über die anderen Optionen aktiviert ist.
+Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|Halten Sie diese Taste gedrückt und klicken Sie auf mehrere BodyChunks, um sie auszuwählen. Oder halten Sie diese Taste gedrückt und ziehen Sie ein Auswahlrechteck um die BodyChunks, um sie auszuwählen.
+Multiple select|Mehrfachauswahl
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|Wenn Sie das Auswahlrechteck verwenden, entfernen Sie BodyChunks innerhalb des Rechtecks aus der Auswahl, wenn sie bereits ausgewählt waren. Andernfalls wird die Auswahl einfach beibehalten.
+Selection XOR|Auswahl XOR
+Right mouse button opens menu on object or background.|Rechte Maustaste öffnet Menü auf Objekt oder Hintergrund.
+RMB opens menu|RMB öffnet Menü
+Middle mouse (scroll) button opens menu on object or background.|Mittlere Maustaste (Scrolltaste) öffnet Menü auf Objekt oder Hintergrund.
+MMB opens menu|MMB öffnet Menü
+KeyBind opens menu on object or background, as an alternative to right mouse button.|KeyBind öffnet das Menü auf dem Objekt oder Hintergrund, als Alternative zur rechten Maustaste.
+Open menu|Menü öffnen
+Left mouse button selects actions in menu.|Mit der linken Maustaste werden Aktionen im Menü ausgewählt.
+LMB selects in menu|LMB wählt im Menü aus
+Middle mouse (scroll) button selects actions in menu.|Die mittlere Maustaste (Scrolltaste) wählt die Aktionen im Menü aus.
+MMB selects in menu|MMB wählt im Menü aus
+KeyBind selects actions in menu, as an alternative to left mouse button.|KeyBind wählt Aktionen im Menü aus, als Alternative zur linken Maustaste.
+Select in menu|Im Menü auswählen
+If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.|Wenn BeastMaster aktiviert ist, öffnet ein Rechtsklick auf sein Menü nicht das Menü dieses Mods.
+BeastMaster integration|BeastMaster-Integration
+If SplitScreen Co-op is enabled, dragging on other cameras is supported.|Wenn SplitScreen Co-op aktiviert ist, wird das Ziehen auf andere Kameras unterstützt.
+SplitScreen Co-op integration|SplitScreen-Koop-Integration
+Show label above menu with name of selected object, and other text.|Etikett über dem Menü mit dem Namen des ausgewählten Objekts und anderem Text anzeigen.
+Show label|Etikett anzeigen
+The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.|Die Beschriftung über dem Menü zeigt auch Informationen über das ausgewählte Werkzeug oder die Aktion an. Deaktivieren Sie dies, wenn es zu sehr ablenkt.
+Show tooltips|Tooltips anzeigen
+Max amount of tools on a single menu page.|Maximale Anzahl von Tools auf einer einzigen Menüseite.
+Max on page|Max auf Seite
+If checked, menu follows the target object on which actions are performed.|Wenn diese Option aktiviert ist, folgt das Menü dem Zielobjekt, an dem Aktionen ausgeführt werden.
+Menu follows target|Menü folgt dem Ziel
+If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|Wenn diese Option aktiviert ist, folgt das Menü dem Ziel auch, wenn der Mauszeiger darüber schwebt. Unbenutzt, wenn "Menü folgt Ziel" nicht markiert ist.
+Menu moves if hovering|Menü bewegt sich beim Hovern
+Select the display language for this mod. Requires restart.|Wählen Sie die Anzeigesprache für diesen Mod. Erfordert einen Neustart.
+Language|Sprache
+If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|Wenn SBCameraScroll aktiviert ist, wird das Ziehen mit alternativem Kamerazoom unterstützt.
+SBCameraScroll integration|SBCameraScroll-Integration
+If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|Wenn RegionKit aktiviert ist, öffnet die rechte Maustaste nicht das Radialmenü hinter dem Dev-Tools-Menü.<LINE>Dies wurde hinzugefügt, weil Iggy die rechte Maustaste verwendet, um Tipps anzuzeigen.
+RegionKit integration|RegionKit-Integration
+If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|Wenn Dev Console aktiviert ist, sind zusätzliche Befehle/Selektoren über die Konsole verfügbar. Erfordert einen Neustart.<LINE>Alle Befehle/Selektoren, die durch Mouse Drag hinzugefügt werden, beginnen mit "md_".
+Dev Console integration|Integration der Entwicklungskonsole
+KeyBind to pause/unpause the selected objects.|KeyBind zum Anhalten/Unterbrechen der ausgewählten Objekte.
+Pause|Pause
+KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|KeyBind, um alle Kreaturen außer Player und SlugNPC zu pausieren, nur in diesem Raum.<LINE>Ermöglicht es, einzelne Kreaturen zu pausieren.
+Pause creatures<LINE>in room|Pause Kreaturen<LINE>im Raum
+KeyBind to unpause all objects, including individually paused objects.|KeyBind, um die Pause für alle Objekte aufzuheben, auch für einzelne pausierte Objekte.
+Unpause all|Alle Pausen aufheben
+KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|KeyBind, um alle Kreaturen mit Ausnahme von Player und SlugNPC zu pausieren/aufzuheben, einschließlich Kreaturen, die noch spawnen müssen.<LINE>Einzelne (un)pausierte Kreaturen bleiben pausiert.
+Pause all creatures|Pause für alle Kreaturen
+KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|KeyBind, um alle Gegenstände zu pausieren/aufzuheben, einschließlich der Gegenstände, die noch spawnen müssen.<LINE>Einzelne (un)pausierte Gegenstände bleiben pausiert.
+Pause all items|Alle Elemente anhalten
+KeyBind to kill the selected creatures. Can also trigger items like bombs.|KeyBind, um die ausgewählten Kreaturen zu töten. Kann auch Gegenstände wie Bomben auslösen.
+Kill|Töten
+KeyBind to kill all creatures in current room except Player and SlugNPC.|KeyBind zum Töten aller Kreaturen im aktuellen Raum außer Spieler und SlugNPC.
+Kill in room|Im Zimmer töten
+KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|KeyBind zum Wiederbeleben und Heilen der ausgewählten Kreaturen. Sie können auch Gegenstände wie Popcorn-Pflanzen zurücksetzen.
+Revive/heal|Wiederbelebung/Heilung
+KeyBind to revive and heal all creatures in current room.|KeyBind, um alle Kreaturen im aktuellen Raum wiederzubeleben und zu heilen.
+Revive/heal<LINE>in room|Wiederbelebung/Heilung<LINE>im Raum
+KeyBind to duplicate the selected objects. Hold button to repeat.|KeyBind, um die ausgewählten Objekte zu duplizieren. Halten Sie die Taste gedrückt, um zu wiederholen.
+Duplicate|Duplizieren Sie
+KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|KeyBind, um alle Kreaturen im aktuellen Raum an die Mausposition zu teleportieren, außer Spieler und SlugNPC.
+Teleport creatures<LINE>in room|Teleportiere Kreaturen<LINE>im Raum
+KeyBind to teleport all items in current room to the mouse position.|KeyBind, um alle Gegenstände im aktuellen Raum an die Mausposition zu teleportieren.
+Teleport items<LINE>in room|Teleportiere Gegenstände<LINE>im Raum
+KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|KeyBind zur Safari-Steuerung der ausgewählten Kreaturen oder zum Wechseln zwischen Kreaturen, wenn nichts ausgewählt ist. Erfordert Downpour DLC. Kontrollierte Kreaturen tragen nicht zur Entdeckung der Karte bei.
+Safari-control|Safari-Steuerung
+KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|KeyBind, um das Kraftfeld für die ausgewählten BodyChunks zu aktivieren. Das Kraftfeld geht verloren, wenn der BodyChunk neu geladen wird.<LINE>Ein Kraftfeld stößt Objekte innerhalb des konfigurierten Radius weg.
+Forcefield|Kraftfeld
+KeyBind to tame the selected creatures.|KeyBind, um die ausgewählten Kreaturen zu zähmen.
+Tame|Zahm
+KeyBind to tame all creatures in current room.|KeyBind, um alle Kreaturen im aktuellen Raum zu zähmen.
+Tame in room|Zahm im Zimmer
+KeyBind to clear all relationships of the selected creatures.|KeyBind, um alle Beziehungen der ausgewählten Kreaturen zu löschen.
+Clear relationships|Klare Beziehungen
+KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|KeyBind, um alle Beziehungen aller Kreaturen im aktuellen Raum außer Spieler und SlugNPC zu löschen.
+Clear relationships<LINE>in room|Beziehungen<LINE>im Raum klären
+KeyBind to stun/unstun the selected objects.|KeyBind zum Betäuben/Entschärfen der ausgewählten Objekte.
+Stun|Betäubung
+KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|KeyBind zum Betäuben aller Objekte außer Player und SlugNPC, nur in diesem Raum.<LINE>Ermöglicht das Entbetäuben einzelner Objekte.
+Stun in room|Betäubung im Raum
+KeyBind to unstun all objects, including individually stunned objects.|KeyBind, um alle Objekte zu entschärfen, einschließlich individuell betäubter Objekte.
+Unstun all|Alle entschärfen
+KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|KeyBind zum Betäuben/Entschärfen aller Objekte außer Player und SlugNPC, einschließlich Objekten, die noch spawnen müssen.<LINE>Einzelne (un)betäubte Objekte bleiben betäubt.
+Stun all|Alle betäuben
+KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind, um die ausgewählten Objekte zu zerstören.<LINE>Um Kreaturen wieder auftauchen zu lassen oder um die Tracker richtig zu aktualisieren, töte sie und zerstöre sie dann.
+Destroy|Zerstören Sie
+KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind, um alle Kreaturen im aktuellen Raum zu zerstören, außer Spieler und SlugNPC.<LINE>Um Kreaturen wieder auftauchen zu lassen, oder um die Tracker richtig zu aktualisieren, töte sie und zerstöre sie dann.
+Destroy creatures<LINE>in room|Kreaturen<LINE>im Raum zerstören
+KeyBind to destroy all items in current room.|KeyBind, um alle Gegenstände im aktuellen Raum zu zerstören.
+Destroy items<LINE>in room|Gegenstände<LINE>im Raum zerstören
+KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|KeyBind, um alle Kreaturen in der aktuellen Region außer Spieler und SlugNPC zu zerstören. Einige Kreaturen werden automatisch wieder hinzugefügt, oder werden später hinzugefügt.<LINE>WARNUNG: Wenn du danach in den Winterschlaf gehst, werden die meisten Kreaturen in der Region im nächsten Zyklus ebenfalls verschwunden sein. Es ist besser, dies nicht in Safari zu benutzen.
+Destroy creatures<LINE>in region|Kreaturen<LINE>in der Region zerstören
+KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|KeyBind, um alle Objekte in der aktuellen Region zu zerstören. Die meisten Elemente werden automatisch wieder hinzugefügt oder werden später hinzugefügt.
+Destroy items<LINE>in region|Elemente<LINE>in der Region zerstören
+KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|KeyBind, um alle toten Kreaturen im aktuellen Raum außer Spieler und SlugNPC zu zerstören.
+Destroy dead<LINE>creatures in room|Tote<LINE>Kreaturen im Raum zerstören
+KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|KeyBind, um eine Positionssperre auf die ausgewählten BodyChunks anzuwenden. Eine Sperre geht verloren, wenn das Objekt neu geladen wird.
+Lock position|Position sperren
+KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|KeyBind, um den Selektor des ausgewählten Objekts zu kopieren. Wenn mehrere Objekte ausgewählt sind, wird nur der Selektor des ersten Objekts kopiert.<LINE>Die Dev Console wird ebenfalls automatisch geöffnet. Funktioniert nur, wenn die Integration der Dev Console aktiviert ist.
+Copy selector &<LINE>open Dev Console|Selektor kopieren &<LINE>Dev-Konsole öffnen
+KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|KeyBind zum Umschalten der Schwerkraft in allen Räumen. Es können 5 Zustände zugewiesen werden: Keine/Aus/Niedrig/Ein/Invers.
+Gravity|Schwerkraft
+KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|KeyBind, um alle Daten der ausgewählten Objekte in die Zwischenablage zu übertragen, oder den Raum, wenn nichts ausgewählt ist.
+Info|Infos
+KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|KeyBind zum Aktivieren/Laden aller Räume (einschließlich Objekte!) in der aktuellen Region. Räume, die von einem Spieler<LINE> besucht werden, werden weiterhin verfolgt und beim Verlassen entladen. WARNUNG: Dies wird Ihren PC verzögern.
+Activate rooms<LINE>in region|Räume<LINE>in der Region aktivieren
+Add action to menu.|Aktion zum Menü hinzufügen.
+Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|Aktion zum Menü hinzufügen <LINE>Ausschneiden/Einfügen von Objekten mit einer Zwischenablage (LIFO-Puffer). Die Zwischenablage geht verloren, wenn das Spiel geschlossen wird.
+Using Control + X/C/V will cut, copy or paste the selected objects.|Mit Strg + X/C/V können Sie die ausgewählten Objekte ausschneiden, kopieren oder einfügen.
+Ctrl + X/C/V|Strg + X/C/V
+Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|Aktion zum Menü hinzufügen.<LINE>Mit dieser Option einen Wegpunkt setzen/zurücksetzen. Klicken Sie auf ein beliebiges Objekt, um es zu diesem Wegpunkt zu teleportieren.
+Add action to menu.<LINE>Same as above, but on a BodyChunk.|Aktion zum Menü hinzufügen.<LINE>Wie oben, aber auf einem BodyChunk.
+Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Aktion zum Menü hinzufügen. Zerstöre alle Kreaturen im aktuellen Raum, außer Spieler und SlugNPC.<LINE>Um Kreaturen wieder auftauchen zu lassen oder um die Tracker richtig zu aktualisieren, töte sie und zerstöre sie dann.
+Add action to menu. Destroy all items in current room.|Aktion zum Menü hinzufügen. Zerstöre alle Gegenstände im aktuellen Raum.
+Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Aktion zum Menü hinzufügen. Zerstöre alle Objekte im aktuellen Raum, außer Spieler und SlugNPC.<LINE>Um Kreaturen wieder auftauchen zu lassen oder um die Tracker richtig zu aktualisieren, töte sie und zerstöre sie dann.
+When creature is paused, all grasps (creatures/items) are released.|Wenn die Kreatur pausiert, werden alle Griffe (Kreaturen/Gegenstände) freigegeben.
+Pausing releases grasps|Innehalten löst Griffe
+When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|Wenn du Kreaturen mit Werkzeugen tötest, setze den KillTag auf den ersten Spieler, damit die Kreaturen sich vermehren können.<LINE>Kreaturen zu zerstören, ohne sie zu töten, führt nicht zur Vermehrung.
+Lineage when killed|Abstammung bei Tötung
+Killing elite scavengers or vultures with this tool will release their masks.|Wenn du Elite-Aasfresser oder Geier mit diesem Werkzeug tötest, werden ihre Masken freigegeben.
+Kill releases mask|Töten setzt Maske frei
+Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|Wenn du Kreaturen mit Werkzeugen heilst oder wiederbelebst, werden auch ihre Gliedmaßen/Flügel/Tentakel geheilt.
+Heal limbs|Gliedmaßen heilen
+BodyChunks can be adjusted while locked in-place.|BodyChunks können eingestellt werden, während sie an Ort und Stelle fixiert sind.
+Adjustable locks|Einstellbare Schlösser
+Players and SlugNPCs are unaffected by forcefields.|Spieler und SlugNPCs werden von Kraftfeldern nicht beeinträchtigt.
+Forcefield immunity players|Kraftfeld-Immunität Spieler
+Items (except thrown weapons) are unaffected by forcefields.|Gegenstände (mit Ausnahme von Wurfwaffen) werden von Kraftfeldern nicht beeinträchtigt.
+Forcefield immunity items|Kraftfeld-Immunitätsgegenstände
+Forcefield radius|Kraftfeld-Radius
+Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|Maximaler Level, den der ObjectDumper mit dem Info-Tool erreichen kann.<LINE>Halten Sie diesen Wert niedrig, um zu vermeiden, dass Sie "das ganze Spiel" in Ihre Zwischenablage kopieren.
+Info depth|Info-Tiefe
+Creates an exact copy of the previous object when duplicating.|Erzeugt beim Duplizieren eine exakte Kopie des vorherigen Objekts.
+Copy ID duplicate|ID-Duplikat kopieren
+Try to exit game over mode when reviving player. Might be incompatible with some other mods.|Versuchen Sie, den Game Over Modus zu verlassen, wenn Sie den Spieler wiederbeleben. Könnte mit einigen anderen Mods inkompatibel sein.
+Exit game over mode|Beenden des Game Over Modus
+If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|Wenn diese Option aktiviert ist, werden Nacktschnecken nicht pausiert/zerstört/getötet, wenn alle Kreaturen pausiert/zerstört/getötet werden.
+Except SlugNPC|Außer SlugNPC
+Taming creatures using this tool also increases global reputation.|Das Zähmen von Kreaturen mit diesem Werkzeug erhöht auch das weltweite Ansehen.
+Taming global +rep|Bändigung der globalen +rep
+Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|Safari-steuernde Kreaturen ändern, welcher Kreatur die Kamera folgt. Könnte nicht gut mit anderen Kamera/Multiplayer-Mods funktionieren. Funktioniert nicht in Safari wegen des Aufsehers (es sei denn, gelöscht).
+Safari-control changes camera|Safari-Steuerung ändert Kamera
+Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|Wenn du eine andere Kreatur kontrollierst (während du bereits eine Kreatur kontrollierst), wird dir die Kontrolle über die erste Kreatur entzogen, so dass du immer nur eine Kreatur gleichzeitig kontrollieren kannst.
+Safari-control only one creature|Safari - nur eine Kreatur kontrollieren
+While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|Bei der Safari-Steuerung von Kreaturen bewegt sich nur die Kreatur, die von einer Kamera verfolgt wird. Unbenutzt, wenn "Safari-Steuerung ändert Kamera" nicht markiert ist.
+Reset other safari-control input|Andere Safari-Steuereingänge zurücksetzen
+Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|Kreaturen, die von Safaris kontrolliert werden, betäuben den (zuletzt gezogenen) Spieler, da dieser nun die Kontrolle über die Kreatur hat.
+Safari-control stuns players|Safari-Kontrolle verblüfft Spieler
+Object copied to clipboard|Objekt in die Zwischenablage kopiert
+Objects copied to clipboard|In die Zwischenablage kopierte Objekte
+Room copied to clipboard|Raum in die Zwischenablage kopiert
+Reset gravity|Schwerkraft zurücksetzen
+Gravity off|Schwerkraft aus
+Gravity low|Schwerkraft niedrig
+Gravity on|Schwerkraft am
+Gravity inversed|Umgekehrte Schwerkraft
+Select gravity type|Schwerkrafttyp auswählen
+Unpause|Unpause
+Trigger|Auslöser
+Reset|Zurücksetzen
+Cut|Schnitt
+Set teleport position|Teleportposition festlegen
+Cancel teleportation|Teleportation abbrechen
+Release all for this player|Alle für diesen Spieler freigeben
+Release control|Kontrolle der Freigabe
+Disable forcefield|Kraftfeld deaktivieren
+Enable forcefield|Kraftfeld einschalten
+Unstun|Betäuben
+Unlock position|Position entriegeln
+Copy selector & open console|Selektor kopieren & Konsole öffnen
+Copy info|Info kopieren
+Pause creatures in room|Pause Kreaturen im Raum
+Pause all|Pause alle
+Unpause all creatures|Alle Kreaturen pausieren lassen
+Unpause all items|Alle Elemente freigeben
+Revive/heal in room|Wiederbelebung/Heilung im Raum
+Paste|Kleister
+Clear relationships in room|Klare Verhältnisse im Raum
+Destroy creatures in room|Kreaturen im Raum zerstören
+Destroy items in room|Gegenstände im Raum zerstören
+Destroy all in room|Alles im Raum zerstören
+Destroy all in region|Alles in der Region zerstören
+Destroy items in region|Gegenstände in der Region zerstören
+Destroy creatures in region|Kreaturen in der Region zerstören
+Destroy dead creatures in room|Tote Kreaturen im Raum zerstören
+Open console|Konsole öffnen
+Set gravity|Schwerkraft einstellen
+Copy room info|Infos zum Kopierraum
+Select safari player|Safari-Player auswählen
+Next page|Nächste Seite
+Disabled|Behinderte
+General 1|Allgemeines 1
+General 2|Allgemeines 2
+Tools 1|Werkzeuge 1
+Tools 2|Werkzeuge 2
+Tool Settings|Werkzeug-Einstellungen

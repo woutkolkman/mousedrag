@@ -4,6 +4,7 @@ Tool which allows dragging creatures/objects outside sandbox-mode using your mou
 Credits:
 - Fyre & Noir for the BeastMaster menu trianglemesh code 
 - IdleFire Guardian for playtesting 
+- heerxingen for Simplified Chinese translation 
 
 Source code is here: https://github.com/woutkolkman/mousedrag 
 

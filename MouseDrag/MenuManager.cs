@@ -113,7 +113,7 @@ namespace MouseDrag
 
             //live translate label text
             if (translate && !String.IsNullOrEmpty(menu.labelText) && game?.rainWorld?.inGameTranslator != null)
-                menu.labelText = game.rainWorld.inGameTranslator.Translate(menu.labelText);
+                menu.labelText = game.rainWorld.inGameTranslator.Translate(menu.labelText.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
             //TODO don't translate this line of text every tick to save performance?
         }
 

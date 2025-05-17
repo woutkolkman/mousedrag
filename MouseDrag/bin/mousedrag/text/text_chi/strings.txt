@@ -32,15 +32,15 @@ Force at which weapons are thrown.|武器被扔出的力度。
 Throw force|投掷力度
 KeyBind to throw the weapon which you're currently dragging. Aim is still determined by drag direction. Sandbox mouse might interfere (if initialized).|使用绑定的按键来扔出你正在拖拽的武器。扔出的方向与你拖拽的方向一致。沙盒鼠标可能会影响（如果打开的话）。
 Throw weapon|扔出武器
-Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).
-Velocity drag|Velocity drag
-Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.
-Velocity drag at screen change|Velocity drag at screen change
-KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.
-Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.
+Alternative dragging method using velocity instead of position. Dragged objects won't (easily) move through walls.<LINE>Sandbox mouse might interfere (if initialized).|拖拽时使用拖拽速度而不是拖拽位置，被拖拽的物体（一般）不会穿墙。<LINE>沙盒鼠标功能可能会产生干扰（若已打开）。
+Velocity drag|速度拖拽
+Temporarily enable velocity drag when screen changes until you release LMB. This way you won't smash your scug into a wall.|屏幕切换时临时启用速度拖拽（松开左键即停止），这样你的锅鱼猫就不会撞到墙里了。
+Velocity drag at screen change|切换屏幕时的速度拖拽
+KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|绑定按键来在速度和位置拖拽模式中切换。请确保未通过其他选项启用速度拖拽功能。
+Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|按住此键，点击多个身体部位进行多选。或者按住此键框选范围内的身体部位。
 Multiple select|多选
-When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.
-Selection XOR|Selection XOR
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|使用框选时，若框选范围内的身体部位已被选中则取消选择，否则正常选择。
+Selection XOR|框选选择状态切换
 Right mouse button opens menu on object or background.|在物体或背景上按下鼠标右键来打开菜单。
 RMB opens menu|右键打开菜单
 Middle mouse (scroll) button opens menu on object or background.|在物体或背景上按下鼠标中键（滚轮）来打开菜单。
@@ -65,12 +65,12 @@ Max amount of tools on a single menu page.|每页最多能显示的工具数量�
 Max on page|每页最多显示数量
 If checked, menu follows the target object on which actions are performed.|If checked, menu follows the target object on which actions are performed.
 Menu follows target|菜单跟随物体
-If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.
-Menu moves if hovering|Menu moves if hovering
+If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|勾选时，菜单悬停对象上方时也会跟随其移动。若未启用"菜单跟随对象"则此选项无效。
+Menu moves if hovering|菜单悬停时移动
 Select the display language for this mod. Requires restart.|为此mod选择显示语言。需要重启。
 Language|语言
-If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.
-SBCameraScroll integration|SBCameraScroll integration
+If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|启用SBCameraScroll（平滑视角）时，可以在副镜头缩放中进行拖拽操作。
+SBCameraScroll integration|SBCameraScroll兼容
 If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.
 RegionKit integration|RegionKit integration
 If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".

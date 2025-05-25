@@ -63,7 +63,7 @@ The label above menu will also show information about the selected tool or actio
 Show tooltips|显示小贴士
 Max amount of tools on a single menu page.|每页最多能显示的工具数量。
 Max on page|每页最多显示数量
-If checked, menu follows the target object on which actions are performed.|If checked, menu follows the target object on which actions are performed.
+If checked, menu follows the target object on which actions are performed.|勾选后，菜单会跟随当前操作的目标对象移动。
 Menu follows target|菜单跟随物体
 If checked, menu follows target also when hovering over it. Unused if "Menu follows target" is unchecked.|勾选时，菜单悬停对象上方时也会跟随其移动。若未启用"菜单跟随对象"则此选项无效。
 Menu moves if hovering|菜单悬停时移动
@@ -71,18 +71,18 @@ Select the display language for this mod. Requires restart.|为此mod选择显�
 Language|语言
 If SBCameraScroll is enabled, dragging with alternative camera zoom is supported.|启用SBCameraScroll（平滑视角）时，可以在副镜头缩放中进行拖拽操作。
 SBCameraScroll integration|SBCameraScroll兼容
-If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.
-RegionKit integration|RegionKit integration
-If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".
-Dev Console integration|Dev Console integration
-KeyBind to pause/unpause the selected objects.|KeyBind to pause/unpause the selected objects.
-Pause|Pause
-KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.
-Pause creatures<LINE>in room|Pause creatures<LINE>in room
-KeyBind to unpause all objects, including individually paused objects.|KeyBind to unpause all objects, including individually paused objects.
-Unpause all|Unpause all
-KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.
-Pause all creatures|Pause all creatures
+If RegionKit is enabled, right mouse button will not open the radialmenu behind the Dev Tools menu.<LINE>This is added because Iggy uses right mouse button to display tips.|如果启用了RegionKit，右键按钮将不会在开发者工具菜单后面弹出环形菜单。<LINE>此改动是因为Iggy使用右键显示提示信息。
+RegionKit integration|RegionKit兼容
+If Dev Console is enabled, additional commands/selectors are available via the console. Requires restart.<LINE>All commands/selectors added by Mouse Drag start with "md_".|如果启用了Dev Console（开发者控制台），可通过控制台使用额外命令/选择器（需重启生效）。<LINE>所有由Mouse Drag添加的命令/选择器均以"md_"开头。
+Dev Console integration|Dev Console兼容
+KeyBind to pause/unpause the selected objects.|使用绑定按键来暂停/取消暂停选中的对象。
+Pause|暂停
+KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|使用绑定按键来暂停当前房间内除玩家和蛞蝓猫幼崽外的所有生物。<LINE>可单独取消暂停状态。
+Pause creatures<LINE>in room|暂停房间内的生物<LINE>
+KeyBind to unpause all objects, including individually paused objects.|使用绑定按键来取消所有对象的暂停状态（包括被单独暂停的对象）。
+Unpause all|取消暂停全部
+KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|使用绑定按键来暂停/取消暂停除玩家和蛞蝓猫幼崽外的所有生物，包含还未生成的生物。<LINE>已被单独操作的生物将保持原有暂停状态。
+Pause all creatures|暂停所有生物
 KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.
 Pause all items|Pause all items
 KeyBind to kill the selected creatures. Can also trigger items like bombs.|KeyBind to kill the selected creatures. Can also trigger items like bombs.

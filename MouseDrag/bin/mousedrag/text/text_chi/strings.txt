@@ -39,7 +39,7 @@ Velocity drag at screen change|切换屏幕时的速度拖拽
 KeyBind to toggle between velocity and positional dragging. Make sure that velocity drag is not permanently enabled using the other options.|绑定按键来在速度和位置拖拽模式中切换。请确保未通过其他选项启用速度拖拽功能。
 Hold this key and click on multiple BodyChunks to select them. Or hold this key and drag a selection-rectangle around BodyChunks to select them.|按住此键，点击多个身体部位进行多选。或者按住此键框选范围内的身体部位。
 Multiple select|多选
-When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|使用框选时，若框选范围内的身体部位已被选中则取消选择，否则正常选择。
+When using the selection-rectangle, remove BodyChunks within the rectangle from the selection if they were already selected. Else just keep the selection.|框选时：已选中部位会取消选择，未选中的则保持原样。
 Selection XOR|框选选择状态切换
 Right mouse button opens menu on object or background.|在物体或背景上按下鼠标右键来打开菜单。
 RMB opens menu|右键打开菜单

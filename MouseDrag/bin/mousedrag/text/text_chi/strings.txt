@@ -78,111 +78,111 @@ Dev Console integration|Dev Console兼容
 KeyBind to pause/unpause the selected objects.|使用绑定按键来暂停/取消暂停选中的对象。
 Pause|暂停
 KeyBind to pause all creatures except Player and SlugNPC, only currently in this room.<LINE>Allows unpausing individual creatures.|使用绑定按键来暂停当前房间内除玩家和蛞蝓猫幼崽外的所有生物。<LINE>可单独取消暂停状态。
-Pause creatures<LINE>in room|暂停房间内的生物<LINE>
+Pause creatures<LINE>in room|暂停房间内的生物
 KeyBind to unpause all objects, including individually paused objects.|使用绑定按键来取消所有对象的暂停状态（包括被单独暂停的对象）。
 Unpause all|取消暂停全部
 KeyBind to pause/unpause all creatures except Player and SlugNPC, including creatures that still need to spawn.<LINE>Individually (un)paused creatures remain paused.|使用绑定按键来暂停/取消暂停除玩家和蛞蝓猫幼崽外的所有生物，包含还未生成的生物。<LINE>已被单独操作的生物将保持原有暂停状态。
 Pause all creatures|暂停所有生物
-KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.
-Pause all items|Pause all items
-KeyBind to kill the selected creatures. Can also trigger items like bombs.|KeyBind to kill the selected creatures. Can also trigger items like bombs.
-Kill|Kill
-KeyBind to kill all creatures in current room except Player and SlugNPC.|KeyBind to kill all creatures in current room except Player and SlugNPC.
+KeyBind to pause/unpause all items, including items that still need to spawn.<LINE>Individually (un)paused items remain paused.|按键绑定以暂停/取消暂停所有物品，包括仍需生成的物品。<LINE>单个（未）暂停的物品保持暂停状态。
+Pause all items|暂停所有物品
+KeyBind to kill the selected creatures. Can also trigger items like bombs.|按键绑定可杀死选定的生物。也可以触发炸弹等物品。
+Kill|杀死
+KeyBind to kill all creatures in current room except Player and SlugNPC.|按键绑定可杀死当前房间中除玩家和 SlugNPC 以外的所有生物。
 Kill in room|在房间内击杀
-KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.
+KeyBind to revive and heal the selected creatures. Can also reset items like popcorn plants.|按键绑定可复活和治疗选定的生物。还可以重置爆米花植物等物品。
 Revive/heal|复活/治疗
 KeyBind to revive and heal all creatures in current room.|按下绑定按键来复活和治疗当前房间内的所有生物。
-Revive/heal<LINE>in room|在房间内复活/治疗<LINE>
+Revive/heal<LINE>in room|在房间内复活/治疗
 KeyBind to duplicate the selected objects. Hold button to repeat.|按下绑定按键来复制选中的生物。长按可以一直复制。
 Duplicate|复制
-KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.
+KeyBind to teleport all creatures in current room to the mouse position, except Player and SlugNPC.|按键绑定可将当前房间中除玩家和 SlugNPC 以外的所有生物传送到鼠标所在位置。
 Teleport creatures<LINE>in room|传送房间内的<LINE>生物
-KeyBind to teleport all items in current room to the mouse position.|KeyBind to teleport all items in current room to the mouse position.
-Teleport items<LINE>in room|Teleport items<LINE>in room
-KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.
-Safari-control|Safari-control
-KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.
-Forcefield|Forcefield
-KeyBind to tame the selected creatures.|KeyBind to tame the selected creatures.
-Tame|Tame
-KeyBind to tame all creatures in current room.|KeyBind to tame all creatures in current room.
-Tame in room|Tame in room
-KeyBind to clear all relationships of the selected creatures.|KeyBind to clear all relationships of the selected creatures.
-Clear relationships|Clear relationships
-KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.
-Clear relationships<LINE>in room|Clear relationships<LINE>in room
-KeyBind to stun/unstun the selected objects.|KeyBind to stun/unstun the selected objects.
-Stun|Stun
-KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.
-Stun in room|Stun in room
-KeyBind to unstun all objects, including individually stunned objects.|KeyBind to unstun all objects, including individually stunned objects.
-Unstun all|Unstun all
-KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.
-Stun all|Stun all
-KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
-Destroy|Destroy
-KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
-Destroy creatures<LINE>in room|Destroy creatures<LINE>in room
-KeyBind to destroy all items in current room.|KeyBind to destroy all items in current room.
-Destroy items<LINE>in room|Destroy items<LINE>in room
-KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.
-Destroy creatures<LINE>in region|Destroy creatures<LINE>in region
-KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.
-Destroy items<LINE>in region|Destroy items<LINE>in region
-KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|KeyBind to destroy all dead creatures in current room except Player and SlugNPC.
-Destroy dead<LINE>creatures in room|Destroy dead<LINE>creatures in room
-KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.
-Lock position|Lock position
-KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.
-Copy selector &<LINE>open Dev Console|Copy selector &<LINE>open Dev Console
-KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.
-Gravity|Gravity
-KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.
-Info|Info
-KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.
-Activate rooms<LINE>in region|Activate rooms<LINE>in region
-Add action to menu.|Add action to menu.
-Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.
-Using Control + X/C/V will cut, copy or paste the selected objects.|Using Control + X/C/V will cut, copy or paste the selected objects.
+KeyBind to teleport all items in current room to the mouse position.|按键绑定可将当前房间中的所有物品传送到鼠标所在位置。
+Teleport items<LINE>in room|传送房间中的物品
+KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|按键绑定可在 Safari 中控制选定的生物，或在未选定任何生物的情况下在不同生物间循环。需要 Downpour DLC。被控制的生物不会对地图发现做出贡献。
+Safari-control|野生动物园控制
+KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|按键绑定可在选定的 "BodyChunks "上切换力场。如果重新加载 BodyChunk，力场将丢失。<LINE>力场将推开配置半径内的物体。
+Forcefield|力场
+KeyBind to tame the selected creatures.|按键绑定以驯服选中的生物。
+Tame|驯服
+KeyBind to tame all creatures in current room.|按键绑定以驯服当前房间中的所有生物。
+Tame in room|驯服房间内的生物
+KeyBind to clear all relationships of the selected creatures.|按键绑定可清除所选生物的所有关系。
+Clear relationships|清除关系
+KeyBind to clear all relationships of all creatures in current room except Player and SlugNPC.|按键绑定以清除当前房间中除玩家和 SlugNPC 以外的所有生物的所有关系。
+Clear relationships<LINE>in room|房间内关系清晰
+KeyBind to stun/unstun the selected objects.|按键绑定可眩晕/解除眩晕所选对象。
+Stun|眩晕
+KeyBind to stun all objects except Player and SlugNPC, only currently in this room.<LINE>Allows unstunning individual objects.|按键绑定以眩晕当前房间中除玩家和 SlugNPC 以外的所有对象。<LINE>允许取消眩晕单个对象。
+Stun in room|房间内眩晕
+KeyBind to unstun all objects, including individually stunned objects.|按键绑定可解除所有物体的眩晕，包括单独眩晕的物体。
+Unstun all|全部解除眩晕
+KeyBind to stun/unstun all objects except Player and SlugNPC, including objects that still need to spawn.<LINE>Individually (un)stunned objects remain stunned.|按键绑定以眩晕/解除眩晕除玩家和 SlugNPC 以外的所有对象，包括仍需生成的对象。
+Stun all|全部眩晕
+KeyBind to destroy the selected objects.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|要使生物重生或正确更新追踪器，需要杀死并摧毁它们。
+Destroy|消除
+KeyBind to destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|按键绑定以摧毁当前房间中除玩家和 SlugNPC 以外的所有生物。<LINE>要使生物重生或正确更新追踪器，先杀死然后再摧毁它们。
+Destroy creatures<LINE>in room|消灭房间中的生物
+KeyBind to destroy all items in current room.|按键绑定销毁当前房间中的所有物品。
+Destroy items<LINE>in room|摧毁房间中的物品
+KeyBind to destroy all creatures in current region except Player and SlugNPC. Some creatures will be re-added automatically, or are added later on.<LINE>WARNING: If you hibernate afterwards, most creatures in the region will also be gone next cycle. It's better to not use this in safari.|按键绑定可摧毁当前区域内除玩家和 SlugNPC 以外的所有生物。<LINE>警告：如果你之后休眠，该区域的大多数生物也会在下个周期消失。最好不要在 safari 中使用此功能。
+Destroy creatures<LINE>in region|消灭区域内的生物
+KeyBind to destroy all items in current region. Most items will be re-added automatically, or are added later on.|按键绑定销毁当前区域内的所有物品。大多数物品会自动重新添加，或稍后添加。
+Destroy items<LINE>in region|摧毁区域内的物品
+KeyBind to destroy all dead creatures in current room except Player and SlugNPC.|按键绑定以消灭当前房间中除玩家和 SlugNPC 以外的所有死亡生物。
+Destroy dead<LINE>creatures in room|消灭房间中的死亡生物
+KeyBind to apply a position lock to the selected BodyChunks. A lock is lost if the object is reloaded.|按键绑定可为选定的 BodyChunks 应用位置锁定。如果重新加载对象，锁定将丢失。
+Lock position|锁定位置
+KeyBind to copy the selector of the selected object. If multiple objects are selected, only the selector of the first object will be copied.<LINE>Dev Console will also automatically be opened. Only works if Dev Console integration is enabled.|按键绑定可复制选中对象的选择器。如果选择了多个对象，则只会复制第一个对象的选择器。<LINE>同时还会自动打开开发控制台。仅在启用 Dev Console 集成后才会生效。
+Copy selector &<LINE>open Dev Console|复制选择器&<LINE>打开开发控制台
+KeyBind to toggle gravity in all rooms. 5 states can be assigned: None/Off/Low/On/Inverse.|按键绑定可切换所有房间的重力。可指定 5 种状态：无/关/低/开/反。
+Gravity|重力
+KeyBind to dump all data to your clipboard of the selected objects, or the room if nothing is selected.|按键绑定可将选定对象的所有数据转储到剪贴板，如果未选定任何对象，则将房间的所有数据转储到剪贴板。
+Info|信息
+KeyBind to activate/load all rooms (including objects!) in current region. Rooms visited by a player<LINE>will still get tracked and unloaded when leaving. WARNING: This WILL lag your PC.|按键绑定可激活/加载当前区域的所有房间（包括对象！）。玩家<LINE>访问过的房间在离开时仍会被跟踪和卸载。警告：这将导致电脑运行缓慢。
+Activate rooms<LINE>in region|激活区域中的房间
+Add action to menu.|在菜单中添加操作。
+Add action to menu.<LINE>Cut/paste objects with a clipboard (LIFO buffer). Clipboard is lost when game is closed.|使用剪贴板（后进先出缓冲区）剪切/粘贴对象。游戏关闭后，剪贴板将丢失。
+Using Control + X/C/V will cut, copy or paste the selected objects.|使用 Control + X/C/V 可剪切、复制或粘贴所选对象。
 Ctrl + X/C/V|Ctrl + X/C/V
-Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.
-Add action to menu.<LINE>Same as above, but on a BodyChunk.|Add action to menu.<LINE>Same as above, but on a BodyChunk.
-Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
-Add action to menu. Destroy all items in current room.|Add action to menu. Destroy all items in current room.
-Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.
-When creature is paused, all grasps (creatures/items) are released.|When creature is paused, all grasps (creatures/items) are released.
-Pausing releases grasps|Pausing releases grasps
-When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.
-Lineage when killed|Lineage when killed
-Killing elite scavengers or vultures with this tool will release their masks.|Killing elite scavengers or vultures with this tool will release their masks.
-Kill releases mask|Kill releases mask
-Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.
-Heal limbs|Heal limbs
-BodyChunks can be adjusted while locked in-place.|BodyChunks can be adjusted while locked in-place.
-Adjustable locks|Adjustable locks
-Players and SlugNPCs are unaffected by forcefields.|Players and SlugNPCs are unaffected by forcefields.
-Forcefield immunity players|Forcefield immunity players
-Items (except thrown weapons) are unaffected by forcefields.|Items (except thrown weapons) are unaffected by forcefields.
-Forcefield immunity items|Forcefield immunity items
-Forcefield radius|Forcefield radius
-Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.
-Info depth|Info depth
-Creates an exact copy of the previous object when duplicating.|Creates an exact copy of the previous object when duplicating.
-Copy ID duplicate|Copy ID duplicate
-Try to exit game over mode when reviving player. Might be incompatible with some other mods.|Try to exit game over mode when reviving player. Might be incompatible with some other mods.
-Exit game over mode|Exit game over mode
-If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.
-Except SlugNPC|Except SlugNPC
-Taming creatures using this tool also increases global reputation.|Taming creatures using this tool also increases global reputation.
-Taming global +rep|Taming global +rep
-Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).
-Safari-control changes camera|Safari-control changes camera
-Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.
-Safari-control only one creature|Safari-control only one creature
-While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.
-Reset other safari-control input|Reset other safari-control input
-Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.
-Safari-control stuns players|Safari-control stuns players
+Add action to menu.<LINE>Set/reset a waypoint using this option. Click any object to teleport it to this waypoint.|使用此选项设置/重置航点。单击任何对象可将其传送到该航点。
+Add action to menu.<LINE>Same as above, but on a BodyChunk.|在菜单中添加操作。与上述操作相同，但在 BodyChunk 上。
+Add action to menu. Destroy all creatures in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|在菜单中添加操作。消灭当前房间中除玩家和鼻涕虫NPC以外的所有生物。<LINE>要使生物重生，或正确更新追踪器，先杀死它们，然后再消灭它们。
+Add action to menu. Destroy all items in current room.|在菜单中添加操作。销毁当前房间中的所有物品。
+Add action to menu. Destroy all objects in current room except Player and SlugNPC.<LINE>To make creatures respawn, or to properly update trackers, kill and then destroy them.|在菜单中添加操作。<LINE>要使生物重生或正确更新追踪器，先杀死然后再摧毁它们。
+When creature is paused, all grasps (creatures/items) are released.|当生物暂停时，所有抓取物（生物/物品）都会被释放。
+Pausing releases grasps|暂停会释放抓取物
+When killing creatures using tools, set killTag to first player so creatures can lineage.<LINE>Destroying creatures without killing them does not result in lineage.|使用工具杀死生物时，将 killTag 设置为第一个玩家，以便生物能够获得血统。如果生物被消灭但未被杀死，则不会获得血统。
+Lineage when killed|被杀死时的血统
+Killing elite scavengers or vultures with this tool will release their masks.|使用此工具杀死精英食腐动物或秃鹫会释放它们的面具。
+Kill releases mask|杀死会释放面具
+Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.|使用工具治疗或复活生物也会治疗它们的肢体/翅膀/触角。
+Heal limbs|治疗肢体
+BodyChunks can be adjusted while locked in-place.|在原地锁定时可以调整身体块。
+Adjustable locks|可调节锁定
+Players and SlugNPCs are unaffected by forcefields.|玩家和鼻涕虫 NPC 不受力场影响。
+Forcefield immunity players|玩家不受力场影响
+Items (except thrown weapons) are unaffected by forcefields.|物品（投掷武器除外）不受力场影响。
+Forcefield immunity items|力场免疫物品
+Forcefield radius|力场半径
+Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|ObjectDumper 使用信息工具可以达到的最大级别。<LINE>保持较低的此值，以避免将 "整个游戏 "复制到剪贴板。
+Info depth|信息深度
+Creates an exact copy of the previous object when duplicating.|复制时创建前一个对象的精确副本。
+Copy ID duplicate|复制 ID
+Try to exit game over mode when reviving player. Might be incompatible with some other mods.|复活玩家时尝试退出游戏结束模式。可能与某些其他修改器不兼容。
+Exit game over mode|退出游戏结束模式
+If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.|如果选中此选项，则在暂停/摧毁/杀死所有生物时不会暂停/摧毁/杀死蛞蝓幼崽。
+Except SlugNPC|鼻涕虫 NPC 除外
+Taming creatures using this tool also increases global reputation.|使用此工具驯服生物也会增加全局声望。
+Taming global +rep|驯服全局 +声望
+Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).|Safari 控制的生物会改变摄像机跟随的生物。可能无法与其他摄像头/多人模式完美配合。在 Safari 中不起作用，因为有监督器（除非删除）。
+Safari-control changes camera|通过 Safari 控制改变摄像机
+Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.|Safari 控制另一个生物（同时已控制一个生物）会移除对第一个生物的控制，因此您一次只能控制一个生物。
+Safari-control only one creature|野生状态下只能控制一种生物
+While safari-controlling creatures, only the creature which a camera is following will move. Unused if "Safari-control changes camera" is unchecked.|在野生动物园控制生物时，只有摄像机正在跟踪的生物会移动。如果未选中 "Safari-control 更改摄像机"，则不会使用。
+Reset other safari-control input|重置其他野生动物园控制输入
+Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.|Safari 控制生物会眩晕（最后拖动的）玩家，因为该玩家现在将控制该生物。
+Safari-control stuns players|Safari 控制眩晕玩家
 Object copied to clipboard|对象已复制到剪切板
 Objects copied to clipboard|对象已复制到剪切板
 Room copied to clipboard|房间已复制到剪切板
@@ -195,16 +195,16 @@ Select gravity type|选择重力类型
 Unpause|取消暂停
 Trigger|触发
 Reset|重置
-Cut|Cut
-Set teleport position|Set teleport position
+Cut|切
+Set teleport position|设置传送位置
 Cancel teleportation|取消传送
-Release all for this player|Release all for this player
-Release control|Release control
+Release all for this player|释放该玩家的所有操作
+Release control|释放控制
 Disable forcefield|关闭力场
 Enable forcefield|启用力场
 Unstun|取消击晕
-Unlock position|Unlock position
-Copy selector & open console|Copy selector & open console
+Unlock position|解锁位置
+Copy selector & open console|复制选择器和打开控制台
 Copy info|复制信息
 Pause creatures in room|暂停房间内所有生物
 Pause all|暂停全部
@@ -223,7 +223,7 @@ Destroy dead creatures in room|删除所有房间内的死亡生物
 Open console|打开控制台
 Set gravity|设置重力
 Copy room info|复制房间信息
-Select safari player|Select safari player
+Select safari player|选择野生动物园玩家
 Next page|下一页
 Disabled|已禁用
 General 1|通用设置1

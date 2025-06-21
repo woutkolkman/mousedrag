@@ -20,7 +20,6 @@ namespace MouseDrag
         private static bool prevFollowsObject = false; //detect if slots must be reloaded
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
-        internal static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
         private static string labelText = string.Empty, prevLabelText = string.Empty;
 
 
@@ -82,14 +81,14 @@ namespace MouseDrag
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
-                ReloadSlots(game, menu, menu.followChunk);
+                var slots = ReloadSlots(game, menu, menu.followChunk);
                 if (InRootMenu()) {
-                    CreatePage(ref page);
+                    CreatePage(ref page, ref slots);
                 } else {
-                    CreatePage(ref subPage);
+                    CreatePage(ref subPage, ref slots);
                 }
                 if (State.menuToolsDisabled)
-                    DisableMenu();
+                    DisableMenu(ref slots);
                 menu.LoadSlots(slots);
             }
             prevFollowsObject = followsObject;
@@ -348,7 +347,7 @@ namespace MouseDrag
         //legacy add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
         public static List<RadialMenu.Slot> ReloadSlots(RainWorldGame game, RadialMenu menu, BodyChunk chunk)
         {
-            slots.Clear();
+            List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
 
             //add sprites
             if (InSubMenu("Gravity")) {
@@ -659,7 +658,7 @@ namespace MouseDrag
 
 
         internal static int page, subPage;
-        internal static void CreatePage(ref int page)
+        internal static void CreatePage(ref int page, ref List<RadialMenu.Slot> slots)
         {
             int maxOnPage = Options.maxOnPage?.Value ?? 7;
             int count = slots.Count;
@@ -693,7 +692,7 @@ namespace MouseDrag
         }
 
 
-        internal static void DisableMenu()
+        internal static void DisableMenu(ref List<RadialMenu.Slot> slots)
         {
             for (int i = 0; i < slots.Count; i++) {
                 if (slots[i].name == "+") //for pages to work

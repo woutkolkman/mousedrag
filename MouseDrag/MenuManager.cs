@@ -7,19 +7,35 @@ namespace MouseDrag
 {
     public static class MenuManager
     {
+        //================================================== Backwards Compatibility ==================================================
+        [Obsolete("SubMenuTypes are deprecated, please use GetSubMenuID() instead.")]
+        public static SubMenuTypes subMenuType; //do not use in new code or add-ons
+        [Obsolete("SubMenuTypes are deprecated, please use GetSubMenuID() instead.")]
+        public enum SubMenuTypes { None, Any } //do not use in new code or add-ons
+        //=============================================================================================================================
+
+
         public static RadialMenu menu = null;
         private static bool shouldOpen = false; //signal from RawUpdate to open menu
         private static bool prevFollowsObject = false; //detect if slots must be reloaded
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
-        public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>(){};
-        public static SubMenuTypes subMenuType;
+        public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
 
-        public enum SubMenuTypes
+
+        private static string subMenuID = string.Empty;
+        public static string GetSubMenuID() => subMenuID;
+        public static bool InRootMenu() => subMenuID == string.Empty;
+        public static void GoToRootMenu() => subMenuID = string.Empty;
+        public static bool InSubMenu(string id) => subMenuID == id;
+        public static void SetSubMenuID(string id)
         {
-            None,
-            Gravity,
-            SafariPlayer
+            if (id == null)
+                id = string.Empty;
+            subMenuID = id;
+#pragma warning disable CS0618 // Type or member is obsolete
+            subMenuType = id == string.Empty ? SubMenuTypes.None : SubMenuTypes.Any;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
 
@@ -28,7 +44,7 @@ namespace MouseDrag
             if (shouldOpen && menu == null && State.activated) {
                 menu = new RadialMenu(game);
                 reloadSlots = true;
-                subMenuType = SubMenuTypes.None;
+                GoToRootMenu();
                 lowPrioText = null;
                 highPrioText = null;
             }
@@ -49,7 +65,7 @@ namespace MouseDrag
             //followchunk changed
             if (menu.prevFollowChunk != menu.followChunk) {
                 reloadSlots = true;
-                subMenuType = SubMenuTypes.None;
+                GoToRootMenu();
                 lowPrioText = null;
                 highPrioText = null;
 
@@ -66,7 +82,7 @@ namespace MouseDrag
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
                 ReloadSlots(game, menu, menu.followChunk);
-                if (subMenuType == SubMenuTypes.None) {
+                if (InRootMenu()) {
                     CreatePage(ref page);
                 } else {
                     CreatePage(ref subPage);
@@ -129,7 +145,7 @@ namespace MouseDrag
 
             //next page
             if (slot.name == "+") {
-                if (subMenuType == SubMenuTypes.None) {
+                if (InRootMenu()) {
                     page++;
                 } else {
                     subPage++;
@@ -138,8 +154,8 @@ namespace MouseDrag
             }
 
             //submenu for quick select gravity type
-            if (subMenuType == SubMenuTypes.Gravity) {
-                subMenuType = SubMenuTypes.None;
+            if (InSubMenu("Gravity")) {
+                GoToRootMenu();
                 switch (slot.name)
                 {
                     case "mousedragGravityReset":   Gravity.gravityType = Gravity.GravityTypes.None; break;
@@ -165,8 +181,8 @@ namespace MouseDrag
             }
 
             //submenu for selecting player number which will safari control creature
-            if (subMenuType == SubMenuTypes.SafariPlayer) {
-                subMenuType = SubMenuTypes.None;
+            if (InSubMenu("SafariPlayer")) {
+                GoToRootMenu();
                 if (!Int32.TryParse(slot.name, out int pI)) {
                     Plugin.Logger.LogWarning("MenuManager.RunAction, parsing playerIndex failed, value is \"" + slot.name + "\"");
                     return;
@@ -206,7 +222,7 @@ namespace MouseDrag
                                 Control.ToggleControl(game, obj as Creature);
                             } else if (obj is Creature) {
                                 //creature can be controlled
-                                subMenuType = SubMenuTypes.SafariPlayer;
+                                SetSubMenuID("SafariPlayer");
                             }
                             break;
                         case "mousedragUncontrol":      Control.ToggleControl(game, obj as Creature); break;
@@ -312,7 +328,7 @@ namespace MouseDrag
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
                     case "mousedragGravityOn":
-                    case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
+                    case "mousedragGravityInverse":         SetSubMenuID("Gravity"); break;
                     case "mousedragInfo":
                         Info.CopyToClipboard(Info.GetInfo(rcam?.room));
                         highPrioText = "Room copied to clipboard";
@@ -328,7 +344,7 @@ namespace MouseDrag
             slots.Clear();
 
             //add sprites
-            if (subMenuType == SubMenuTypes.Gravity) {
+            if (InSubMenu("Gravity")) {
                 //add all selectable gravity types to submenu
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityReset",
@@ -352,7 +368,7 @@ namespace MouseDrag
                 });
                 lowPrioText = "Select gravity type";
 
-            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
+            } else if (InSubMenu("SafariPlayer")) {
                 //do not add sprites
 
             } else if (chunk?.owner != null) {
@@ -621,7 +637,7 @@ namespace MouseDrag
             }
 
             //add labels
-            if (subMenuType == SubMenuTypes.SafariPlayer) {
+            if (InSubMenu("SafariPlayer")) {
                 //add all selectable safari control players to submenu
                 for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
                     slots.Add(new RadialMenu.Slot(menu) {
@@ -714,7 +730,7 @@ namespace MouseDrag
 
             //also use scroll wheel to navigate pages
             if (UnityEngine.Input.mouseScrollDelta.y < 0) {
-                if (subMenuType == SubMenuTypes.None) {
+                if (InRootMenu()) {
                     page++;
                 } else {
                     subPage++;
@@ -722,7 +738,7 @@ namespace MouseDrag
                 reloadSlots = true;
             }
             if (UnityEngine.Input.mouseScrollDelta.y > 0) {
-                if (subMenuType == SubMenuTypes.None) {
+                if (InRootMenu()) {
                     page--;
                 } else {
                     subPage--;

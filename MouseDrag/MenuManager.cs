@@ -127,7 +127,7 @@ namespace MouseDrag
             } else {
                 labelText = "";
             }
-            bool labelTextChanged = labelText != prevLabelText;
+            bool labelTextChanged = labelText != prevLabelText || String.IsNullOrEmpty(menu.labelText);
             prevLabelText = labelText;
 
             //live translate label text
@@ -141,7 +141,7 @@ namespace MouseDrag
         }
 
 
-        //add-on mods need to hook the RunAction() function, and do an action when their slot was pressed
+        //legacy add-on mods need to hook the RunAction() function, and do an action when their slot was pressed
         public static void RunAction(RainWorldGame game, RadialMenu.Slot slot, BodyChunk chunk)
         {
             if (slot?.name == null) {
@@ -345,7 +345,7 @@ namespace MouseDrag
         }
 
 
-        //add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
+        //legacy add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
         public static List<RadialMenu.Slot> ReloadSlots(RainWorldGame game, RadialMenu menu, BodyChunk chunk)
         {
             slots.Clear();

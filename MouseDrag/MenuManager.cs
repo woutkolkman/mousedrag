@@ -15,12 +15,13 @@ namespace MouseDrag
         //=============================================================================================================================
 
 
-        public static RadialMenu menu = null;
+        internal static RadialMenu menu = null;
         private static bool shouldOpen = false; //signal from RawUpdate to open menu
         private static bool prevFollowsObject = false; //detect if slots must be reloaded
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
-        public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
+        internal static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
+        private static string labelText = string.Empty, prevLabelText = string.Empty;
 
 
         private static string subMenuID = string.Empty;
@@ -39,7 +40,7 @@ namespace MouseDrag
         }
 
 
-        public static void Update(RainWorldGame game)
+        internal static void Update(RainWorldGame game)
         {
             if (shouldOpen && menu == null && State.activated) {
                 menu = new RadialMenu(game);
@@ -108,29 +109,35 @@ namespace MouseDrag
             //change label text
             bool translate = false;
             if (highPrioText?.Length > 0) {
-                menu.labelText = highPrioText;
+                labelText = highPrioText;
                 translate = true;
             } else if (!string.IsNullOrEmpty(hoverSlot?.tooltip) && Options.showTooltips?.Value != false) {
-                menu.labelText = hoverSlot.tooltip;
+                labelText = hoverSlot.tooltip;
                 translate = !hoverSlot.skipTranslateTooltip;
             } else if (lowPrioText?.Length > 0) {
-                menu.labelText = lowPrioText;
+                labelText = lowPrioText;
                 translate = true;
             } else if (menu.followChunk?.owner != null) {
-                menu.labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
+                labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
                 string text = Special.ConsistentName(menu.followChunk.owner.abstractPhysicalObject);
                 if (!string.IsNullOrEmpty(text))
-                    menu.labelText = text;
+                    labelText = text;
             } else if (!string.IsNullOrEmpty(menu.roomName)) {
-                menu.labelText = menu.roomName;
+                labelText = menu.roomName;
             } else {
-                menu.labelText = "";
+                labelText = "";
             }
+            bool labelTextChanged = labelText != prevLabelText;
+            prevLabelText = labelText;
 
             //live translate label text
-            if (translate && !String.IsNullOrEmpty(menu.labelText) && game?.rainWorld?.inGameTranslator != null)
-                menu.labelText = game.rainWorld.inGameTranslator.Translate(menu.labelText.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
-            //TODO don't translate this line of text every tick to save performance?
+            if (labelTextChanged) { //not translating every tick saves performance
+                if (translate && !String.IsNullOrEmpty(labelText) && game?.rainWorld?.inGameTranslator != null) {
+                    menu.labelText = game.rainWorld.inGameTranslator.Translate(labelText.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
+                } else {
+                    menu.labelText = labelText;
+                }
+            }
         }
 
 
@@ -651,8 +658,8 @@ namespace MouseDrag
         }
 
 
-        public static int page, subPage;
-        public static void CreatePage(ref int page)
+        internal static int page, subPage;
+        internal static void CreatePage(ref int page)
         {
             int maxOnPage = Options.maxOnPage?.Value ?? 7;
             int count = slots.Count;
@@ -686,7 +693,7 @@ namespace MouseDrag
         }
 
 
-        public static void DisableMenu()
+        internal static void DisableMenu()
         {
             for (int i = 0; i < slots.Count; i++) {
                 if (slots[i].name == "+") //for pages to work
@@ -699,7 +706,7 @@ namespace MouseDrag
         }
 
 
-        public static void RawUpdate(RainWorldGame game)
+        internal static void RawUpdate(RainWorldGame game)
         {
             menu?.RawUpdate(game);
 
@@ -748,13 +755,13 @@ namespace MouseDrag
         }
 
 
-        public static void DrawSprites(float timeStacker)
+        internal static void DrawSprites(float timeStacker)
         {
             menu?.DrawSprites(timeStacker);
         }
 
 
-        public static void LoadSprites()
+        internal static void LoadSprites()
         {
             try {
                 Futile.atlasManager.LoadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");
@@ -766,7 +773,7 @@ namespace MouseDrag
         }
 
 
-        public static void UnloadSprites()
+        internal static void UnloadSprites()
         {
             try {
                 Futile.atlasManager.UnloadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");

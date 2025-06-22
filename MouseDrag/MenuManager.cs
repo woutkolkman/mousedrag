@@ -21,6 +21,7 @@ namespace MouseDrag
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
         private static string labelText = string.Empty, prevLabelText = string.Empty;
+        private static Dictionary<string, int> pageIndexes = new Dictionary<string, int>();
 
 
         private static string subMenuID = string.Empty;
@@ -57,8 +58,7 @@ namespace MouseDrag
 
             //menu closed
             if (menu == null) {
-                page = 0;
-                subPage = 0;
+                ClearPageIndexes();
                 return;
             }
 
@@ -70,10 +70,8 @@ namespace MouseDrag
                 highPrioText = null;
 
                 //menu switched from bodychunk to background or vice versa
-                if (menu.prevFollowChunk == null || menu.followChunk == null) {
-                    page = 0;
-                    subPage = 0;
-                }
+                if (menu.prevFollowChunk == null || menu.followChunk == null)
+                    ClearPageIndexes();
             }
 
             RadialMenu.Slot slot = menu.Update(game, out RadialMenu.Slot hoverSlot);
@@ -82,11 +80,7 @@ namespace MouseDrag
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
                 var slots = ReloadSlots(game, menu, menu.followChunk);
-                if (InRootMenu()) {
-                    CreatePage(ref page, ref slots);
-                } else {
-                    CreatePage(ref subPage, ref slots);
-                }
+                CreatePage(ref slots);
                 if (State.menuToolsDisabled)
                     DisableMenu(ref slots);
                 menu.LoadSlots(slots);
@@ -151,11 +145,7 @@ namespace MouseDrag
 
             //next page
             if (slot.name == "+") {
-                if (InRootMenu()) {
-                    page++;
-                } else {
-                    subPage++;
-                }
+                SetPageIndex(GetPageIndex() + 1);
                 return;
             }
 
@@ -657,11 +647,40 @@ namespace MouseDrag
         }
 
 
-        internal static int page, subPage;
-        internal static void CreatePage(ref int page, ref List<RadialMenu.Slot> slots)
+        internal static int GetPageIndex(string id = null)
+        {
+            if (id == null)
+                id = GetSubMenuID();
+            if (pageIndexes.TryGetValue(id, out int index))
+                return index;
+            pageIndexes.Add(id, 0);
+            return 0;
+        }
+
+
+        internal static void SetPageIndex(int value, string id = null)
+        {
+            if (id == null)
+                id = GetSubMenuID();
+            if (pageIndexes.ContainsKey(id)) {
+                pageIndexes[id] = value;
+            } else {
+                pageIndexes.Add(id, value);
+            }
+        }
+
+
+        internal static void ClearPageIndexes()
+        {
+            pageIndexes.Clear();
+        }
+
+
+        internal static void CreatePage(ref List<RadialMenu.Slot> slots)
         {
             int maxOnPage = Options.maxOnPage?.Value ?? 7;
             int count = slots.Count;
+            int page = GetPageIndex();
 
             //go to last page if negative
             if (page < 0)
@@ -670,6 +689,8 @@ namespace MouseDrag
             //reset page if out of bounds
             if (count <= maxOnPage * page)
                 page = 0;
+
+            SetPageIndex(page);
 
             //no page slot is required
             if (count <= maxOnPage)
@@ -735,20 +756,12 @@ namespace MouseDrag
             }
 
             //also use scroll wheel to navigate pages
-            if (UnityEngine.Input.mouseScrollDelta.y < 0) {
-                if (InRootMenu()) {
-                    page++;
-                } else {
-                    subPage++;
-                }
+            if (UnityEngine.Input.mouseScrollDelta.y < 0 && menu?.mouseIsOnMenuBG == true) {
+                SetPageIndex(GetPageIndex() + 1);
                 reloadSlots = true;
             }
-            if (UnityEngine.Input.mouseScrollDelta.y > 0) {
-                if (InRootMenu()) {
-                    page--;
-                } else {
-                    subPage--;
-                }
+            if (UnityEngine.Input.mouseScrollDelta.y > 0 && menu?.mouseIsOnMenuBG == true) {
+                SetPageIndex(GetPageIndex() - 1);
                 reloadSlots = true;
             }
         }

@@ -18,19 +18,19 @@ namespace MouseDrag
         public List<Slot> slots = new List<Slot>();
         public Select.Crosshair crosshair = null;
         public FLabel label = null;
-        public string labelText = ""; //update label text using this field
+        public string labelText = string.Empty; //update label text using this field
         public string roomName { get; private set; } = null; //outgoing name of room where menu is located currently
         public FContainer container = null;
         public BodyChunk followChunk = null, prevFollowChunk = null;
         public Vector2 followOffset = new Vector2();
         public bool snapToChunk = true;
         public static bool menuOpenButtonPressed(bool noRMB = false) => ( //stays true while pressed
-            (Input.GetMouseButton(1) && Options.menuOpenRMB?.Value == true && !noRMB) ||
+            (Input.GetMouseButton(1) && Options.menuOpenRMB?.Value != false && !noRMB) ||
             (Input.GetMouseButton(2) && Options.menuOpenMMB?.Value == true) ||
             (Options.menuOpen?.Value != null && Input.GetKey(Options.menuOpen.Value))
         );
         public static bool menuSelectButtonDown() => ( //true for a single frame
-            (Input.GetMouseButtonDown(0) && Options.menuSelectLMB?.Value == true) ||
+            (Input.GetMouseButtonDown(0) && Options.menuSelectLMB?.Value != false) ||
             (Input.GetMouseButtonDown(2) && Options.menuSelectMMB?.Value == true) ||
             (Options.menuSelect?.Value != null && Input.GetKeyDown(Options.menuSelect.Value))
         );
@@ -233,7 +233,7 @@ namespace MouseDrag
             container.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
 
             //updating label after container.Redraw seems to fix some exceptions
-            if (Options.showLabel?.Value == true)
+            if (Options.showLabel?.Value != false)
                 label.text = labelText;
         }
 

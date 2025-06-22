@@ -7,28 +7,45 @@ namespace MouseDrag
 {
     public static class MenuManager
     {
-        public static RadialMenu menu = null;
+        //================================================== Backwards Compatibility ==================================================
+        [Obsolete("SubMenuTypes are deprecated, please use GetSubMenuID() instead.")]
+        public static SubMenuTypes subMenuType; //do not use in new code or add-ons
+        [Obsolete("SubMenuTypes are deprecated, please use GetSubMenuID() instead.")]
+        public enum SubMenuTypes { None, Any } //do not use in new code or add-ons
+        //=============================================================================================================================
+
+
+        internal static RadialMenu menu = null;
         private static bool shouldOpen = false; //signal from RawUpdate to open menu
         private static bool prevFollowsObject = false; //detect if slots must be reloaded
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
-        public static List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>(){};
-        public static SubMenuTypes subMenuType;
+        private static string labelText = string.Empty, prevLabelText = string.Empty;
+        private static Dictionary<string, int> pageIndexes = new Dictionary<string, int>();
 
-        public enum SubMenuTypes
+
+        private static string subMenuID = string.Empty;
+        public static string GetSubMenuID() => subMenuID;
+        public static bool InRootMenu() => subMenuID == string.Empty;
+        public static void GoToRootMenu() => subMenuID = string.Empty;
+        public static bool InSubMenu(string id) => subMenuID == id;
+        public static void SetSubMenuID(string id)
         {
-            None,
-            Gravity,
-            SafariPlayer
+            if (id == null)
+                id = string.Empty;
+            subMenuID = id;
+#pragma warning disable CS0618 // Type or member is obsolete
+            subMenuType = id == string.Empty ? SubMenuTypes.None : SubMenuTypes.Any;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
 
-        public static void Update(RainWorldGame game)
+        internal static void Update(RainWorldGame game)
         {
             if (shouldOpen && menu == null && State.activated) {
                 menu = new RadialMenu(game);
                 reloadSlots = true;
-                subMenuType = SubMenuTypes.None;
+                GoToRootMenu();
                 lowPrioText = null;
                 highPrioText = null;
             }
@@ -41,23 +58,20 @@ namespace MouseDrag
 
             //menu closed
             if (menu == null) {
-                page = 0;
-                subPage = 0;
+                ClearPageIndexes();
                 return;
             }
 
             //followchunk changed
             if (menu.prevFollowChunk != menu.followChunk) {
                 reloadSlots = true;
-                subMenuType = SubMenuTypes.None;
+                GoToRootMenu();
                 lowPrioText = null;
                 highPrioText = null;
 
                 //menu switched from bodychunk to background or vice versa
-                if (menu.prevFollowChunk == null || menu.followChunk == null) {
-                    page = 0;
-                    subPage = 0;
-                }
+                if (menu.prevFollowChunk == null || menu.followChunk == null)
+                    ClearPageIndexes();
             }
 
             RadialMenu.Slot slot = menu.Update(game, out RadialMenu.Slot hoverSlot);
@@ -65,14 +79,10 @@ namespace MouseDrag
             //switch slots
             bool followsObject = menu.followChunk != null;
             if (followsObject ^ prevFollowsObject || reloadSlots) {
-                ReloadSlots(game, menu, menu.followChunk);
-                if (subMenuType == SubMenuTypes.None) {
-                    CreatePage(ref page);
-                } else {
-                    CreatePage(ref subPage);
-                }
+                var slots = ReloadSlots(game, menu, menu.followChunk);
+                CreatePage(ref slots);
                 if (State.menuToolsDisabled)
-                    DisableMenu();
+                    DisableMenu(ref slots);
                 menu.LoadSlots(slots);
             }
             prevFollowsObject = followsObject;
@@ -92,33 +102,39 @@ namespace MouseDrag
             //change label text
             bool translate = false;
             if (highPrioText?.Length > 0) {
-                menu.labelText = highPrioText;
+                labelText = highPrioText;
                 translate = true;
             } else if (!string.IsNullOrEmpty(hoverSlot?.tooltip) && Options.showTooltips?.Value != false) {
-                menu.labelText = hoverSlot.tooltip;
+                labelText = hoverSlot.tooltip;
                 translate = !hoverSlot.skipTranslateTooltip;
             } else if (lowPrioText?.Length > 0) {
-                menu.labelText = lowPrioText;
+                labelText = lowPrioText;
                 translate = true;
             } else if (menu.followChunk?.owner != null) {
-                menu.labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
+                labelText = menu.followChunk.owner.ToString(); //fallback if abstractPhysicalObject is somehow null (impossible?)
                 string text = Special.ConsistentName(menu.followChunk.owner.abstractPhysicalObject);
                 if (!string.IsNullOrEmpty(text))
-                    menu.labelText = text;
+                    labelText = text;
             } else if (!string.IsNullOrEmpty(menu.roomName)) {
-                menu.labelText = menu.roomName;
+                labelText = menu.roomName;
             } else {
-                menu.labelText = "";
+                labelText = "";
             }
+            bool labelTextChanged = labelText != prevLabelText || String.IsNullOrEmpty(menu.labelText);
+            prevLabelText = labelText;
 
             //live translate label text
-            if (translate && !String.IsNullOrEmpty(menu.labelText) && game?.rainWorld?.inGameTranslator != null)
-                menu.labelText = game.rainWorld.inGameTranslator.Translate(menu.labelText.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
-            //TODO don't translate this line of text every tick to save performance?
+            if (labelTextChanged) { //not translating every tick saves performance
+                if (translate && !String.IsNullOrEmpty(labelText) && game?.rainWorld?.inGameTranslator != null) {
+                    menu.labelText = game.rainWorld.inGameTranslator.Translate(labelText.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
+                } else {
+                    menu.labelText = labelText;
+                }
+            }
         }
 
 
-        //add-on mods need to hook the RunAction() function, and do an action when their slot was pressed
+        //legacy add-on mods need to hook the RunAction() function, and do an action when their slot was pressed
         public static void RunAction(RainWorldGame game, RadialMenu.Slot slot, BodyChunk chunk)
         {
             if (slot?.name == null) {
@@ -129,17 +145,13 @@ namespace MouseDrag
 
             //next page
             if (slot.name == "+") {
-                if (subMenuType == SubMenuTypes.None) {
-                    page++;
-                } else {
-                    subPage++;
-                }
+                SetPageIndex(GetPageIndex() + 1);
                 return;
             }
 
             //submenu for quick select gravity type
-            if (subMenuType == SubMenuTypes.Gravity) {
-                subMenuType = SubMenuTypes.None;
+            if (InSubMenu("Gravity")) {
+                GoToRootMenu();
                 switch (slot.name)
                 {
                     case "mousedragGravityReset":   Gravity.gravityType = Gravity.GravityTypes.None; break;
@@ -165,8 +177,8 @@ namespace MouseDrag
             }
 
             //submenu for selecting player number which will safari control creature
-            if (subMenuType == SubMenuTypes.SafariPlayer) {
-                subMenuType = SubMenuTypes.None;
+            if (InSubMenu("SafariPlayer")) {
+                GoToRootMenu();
                 if (!Int32.TryParse(slot.name, out int pI)) {
                     Plugin.Logger.LogWarning("MenuManager.RunAction, parsing playerIndex failed, value is \"" + slot.name + "\"");
                     return;
@@ -206,7 +218,7 @@ namespace MouseDrag
                                 Control.ToggleControl(game, obj as Creature);
                             } else if (obj is Creature) {
                                 //creature can be controlled
-                                subMenuType = SubMenuTypes.SafariPlayer;
+                                SetSubMenuID("SafariPlayer");
                             }
                             break;
                         case "mousedragUncontrol":      Control.ToggleControl(game, obj as Creature); break;
@@ -312,7 +324,7 @@ namespace MouseDrag
                     case "mousedragGravityOff":
                     case "mousedragGravityHalf":
                     case "mousedragGravityOn":
-                    case "mousedragGravityInverse":         subMenuType = SubMenuTypes.Gravity; break;
+                    case "mousedragGravityInverse":         SetSubMenuID("Gravity"); break;
                     case "mousedragInfo":
                         Info.CopyToClipboard(Info.GetInfo(rcam?.room));
                         highPrioText = "Room copied to clipboard";
@@ -322,13 +334,13 @@ namespace MouseDrag
         }
 
 
-        //add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
+        //legacy add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
         public static List<RadialMenu.Slot> ReloadSlots(RainWorldGame game, RadialMenu menu, BodyChunk chunk)
         {
-            slots.Clear();
+            List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
 
             //add sprites
-            if (subMenuType == SubMenuTypes.Gravity) {
+            if (InSubMenu("Gravity")) {
                 //add all selectable gravity types to submenu
                 slots.Add(new RadialMenu.Slot(menu) {
                     name = "mousedragGravityReset",
@@ -352,7 +364,7 @@ namespace MouseDrag
                 });
                 lowPrioText = "Select gravity type";
 
-            } else if (subMenuType == SubMenuTypes.SafariPlayer) {
+            } else if (InSubMenu("SafariPlayer")) {
                 //do not add sprites
 
             } else if (chunk?.owner != null) {
@@ -621,7 +633,7 @@ namespace MouseDrag
             }
 
             //add labels
-            if (subMenuType == SubMenuTypes.SafariPlayer) {
+            if (InSubMenu("SafariPlayer")) {
                 //add all selectable safari control players to submenu
                 for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
                     slots.Add(new RadialMenu.Slot(menu) {
@@ -635,11 +647,40 @@ namespace MouseDrag
         }
 
 
-        public static int page, subPage;
-        public static void CreatePage(ref int page)
+        internal static int GetPageIndex(string id = null)
+        {
+            if (id == null)
+                id = GetSubMenuID();
+            if (pageIndexes.TryGetValue(id, out int index))
+                return index;
+            pageIndexes.Add(id, 0);
+            return 0;
+        }
+
+
+        internal static void SetPageIndex(int value, string id = null)
+        {
+            if (id == null)
+                id = GetSubMenuID();
+            if (pageIndexes.ContainsKey(id)) {
+                pageIndexes[id] = value;
+            } else {
+                pageIndexes.Add(id, value);
+            }
+        }
+
+
+        internal static void ClearPageIndexes()
+        {
+            pageIndexes.Clear();
+        }
+
+
+        internal static void CreatePage(ref List<RadialMenu.Slot> slots)
         {
             int maxOnPage = Options.maxOnPage?.Value ?? 7;
             int count = slots.Count;
+            int page = GetPageIndex();
 
             //go to last page if negative
             if (page < 0)
@@ -648,6 +689,8 @@ namespace MouseDrag
             //reset page if out of bounds
             if (count <= maxOnPage * page)
                 page = 0;
+
+            SetPageIndex(page);
 
             //no page slot is required
             if (count <= maxOnPage)
@@ -670,7 +713,7 @@ namespace MouseDrag
         }
 
 
-        public static void DisableMenu()
+        internal static void DisableMenu(ref List<RadialMenu.Slot> slots)
         {
             for (int i = 0; i < slots.Count; i++) {
                 if (slots[i].name == "+") //for pages to work
@@ -683,7 +726,7 @@ namespace MouseDrag
         }
 
 
-        public static void RawUpdate(RainWorldGame game)
+        internal static void RawUpdate(RainWorldGame game)
         {
             menu?.RawUpdate(game);
 
@@ -713,32 +756,24 @@ namespace MouseDrag
             }
 
             //also use scroll wheel to navigate pages
-            if (UnityEngine.Input.mouseScrollDelta.y < 0) {
-                if (subMenuType == SubMenuTypes.None) {
-                    page++;
-                } else {
-                    subPage++;
-                }
+            if (UnityEngine.Input.mouseScrollDelta.y < 0 && menu?.mouseIsOnMenuBG == true) {
+                SetPageIndex(GetPageIndex() + 1);
                 reloadSlots = true;
             }
-            if (UnityEngine.Input.mouseScrollDelta.y > 0) {
-                if (subMenuType == SubMenuTypes.None) {
-                    page--;
-                } else {
-                    subPage--;
-                }
+            if (UnityEngine.Input.mouseScrollDelta.y > 0 && menu?.mouseIsOnMenuBG == true) {
+                SetPageIndex(GetPageIndex() - 1);
                 reloadSlots = true;
             }
         }
 
 
-        public static void DrawSprites(float timeStacker)
+        internal static void DrawSprites(float timeStacker)
         {
             menu?.DrawSprites(timeStacker);
         }
 
 
-        public static void LoadSprites()
+        internal static void LoadSprites()
         {
             try {
                 Futile.atlasManager.LoadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");
@@ -750,7 +785,7 @@ namespace MouseDrag
         }
 
 
-        public static void UnloadSprites()
+        internal static void UnloadSprites()
         {
             try {
                 Futile.atlasManager.UnloadAtlas("sprites" + Path.DirectorySeparatorChar + "mousedrag");

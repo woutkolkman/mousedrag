@@ -42,6 +42,7 @@
     <Compile Include="KeyBinds.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="RadialMenu.cs" />
+    <Compile Include="StandardSlots.cs" />
     <Compile Include="Tools\Info.cs" />
     <Compile Include="Tools\Lock.cs" />
     <Compile Include="Tools\Clipboard.cs" />

@@ -1,20 +1,27 @@
 Mouse Drag
+- Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
+- Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate)
+- Make selection crosshair color configurable?
 - Change velocity drag at screen change, so the velocity drag mode is turned off again if the main dragged object is close to the mouse position, or on a counter 2-3s?
-- Constantly refresh/update radialmenu health tooltip, so changes in health are shown immediately?
+- Edit velocity drag so you can still drag bodychunks through walls
 - Add deadband tolerance thing to the mouse visibility initial movement change
 - Check/fix the effect of RainWorldOnModsInitHook being called multiple times when certain mods are enabled (Rain Meadow)
 - Rain Meadow multiplayer support? Configurable options for hosts to allow/disallow tools for other players?
 - Change safari overseer selection when selecting a creature with Mouse Drag? Also pipe selection with mouse pointer in the same room
 - Add option which can spawn a safari overseer with can be used to freecam in the current gamemode
 - Lock tool, add optional visual indicator when a bodychunk is locked? Or only if the mouse or radial menu selects this object
-- Edit velocity drag so you can still drag bodychunks through walls
 - Show more relationship info in label when hovering over radialmenu tame/clear relationships tools
 - Change info tool to also dump contents of structs, like creature personality
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
+- Also add safari-control camera change option to background radialmenu (instead of keybind only) | Add safari control icon to global/background radial menu, so you can switch cams between creatures using the radial menu? Might be confusing
+- Add a unlock all bodychunks option to the radialmenu
+- Replace the selected bodychunks visualization (dotted lines) with an actual graphical circle without using separate sprites
+- Add an option that, when an object is paused, also pauses the graphics using an IL-hook | Optionally pause graphical update when objects are paused
+- Add a button that drags all players in the room to the cursor (or the camera position?), just like dev tools?
+- Change page icon in radial menu "+" to "1/3" etc.?
+- In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
 === Forget list ===:
 - Try to fix BigSandGrub spawn issue where room is reloaded and its SandGrubBurrow is deleted and the SandGrub falls out of the room
-- Add secondary type of integration that doesn't need complex/slow function hooks, and that registers new radialmenu slots using functions (like Dev Console)? Current integration will become legacy.
-- Add lambda expression pointer to radialmenu slots to continually set label text? Might be resource intensive
 - Translations, add 'unique' identifier "md_" at start of each translation to avoid issues with words having multiple translations/meanings in other languaages?
 - Info tool, add option which also opens a Dev Tools tab in-game with the same info or editable parameters? And scroll bars etc. --> already implemented by Unity Explorer and addons
 - Release KarmaFlower/Mushroom/etc. from terrain when dragged?
@@ -22,23 +29,20 @@ Mouse Drag
 - Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
 - Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
-- Add keybind to swap between velocity drag and normal positional mouse dragging?
 - Add multi-select crosshairs in different color when hovering over bodychunks? Or when bodychunks are about to be selected with the selection-rectangle?
 - Add ctrl+z keybind to undo the last action? Mouse Drag code currently is not really structured to track actions well..
 - Add alternative multi-select rectangle which is freeform and can be activated with left alt instead of left control (by default)
 - If multi-select is active and objects are copied to the clipboard, when pasting these objects, paste the whole group at the same time (with original offsets?)?
 - Double click select objects of the same type in the same room, with highlighting? To drag/execute actions
 - Invincible creature tool? Probably uses too many hooks, and Dev Console already has this
-- For every tool in the radial menu, add an preferred index which allows you to sort the tool within the radial menu. Implement before the code where tools are divided into pages
 - Check if Pause list must become a weakreference list to avoid memory leaks? At every game end the list is emptied anyway, so no big deal
 - Change Dev Console command 'md_safari_toggle' to 'md_safari' with new parameters? Might require relatively many safari code changes
 - Try to support Parasitic Slugcat safari controls & changes to creature movement when safari control tool is used https://steamcommunity.com/sharedfiles/filedetails/?id=2972537492 
 - Teleport players with SplitScreen Co-op if dragging them to another camera? Already possible with clipboard tool
-- Divide every radial menu tool in sub-categories? Requires another menu overhaul
+- Optionally divide every radial menu tool in sub-categories?
 - Show like values of creature when hovering over tame/clear relationships? Probably too much data for the small FLabel above the menu
 - Safari control, allow the camera to follow a slugpup when Jolly Co-op is enabled
 - If MMB is used for opening the radial menu as well as selecting tools in the menu, implement another method of combinated close/open/selecting withing the menu? Can also be achieved with another option: open button will also close menu if clicked outside the menu. It might become hard to select the correct creature with this option enabled
-- Try to set max width of labels in the remix options, so tooltips don't overlap over other components, or change order in which objects are added to the screen
 - Add option which allows safari-controlled slugpups to perform backflips etc.? Maybe outside scope
 - Option to use vanilla arena cursor instead of windows mouse pointer? Rain World cursor is part of the pause menu and arena overlay somehow, so probably not easy to implement in campaign. This option might also prevent the in-game cursor from being bugged https://www.reddit.com/r/rainworld/s/DWSN2xCoO7 
 - Fix possible bug: when a slugpup is going into a pipe and you drag the pup away at the right moment, you might be able to break graphical update?
@@ -47,8 +51,6 @@ Mouse Drag
 - Add respawn icon with playernumber selection to respawn specific players? Or only player 1? Might be possible with Dev Console already. Optionally configurable slugcat class?
 - Loading bar graphic around the edge of the radial menu for options like delete in region, so you need to hold the mouse button for longer
 - Add option where MMB can select within radial menu, and scroll can highlight tools?
-- Change page icon in radial menu "+" to "1/3" etc.?
-- In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
 - Sharpener/Slugcat Eyebrow Raise zoom support? For offsets when dragging things
 - Revive all friends in room tool, only players and tamed creatures
 - Check if revive all in room tool also must revive players? This does happen currently
@@ -58,7 +60,6 @@ Mouse Drag
 - Dev Console integration, add radial menu tool to run last command or typed command on selected object or creature? Editing custom console commands might be pain
 - Show health bar when hovering over a creature? Already implemented by Health Bars mod
 - Change or duplicate Teleport tool code to support teleporting between rooms, maybe borrow clipboard code. Also handle loaded/unloaded rooms and regions
-- Optionally pause graphical update when objects are paused
 - Rewrite safari control code so the Update/loadCreatureRoom code is executed for every RoomCamera simultaneously (for SplitScreen Co-op)
 - Try to var-edit offset positions for all objects correctly when they are cut/pasted (e.g. SeedCob). Try to support any object with the clipboard tool (Oracle, SeedCob, etc.)
 - Try to implement time reversal, similar to The Cosmospectre mod, including a search bar
@@ -66,7 +67,6 @@ Mouse Drag
 - Rewind creature in time tool?
 - Fix incompatibility with Rotund World when reviving obese slugcats? Likely just a funny mod interaction https://youtu.be/ss5ZYpGcXCU?si=Ju1OmJFi1YWY4bv9&t=1166 
 - Improved safari gamemode controls: move screen when mouse is in corner, click on pipes to go to other rooms, click on creatures to select them with overseer, etc (check FreeCam mod)
-- Add safari control icon to global/background radial menu, so you can switch cams between creatures using the radial menu? Might be confusing
 - Add option for safari control tool to automatically switch to the next creature if a controlled creature dies
 - Tool that makes objects chained to other objects within a configurable proximity, 'follow or avoid magnet'
 - Keybind to add food pips to creatures/players (and mainly slugpups), also for Rotund World
@@ -78,7 +78,6 @@ Mouse Drag
 - Tame/untame features edit oracles? Like resetting reputation or meet counter.
 - Save creature ID to text file with a star sprite, and spawn creature using a favorites list containing every saved creature in the text file
 - Add option to drag players with or without maximum velocity with the velocity drag mode
-- Add hold mouse button to repeat with all tools in the radial menu
 - Add tool that will make all creatures in the room agro/target a specific creature. Might be available already using Dev Tools (destination position)?
 - Biography mod support which allows copying ID in-game?
 
@@ -91,3 +90,4 @@ FreeCam
 - Add possibility to move the freecam quickly to other pipes in a room, ctrl+arrow keys?
 - Freecam temporarily follow another creature without controlling them, requires some code rewriting
 - Freecam to another region via a pipe in a gate room? Maybe only if player is not loaded?
+- Add option that uses scroll wheel to zoom in/out

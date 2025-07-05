@@ -28,6 +28,7 @@ namespace MouseDrag
             Logger = base.Logger;
             Hooks.Apply();
             ILHooks.Apply();
+            StandardSlots.RegisterSlots(); //first call is for loading slots, second call via Options EventHandler is for correctly positioning slots in the list
 
             //Rain Reloader re-initialize Options, sprites and integration
             if (MachineConnector.IsThisModActive(GUID)) {

@@ -231,3 +231,4 @@ General 2|Général 2
 Tools 1|Outils 1
 Tools 2|Outils 2
 Tool Settings|Paramètres de l'outil
+Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Index préféré de cet emplacement dans le menu. La valeur -1 place les nouveaux emplacements à la fin de la liste. L'index final dans le menu peut différer en raison des emplacements masqués.

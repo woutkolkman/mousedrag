@@ -70,6 +70,23 @@ namespace MouseDrag
 
         public static Configurable<bool> gravityRoomMenu, infoMenu;
 
+        public static Configurable<int> pauseOneIdx, pauseRoomCreaturesIdx, unpauseAllIdx;
+        public static Configurable<int> pauseAllCreaturesIdx, pauseAllItemsIdx;
+        public static Configurable<int> killOneIdx, killRoomIdx, reviveOneIdx, reviveRoomIdx;
+        public static Configurable<int> duplicateOneIdx;
+        public static Configurable<int> clipboardIdx;
+        public static Configurable<int> tpWaypointBgIdx, tpWaypointCrIdx, controlIdx;
+
+        public static Configurable<int> forcefieldIdx;
+        public static Configurable<int> tameOneIdx, tameRoomIdx, clearRelOneIdx, clearRelRoomIdx;
+        public static Configurable<int> stunOneIdx, stunRoomIdx, unstunAllIdx, stunAllIdx;
+        public static Configurable<int> destroyOneIdx, destroyRoomCreaturesIdx, destroyRoomItemsIdx, destroyRoomObjectsIdx;
+        public static Configurable<int> destroyRegionCreaturesIdx, destroyRegionItemsIdx;
+
+        public static Configurable<int> destroyRoomDeadCreaturesIdx, lockIdx, copySelectorIdx;
+
+        public static Configurable<int> gravityRoomIdx, infoIdx;
+
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask, healLimbs;
         public static Configurable<bool> adjustableLocks;
         public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityItems;
@@ -218,6 +235,46 @@ namespace MouseDrag
             gravityRoomMenu = config.Bind(nameof(gravityRoomMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             infoMenu = config.Bind(nameof(infoMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
+            string idxText = "Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.";
+
+            pauseOneIdx = config.Bind(nameof(pauseOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            pauseRoomCreaturesIdx = config.Bind(nameof(pauseRoomCreaturesIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            unpauseAllIdx = config.Bind(nameof(unpauseAllIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            pauseAllCreaturesIdx = config.Bind(nameof(pauseAllCreaturesIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            pauseAllItemsIdx = config.Bind(nameof(pauseAllItemsIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            killOneIdx = config.Bind(nameof(killOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            killRoomIdx = config.Bind(nameof(killRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            reviveOneIdx = config.Bind(nameof(reviveOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            reviveRoomIdx = config.Bind(nameof(reviveRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            duplicateOneIdx = config.Bind(nameof(duplicateOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            clipboardIdx = config.Bind(nameof(clipboardIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            tpWaypointBgIdx = config.Bind(nameof(tpWaypointBgIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            tpWaypointCrIdx = config.Bind(nameof(tpWaypointCrIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            controlIdx = config.Bind(nameof(controlIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+
+            forcefieldIdx = config.Bind(nameof(forcefieldIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            tameOneIdx = config.Bind(nameof(tameOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            tameRoomIdx = config.Bind(nameof(tameRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            clearRelOneIdx = config.Bind(nameof(clearRelOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            clearRelRoomIdx = config.Bind(nameof(clearRelRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            stunOneIdx = config.Bind(nameof(stunOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            stunRoomIdx = config.Bind(nameof(stunRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            unstunAllIdx = config.Bind(nameof(unstunAllIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            stunAllIdx = config.Bind(nameof(stunAllIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            destroyOneIdx = config.Bind(nameof(destroyOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            destroyRoomCreaturesIdx = config.Bind(nameof(destroyRoomCreaturesIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            destroyRoomItemsIdx = config.Bind(nameof(destroyRoomItemsIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            destroyRoomObjectsIdx = config.Bind(nameof(destroyRoomObjectsIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            destroyRegionCreaturesIdx = config.Bind(nameof(destroyRegionCreaturesIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            destroyRegionItemsIdx = config.Bind(nameof(destroyRegionItemsIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+
+            destroyRoomDeadCreaturesIdx = config.Bind(nameof(destroyRoomDeadCreaturesIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            lockIdx = config.Bind(nameof(lockIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            copySelectorIdx = config.Bind(nameof(copySelectorIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+
+            gravityRoomIdx = config.Bind(nameof(gravityRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            infoIdx = config.Bind(nameof(infoIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+
             releaseGraspsPaused = config.Bind(nameof(releaseGraspsPaused), defaultValue: false, new ConfigurableInfo("When creature is paused, all grasps (creatures/items) are released.", null, "", "Pausing releases grasps"));
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
             killReleasesMask = config.Bind(nameof(killReleasesMask), defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
@@ -239,9 +296,10 @@ namespace MouseDrag
 
             //refresh activated mods when config changes
             var onConfigChanged = typeof(OptionInterface).GetEvent("OnConfigChanged");
-            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(Integration).GetMethod("RefreshActiveMods")));
-            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(State).GetMethod("InitEnums")));
-            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, this, "PostTranslate"));
+            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(Integration).GetMethod(nameof(Integration.RefreshActiveMods))));
+            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(State).GetMethod(nameof(State.InitEnums))));
+            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, typeof(StandardSlots).GetMethod(nameof(StandardSlots.RegisterSlots))));
+            onConfigChanged.AddEventHandler(this, Delegate.CreateDelegate(onConfigChanged.EventHandlerType, this, nameof(PostTranslate)));
         }
 
 
@@ -321,123 +379,157 @@ namespace MouseDrag
 
             /**************** Tools ****************/
             curTab++;
-            x = 70f;
+            x = 80f;
             y = 600f;
             sepr = 42f;
             AddKeyBinder(pauseOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPause");
             AddCheckBox(pauseOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(pauseOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(pauseRoomCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseCreatures");
             AddCheckBox(pauseRoomCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(pauseRoomCreaturesIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(unpauseAllKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPlayAll");
             AddCheckBox(unpauseAllMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(unpauseAllIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(pauseAllCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
             AddCheckBox(pauseAllCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(pauseAllCreaturesIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(pauseAllItemsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragPauseGlobal");
             AddCheckBox(pauseAllItemsMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(pauseAllItemsIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(killOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKill");
             AddCheckBox(killOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(killOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(killRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragKillCreatures");
             AddCheckBox(killRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(killRoomIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(reviveOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragRevive");
             AddCheckBox(reviveOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(reviveOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(reviveRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragReviveCreatures");
             AddCheckBox(reviveRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(reviveRoomIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(duplicateOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDuplicate");
             AddCheckBox(duplicateOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(duplicateOneIdx, new Vector2(x - 81f, y + 3f));
             AddCheckBox(clipboardMenu, new Vector2(x - 56f, (y -= sepr) + 3f));
+            AddDragger(clipboardIdx, new Vector2(x - 81f, y + 3f));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
             AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
             AddCheckBox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
             AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
             AddCheckBox(tpWaypointBgMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(tpWaypointBgIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(tpItemsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");
             AddCheckBox(tpWaypointCrMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(tpWaypointCrIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(controlKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragControl");
             AddCheckBox(controlMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(controlIdx, new Vector2(x - 81f, y + 3f));
 
-            x += 300f;
+            x += 310f;
             y = 600f;
             AddKeyBinder(forcefieldKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragForceFieldOn");
             AddCheckBox(forcefieldMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(forcefieldIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(tameOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
             AddCheckBox(tameOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(tameOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(tameRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeartCreatures");
             AddCheckBox(tameRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(tameRoomIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(clearRelOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnheart");
             AddCheckBox(clearRelOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(clearRelOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(clearRelRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnheartCreatures");
             AddCheckBox(clearRelRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(clearRelRoomIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(stunOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStun");
             AddCheckBox(stunOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(stunOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(stunRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStunAll");
             AddCheckBox(stunRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(stunRoomIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(unstunAllKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragUnstunAll");
             AddCheckBox(unstunAllMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(unstunAllIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(stunAllKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragStunGlobal");
             AddCheckBox(stunAllMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(stunAllIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(destroyOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroy");
             AddCheckBox(destroyOneMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(destroyOneIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(destroyRoomCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 9f), "mousedragDestroyCreatures");
             AddCheckBox(destroyRoomCreaturesMenu, new Vector2(x - 56f, y + 6f));
+            AddDragger(destroyRoomCreaturesIdx, new Vector2(x - 81f, y + 6f));
             AddIcon(new Vector2(x - 25f, y + (6f - sepr / 2f)), "mousedragDestroyItems");
             AddCheckBox(destroyRoomItemsMenu, new Vector2(x - 56f, y + (3f - sepr / 2f)));
+            AddDragger(destroyRoomItemsIdx, new Vector2(x - 81f, y + (3f - sepr / 2f)));
             AddIcon(new Vector2(x - 25f, y + (3f - sepr)), "mousedragDestroyAll");
             AddCheckBox(destroyRoomObjectsMenu, new Vector2(x - 56f, y - sepr));
+            AddDragger(destroyRoomObjectsIdx, new Vector2(x - 81f, y - sepr));
             AddKeyBinder(destroyRoomItemsKey, new Vector2(x, y -= sepr));
             AddKeyBinder(destroyRegionCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
             AddCheckBox(destroyRegionCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(destroyRegionCreaturesIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(destroyRegionItemsKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyGlobal");
             AddCheckBox(destroyRegionItemsMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(destroyRegionItemsIdx, new Vector2(x - 81f, y + 3f));
 
             /**************** Tools ****************/
             curTab++;
-            x = 70f;
+            x = 80f;
             y = 600f;
             sepr = 42f;
             AddKeyBinder(destroyRoomDeadCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragDestroyDeadCreatures");
             AddCheckBox(destroyRoomDeadCreaturesMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(destroyRoomDeadCreaturesIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(lockKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragLocked");
             AddCheckBox(lockMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(lockIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(copySelectorKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCLI");
             AddCheckBox(copySelectorMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(copySelectorIdx, new Vector2(x - 81f, y + 3f));
 
-            x += 300f;
+            x += 310f;
             y = 600f;
             AddKeyBinder(gravityRoomKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragGravityOff");
             AddCheckBox(gravityRoomMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(gravityRoomIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(infoKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragInfo");
             AddCheckBox(infoMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(infoIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(loadRegionRoomsKey, new Vector2(x, y -= sepr));
 
             /**************** Tool Settings ****************/
@@ -528,7 +620,7 @@ namespace MouseDrag
 
             OpLabel label = new OpLabel(pos.x + 100f + 16f, pos.y + 5f, option.info.Tags[0] as string)
             {
-                description = option.info.description,
+                //description = option.info.description, //disabling this line fixes description overlapping over other components
                 color = (Color)c
             };
 
@@ -592,6 +684,20 @@ namespace MouseDrag
             {
                 component,
                 label
+            });
+        }
+
+
+        private void AddDragger(Configurable<int> option, Vector2 pos)
+        {
+            OpDragger dragger = new OpDragger(option, pos) {
+                description = option.info.description,
+                min = -1
+            };
+
+            Tabs[curTab].AddItems(new UIelement[]
+            {
+                dragger
             });
         }
 

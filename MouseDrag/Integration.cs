@@ -611,14 +611,14 @@ namespace MouseDrag
                 //hook returns this mod's selection when md_sel is used as selector
                 devConsoleSelection_FindBaseAbstractObjects = new Hook(
                     typeof(DevConsole.Selection).GetMethod("FindBaseAbstractObjects", BindingFlags.Static | BindingFlags.NonPublic),
-                    typeof(Integration.Hooks).GetMethod("DevConsoleSelection_FindBaseAbstractObjects_RuntimeDetour", BindingFlags.Static | BindingFlags.Public)
+                    typeof(Integration.Hooks).GetMethod(nameof(DevConsoleSelection_FindBaseAbstractObjects_RuntimeDetour), BindingFlags.Static | BindingFlags.Public)
                 );
 
                 //hook adds a new selector to Autocomplete for newly created commands
                 //TODO at this point the built-in Dev Console commands are already initialized and won't receive the updated Autocomplete list
                 devConsoleSelection_Autocomplete = new Hook(
                     typeof(DevConsole.Selection).GetProperty("Autocomplete", BindingFlags.Static | BindingFlags.Public).GetGetMethod(),
-                    typeof(Integration.Hooks).GetMethod("DevConsoleSelection_Autocomplete_get", BindingFlags.Static | BindingFlags.Public)
+                    typeof(Integration.Hooks).GetMethod(nameof(DevConsoleSelection_Autocomplete_get), BindingFlags.Static | BindingFlags.Public)
                 );
             }
 

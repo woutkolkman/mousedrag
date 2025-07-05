@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using RWCustom;
+using System;
 
 namespace MouseDrag
 {
@@ -62,7 +63,7 @@ namespace MouseDrag
             container.AddChild(label);
 
             //dummy (not needed but makes menu visible if no slots are configured)
-            AddSlot(new Slot(this));
+            AddSlot(new Slot());
         }
         ~RadialMenu() { Destroy(); }
 
@@ -79,6 +80,7 @@ namespace MouseDrag
         public void AddSlot(Slot s)
         {
             slots.Add(s);
+            s.Initialize(this);
             s.InitiateSprites(container);
         }
 
@@ -183,7 +185,7 @@ namespace MouseDrag
             Slot selectedSlot = null;
             for (int i = 0; i < slots.Count; i++) {
                 slots[i].hover = i == selected;
-                slots[i].Update();
+                slots[i].Update(game);
                 if (i == selected)
                     selectedSlot = slots[i];
             }
@@ -249,35 +251,92 @@ namespace MouseDrag
 
         public class Slot
         {
-            public bool hover;
-            public bool actionEnabled = true;
+            public bool hover; //if true, cursor hovers over this slot
+            public Vector2 curPos, prevPos;
             public RadialMenu menu;
             public TriangleMesh background;
-            public Vector2 curPos, prevPos;
+            public FNode icon = null; //FSprite or FLabel object
+            public string name = "pixel"; //FSprite elementName or FLabel text
+            public string tooltip = null; //text for label above menu
+            public Color tooltipColor = Color.white;
             public Color curBgColor, curIconColor = Color.white;
-            public FNode icon = null;
-            public string name = "pixel";
-            public string tooltip = null;
-            public bool skipTranslateTooltip = false;
-            public bool isLabel = false;
-            Color hoverBgColor = new Color(1f, 1f, 1f, 0.4f);
-            Color noneBgColor = new Color(0f, 0f, 0f, 0.2f);
+            public Color hoverBgColor = new Color(1f, 1f, 1f, 0.4f);
+            public Color noneBgColor = new Color(0f, 0f, 0f, 0.2f);
+            public string subMenuID = string.Empty; //defaults to root menu
+            public readonly string slotID; //optional ID for slot, not necessarily unique
+            public bool skipTranslateTooltip = false; //if true, you will handle your own translation of the tooltip
+            public bool actionOnASingleObject = false; //true will ignore multi-selected objects
+            public bool actionEnabled = true; //optionally invoke action
+            public bool? requiresBodyChunk = null; //define when slot is visible, true on bodychunk, false on background, null both
+            public bool isLabel = false; //true will interpret "name" field as FLabel text instead of FSprite elementName
+            public bool hideInMenu = false; //if true, slot is not added to the menu, reload is still executed
+            public Action<RainWorldGame, Slot, BodyChunk> actionBC = null; //action for each selected bodychunk when slot is pressed
+            public Action<RainWorldGame, Slot, PhysicalObject> actionPO = null; //action for each selected physicalobject when slot is pressed
+            public Action<RainWorldGame, Slot> finalize = null; //action after each bodychunk was processed
+            public Action<RainWorldGame, Slot, BodyChunk> reload = null; //reload sprite, text or tooltip
+            public Action<RainWorldGame, Slot, BodyChunk> update = null; //update on tickrate
+            private int updateExceptionCount = 0;
 
 
-            public Slot(RadialMenu menu)
+            //================================================== Backwards Compatibility ==================================================
+            [Obsolete("Please use Slot() instead of Slot(RadialMenu).")]
+            public Slot(RadialMenu menu) { } //do not use in new code or add-ons
+            //=============================================================================================================================
+
+
+            public Slot(string slotID = null)
+            {
+                this.slotID = slotID;
+            }
+            ~Slot() { Destroy(); }
+
+
+            public void Update(RainWorldGame game)
+            {
+                prevPos = curPos;
+                curPos = menu.displayPos;
+                try {
+                    update?.Invoke(game, this, menu.followChunk);
+                    updateExceptionCount = 0;
+                } catch (Exception ex) {
+                    Plugin.Logger.LogError("RadialMenu.Slot.Update exception: " + ex?.ToString());
+                    updateExceptionCount++;
+                    if (updateExceptionCount >= 10) {
+                        update = null;
+                        noneBgColor = new Color(255f, 0f, 0f, 0.2f);
+                        string exceptionName = ex?.GetType()?.Name;
+                        if (!string.IsNullOrEmpty(exceptionName)) {
+                            if (string.IsNullOrEmpty(tooltip)) {
+                                tooltip = exceptionName;
+                            } else if (!tooltip.Contains(exceptionName)) {
+                                tooltip += " | " + exceptionName;
+                            }
+                        }
+                        Plugin.Logger.LogError("RadialMenu.Slot.Update, removed an update action that was causing issues");
+                    }
+                }
+                /*TODO fix exceptions related to changed label text at this point in execution
+                if (icon is FSprite && !string.IsNullOrEmpty(name)) {
+                    if (name != (icon as FSprite).element?.name)
+                        (icon as FSprite).SetElementByName(name);
+                } else if (icon is FLabel) {
+                    if (!skipTranslateName && !string.IsNullOrEmpty(name)) {
+                        if (name != prevName && game?.rainWorld?.inGameTranslator != null)
+                            name = game.rainWorld.inGameTranslator.Translate(name.Replace("\n", "<LINE>")).Replace("<LINE>", "\n");
+                        prevName = name;
+                    }
+                    if (name != null && name != (icon as FLabel).text)
+                        (icon as FLabel).text = name;
+                }*/
+            }
+
+
+            public void Initialize(RadialMenu menu)
             {
                 this.menu = menu;
                 prevPos = menu.displayPos;
                 curPos = menu.displayPos;
                 curBgColor = noneBgColor;
-            }
-            ~Slot() { Destroy(); }
-
-
-            public void Update()
-            {
-                prevPos = curPos;
-                curPos = menu.displayPos;
             }
 
 
@@ -331,7 +390,10 @@ namespace MouseDrag
             public void Destroy()
             {
                 icon?.RemoveFromContainer();
+                icon = null;
                 background?.RemoveFromContainer();
+                background = null;
+                menu = null;
             }
         }
     }

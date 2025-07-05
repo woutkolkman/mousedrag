@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace MouseDrag
@@ -20,13 +21,14 @@ namespace MouseDrag
         private static bool prevFollowsObject = false; //detect if slots must be reloaded
         public static bool reloadSlots = false;
         public static string lowPrioText, highPrioText;
-        private static string labelText = string.Empty, prevLabelText = string.Empty;
-        private static Dictionary<string, int> pageIndexes = new Dictionary<string, int>();
+        private static string labelText = string.Empty, prevLabelText = string.Empty; //detect if label text has changed
+        private static Dictionary<string, int> pageIndexes = new Dictionary<string, int>(); //for every subMenuID, keeps track of current page index
+        public static List<RadialMenu.Slot> registeredSlots = new List<RadialMenu.Slot>(); //list of all registered slots in any (sub)menu that can be conditionally added to the menu
 
 
         private static string subMenuID = string.Empty;
         public static string GetSubMenuID() => subMenuID;
-        public static bool InRootMenu() => subMenuID == string.Empty;
+        public static bool InRootMenu() => string.IsNullOrEmpty(subMenuID);
         public static void GoToRootMenu() => subMenuID = string.Empty;
         public static bool InSubMenu(string id) => subMenuID == id;
         public static void SetSubMenuID(string id)
@@ -99,6 +101,10 @@ namespace MouseDrag
                 reloadSlots = true;
             }
 
+            //change label color
+            if (menu.label != null)
+                menu.label.color = hoverSlot?.tooltipColor ?? Color.white;
+
             //change label text
             bool translate = false;
             if (highPrioText?.Length > 0) {
@@ -149,20 +155,6 @@ namespace MouseDrag
                 return;
             }
 
-            //submenu for quick select gravity type
-            if (InSubMenu("Gravity")) {
-                GoToRootMenu();
-                switch (slot.name)
-                {
-                    case "mousedragGravityReset":   Gravity.gravityType = Gravity.GravityTypes.None; break;
-                    case "mousedragGravityOff":     Gravity.gravityType = Gravity.GravityTypes.Off; break;
-                    case "mousedragGravityHalf":    Gravity.gravityType = Gravity.GravityTypes.Low; break;
-                    case "mousedragGravityOn":      Gravity.gravityType = Gravity.GravityTypes.On; break;
-                    case "mousedragGravityInverse": Gravity.gravityType = Gravity.GravityTypes.Inverse; break;
-                }
-                return;
-            }
-
             //multi-select, get list of objects to edit
             List<BodyChunk> chunks = new List<BodyChunk>();
             List<PhysicalObject> objects = new List<PhysicalObject>();
@@ -176,160 +168,26 @@ namespace MouseDrag
                 }
             }
 
-            //submenu for selecting player number which will safari control creature
-            if (InSubMenu("SafariPlayer")) {
-                GoToRootMenu();
-                if (!Int32.TryParse(slot.name, out int pI)) {
-                    Plugin.Logger.LogWarning("MenuManager.RunAction, parsing playerIndex failed, value is \"" + slot.name + "\"");
-                    return;
-                }
-                Drag.playerNr = pI - 1;
-                foreach (PhysicalObject obj in objects)
-                    Control.ToggleControl(game, obj as Creature);
-                return;
-            }
-
-            if (chunks.Count > 0) { //menu follows object
-                bool clearSelectionList = false;
-                string dumpedInfo = "";
-
-                foreach (PhysicalObject obj in objects) {
-                    //run actions based on objects
-                    switch (slot.name)
-                    {
-                        case "mousedragPause":
-                        case "mousedragPlay":           Pause.TogglePauseObject(obj); break;
-                        case "mousedragKill":
-                            Health.KillCreature(game, obj);
-                            Health.TriggerItem(obj);
-                            break;
-                        case "mousedragRevive":
-                            Health.ReviveCreature(obj);
-                            Health.ResetItem(obj);
-                            break;
-                        case "mousedragDuplicate":      Duplicate.DuplicateObject(obj); break;
-                        case "mousedragCut":
-                            Clipboard.CutObject(obj);
-                            clearSelectionList = true; //prevents ghost selections
-                            break;
-                        case "mousedragControl":
-                            if (obj is Player && !(obj as Player).isNPC) {
-                                //skip selection and uncontrol all
-                                Control.ToggleControl(game, obj as Creature);
-                            } else if (obj is Creature) {
-                                //creature can be controlled
-                                SetSubMenuID("SafariPlayer");
-                            }
-                            break;
-                        case "mousedragUncontrol":      Control.ToggleControl(game, obj as Creature); break;
-                        case "mousedragHeart":          Tame.TameCreature(game, obj); break;
-                        case "mousedragUnheart":        Tame.ClearRelationships(obj); break;
-                        case "mousedragStun":
-                        case "mousedragUnstun":         Stun.StunObject(obj.abstractPhysicalObject, toggle: true, apply: true); break;
-                        case "mousedragDestroy":
-                            Destroy.DestroyObject(obj);
-                            clearSelectionList = true; //prevents ghost selections
-                            break;
-                        case "mousedragCLI":
-                            if (!Integration.devConsoleEnabled)
-                                break;
-                            try {
-                                Integration.DevConsoleOpen(Integration.DevConsoleGetSelector(obj.abstractPhysicalObject));
-                            } catch {
-                                Plugin.Logger.LogError("MenuManager.RunAction exception while writing Dev Console, integration is now disabled");
-                                Integration.devConsoleEnabled = false;
-                                throw; //throw original exception while preserving stack trace
-                            }
-                            break;
-                        case "mousedragInfo":
-                            if (dumpedInfo == "") { //first object?
-                                highPrioText = "Object copied to clipboard";
-                            } else {
-                                highPrioText = "Objects copied to clipboard";
-                            }
-                            dumpedInfo += Info.GetInfo(obj);
-                            break;
+            try {
+                if (chunks.Count > 0) { //menu follows object
+                    if (slot.actionOnASingleObject) {
+                        slot.actionBC?.Invoke(game, slot, chunk);
+                        slot.actionPO?.Invoke(game, slot, chunk?.owner);
+                    } else {
+                        foreach (BodyChunk bc in chunks)
+                            slot.actionBC?.Invoke(game, slot, bc);
+                        foreach (PhysicalObject po in objects)
+                            slot.actionPO?.Invoke(game, slot, po);
                     }
+                } else { //menu on background
+                    slot.actionBC?.Invoke(game, slot, null);
+                    slot.actionPO?.Invoke(game, slot, null);
                 }
-                foreach (BodyChunk bc in chunks) {
-                    //run actions based on bodychunks
-                    switch (slot.name)
-                    {
-                        case "mousedragCrosshair":      Teleport.SetWaypoint(Drag.MouseCamera(game)?.room, menu.menuPos, bc); break;
-                        case "mousedragForceFieldOn":
-                        case "mousedragForceFieldOff":  Forcefield.SetForcefield(bc, toggle: true, apply: true); break;
-                        case "mousedragLocked":
-                        case "mousedragUnlocked":       Lock.SetLock(bc, toggle: true, apply: true); break;
-                    }
-                }
-                if (clearSelectionList)
-                    chunks.Clear();
-                if (!string.IsNullOrEmpty(dumpedInfo))
-                    Info.CopyToClipboard(dumpedInfo);
-
-            } else { //menu on background
-                var rcam = Drag.MouseCamera(game);
-
-                switch (slot.name)
-                {
-                    case "mousedragPauseCreatures":         Pause.PauseObjects(rcam?.room, true, false); break;
-                    case "mousedragPauseGlobal":
-                    case "mousedragPlayGlobal":
-                        if (Options.pauseAllCreaturesMenu?.Value != false && Options.pauseAllItemsMenu?.Value != false) {
-                            Pause.pauseAllCreatures = !Pause.pauseAllCreatures;
-                            Pause.pauseAllItems = Pause.pauseAllCreatures;
-                        } else if (Options.pauseAllCreaturesMenu?.Value != false) {
-                            Pause.pauseAllCreatures = !Pause.pauseAllCreatures;
-                        } else if (Options.pauseAllItemsMenu?.Value != false) {
-                            Pause.pauseAllItems = !Pause.pauseAllItems;
-                        }
-                        if (Options.logDebug?.Value != false)
-                            Plugin.Logger.LogDebug("pauseAllCreatures: " + Pause.pauseAllCreatures + ", pauseAllItems: " + Pause.pauseAllItems);
-                        break;
-                    case "mousedragPlayAll":                Pause.UnpauseAll(); break;
-                    case "mousedragKillCreatures":          Health.KillCreatures(game, rcam?.room); break;
-                    case "mousedragReviveCreatures":        Health.ReviveCreatures(rcam?.room); break;
-                    case "mousedragPaste":
-                        if (rcam?.room != null)
-                            Clipboard.PasteObject(game, rcam.room, rcam.room.ToWorldCoordinate(menu.menuPos));
-                        break;
-                    case "mousedragCrosshair":              Teleport.SetWaypoint(rcam?.room, menu.menuPos); break;
-                    case "mousedragHeartCreatures":         Tame.TameCreatures(game, rcam?.room); break;
-                    case "mousedragUnheartCreatures":       Tame.ClearRelationships(rcam?.room); break;
-                    case "mousedragStunAll":                Stun.StunObjects(rcam?.room); break;
-                    case "mousedragUnstunAll":              Stun.UnstunAll(); break;
-                    case "mousedragStunGlobal":
-                    case "mousedragUnstunGlobal":
-                        Stun.stunAll = !Stun.stunAll;
-                        if (Options.logDebug?.Value != false)
-                            Plugin.Logger.LogDebug("stunAll: " + Stun.stunAll);
-                        break;
-                    case "mousedragDestroyCreatures":       Destroy.DestroyObjects(rcam?.room, creatures: true, items: false, onlyDead: false); break;
-                    case "mousedragDestroyItems":           Destroy.DestroyObjects(rcam?.room, creatures: false, items: true, onlyDead: false); break;
-                    case "mousedragDestroyAll":             Destroy.DestroyObjects(rcam?.room, creatures: true, items: true, onlyDead: false); break;
-                    case "mousedragDestroyGlobal":          Destroy.DestroyRegionObjects(game, Options.destroyRegionCreaturesMenu?.Value == true, Options.destroyRegionItemsMenu?.Value == true); break;
-                    case "mousedragDestroyDeadCreatures":   Destroy.DestroyObjects(rcam?.room, creatures: true, items: false, onlyDead: true); break;
-                    case "mousedragCLI":
-                        if (!Integration.devConsoleEnabled)
-                            break;
-                        try {
-                            Integration.DevConsoleOpen();
-                        } catch {
-                            Plugin.Logger.LogError("MenuManager.RunAction exception while writing Dev Console, integration is now disabled");
-                            Integration.devConsoleEnabled = false;
-                            throw; //throw original exception while preserving stack trace
-                        }
-                        break;
-                    case "mousedragGravityReset":
-                    case "mousedragGravityOff":
-                    case "mousedragGravityHalf":
-                    case "mousedragGravityOn":
-                    case "mousedragGravityInverse":         SetSubMenuID("Gravity"); break;
-                    case "mousedragInfo":
-                        Info.CopyToClipboard(Info.GetInfo(rcam?.room));
-                        highPrioText = "Room copied to clipboard";
-                        break;
-                }
+                slot.finalize?.Invoke(game, slot);
+            } catch (Exception ex) {
+                Plugin.Logger.LogError("MenuManager.RunAction exception: " + ex?.ToString());
+                slot.noneBgColor = new Color(255f, 0f, 0f, 0.2f);
+                highPrioText = ex?.GetType()?.Name;
             }
         }
 
@@ -337,312 +195,27 @@ namespace MouseDrag
         //legacy add-on mods need to hook the ReloadSlots() function, and insert their slots afterwards
         public static List<RadialMenu.Slot> ReloadSlots(RainWorldGame game, RadialMenu menu, BodyChunk chunk)
         {
-            List<RadialMenu.Slot> slots = new List<RadialMenu.Slot>() { };
+            List<RadialMenu.Slot> slots = registeredSlots.Where(s => s.subMenuID == subMenuID).ToList();
+            slots = slots.Where(s => s.requiresBodyChunk == null || s.requiresBodyChunk == (chunk != null)).ToList();
 
-            //add sprites
-            if (InSubMenu("Gravity")) {
-                //add all selectable gravity types to submenu
-                slots.Add(new RadialMenu.Slot(menu) {
-                    name = "mousedragGravityReset",
-                    tooltip = "Reset gravity"
-                });
-                slots.Add(new RadialMenu.Slot(menu) {
-                    name = "mousedragGravityOff",
-                    tooltip = "Gravity off"
-                });
-                slots.Add(new RadialMenu.Slot(menu) {
-                    name = "mousedragGravityHalf",
-                    tooltip = "Gravity low"
-                });
-                slots.Add(new RadialMenu.Slot(menu) {
-                    name = "mousedragGravityOn",
-                    tooltip = "Gravity on"
-                });
-                slots.Add(new RadialMenu.Slot(menu) {
-                    name = "mousedragGravityInverse",
-                    tooltip = "Gravity inversed"
-                });
-                lowPrioText = "Select gravity type";
-
-            } else if (InSubMenu("SafariPlayer")) {
-                //do not add sprites
-
-            } else if (chunk?.owner != null) {
-                //menu follows object
-                if (Options.pauseOneMenu?.Value != false) {
-                    bool paused = Pause.IsObjectPaused(chunk.owner);
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = paused ? "mousedragPlay" : "mousedragPause",
-                        tooltip = paused ? "Unpause" : "Pause"
-                    });
-                }
-                if (Options.killOneMenu?.Value != false) {
-                    string tooltip = game?.rainWorld?.inGameTranslator?.Translate("Trigger") ?? "Trigger";
-                    if (chunk.owner is Creature) {
-                        tooltip = game?.rainWorld?.inGameTranslator?.Translate("Kill") ?? "Kill";
-                        if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
-                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health.ToString("0.###") + "/1)";
-                    }
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragKill",
-                        tooltip = tooltip,
-                        skipTranslateTooltip = true
-                    });
-                }
-                if (Options.reviveOneMenu?.Value != false) {
-                    string tooltip = game?.rainWorld?.inGameTranslator?.Translate("Reset") ?? "Reset";
-                    if (chunk.owner is Creature) {
-                        tooltip = game?.rainWorld?.inGameTranslator?.Translate("Revive/heal") ?? "Revive/heal";
-                        if ((chunk.owner as Creature).abstractCreature?.state is HealthState)
-                            tooltip += " (" + ((chunk.owner as Creature).abstractCreature.state as HealthState).health.ToString("0.###") + "/1)";
-                    }
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragRevive",
-                        tooltip = tooltip,
-                        skipTranslateTooltip = true
-                    });
-                }
-                if (Options.duplicateOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDuplicate",
-                        tooltip = "Duplicate"
-                    });
-                if (Options.clipboardMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragCut",
-                        tooltip = "Cut"
-                    });
-                if (Options.tpWaypointCrMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragCrosshair",
-                        tooltip = Teleport.crosshair == null ? "Set teleport position" : "Cancel teleportation"
-                    });
-                if (Options.controlMenu?.Value != false) {
-                    bool isControlled = (chunk.owner.abstractPhysicalObject as AbstractCreature)?.controlled == true;
-                    bool isPlayer = chunk.owner is Player && !(chunk.owner as Player).isNPC;
-                    bool hasControl = false;
-                    if (isPlayer)
-                        hasControl = Control.PlayerHasControl((chunk.owner as Player).playerState?.playerNumber ?? -1);
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = isControlled ? "mousedragUncontrol" : "mousedragControl",
-                        tooltip = isPlayer ? "Release all for this player" : (isControlled ? "Release control" : "Safari-control"),
-                        curIconColor = chunk.owner.abstractPhysicalObject is AbstractCreature && (!isPlayer || hasControl) ? Color.white : Color.grey
-                    });
-                }
-                if (Options.forcefieldMenu?.Value != false) {
-                    bool forcefield = Forcefield.HasForcefield(chunk);
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = forcefield ? "mousedragForceFieldOff" : "mousedragForceFieldOn",
-                        tooltip = forcefield ? "Disable forcefield" : "Enable forcefield"
-                    });
-                }
-                if (Options.tameOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragHeart",
-                        tooltip = "Tame",
-                        curIconColor = Tame.IsTamable(game, chunk.owner) ? Color.white : Color.grey
-                    });
-                if (Options.clearRelOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragUnheart",
-                        tooltip = "Clear relationships",
-                        curIconColor = Tame.IsTamable(game, chunk.owner) ? Color.white : Color.grey
-                    });
-                if (Options.stunOneMenu?.Value != false) {
-                    bool stunned = Stun.IsObjectStunned(chunk.owner);
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = stunned ? "mousedragUnstun" : "mousedragStun",
-                        tooltip = stunned ? "Unstun" : "Stun",
-                        curIconColor = chunk.owner is Oracle || chunk.owner is Creature ? Color.white : Color.grey
-                    });
-                }
-                if (Options.destroyOneMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDestroy",
-                        tooltip = "Destroy"
-                    });
-                if (Options.lockMenu?.Value != false) {
-                    bool unlocked = Lock.ListContains(chunk) == null;
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = unlocked ? "mousedragLocked" : "mousedragUnlocked",
-                        tooltip = unlocked ? "Lock position" : "Unlock position"
-                    });
-                }
-                if (Options.copySelectorMenu?.Value != false && Integration.devConsoleEnabled) {
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragCLI",
-                        tooltip = "Copy selector & open console"
-                    });
-                }
-                if (Options.infoMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragInfo",
-                        tooltip = "Copy info"
-                    });
-
-            } else {
-                //menu on background
-                if (Options.pauseRoomCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragPauseCreatures",
-                        tooltip = "Pause creatures in room"
-                    });
-                if (Options.pauseAllCreaturesMenu?.Value != false) {
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = Pause.pauseAllCreatures ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
-                        tooltip = Options.pauseAllItemsMenu?.Value != false ? 
-                        (Pause.pauseAllCreatures ? "Unpause all" : "Pause all") : 
-                        (Pause.pauseAllCreatures ? "Unpause all creatures" : "Pause all creatures")
-                    });
-                } else if (Options.pauseAllItemsMenu?.Value != false) {
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = Pause.pauseAllItems ? "mousedragPlayGlobal" : "mousedragPauseGlobal",
-                        tooltip = Pause.pauseAllItems ? "Unpause all items" : "Pause all items"
-                    });
-                }
-                if (Options.unpauseAllMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragPlayAll",
-                        tooltip = "Unpause all",
-                        curIconColor = Pause.pausedObjects.Count > 0 || Pause.pauseAllCreatures || Pause.pauseAllItems ? Color.white : Color.grey
-                    });
-                if (Options.killRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragKillCreatures",
-                        tooltip = "Kill in room"
-                    });
-                if (Options.reviveRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragReviveCreatures",
-                        tooltip = "Revive/heal in room"
-                    });
-                if (Options.clipboardMenu?.Value != false) {
-                    string tooltip = game?.rainWorld?.inGameTranslator?.Translate("Paste") ?? "Paste";
-                    if (Clipboard.cutObjects.Count > 0)
-                        tooltip += " " + Special.ConsistentName(Clipboard.cutObjects[Clipboard.cutObjects.Count - 1]);
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragPaste",
-                        tooltip = tooltip,
-                        curIconColor = Clipboard.cutObjects.Count > 0 ? Color.white : Color.grey,
-                        skipTranslateTooltip = true
-                    });
-                }
-                if (Options.tpWaypointBgMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragCrosshair",
-                        tooltip = Teleport.crosshair == null ? "Set teleport position" : "Cancel teleportation"
-                    });
-                if (Options.tameRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragHeartCreatures",
-                        tooltip = "Tame in room"
-                    });
-                if (Options.clearRelRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragUnheartCreatures",
-                        tooltip = "Clear relationships in room"
-                    });
-                if (Options.stunRoomMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragStunAll",
-                        tooltip = "Stun in room"
-                    });
-                if (Options.unstunAllMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragUnstunAll",
-                        tooltip = "Unstun all",
-                        curIconColor = Stun.stunnedObjects.Count > 0 || Stun.stunAll ? Color.white : Color.grey
-                    });
-                if (Options.stunAllMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = Stun.stunAll ? "mousedragUnstunGlobal" : "mousedragStunGlobal",
-                        tooltip = Stun.stunAll ? "Unstun all" : "Stun all"
-                    });
-                if (Options.destroyRoomCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDestroyCreatures",
-                        tooltip = "Destroy creatures in room"
-                    });
-                if (Options.destroyRoomItemsMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDestroyItems",
-                        tooltip = "Destroy items in room"
-                    });
-                if (Options.destroyRoomObjectsMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDestroyAll",
-                        tooltip = "Destroy all in room"
-                    });
-                if (Options.destroyRegionCreaturesMenu?.Value != false || Options.destroyRegionItemsMenu?.Value != false) {
-                    string tooltip = "Destroy all in region";
-                    if (!(Options.destroyRegionCreaturesMenu?.Value != false))
-                        tooltip = "Destroy items in region";
-                    if (!(Options.destroyRegionItemsMenu?.Value != false))
-                        tooltip = "Destroy creatures in region";
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDestroyGlobal",
-                        tooltip = tooltip
-                    });
-                }
-                if (Options.destroyRoomDeadCreaturesMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragDestroyDeadCreatures",
-                        tooltip = "Destroy dead creatures in room"
-                    });
-                if (Options.copySelectorMenu?.Value != false && Integration.devConsoleEnabled) {
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragCLI",
-                        tooltip = "Open console"
-                    });
-                }
-                if (Options.gravityRoomMenu?.Value != false) {
-                    string tooltip = "Set gravity";
-                    if (Gravity.gravityType == Gravity.GravityTypes.None) {
-                        slots.Add(new RadialMenu.Slot(menu) {
-                            name = "mousedragGravityReset",
-                            tooltip = tooltip
-                        });
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Off || 
-                        Gravity.gravityType == Gravity.GravityTypes.Custom) {
-                        slots.Add(new RadialMenu.Slot(menu) {
-                            name = "mousedragGravityOff",
-                            tooltip = tooltip
-                        });
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Low) {
-                        slots.Add(new RadialMenu.Slot(menu) {
-                            name = "mousedragGravityHalf",
-                            tooltip = tooltip
-                        });
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.On) {
-                        slots.Add(new RadialMenu.Slot(menu) {
-                            name = "mousedragGravityOn",
-                            tooltip = tooltip
-                        });
-                    } else if (Gravity.gravityType == Gravity.GravityTypes.Inverse) {
-                        slots.Add(new RadialMenu.Slot(menu) {
-                            name = "mousedragGravityInverse",
-                            tooltip = tooltip
-                        });
+            foreach (RadialMenu.Slot slot in slots) {
+                try {
+                    slot.reload?.Invoke(game, slot, chunk);
+                } catch (Exception ex) {
+                    Plugin.Logger.LogError("MenuManager.ReloadSlots exception: " + ex?.ToString());
+                    slot.noneBgColor = new Color(255f, 0f, 0f, 0.2f);
+                    string exceptionName = ex?.GetType()?.Name;
+                    if (!string.IsNullOrEmpty(exceptionName)) {
+                        if (string.IsNullOrEmpty(slot.tooltip)) {
+                            slot.tooltip = exceptionName;
+                        } else if (!slot.tooltip.Contains(exceptionName)) {
+                            slot.tooltip += " | " + exceptionName;
+                        }
                     }
                 }
-                if (Options.infoMenu?.Value != false)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = "mousedragInfo",
-                        tooltip = "Copy room info"
-                    });
             }
 
-            //add labels
-            if (InSubMenu("SafariPlayer")) {
-                //add all selectable safari control players to submenu
-                for (int i = 0; i < game?.rainWorld?.options?.controls?.Length; i++)
-                    slots.Add(new RadialMenu.Slot(menu) {
-                        name = (i + 1).ToString(),
-                        isLabel = true
-                    });
-                lowPrioText = "Select safari player";
-            }
-
+            slots.RemoveAll(s => s.hideInMenu);
             return slots;
         }
 
@@ -704,7 +277,7 @@ namespace MouseDrag
             }
             string tooltip = RWCustom.Custom.rainWorld?.inGameTranslator?.Translate("Next page") ?? "Next page";
             tooltip += " (" + (page + 1) + "/" + (((count - 1) / maxOnPage) + 1) + ")";
-            slots.Add(new RadialMenu.Slot(menu) {
+            slots.Add(new RadialMenu.Slot() {
                 name = "+",
                 tooltip = tooltip,
                 isLabel = true,

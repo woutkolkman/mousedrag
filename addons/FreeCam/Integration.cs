@@ -140,7 +140,7 @@ namespace FreeCam
         //use in try/catch so missing assembly does not crash the game
         public static void SBCameraScrollMoveScreen(RoomCamera rcam, Vector2 movement)
         {
-            var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(rcam);
+            var af = SBCameraScroll.RoomCameraMod.GetFields(rcam);
             if (af == null || rcam == null) //this code not working will be obvious
                 return;
 
@@ -295,7 +295,7 @@ namespace FreeCam
                 fc.sBCameraScrollNewPos = null;
 
                 //get attached fields from SBCameraScroll
-                var af = SBCameraScroll.RoomCameraMod.Get_Attached_Fields(room_camera);
+                var af = SBCameraScroll.RoomCameraMod.GetFields(room_camera);
                 if (af == null) {
                     if (Options.logDebug?.Value != false)
                         Plugin.Logger.LogDebug("Integration.Hooks.SBCameraScrollRoomCameraMod_RoomCamera_ApplyPositionChange_RuntimeDetour, unable to set RoomCamera position");

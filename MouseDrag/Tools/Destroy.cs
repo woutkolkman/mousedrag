@@ -4,9 +4,12 @@
     {
         public static void DestroyObject(PhysicalObject obj)
         {
+            if (obj == null)
+                return;
+
             Destroy.ReleaseAllGrasps(obj);
 
-            if (obj is Oracle) //prevent loitering sprites
+            if (obj is Oracle) //prevent loitering sprites before being removed from room
                 obj.Destroy();
 
             //prevent beehive crashing game
@@ -21,11 +24,11 @@
             if (obj is Spear) //prevent spear leaving invisible beams behind
                 (obj as Spear).resetHorizontalBeamState();
 
-            obj?.RemoveFromRoom();
-            obj?.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation
+            obj.RemoveFromRoom();
+            obj.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation in shelter
 
-            if (!(obj is Player)) //Jolly Co-op's Destroy kills player
-                obj?.Destroy(); //prevent realizing after hibernation
+            if (!(obj is Player)) //Jolly Co-op's Destroy kills player (prevents issues with duplicated players)
+                obj.Destroy(); //prevent realizing after hibernation in shelter
         }
 
 

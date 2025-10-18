@@ -108,7 +108,7 @@ namespace MouseDrag
             }
 
             //create a new burrow at the current position
-            Watcher.SandGrubBurrow sgb = new Watcher.SandGrubBurrow(null);
+            Watcher.SandGrubBurrow sgb = new Watcher.SandGrubBurrow(null, null);
             sgb.pos = room.FindGroundBelow(pos, out sgb.dir, 200f);
             sgb.room = room;
             room.AddObject(sgb);

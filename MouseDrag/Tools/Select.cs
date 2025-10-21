@@ -109,7 +109,7 @@ namespace MouseDrag
                     try {
                         selectRect.start -= Integration.SBCameraScrollExtraOffset(rcam, selectRect.start, out float scale) / (1f / scale);
                     } catch {
-                        Plugin.Logger.LogError("Select.UpdateSelectionRectangle exception while reading SBCameraScroll, integration is now disabled");
+                        Plugin.Logger.LogError("Select.Update exception while reading SBCameraScroll, integration is now disabled");
                         Integration.sBCameraScrollEnabled = false;
                         throw; //throw original exception while preserving stack trace
                     }

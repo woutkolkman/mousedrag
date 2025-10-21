@@ -206,6 +206,63 @@ namespace MouseDrag
             })
             .Register();
 
+            new DevConsole.Commands.CommandBuilder("md_kill")
+            .Help("md_kill [selector]")
+            .RunGame((game, args) => {
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Health.KillCreature(game, list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_trigger")
+            .Help("md_trigger [selector]")
+            .RunGame((game, args) => {
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Health.TriggerItem(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_revive")
+            .Help("md_revive [selector]")
+            .RunGame((game, args) => {
+                //NOTE: Dev Console has a built-in health command, so a custom health argument for this command has no added value
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Health.ReviveCreature(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_reset")
+            .Help("md_reset [selector]")
+            .RunGame((game, args) => {
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Health.ResetItem(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][] { DevConsole.Selection.Autocomplete })
+            .Register();
+
             new DevConsole.Commands.CommandBuilder("md_duplicate")
             .Help("md_duplicate [selector]")
             .RunGame((game, args) => {

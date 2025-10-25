@@ -21,13 +21,12 @@ Mouse Drag
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
 - Also add safari-control camera change option to background radialmenu (instead of keybind only) | Add safari control icon to global/background radial menu, so you can switch cams between creatures using the radial menu? Might be confusing
 - Add a unlock all bodychunks option to the radialmenu
-- Replace the selected bodychunks visualization (dotted lines) with an actual graphical circle without using separate sprites
 - Add an option that, when an object is paused, also pauses the graphics using an IL-hook | Optionally pause graphical update when objects are paused
 - Add a button that drags all players in the room to the cursor (or the camera position?), just like dev tools?
 - Option to enable just the player drag tool (V (& W?)) from dev tools?
 - Change page icon in radial menu "+" to "1/3" etc.?
 - In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
-- Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when a original player was deleted in a pit or similar ways
+- Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 === Forget list ===:
 - Add tool that can fill a room with water to a certain height, or remove all water?
 - Dev Console command to bind a Dev Console command to a newly automatically generated menu slot (similar method like the group command), including retention after game restart? And a clear custom slot(s) command. Including functionallity that automatically enters the selector (or pass the reference) for a specific radialmenu-selected object.

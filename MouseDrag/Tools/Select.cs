@@ -24,7 +24,7 @@ namespace MouseDrag
 
         public static Vector2 rectStartPos;
         public static Rectangle selectRect = null;
-        public static List<Crosshair> crosshairs = new List<Crosshair>(); //shows which objects are selected
+        public static List<Circle> crosshairs = new List<Circle>(); //shows which objects are selected
         private static bool refreshCrosshairs;
 
 
@@ -126,11 +126,11 @@ namespace MouseDrag
                     crosshairs.Pop().Destroy();
                 var container = rcam?.ReturnFContainer("HUD");
                 for (int i = crosshairs.Count; i < selectedChunks.Count; i++) {
-                    var ch = new Crosshair("mousedragDashB");
+                    var ch = new Circle();
                     crosshairs.Add(ch);
                 }
                 for (int i = 0; i < crosshairs.Count; i++) {
-                    int spriteCount = 3 + (int)(selectedChunks[i].rad / 6f);
+                    int spriteCount = 5 + (int)(selectedChunks[i].rad / 6f);
                     crosshairs[i].InitiateSprites(container, spriteCount);
                     crosshairs[i].rotationSpeed = 3f * (10f / selectedChunks[i].rad);
                 }
@@ -213,6 +213,87 @@ namespace MouseDrag
                 return false;
             return bc.pos.x >= Mathf.Min(start.x, end.x) && bc.pos.x <= Mathf.Max(start.x, end.x) &&
                 bc.pos.y >= Mathf.Min(start.y, end.y) && bc.pos.y <= Mathf.Max(start.y, end.y);
+        }
+
+
+        public class Circle
+        {
+            //https://stackoverflow.com/a/31767755
+            public Vector2 curPos, prevPos;
+            public bool visible;
+            public float rotation = 0f;
+            public float rotationSpeed = 3f;
+            public float radius = 16f, prevRadius;
+            public FSprite[] sprites = null;
+            public FContainer container = null;
+            public Color color = Color.white;
+
+
+            public Circle() {}
+            ~Circle() { Destroy(); }
+
+
+            public void Update()
+            {
+                prevPos = curPos;
+                prevRadius = radius;
+                rotation += rotationSpeed;
+            }
+
+
+            public void InitiateSprites(FContainer container, int spriteCount)
+            {
+                if (this.container == null)
+                    this.container = new FContainer();
+                for (int i = 0; i < sprites?.Length; i++)
+                    sprites[i].RemoveFromContainer();
+                sprites = new FSprite[spriteCount];
+                for (int i = 0; i < sprites.Length; i++) {
+                    sprites[i] = new FSprite("pixel", true);
+                    this.container.AddChild(sprites[i]);
+                    sprites[i].isVisible = true;
+                }
+                container.AddChild(this.container);
+                this.container.MoveToBack();
+            }
+
+
+            public void DrawSprites(float timeStacker)
+            {
+                float tsRadius = Mathf.Lerp(prevRadius, radius, timeStacker);
+                float angleDiff = 360f / sprites.Length;
+                float tsRotation = Mathf.Lerp(rotation - rotationSpeed, rotation, timeStacker) % 360f;
+
+                Vector2 a = new Vector2(0f, tsRadius);
+                Vector2 b = Custom.RotateAroundOrigo(Vector2.up * tsRadius, angleDiff);
+                float lineLength = Vector2.Distance(a, b);
+
+                //position lines around center of circle
+                for (int i = 0; i < sprites.Length; i++) {
+                    Vector2 pos = Custom.RotateAroundOrigo(Vector2.up * tsRadius, angleDiff * i);
+                    Vector2 nextPos = Custom.RotateAroundOrigo(Vector2.up * tsRadius, angleDiff * (i + 1));
+                    sprites[i].rotation = Custom.AimFromOneVectorToAnother(pos, nextPos);
+                    sprites[i].SetPosition(Vector2.Lerp(pos, nextPos, 0.5f));
+                    sprites[i].scaleY = lineLength;
+                    sprites[i].color = color;
+                }
+
+                //apply position
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
+                container.isVisible = visible;
+                container.SetPosition(tsPos);
+                container.rotation = tsRotation;
+            }
+
+
+            public void Destroy()
+            {
+                for (int i = 0; i < sprites?.Length; i++)
+                    sprites[i].RemoveFromContainer();
+                sprites = null;
+                container?.RemoveFromContainer();
+                container = null;
+            }
         }
 
 

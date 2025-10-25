@@ -344,7 +344,7 @@ namespace MouseDrag
             {
                 List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
 
-                for (int i = 0; i < 9; i++) { //this for-loop is heavily adapted from BeastMaster
+                for (int i = 0; i <= 8; i++) { //this for-loop is heavily adapted from BeastMaster
                     list.Add(new TriangleMesh.Triangle(i, i + 1, i + 10));
                     list.Add(new TriangleMesh.Triangle(i + 10, i + 10 + 1, i + 1));
                 }

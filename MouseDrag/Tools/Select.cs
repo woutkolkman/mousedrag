@@ -24,7 +24,7 @@ namespace MouseDrag
 
         public static Vector2 rectStartPos;
         public static Rectangle selectRect = null;
-        public static List<Circle> crosshairs = new List<Circle>(); //shows which objects are selected
+        public static List<Circle> visuals = new List<Circle>(); //shows which objects are selected
         private static bool refreshCrosshairs;
 
 
@@ -121,18 +121,18 @@ namespace MouseDrag
         public static void UpdateCrosshairs(RoomCamera rcam, bool selectActive)
         {
             //create/destroy selection crosshairs
-            if (selectedChunks.Count != crosshairs.Count || refreshCrosshairs) {
-                for (int i = crosshairs.Count; i > selectedChunks.Count; i--)
-                    crosshairs.Pop().Destroy();
+            if (selectedChunks.Count != visuals.Count || refreshCrosshairs) {
+                for (int i = visuals.Count; i > selectedChunks.Count; i--)
+                    visuals.Pop().Destroy();
                 var container = rcam?.ReturnFContainer("HUD");
-                for (int i = crosshairs.Count; i < selectedChunks.Count; i++) {
+                for (int i = visuals.Count; i < selectedChunks.Count; i++) {
                     var ch = new Circle();
-                    crosshairs.Add(ch);
+                    visuals.Add(ch);
                 }
-                for (int i = 0; i < crosshairs.Count; i++) {
+                for (int i = 0; i < visuals.Count; i++) {
                     int spriteCount = 5 + (int)(selectedChunks[i].rad / 6f);
-                    crosshairs[i].InitiateSprites(container, spriteCount);
-                    crosshairs[i].rotationSpeed = 3f * (10f / selectedChunks[i].rad);
+                    visuals[i].InitiateSprites(container, spriteCount);
+                    visuals[i].rotationSpeed = 3f * (10f / selectedChunks[i].rad);
                 }
                 refreshCrosshairs = false;
             }
@@ -140,12 +140,12 @@ namespace MouseDrag
             bool selectedByMenu = MenuManager.menu?.followChunk != null && selectedChunks.Contains(MenuManager.menu.followChunk);
 
             //update selection crosshairs
-            for (int i = 0; i < crosshairs.Count; i++) {
-                crosshairs[i].Update();
-                crosshairs[i].curPos = selectedChunks[i].pos - rcam?.pos ?? new Vector2();
-                crosshairs[i].radius = selectedChunks[i].rad;
-                crosshairs[i].visible = 
-                    crosshairs[i].prevPos != Vector2.zero && 
+            for (int i = 0; i < visuals.Count; i++) {
+                visuals[i].Update();
+                visuals[i].curPos = selectedChunks[i].pos - rcam?.pos ?? new Vector2();
+                visuals[i].radius = selectedChunks[i].rad;
+                visuals[i].visible = 
+                    visuals[i].prevPos != Vector2.zero && 
                     (selectActive || selectedByMenu) && 
                     selectedChunks[i]?.owner?.room != null && 
                     selectedChunks[i].owner.room == rcam?.room;
@@ -153,14 +153,14 @@ namespace MouseDrag
                 float bgScale = 1f;
                 if (Integration.sBCameraScrollEnabled) {
                     try {
-                        crosshairs[i].curPos -= Integration.SBCameraScrollExtraOffset(rcam, crosshairs[i].curPos, out bgScale) / (1f / bgScale);
+                        visuals[i].curPos -= Integration.SBCameraScrollExtraOffset(rcam, visuals[i].curPos, out bgScale) / (1f / bgScale);
                     } catch {
                         Plugin.Logger.LogError("Select.UpdateCrosshairs exception while reading SBCameraScroll, integration is now disabled");
                         Integration.sBCameraScrollEnabled = false;
                         throw; //throw original exception while preserving stack trace
                     }
                 }
-                crosshairs[i].radius *= bgScale;
+                visuals[i].radius *= bgScale;
             }
         }
 
@@ -202,7 +202,7 @@ namespace MouseDrag
         public static void DrawSprites(float timeStacker)
         {
             selectRect?.DrawSprites(timeStacker);
-            foreach (var ch in crosshairs)
+            foreach (var ch in visuals)
                 ch.DrawSprites(timeStacker);
         }
 
@@ -218,7 +218,6 @@ namespace MouseDrag
 
         public class Circle
         {
-            //https://stackoverflow.com/a/31767755
             public Vector2 curPos, prevPos;
             public bool visible;
             public float rotation = 0f;
@@ -252,6 +251,8 @@ namespace MouseDrag
                     sprites[i] = new FSprite("pixel", true);
                     this.container.AddChild(sprites[i]);
                     sprites[i].isVisible = true;
+//                    if (RWCustom.Custom.rainWorld?.Shaders?.Count > 0)
+//                        sprites[i].shader = RWCustom.Custom.rainWorld.Shaders["HologramBothSides"];
                 }
                 container.AddChild(this.container);
                 this.container.MoveToBack();

@@ -3,8 +3,7 @@ Mouse Drag
 - Test/fix duplicate/cut/paste rotted variants (Watcher) of lizards and seedcob
 - Add tool that toggles debug sprites for a single creature?
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
-- Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate)
-- Make selection crosshair color configurable?
+- Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
 - Change velocity drag at screen change, so the velocity drag mode is turned off again if the main dragged object is close to the mouse position, or on a counter 2-3s?
 - Edit velocity drag so you can still drag bodychunks through walls
 - Add deadband tolerance thing to the mouse visibility initial movement change
@@ -26,6 +25,7 @@ Mouse Drag
 - In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 === Forget list ===:
+- Make selection crosshairs color configurable? Entire radialmenu color configurable? Crosshair shaders configurable?
 - Add secondary index option for devconsole position in radialmenu on-background/on-object
 - Add tool that can fill a room with water to a certain height, or remove all water?
 - Dev Console command to bind a Dev Console command to a newly automatically generated menu slot (similar method like the group command), including retention after game restart? And a clear custom slot(s) command. Including functionallity that automatically enters the selector (or pass the reference) for a specific radialmenu-selected object.

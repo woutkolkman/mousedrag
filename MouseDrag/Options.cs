@@ -74,7 +74,7 @@ namespace MouseDrag
         public static Configurable<int> pauseAllCreaturesIdx, pauseAllItemsIdx;
         public static Configurable<int> killOneIdx, killRoomIdx, reviveOneIdx, reviveRoomIdx;
         public static Configurable<int> duplicateOneIdx;
-        public static Configurable<int> clipboardIdx;
+        public static Configurable<int> clipboardOneIdx, clipboardRoomIdx;
         public static Configurable<int> tpWaypointBgIdx, tpWaypointCrIdx, controlIdx;
 
         public static Configurable<int> forcefieldIdx;
@@ -247,7 +247,8 @@ namespace MouseDrag
             reviveOneIdx = config.Bind(nameof(reviveOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             reviveRoomIdx = config.Bind(nameof(reviveRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             duplicateOneIdx = config.Bind(nameof(duplicateOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
-            clipboardIdx = config.Bind(nameof(clipboardIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            clipboardOneIdx = config.Bind(nameof(clipboardOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            clipboardRoomIdx = config.Bind(nameof(clipboardRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             tpWaypointBgIdx = config.Bind(nameof(tpWaypointBgIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             tpWaypointCrIdx = config.Bind(nameof(tpWaypointCrIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             controlIdx = config.Bind(nameof(controlIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
@@ -423,9 +424,10 @@ namespace MouseDrag
             AddCheckBox(duplicateOneMenu, new Vector2(x - 56f, y + 3f));
             AddDragger(duplicateOneIdx, new Vector2(x - 81f, y + 3f));
             AddCheckBox(clipboardMenu, new Vector2(x - 56f, (y -= sepr) + 3f));
-            AddDragger(clipboardIdx, new Vector2(x - 81f, y + 3f));
-            AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCut");
-            AddIcon(new Vector2(x, y + 6f), "mousedragPaste");
+            AddDragger(clipboardOneIdx, new Vector2(x - 81f, y + 3f + 12f));
+            AddDragger(clipboardRoomIdx, new Vector2(x - 81f, y + 3f - 12f));
+            AddIcon(new Vector2(x - 25f, y + 6f + 12f), "mousedragCut");
+            AddIcon(new Vector2(x - 25f, y + 6f - 12f), "mousedragPaste");
             AddCheckBox(clipboardCtrlXCV, new Vector2(x + 25f + 51f, y + 3f));
             AddKeyBinder(tpCreaturesKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragCrosshair");

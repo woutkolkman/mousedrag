@@ -175,7 +175,7 @@ namespace MouseDrag
             idx = MenuManager.registeredSlots.FindIndex(slot => slot.slotID == nameof(Options.clipboardMenu) && slot.requiresBodyChunk == true);
             MenuManager.registeredSlots.RemoveAll(slot => slot.slotID == nameof(Options.clipboardMenu) && slot.requiresBodyChunk == true);
             if (Options.clipboardMenu?.Value != false)
-                MenuManager.registeredSlots.Insert(validIdx(idx, Options.clipboardIdx?.Value), new RadialMenu.Slot(nameof(Options.clipboardMenu)) {
+                MenuManager.registeredSlots.Insert(validIdx(idx, Options.clipboardOneIdx?.Value), new RadialMenu.Slot(nameof(Options.clipboardMenu)) {
                     requiresBodyChunk = true,
                     name = "mousedragCut",
                     tooltip = "Cut",
@@ -190,7 +190,7 @@ namespace MouseDrag
             idx = MenuManager.registeredSlots.FindIndex(slot => slot.slotID == nameof(Options.clipboardMenu) && slot.requiresBodyChunk == false);
             MenuManager.registeredSlots.RemoveAll(slot => slot.slotID == nameof(Options.clipboardMenu) && slot.requiresBodyChunk == false);
             if (Options.clipboardMenu?.Value != false)
-                MenuManager.registeredSlots.Insert(validIdx(idx, Options.clipboardIdx?.Value), new RadialMenu.Slot(nameof(Options.clipboardMenu)) {
+                MenuManager.registeredSlots.Insert(validIdx(idx, Options.clipboardRoomIdx?.Value), new RadialMenu.Slot(nameof(Options.clipboardMenu)) {
                     requiresBodyChunk = false,
                     name = "mousedragPaste",
                     skipTranslateTooltip = true,

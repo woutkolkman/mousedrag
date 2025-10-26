@@ -154,7 +154,7 @@ namespace MouseDrag
                     (selectActive || selectedByMenu) && 
                     selectedChunks[i].owner?.room != null && 
                     selectedChunks[i].owner.room == rcam?.room;
-                visuals[i].color = rectChunks.Contains(selectedChunks[i]) ? Color.red : Color.white;
+                visuals[i].color = Options.selectionXOR?.Value == true && rectChunks.Contains(selectedChunks[i]) ? Color.red : Color.white;
 
                 float bgScale = 1f;
                 if (Integration.sBCameraScrollEnabled) {

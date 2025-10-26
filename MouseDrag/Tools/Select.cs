@@ -121,6 +121,7 @@ namespace MouseDrag
         public static void UpdateCrosshairs(RoomCamera rcam, bool selectActive)
         {
             //create/destroy selection crosshairs
+            bool setPrevState = false;
             if (selectedChunks.Count != visuals.Count || refreshCrosshairs) {
                 for (int i = visuals.Count; i > selectedChunks.Count; i--)
                     visuals.Pop().Destroy();
@@ -134,6 +135,7 @@ namespace MouseDrag
                     visuals[i].InitiateSprites(container, spriteCount);
                     visuals[i].rotationSpeed = 3f * (10f / selectedChunks[i].rad);
                 }
+                setPrevState = true;
                 refreshCrosshairs = false;
             }
 
@@ -143,9 +145,12 @@ namespace MouseDrag
             for (int i = 0; i < visuals.Count; i++) {
                 visuals[i].Update();
                 visuals[i].curPos = selectedChunks[i].pos - rcam?.pos ?? new Vector2();
-                visuals[i].radius = selectedChunks[i].rad;
+                visuals[i].curRadius = selectedChunks[i].rad;
+                if (setPrevState) //avoid crosshairs going all over the screen
+                    visuals[i].prevPos = visuals[i].curPos;
+                if (setPrevState && visuals[i].prevRadius != 0f) //only animate radius of new crosshairs
+                    visuals[i].prevRadius = visuals[i].curRadius;
                 visuals[i].visible = 
-                    visuals[i].prevPos != Vector2.zero && 
                     (selectActive || selectedByMenu) && 
                     selectedChunks[i]?.owner?.room != null && 
                     selectedChunks[i].owner.room == rcam?.room;
@@ -160,7 +165,7 @@ namespace MouseDrag
                         throw; //throw original exception while preserving stack trace
                     }
                 }
-                visuals[i].radius *= bgScale;
+                visuals[i].curRadius *= bgScale;
             }
         }
 
@@ -222,7 +227,7 @@ namespace MouseDrag
             public bool visible;
             public float rotation = 0f;
             public float rotationSpeed = 3f;
-            public float radius = 16f, prevRadius;
+            public float curRadius, prevRadius;
             public FSprite[] sprites = null;
             public FContainer container = null;
             public Color color = Color.white;
@@ -235,7 +240,7 @@ namespace MouseDrag
             public void Update()
             {
                 prevPos = curPos;
-                prevRadius = radius;
+                prevRadius = curRadius;
                 rotation += rotationSpeed;
             }
 
@@ -261,10 +266,17 @@ namespace MouseDrag
 
             public void DrawSprites(float timeStacker)
             {
-                float tsRadius = Mathf.Lerp(prevRadius, radius, timeStacker);
-                float angleDiff = 360f / sprites.Length;
                 float tsRotation = Mathf.Lerp(rotation - rotationSpeed, rotation, timeStacker) % 360f;
 
+                //apply position
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
+                container.isVisible = visible;
+                container.SetPosition(tsPos);
+                container.rotation = tsRotation;
+
+                //calculate new radius
+                float tsRadius = Mathf.Lerp(prevRadius, curRadius, timeStacker);
+                float angleDiff = 360f / sprites.Length;
                 Vector2 a = new Vector2(0f, tsRadius);
                 Vector2 b = Custom.RotateAroundOrigo(Vector2.up * tsRadius, angleDiff);
                 float lineLength = Vector2.Distance(a, b);
@@ -278,12 +290,6 @@ namespace MouseDrag
                     sprites[i].scaleY = lineLength;
                     sprites[i].color = color;
                 }
-
-                //apply position
-                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker);
-                container.isVisible = visible;
-                container.SetPosition(tsPos);
-                container.rotation = tsRotation;
             }
 
 

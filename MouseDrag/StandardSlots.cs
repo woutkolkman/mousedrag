@@ -248,7 +248,11 @@ namespace MouseDrag
                             hasControl = Control.PlayerHasControl((chunk.owner as Player).playerState?.playerNumber ?? -1);
                         slot.name = isControlled ? "mousedragUncontrol" : "mousedragControl";
                         slot.tooltip = isPlayer ? "Release all for this player" : (isControlled ? "Release control" : "Safari-control");
-                        slot.curIconColor = chunk?.owner?.abstractPhysicalObject is AbstractCreature && (!isPlayer || hasControl) ? Color.white : Color.grey;
+                        if (!ModManager.MSC)
+                            slot.tooltip = "MSC not enabled";
+                        slot.curIconColor = ModManager.MSC && 
+                            chunk?.owner?.abstractPhysicalObject is AbstractCreature && 
+                            (!isPlayer || hasControl) ? Color.white : Color.grey;
                     },
                     actionPO = (game, slot, po) => {
                         bool isControlled = (po?.abstractPhysicalObject as AbstractCreature)?.controlled == true;

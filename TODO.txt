@@ -1,7 +1,6 @@
 Mouse Drag
 - Add option that locks (with the lock tool) a (multiple-?)selection in-place so the player feels more in control of multiple creatures
 - Add secondary index option for clipboard and devconsole position in radialmenu
-- Safari-control tooltip, display grey icon + change tooltip when MSC is disabled
 - Test/fix duplicate/cut/paste rotted variants (Watcher) of lizards and seedcob
 - Add tool that toggles debug sprites for a single creature?
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
@@ -38,13 +37,12 @@ Mouse Drag
 - Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
 - Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
-- Add multi-select crosshairs in different color when hovering over bodychunks? Or when bodychunks are about to be selected with the selection-rectangle?
 - Add ctrl+z keybind to undo the last action? Mouse Drag code currently is not really structured to track actions well..
 - Add alternative multi-select rectangle which is freeform and can be activated with left alt instead of left control (by default)
-- If multi-select is active and objects are copied to the clipboard, when pasting these objects, paste the whole group at the same time (with original offsets?)?
+- If multi-select is active and objects are copied to the clipboard, when pasting these objects, paste the whole group at the same time (with original offsets?)? Current clipboard list will become a list of lists
 - Double click select objects of the same type in the same room, with highlighting? To drag/execute actions
 - Invincible creature tool? Probably uses too many hooks, and Dev Console already has this
-- Check if Pause list must become a weakreference list to avoid memory leaks? At every game end the list is emptied anyway, so no big deal
+- Check if Pause list must become a weakreference list to avoid memory leaks? At every game end the list is emptied anyway, so not a big deal
 - Change Dev Console command 'md_safari_toggle' to 'md_safari' with new parameters? Might require relatively many safari code changes
 - Try to support Parasitic Slugcat safari controls & changes to creature movement when safari control tool is used https://steamcommunity.com/sharedfiles/filedetails/?id=2972537492 
 - Teleport players with SplitScreen Co-op if dragging them to another camera? Already possible with clipboard tool

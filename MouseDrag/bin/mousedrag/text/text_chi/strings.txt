@@ -232,3 +232,4 @@ Tools 1|工具1
 Tools 2|工具2
 Tool Settings|工具设置
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|此菜单项的首选索引。值为-1时，新菜单项将添加到列表末尾。由于存在隐藏的菜单项，菜单中的最终索引可能与预期不同。
+MSC not enabled|MSC 未启用

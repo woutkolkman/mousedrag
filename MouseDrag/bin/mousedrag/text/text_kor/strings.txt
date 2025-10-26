@@ -232,3 +232,4 @@ Tools 1|도구 1
 Tools 2|도구 2
 Tool Settings|도구 설정
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|이 메뉴 슬롯의 선호 인덱스. 값 -1은 새로운 슬롯을 목록의 끝에 배치합니다. 메뉴의 최종 인덱스는 숨겨진 슬롯으로 인해 다를 수 있습니다.
+MSC not enabled|MSC 활성화되지 않음

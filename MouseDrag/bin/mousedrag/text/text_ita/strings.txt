@@ -232,3 +232,4 @@ Tools 1|Strumenti 1
 Tools 2|Strumenti 2
 Tool Settings|Impostazioni dello strumento
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Indice preferito di questo slot nel menu. Il valore -1 inserisce i nuovi slot alla fine dell'elenco. L'indice finale nel menu potrebbe differire a causa degli slot nascosti.
+MSC not enabled|MSC non abilitato

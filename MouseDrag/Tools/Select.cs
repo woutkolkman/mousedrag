@@ -22,6 +22,8 @@ namespace MouseDrag
         }
 
 
+        public static List<BodyChunk> rectChunks = new List<BodyChunk>(); //chunks to be added/removed from selection
+        public static List<Circle> visualsFromRect = new List<Circle>(); //shows potential change in selection from selection rectangle with green circles
         public static Vector2 rectStartPos;
         public static Rectangle selectRect = null;
         public static List<Circle> visuals = new List<Circle>(); //shows which objects are selected
@@ -65,22 +67,8 @@ namespace MouseDrag
 
                 void bodyChunkSelection(BodyChunk bc)
                 {
-                    if (bc?.owner == null)
+                    if (!BodyChunkSelectableByRect(bc, ref tempChunks, rectStartPos, rectEndPos))
                         return;
-                    if (!IsWithinRect(bc, rectStartPos, rectEndPos))
-                        return;
-                    if (Vector2.Distance(rectStartPos, rectEndPos) < 10f)
-                        return;
-                    if (tempChunks.Contains(bc))
-                        return;
-
-                    //only select creatures or items
-                    if (Options.onlySelectCreatures?.Value != null && Input.GetKey(Options.onlySelectCreatures.Value))
-                        if (!(bc.owner is Creature))
-                            return;
-                    if (Options.onlySelectItems?.Value != null && Input.GetKey(Options.onlySelectItems.Value))
-                        if (bc.owner is Creature)
-                            return;
 
                     //invert selection
                     if (selectedChunks.Contains(bc)) {
@@ -89,7 +77,6 @@ namespace MouseDrag
                     } else {
                         selectedChunks.Add(bc);
                     }
-                    tempChunks.Add(bc);
                 }
 
                 //add bodychunks in room within rectangle to selection
@@ -99,7 +86,7 @@ namespace MouseDrag
                             bodyChunkSelection(room.physicalObjects[i][j].bodyChunks[k]);
             }
 
-            //update selection-rectangle positions
+            //update selection-rectangle positions & bodychunk list
             if (selectRect != null) {
                 selectRect.Update();
                 selectRect.start = rectStartPos - rcam?.pos ?? new Vector2() - offset;
@@ -114,6 +101,19 @@ namespace MouseDrag
                         throw; //throw original exception while preserving stack trace
                     }
                 }
+
+                Room room = rcam?.room;
+                Vector2 rectEndPos = Drag.MousePos(game);
+                List<BodyChunk> tempChunks = new List<BodyChunk>(); //fixes SeedCob select bug
+
+                rectChunks.Clear();
+                for (int i = 0; i < room?.physicalObjects?.Length; i++)
+                    for (int j = 0; j < room.physicalObjects[i]?.Count; j++)
+                        for (int k = 0; k < room.physicalObjects[i][j]?.bodyChunks?.Length; k++)
+                            if (BodyChunkSelectableByRect(room.physicalObjects[i][j].bodyChunks[k], ref tempChunks, rectStartPos, rectEndPos))
+                                rectChunks.Add(room.physicalObjects[i][j].bodyChunks[k]);
+            } else {
+                rectChunks.Clear();
             }
         }
 
@@ -125,11 +125,11 @@ namespace MouseDrag
             if (selectedChunks.Count != visuals.Count || refreshCrosshairs) {
                 for (int i = visuals.Count; i > selectedChunks.Count; i--)
                     visuals.Pop().Destroy();
-                var container = rcam?.ReturnFContainer("HUD");
                 for (int i = visuals.Count; i < selectedChunks.Count; i++) {
                     var ch = new Circle();
                     visuals.Add(ch);
                 }
+                var container = rcam?.ReturnFContainer("HUD");
                 for (int i = 0; i < visuals.Count; i++) {
                     int spriteCount = 5 + (int)(selectedChunks[i].rad / 6f);
                     visuals[i].InitiateSprites(container, spriteCount);
@@ -152,8 +152,9 @@ namespace MouseDrag
                     visuals[i].prevRadius = visuals[i].curRadius;
                 visuals[i].visible = 
                     (selectActive || selectedByMenu) && 
-                    selectedChunks[i]?.owner?.room != null && 
+                    selectedChunks[i].owner?.room != null && 
                     selectedChunks[i].owner.room == rcam?.room;
+                visuals[i].color = rectChunks.Contains(selectedChunks[i]) ? Color.red : Color.white;
 
                 float bgScale = 1f;
                 if (Integration.sBCameraScrollEnabled) {
@@ -166,6 +167,52 @@ namespace MouseDrag
                     }
                 }
                 visuals[i].curRadius *= bgScale;
+            }
+
+            //create/destroy selection-rectangle crosshairs
+            setPrevState = false;
+            if (rectChunks.Count != visualsFromRect.Count) {
+                for (int i = visualsFromRect.Count; i > rectChunks.Count; i--)
+                    visualsFromRect.Pop().Destroy();
+                for (int i = visualsFromRect.Count; i < rectChunks.Count; i++) {
+                    var ch = new Circle();
+                    visualsFromRect.Add(ch);
+                }
+                var container = rcam?.ReturnFContainer("HUD");
+                for (int i = 0; i < visualsFromRect.Count; i++) {
+                    int spriteCount = 5 + (int)(rectChunks[i].rad / 6f);
+                    visualsFromRect[i].InitiateSprites(container, spriteCount);
+                    visualsFromRect[i].rotationSpeed = 3f * (10f / rectChunks[i].rad);
+                }
+                setPrevState = true;
+            }
+
+            //update selection-rectangle crosshairs
+            for (int i = 0; i < visualsFromRect.Count; i++) {
+                visualsFromRect[i].Update();
+                visualsFromRect[i].curPos = rectChunks[i].pos - rcam?.pos ?? new Vector2();
+                visualsFromRect[i].curRadius = rectChunks[i].rad;
+                if (setPrevState) //avoid crosshairs going all over the screen
+                    visualsFromRect[i].prevPos = visualsFromRect[i].curPos;
+                if (setPrevState) //don't animate radius of crosshairs
+                    visualsFromRect[i].prevRadius = visualsFromRect[i].curRadius;
+                visualsFromRect[i].visible = 
+                    !selectedChunks.Contains(rectChunks[i]) && 
+                    rectChunks[i].owner?.room != null && 
+                    rectChunks[i].owner.room == rcam?.room;
+                visualsFromRect[i].color = Color.green;
+
+                float bgScale = 1f;
+                if (Integration.sBCameraScrollEnabled) {
+                    try {
+                        visualsFromRect[i].curPos -= Integration.SBCameraScrollExtraOffset(rcam, visualsFromRect[i].curPos, out bgScale) / (1f / bgScale);
+                    } catch {
+                        Plugin.Logger.LogError("Select.UpdateCrosshairs exception while reading SBCameraScroll, integration is now disabled");
+                        Integration.sBCameraScrollEnabled = false;
+                        throw; //throw original exception while preserving stack trace
+                    }
+                }
+                visualsFromRect[i].curRadius *= bgScale;
             }
         }
 
@@ -209,6 +256,8 @@ namespace MouseDrag
             selectRect?.DrawSprites(timeStacker);
             foreach (var ch in visuals)
                 ch.DrawSprites(timeStacker);
+            foreach (var ch in visualsFromRect)
+                ch.DrawSprites(timeStacker);
         }
 
 
@@ -218,6 +267,31 @@ namespace MouseDrag
                 return false;
             return bc.pos.x >= Mathf.Min(start.x, end.x) && bc.pos.x <= Mathf.Max(start.x, end.x) &&
                 bc.pos.y >= Mathf.Min(start.y, end.y) && bc.pos.y <= Mathf.Max(start.y, end.y);
+        }
+
+
+        private static bool BodyChunkSelectableByRect(BodyChunk bc, ref List<BodyChunk> recheckBuffer, Vector2 start, Vector2 end)
+        {
+            if (bc?.owner == null)
+                return false;
+            if (Vector2.Distance(start, end) < 10f)
+                return false;
+            if (!IsWithinRect(bc, start, end))
+                return false;
+
+            //only select creatures or items
+            if (Options.onlySelectCreatures?.Value != null && Input.GetKey(Options.onlySelectCreatures.Value))
+                if (!(bc.owner is Creature))
+                    return false;
+            if (Options.onlySelectItems?.Value != null && Input.GetKey(Options.onlySelectItems.Value))
+                if (bc.owner is Creature)
+                    return false;
+
+            if (recheckBuffer.Contains(bc))
+                return false;
+            recheckBuffer.Add(bc);
+
+            return true;
         }
 
 

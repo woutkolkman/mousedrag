@@ -85,6 +85,10 @@ namespace MouseDrag
             obj.room.abstractRoom.AddEntity(newApo);
             newApo.RealizeInRoom(); //actually places object/creature
 
+            //TODO, workaround bug since v1.11.3, remove when no longer bugged (or object might be updated twice every tick?)
+            if (newApo is SeedCob.AbstractSeedCob && newApo.realizedObject.room != obj.room)
+                obj.room.AddObject(newApo.realizedObject);
+
             if (newApo.realizedObject is Watcher.SandGrub)
                 BigSandGrubPostRealization(newApo.realizedObject as Watcher.SandGrub);
 

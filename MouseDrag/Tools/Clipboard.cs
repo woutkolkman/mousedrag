@@ -103,6 +103,10 @@ namespace MouseDrag
             room.abstractRoom.AddEntity(apo);
             apo.RealizeInRoom();
 
+            //TODO, workaround bug since v1.11.3, remove when no longer bugged (or object might be updated twice every tick?)
+            if (apo is SeedCob.AbstractSeedCob)// && apo.realizedObject.room != room)
+                room.AddObject(apo.realizedObject);
+
             //restore player stomach object
             if (apo.realizedObject is Player) {
                 try {

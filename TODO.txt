@@ -1,6 +1,4 @@
 Mouse Drag
-- Add option that locks (with the lock tool) a (multiple-?)selection in-place so the player feels more in control of multiple creatures
-- Test/fix duplicate/cut/paste rotted variants (Watcher) of lizards and seedcob
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
 - Add deadband tolerance thing to the mouse visibility initial movement change
@@ -22,6 +20,7 @@ Mouse Drag
 - In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 === Forget list ===:
+- Add option that locks (with the lock tool) a (multiple-?)selection in-place so the player feels more in control of multiple creatures, or player should pause/lock those manually
 - Change velocity drag at screen change so there's a timer 2-3s that toggles back to positional drag when it expires?
 - Add tool that toggles debug sprites for a single creature? If those sprites are still in the game and easy to toggle
 - Make selection crosshairs color configurable? Entire radialmenu color configurable? Crosshair shaders configurable?
@@ -88,6 +87,7 @@ Mouse Drag
 - Biography mod support which allows copying ID in-game?
 
 FreeCam
+- Update integration with Mouse Drag
 - Fix bug in arena mode / single screen rooms where roomcamera position is moved but screen isn't changed, lock campos in this case?
 - Add visual feedback when a pipe to another room is selected and loading that room failed (red X on pipe tile)
 - Add deadband tolerance thing to the mouse visibility initial movement change

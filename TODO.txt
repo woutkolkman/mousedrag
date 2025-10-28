@@ -1,11 +1,8 @@
 Mouse Drag
 - Add option that locks (with the lock tool) a (multiple-?)selection in-place so the player feels more in control of multiple creatures
 - Test/fix duplicate/cut/paste rotted variants (Watcher) of lizards and seedcob
-- Add tool that toggles debug sprites for a single creature?
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
-- Change velocity drag at screen change, so the velocity drag mode is turned off again if the main dragged object is close to the mouse position, or on a counter 2-3s?
-- Edit velocity drag so you can still drag bodychunks through walls
 - Add deadband tolerance thing to the mouse visibility initial movement change
 - Check/fix the effect of RainWorldOnModsInitHook being called multiple times when certain mods are enabled (Rain Meadow)
 - Rain Meadow multiplayer support? Configurable options for hosts to allow/disallow tools for other players?
@@ -25,6 +22,8 @@ Mouse Drag
 - In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 === Forget list ===:
+- Change velocity drag at screen change so there's a timer 2-3s that toggles back to positional drag when it expires?
+- Add tool that toggles debug sprites for a single creature? If those sprites are still in the game and easy to toggle
 - Make selection crosshairs color configurable? Entire radialmenu color configurable? Crosshair shaders configurable?
 - Add secondary index option for devconsole position in radialmenu on-background/on-object
 - Add tool that can fill a room with water to a certain height, or remove all water?

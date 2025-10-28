@@ -196,6 +196,11 @@ namespace MouseDrag
                 if (ShouldRelease(dragChunks[i].owner))
                     dragChunks.RemoveAt(i);
 
+            //check if tempVelocityDrag bodychunk is close enough, then switch back to positional drag
+            if (tempVelocityDrag && dragChunks.Count > 0 && dragChunks[0].chunk != null)
+                if (Vector2.Distance(mousePos, dragChunks[0].chunk.pos - dragChunks[0].offset) < 10f)
+                    tempVelocityDrag = false;
+
             bool velocityDrag = Options.velocityDrag?.Value == true || tempVelocityDrag || keyVelocityDrag;
 
             //drag remaining chunks

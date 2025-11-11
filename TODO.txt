@@ -1,4 +1,7 @@
 Mouse Drag
+- Fix bug in destroyRoomCreatures tool improperly deleting creatures and causing lag after ~500-800 spawns/deletions
+- Fix bug in tame tools so a lizard which wanted to attack a creature/player stops attacking that creature/player after being tamed (occurs in some instances?)
+- Add selection method for multi-select bodychunks in selection rectangle: center of bodychunk, edge of bodychunk, full bodychunk
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
 - Add deadband tolerance thing to the mouse visibility initial movement change
@@ -14,17 +17,20 @@ Mouse Drag
 - Also add safari-control camera change option to background radialmenu (instead of keybind only) | Add safari control icon to global/background radial menu, so you can switch cams between creatures using the radial menu? Might be confusing
 - Add a unlock all bodychunks option to the radialmenu
 - Add an option that, when an object is paused, also pauses the graphics using an IL-hook | Optionally pause graphical update when objects are paused
-- Add a button that drags all players in the room to the cursor (or the camera position?), just like dev tools?
-- Option to enable just the player drag tool (V (& W?)) from dev tools?
+- Add a button that drags all players in the room to the cursor (or the camera position?), just like Dev Tools?
+- Option to enable just the player drag tool (V (& W?)) from Dev Tools?
 - Change page icon in radial menu "+" to "1/3" etc.?
 - In the radial menu, with the revive tool, when holding the mouse button and dragging, draw a new radial menu with a circular slider with which you can configure a specific amount of health
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
+- Check if it's desired to block right mouse button opening radialmenu inside of the Dev Tools H menu? Already blocked with RegionKit integration enabled
 === Forget list ===:
+- Change graphics of selection-rectangle to add a white (?) border with the same method of the selection circle-lines?
 - Add option that locks (with the lock tool) a (multiple-?)selection in-place so the player feels more in control of multiple creatures, or player should pause/lock those manually
 - Change velocity drag at screen change so there's a timer 2-3s that toggles back to positional drag when it expires?
 - Add tool that toggles debug sprites for a single creature? If those sprites are still in the game and easy to toggle
 - Make selection crosshairs color configurable? Entire radialmenu color configurable? Crosshair shaders configurable?
-- Add secondary index option for devconsole position in radialmenu on-background/on-object
+- Create and add a shader which inverts the color underneath it, for the selection crosshairs?
+- Add secondary index option for Dev Console position in radialmenu on-background/on-object
 - Add tool that can fill a room with water to a certain height, or remove all water?
 - Dev Console command to bind a Dev Console command to a newly automatically generated menu slot (similar method like the group command), including retention after game restart? And a clear custom slot(s) command. Including functionallity that automatically enters the selector (or pass the reference) for a specific radialmenu-selected object.
 - Try to fix BigSandGrub spawn issue where room is reloaded and its SandGrubBurrow is deleted and the SandGrub falls out of the room
@@ -35,6 +41,7 @@ Mouse Drag
 - Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
 - Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
+- Add ctrl+a keybind which multi-selects every object in the room, depending on the selection settings for items/creatures
 - Add ctrl+z keybind to undo the last action? Mouse Drag code currently is not really structured to track actions well..
 - Add alternative multi-select rectangle which is freeform and can be activated with left alt instead of left control (by default)
 - If multi-select is active and objects are copied to the clipboard, when pasting these objects, paste the whole group at the same time (with original offsets?)? Current clipboard list will become a list of lists

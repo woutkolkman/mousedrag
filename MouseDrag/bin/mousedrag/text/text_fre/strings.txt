@@ -233,3 +233,5 @@ Tools 2|Outils 2
 Tool Settings|Paramètres de l'outil
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Index préféré de cet emplacement dans le menu. La valeur -1 place les nouveaux emplacements à la fin de la liste. L'index final dans le menu peut différer en raison des emplacements masqués.
 MSC not enabled|MSC non activé
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|Apprivoiser un lézard modifiera son LizardBreedParams.attemptBiteRadius à 0f afin que vous ne soyez jamais assez près pour que le lézard tente de vous mordre.<LINE>AVERTISSEMENT : L’utilisation de cette option peut avoir des effets secondaires imprévus.
+Prevent tamed lizard bites|Prévenir les morsures de lézards apprivoisés

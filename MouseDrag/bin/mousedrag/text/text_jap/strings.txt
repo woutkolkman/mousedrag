@@ -233,3 +233,5 @@ Tools 2|ツール2
 Tool Settings|ツール設定
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|このメニュー内のスロットの優先インデックス。値が-1の場合、新しいスロットはリストの末尾に配置されます。メニュー内の最終インデックスは、隠れたスロットの存在により異なる場合があります。
 MSC not enabled|MSC 有効になっていません
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|トカゲを飼いならすと、LizardBreedParams.attemptBiteRadius が 0f に変更されるため、トカゲが噛みつこうとするほど近づくことができなくなります。<LINE>警告: このオプションを使用すると、意図しない副作用が発生する可能性があります。
+Prevent tamed lizard bites|飼いならされたトカゲに噛まれないようにする

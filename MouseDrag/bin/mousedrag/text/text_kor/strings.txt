@@ -233,3 +233,5 @@ Tools 2|도구 2
 Tool Settings|도구 설정
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|이 메뉴 슬롯의 선호 인덱스. 값 -1은 새로운 슬롯을 목록의 끝에 배치합니다. 메뉴의 최종 인덱스는 숨겨진 슬롯으로 인해 다를 수 있습니다.
 MSC not enabled|MSC 활성화되지 않음
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|도마뱀을 길들이면 LizardBreedParams.attemptBiteRadius가 0f로 바뀌어 도마뱀이 물려고 할 만큼 가까이 다가가지 않게 됩니다.<LINE>경고: 이 옵션을 사용하면 예상치 못한 부작용이 발생할 수 있습니다.
+Prevent tamed lizard bites|길들여진 도마뱀 물림을 예방하세요

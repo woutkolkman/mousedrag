@@ -233,3 +233,5 @@ Tools 2|Tools 2
 Tool Settings|Tool Settings
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.
 MSC not enabled|MSC not enabled
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.
+Prevent tamed lizard bites|Prevent tamed lizard bites

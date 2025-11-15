@@ -233,3 +233,5 @@ Tools 2|Werkzeuge 2
 Tool Settings|Werkzeug-Einstellungen
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Bevorzugter Index dieses Slots im Menü. Der Wert -1 platziert neue Slots am Ende der Liste. Der endgültige Index im Menü kann aufgrund versteckter Slots abweichen.
 MSC not enabled|MSC nicht aktiviert
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|Das Zähmen einer Echse ändert deren LizardBreedParams.attemptBiteRadius auf 0f, sodass man nie nah genug ist, damit die Echse versucht zu beißen.<LINE>WARNUNG: Die Verwendung dieser Option kann unbeabsichtigte Nebenwirkungen haben.
+Prevent tamed lizard bites|Bisse von zahmen Eidechsen verhindern

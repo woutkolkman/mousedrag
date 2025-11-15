@@ -93,7 +93,7 @@ namespace MouseDrag
         public static Configurable<float> forcefieldRadius;
         public static Configurable<int> infoDepth;
 
-        public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep;
+        public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, cheatTameLizards;
         public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
         public int curTab;
 
@@ -290,6 +290,7 @@ namespace MouseDrag
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
             exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
             tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
+            cheatTameLizards = config.Bind(nameof(cheatTameLizards), defaultValue: true, new ConfigurableInfo("Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f. WARNING: Using this option might have unintended side-effects.", null, "", "Prevent tamed lizard bites"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).", null, "", "Safari-control changes camera"));
             controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.", null, "", "Safari-control only one creature"));
             controlNoInput = config.Bind(nameof(controlNoInput), defaultValue: false, new ConfigurableInfo("While safari-controlling creatures, only the creature which a camera is following will move. Unused if \"Safari-control changes camera\" is unchecked.", null, "", "Reset other safari-control input"));
@@ -555,6 +556,7 @@ namespace MouseDrag
             AddCheckBox(exitGameOverMode, new Vector2(x, y -= sepr));
             AddCheckBox(exceptSlugNPC, new Vector2(x, y -= sepr));
             AddCheckBox(tameIncreasesRep, new Vector2(x, y -= sepr));
+            AddCheckBox(cheatTameLizards, new Vector2(x, y -= sepr));
             AddCheckBox(controlChangesCamera, new Vector2(x, y -= sepr));
             AddCheckBox(controlOnlyOne, new Vector2(x, y -= sepr));
             AddCheckBox(controlNoInput, new Vector2(x, y -= sepr));

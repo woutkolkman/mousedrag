@@ -1,4 +1,6 @@
-﻿namespace MouseDrag
+﻿using System.Linq;
+
+namespace MouseDrag
 {
     public static class Tame
     {
@@ -35,7 +37,7 @@
                 if (rel?.like < 1f)
                     rel.InfluenceLike(2f); //force max
                 if (rel?.know < 1f)
-                    rel.InfluenceKnow(0.9f);
+                    rel.InfluenceKnow(0.9f); //max possible influence
                 if (rel != null) {
                     if (Options.tameIncreasesRep?.Value == true)
                         game.session?.creatureCommunities?.InfluenceLikeOfPlayer(
@@ -45,15 +47,67 @@
                             0.03f, 0.15f, 0.2f
                         );
                     if (Options.logDebug?.Value != false)
-                        Plugin.Logger.LogDebug("TameCreature, SocialMemory.Relationship data set: like=" + rel.like + ", tempLike=" + rel.tempLike + ", know=" + rel.know);
+                        Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", SocialMemory.Relationship data set: like=" + rel.like + ", tempLike=" + rel.tempLike + ", know=" + rel.know);
                 }
+            }
 
-                if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
+            if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
+                SocialMemory.Relationship rel = creature.state?.socialMemory?.GetOrInitiateRelationship(player.ID);
+                bool somethingSet = false;
+                if (ai.friendTracker.friend != player.realizedCreature) {
                     ai.friendTracker.friend = player.realizedCreature;
-                    if (ai.friendTracker.friendRel == null)
-                        ai.friendTracker.friendRel = rel;
+                    somethingSet = true;
+                }
+                if (ai.friendTracker.friendRel != rel) {
+                    ai.friendTracker.friendRel = rel;
+                    somethingSet = true;
+                }
+                if (Options.logDebug?.Value != false && somethingSet)
+                    Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", FriendTracker data set with creature: " + Special.ConsistentName(player));
+            }
+
+            //cancel friendly attempted bites
+            if (ai is LizardAI) {
+                if ((ai as LizardAI).casualAggressionTarget?.representedCreature == player) {
                     if (Options.logDebug?.Value != false)
-                        Plugin.Logger.LogDebug("TameCreature, FriendTracker data set");
+                        Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", removed LizardAI.casualAggressionTarget for creature: " + Special.ConsistentName((ai as LizardAI).casualAggressionTarget.representedCreature));
+                    (ai as LizardAI).casualAggressionTarget = null; //NOTE: it is possible that this tracker is restored in a future update tick
+                }
+                if ((ai as LizardAI).lizard?.lizardParams != null && (ai as LizardAI).lizard.lizardParams.attemptBiteRadius > 0f && Options.cheatTameLizards?.Value == true) {
+                    (ai as LizardAI).lizard.lizardParams.attemptBiteRadius = 0f;
+                    if (Options.logDebug?.Value != false)
+                        Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", set LizardBreedParams.attemptBiteRadius to 0f");
+                }
+            }
+
+            //remove trackers for this creature (if they are not removed automatically already)
+            foreach (AIModule module in ai.modules) {
+                if (module is ThreatTracker) {
+                    foreach (ThreatTracker.ThreatCreature t in (module as ThreatTracker).threatCreatures.Where(c => c?.creature?.representedCreature == player)) {
+                        if (t.creature.deleteMeNextFrame)
+                            continue;
+                        t.creature.Destroy();
+                        if (Options.logDebug?.Value != false)
+                            Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", destroyed ThreatTracker for creature: " + Special.ConsistentName(player));
+                    }
+                }
+                if (module is PreyTracker) {
+                    foreach (PreyTracker.TrackedPrey t in (module as PreyTracker).prey.Where(c => c?.critRep?.representedCreature == player)) {
+                        if (t.critRep.deleteMeNextFrame)
+                            continue;
+                        t.critRep.Destroy();
+                        if (Options.logDebug?.Value != false)
+                            Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", destroyed TrackedPrey for creature: " + Special.ConsistentName(player));
+                    }
+                }
+                if (module is AgressionTracker) {
+                    foreach (AgressionTracker.AngerRelationship t in (module as AgressionTracker).creatures.Where(c => c?.crit?.representedCreature == player)) {
+                        if (t.crit.deleteMeNextFrame)
+                            continue;
+                        t.crit.Destroy();
+                        if (Options.logDebug?.Value != false)
+                            Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", destroyed AgressionTracker for creature: " + Special.ConsistentName(player));
+                    }
                 }
             }
         }
@@ -83,14 +137,15 @@
                 int count = creature.state?.socialMemory?.relationShips?.Count ?? 0;
                 creature.state?.socialMemory?.relationShips?.Clear();
                 if (Options.logDebug?.Value != false)
-                    Plugin.Logger.LogDebug("ClearRelationships, cleared " + count + " relationships");
+                    Plugin.Logger.LogDebug("ClearRelationships, " + Special.ConsistentName(creature) + ", cleared " + count + " relationship" + (count == 1 ? "" : "s"));
+            }
 
-                if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
-                    ai.friendTracker.friend = null;
-                    ai.friendTracker.friendRel = null;
-                    if (Options.logDebug?.Value != false)
-                        Plugin.Logger.LogDebug("ClearRelationships, FriendTracker data reset");
-                }
+            if (ai is FriendTracker.IHaveFriendTracker && ai.friendTracker != null) {
+                bool somethingReset = ai.friendTracker.friend != null || ai.friendTracker.friendRel != null;
+                if (Options.logDebug?.Value != false && somethingReset)
+                    Plugin.Logger.LogDebug("ClearRelationships, " + Special.ConsistentName(creature) + ", FriendTracker data reset with creature: " + Special.ConsistentName(ai.friendTracker.friend?.abstractCreature));
+                ai.friendTracker.friend = null;
+                ai.friendTracker.friendRel = null;
             }
         }
 

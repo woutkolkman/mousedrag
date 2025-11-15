@@ -233,3 +233,5 @@ Tools 2|Strumenti 2
 Tool Settings|Impostazioni dello strumento
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Indice preferito di questo slot nel menu. Il valore -1 inserisce i nuovi slot alla fine dell'elenco. L'indice finale nel menu potrebbe differire a causa degli slot nascosti.
 MSC not enabled|MSC non abilitato
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|Addomesticare una lucertola cambierà il suo LizardBreedParams.attemptBiteRadius in 0f, quindi non sarai mai abbastanza vicino da permettere alla lucertola di tentare di morderti.<LINE>ATTENZIONE: l'utilizzo di questa opzione potrebbe avere effetti collaterali indesiderati.
+Prevent tamed lizard bites|Prevenire i morsi delle lucertole domestiche

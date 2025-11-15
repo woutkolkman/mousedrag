@@ -233,3 +233,5 @@ Tools 2|Ferramentas 2
 Tool Settings|Definições da ferramenta
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|Índice preferencial deste slot no menu. O valor -1 coloca novos slots no final da lista. O índice final no menu pode ser diferente devido a slots ocultos.
 MSC not enabled|MSC não habilitado
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|Domesticar um lagarto mudará seu LizardBreedParams.attemptBiteRadius para 0f, de modo que você nunca estará perto o suficiente para que o lagarto tente morder.<LINE>AVISO: O uso desta opção pode ter efeitos colaterais indesejados.
+Prevent tamed lizard bites|Prevenir mordidas de lagartos domesticados

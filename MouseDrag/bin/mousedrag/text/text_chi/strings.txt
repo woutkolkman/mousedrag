@@ -233,3 +233,5 @@ Tools 2|工具2
 Tool Settings|工具设置
 Preferred index of this slot in the menu. Value -1 places new slots at the end of the list. The final index in the menu might differ due to hidden slots.|此菜单项的首选索引。值为-1时，新菜单项将添加到列表末尾。由于存在隐藏的菜单项，菜单中的最终索引可能与预期不同。
 MSC not enabled|MSC 未启用
+Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.<LINE>WARNING: Using this option might have unintended side-effects.|驯服蜥蜴会将其 LizardBreedParams.attemptBiteRadius 更改为 0f，这样你永远不会离蜥蜴足够近，以至于它无法尝试咬你。<LINE>警告：使用此选项可能会产生意想不到的副作用。
+Prevent tamed lizard bites|防止被驯养蜥蜴咬伤

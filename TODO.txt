@@ -1,6 +1,5 @@
 Mouse Drag
-- When deleting an object, make sure that the references towards that object (like relationships) are also cleared (optional for cut/paste etc. via function parameters)
-- Fix bug in tame tools so a lizard which wanted to attack a creature/player stops attacking that creature/player after being tamed (occurs in some instances?)
+- When deleting an object, make sure that the references towards that object (like relationships/trackers) are also cleared (optional for cut/paste etc. via function parameters)
 - Add selection method for multi-select bodychunks in selection rectangle: center of bodychunk, edge of bodychunk, full bodychunk
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)

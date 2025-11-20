@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 
 namespace MouseDrag
 {
@@ -73,10 +74,19 @@ namespace MouseDrag
                         Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", removed LizardAI.casualAggressionTarget for creature: " + Special.ConsistentName((ai as LizardAI).casualAggressionTarget.representedCreature));
                     (ai as LizardAI).casualAggressionTarget = null; //NOTE: it is possible that this tracker is restored in a future update tick
                 }
-                if ((ai as LizardAI).lizard?.lizardParams != null && (ai as LizardAI).lizard.lizardParams.attemptBiteRadius > 0f && Options.cheatTameLizards?.Value == true) {
-                    (ai as LizardAI).lizard.lizardParams.attemptBiteRadius = 0f;
+                if ((ai as LizardAI).lizard?.lizardParams?.template != null && (ai as LizardAI).lizard.lizardParams.attemptBiteRadius > 0f && Options.cheatTameLizards?.Value == true) {
+                    //effectively duplicate the LizardBreedParams object using reflection, this makes sure that the params are changed only for this lizard
+                    LizardBreedParams lbp = new LizardBreedParams((ai as LizardAI).lizard.lizardParams.template);
+                    FieldInfo[] objectFields = lbp.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+                    foreach (FieldInfo fi in objectFields)
+                        fi.SetValue(lbp, fi.GetValue((ai as LizardAI).lizard.lizardParams));
+
+                    //apply the changes that will prevent this lizard from attempting bites while tamed
+                    lbp.attemptBiteRadius = 0f;
+                    (ai as LizardAI).lizard.lizardParams = lbp;
+
                     if (Options.logDebug?.Value != false)
-                        Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", set LizardBreedParams.attemptBiteRadius to 0f");
+                        Plugin.Logger.LogDebug("TameCreature, " + Special.ConsistentName(creature) + ", copied LizardBreedParams and set attemptBiteRadius to 0f");
                 }
             }
 

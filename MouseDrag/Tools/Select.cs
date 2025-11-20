@@ -131,7 +131,7 @@ namespace MouseDrag
                 }
                 var container = rcam?.ReturnFContainer("HUD");
                 for (int i = 0; i < visuals.Count; i++) {
-                    int spriteCount = 5 + (int)(selectedChunks[i].rad / 6f);
+                    int spriteCount = 8 + (int)(selectedChunks[i].rad / 5f);
                     visuals[i].InitiateSprites(container, spriteCount);
                     visuals[i].rotationSpeed = 3f * (10f / selectedChunks[i].rad);
                 }
@@ -180,7 +180,7 @@ namespace MouseDrag
                 }
                 var container = rcam?.ReturnFContainer("HUD");
                 for (int i = 0; i < visualsFromRect.Count; i++) {
-                    int spriteCount = 5 + (int)(rectChunks[i].rad / 6f);
+                    int spriteCount = 8 + (int)(rectChunks[i].rad / 5f);
                     visualsFromRect[i].InitiateSprites(container, spriteCount);
                     visualsFromRect[i].rotationSpeed = 3f * (10f / rectChunks[i].rad);
                 }

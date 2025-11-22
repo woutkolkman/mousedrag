@@ -2,6 +2,70 @@
 {
     public static class Destroy
     {
+        public static void DestroyObject(AbstractPhysicalObject obj)
+        {
+            if (obj == null)
+                return;
+
+            DestroyObject(obj.realizedObject);
+            obj.Room?.RemoveEntity(obj); //prevent realizing object after hibernation in shelter when the object was deleted inside of this shelter
+
+            //Jolly Co-op's Destroy kills players (this if-statement prevents issues with destroying duplicated players while Jolly Co-op is active)
+            if (!(obj.realizedObject is Player)) //|| (obj as AbstractCreature)?.creatureTemplate?.type == CreatureTemplate.Type.Slugcat))
+                obj.Destroy(); //prevent realizing after hibernation
+
+            //remove this entity from trackers of other creatures, so they basically forget the existence of the destroyed object
+            for (int q = 0; q < obj.Room?.world?.abstractRooms?.Length; q++) {
+                var ar = obj.Room.world.abstractRooms[q];
+                for (int i = 0; i < ar?.entities?.Count; i++) {
+                    if (!(ar.entities[i] is AbstractCreature))
+                        continue;
+                    var ai = (ar.entities[i] as AbstractCreature).abstractAI;
+                    if (ai?.RealAI?.modules == null)
+                        continue;
+
+                    //for every AIModule of every creature in the current region
+                    foreach (AIModule aim in ai.RealAI.modules) {
+                        if (aim is Tracker && obj is AbstractCreature)
+                            (aim as Tracker).ForgetCreature(obj as AbstractCreature);
+                        if (aim is AgressionTracker && obj is AbstractCreature)
+                            (aim as AgressionTracker).ForgetCreature(obj as AbstractCreature);
+                        if (aim is ObstacleTracker && obj.realizedObject != null)
+                            (aim as ObstacleTracker).EraseObstacleObject(obj.realizedObject);
+                        if (aim is PreyTracker && obj is AbstractCreature)
+                            (aim as PreyTracker).ForgetPrey(obj as AbstractCreature);
+                        if (aim is BigSpiderAI.SpiderSpitModule && obj is AbstractCreature) {
+                            if ((aim as BigSpiderAI.SpiderSpitModule).spitAtCrit?.representedCreature == obj)
+                                (aim as BigSpiderAI.SpiderSpitModule).spitAtCrit.Destroy();
+                            if ((aim as BigSpiderAI.SpiderSpitModule).taggedCreature?.representedCreature == obj)
+                                (aim as BigSpiderAI.SpiderSpitModule).taggedCreature.Destroy();
+                        }
+                        if (aim is ThreatTracker && obj is AbstractCreature)
+                            (aim as ThreatTracker).RemoveThreatCreature(obj as AbstractCreature);
+                        if (aim is Watcher.BigMothAI.ChildTrackerModule) {
+                            for (int j = ((aim as Watcher.BigMothAI.ChildTrackerModule).children?.Count ?? 0) - 1; j >= 0; j--) {
+                                var tc = (aim as Watcher.BigMothAI.ChildTrackerModule).children[j];
+                                if (tc?.critRep?.representedCreature == obj)
+                                    (aim as Watcher.BigMothAI.ChildTrackerModule).children.Remove(tc);
+                            }
+                        }
+                        if (aim is ItemTracker) {
+                            for (int j = ((aim as ItemTracker).items?.Count ?? 0) - 1; j >= 0; j--) {
+                                var ir = (aim as ItemTracker).items[j];
+                                if (ir?.representedItem == obj)
+                                    ir.Destroy();
+                            }
+                        }
+                        //TODO, skipped: RelationshipTracker (check with Clipboard tool), RelationshipTracker.DynamicRelationship (check with Clipboard tool), 
+                        //FriendTracker (check with Clipboard tool), DropBugAI.CeilingSitModule, ScavengerAI.CommunicationModule, ScavengerOutpost.PlayerTracker, 
+                        //DeerAI.SporeTracker, OverseerCommunicationModule, OverseerTutorialBehavior, YellowAI (for Lizard)
+                    }
+                }
+            }
+        }
+
+
+        //only destroys when object is loaded, use the abstract variant of this function primarily
         public static void DestroyObject(PhysicalObject obj)
         {
             if (obj == null)
@@ -25,61 +89,9 @@
                 (obj as Spear).resetHorizontalBeamState();
 
             obj.RemoveFromRoom();
-            obj.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject); //prevent realizing after hibernation in shelter
 
-            if (!(obj is Player)) { //Jolly Co-op's Destroy kills players (this if-statement prevents issues with duplicated players and Jolly Co-op active)
-                obj.Destroy(); //prevent realizing object after hibernation in shelter when the object was deleted inside of this shelter
-                obj.abstractPhysicalObject?.Destroy(); //safety
-            }
-
-            //remove this entity from trackers of other creatures, so they essentially forget the existence of the destroyed object
-            for (int q = 0; q < obj.abstractPhysicalObject?.Room?.world?.abstractRooms?.Length; q++) {
-                var ar = obj.abstractPhysicalObject.Room.world.abstractRooms[q];
-                for (int i = 0; i < ar?.entities?.Count; i++) {
-                    if (!(ar.entities[i] is AbstractCreature))
-                        continue;
-                    var ai = (ar.entities[i] as AbstractCreature).abstractAI;
-                    if (ai?.RealAI?.modules == null)
-                        continue;
-
-                    //for every AIModule of every creature in the current region
-                    foreach (AIModule aim in ai.RealAI.modules) {
-                        if (aim is Tracker && obj.abstractPhysicalObject is AbstractCreature)
-                            (aim as Tracker).ForgetCreature(obj.abstractPhysicalObject as AbstractCreature);
-                        if (aim is AgressionTracker && obj.abstractPhysicalObject is AbstractCreature)
-                            (aim as AgressionTracker).ForgetCreature(obj.abstractPhysicalObject as AbstractCreature);
-                        if (aim is ObstacleTracker)
-                            (aim as ObstacleTracker).EraseObstacleObject(obj);
-                        if (aim is PreyTracker && obj.abstractPhysicalObject is AbstractCreature)
-                            (aim as PreyTracker).ForgetPrey(obj.abstractPhysicalObject as AbstractCreature);
-                        if (aim is BigSpiderAI.SpiderSpitModule && obj.abstractPhysicalObject is AbstractCreature) {
-                            if ((aim as BigSpiderAI.SpiderSpitModule).spitAtCrit?.representedCreature == obj.abstractPhysicalObject)
-                                (aim as BigSpiderAI.SpiderSpitModule).spitAtCrit.Destroy();
-                            if ((aim as BigSpiderAI.SpiderSpitModule).taggedCreature?.representedCreature == obj.abstractPhysicalObject)
-                                (aim as BigSpiderAI.SpiderSpitModule).taggedCreature.Destroy();
-                        }
-                        if (aim is ThreatTracker && obj.abstractPhysicalObject is AbstractCreature)
-                            (aim as ThreatTracker).RemoveThreatCreature(obj.abstractPhysicalObject as AbstractCreature);
-                        if (aim is Watcher.BigMothAI.ChildTrackerModule) {
-                            for (int j = ((aim as Watcher.BigMothAI.ChildTrackerModule).children?.Count ?? 0) - 1; j >= 0; j--) {
-                                var tc = (aim as Watcher.BigMothAI.ChildTrackerModule).children[j];
-                                if (tc?.critRep?.representedCreature == obj.abstractPhysicalObject)
-                                    (aim as Watcher.BigMothAI.ChildTrackerModule).children.Remove(tc);
-                            }
-                        }
-                        if (aim is ItemTracker) {
-                            for (int j = ((aim as ItemTracker).items?.Count ?? 0) - 1; j >= 0; j--) {
-                                var ir = (aim as ItemTracker).items[j];
-                                if (ir?.representedItem == obj.abstractPhysicalObject)
-                                    ir.Destroy();
-                            }
-                        }
-                        //TODO, skipped: RelationshipTracker (check with Clipboard tool), RelationshipTracker.DynamicRelationship (check with Clipboard tool), 
-                        //FriendTracker (check with Clipboard tool), DropBugAI.CeilingSitModule, ScavengerAI.CommunicationModule, ScavengerOutpost.PlayerTracker, 
-                        //DeerAI.SporeTracker, OverseerCommunicationModule, OverseerTutorialBehavior, YellowAI (for Lizard)
-                    }
-                }
-            }
+            if (!(obj is Player)) //Jolly Co-op's Destroy kills players (this if-statement prevents issues with destroying duplicated players while Jolly Co-op is active)
+                obj.Destroy(); //prevent realizing after hibernation
         }
 
 
@@ -99,7 +111,7 @@
                         if (!(room.physicalObjects[i][j] is Player && //don't destroy when: creature is player and player is not SlugNPC (optional)
                             (Options.exceptSlugNPC?.Value != false || 
                             !(room.physicalObjects[i][j] as Player).isNPC)))
-                            DestroyObject(room.physicalObjects[i][j]);
+                            DestroyObject(room.physicalObjects[i][j]?.abstractPhysicalObject);
         }
 
 
@@ -159,11 +171,7 @@
                         (ac as AbstractCreature)?.creatureTemplate?.type == MoreSlugcats.MoreSlugcatsEnums.CreatureTemplateType.SlugNPC)
                         return false;
 
-                    if (ac.realizedObject != null) {
-                        DestroyObject(ac.realizedObject);
-                    } else {
-                        ar.RemoveEntity(ac);
-                    }
+                    DestroyObject(ac);
                     return true;
                 }
 

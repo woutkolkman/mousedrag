@@ -139,7 +139,7 @@ namespace MouseDrag
 
             if (Options.destroyOneKey?.Value != null && Input.GetKeyDown(Options.destroyOneKey.Value)) {
                 foreach (var obj in Select.selectedObjects)
-                    Destroy.DestroyObject(obj);
+                    Destroy.DestroyObject(obj?.abstractPhysicalObject);
                 Select.selectedChunks.Clear();
             }
 

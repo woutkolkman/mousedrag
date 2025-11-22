@@ -464,6 +464,34 @@ namespace MouseDrag
             })
             .Register();
 
+            new DevConsole.Commands.CommandBuilder("md_destroy")
+            .Help("md_destroy [selector]")
+            .RunGame((game, args) => {
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Destroy.DestroyObject(list.ElementAt(i));
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
+            new DevConsole.Commands.CommandBuilder("md_release_grasps/stuck")
+            .Help("md_release_grasps/stuck [selector]")
+            .RunGame((game, args) => {
+                if (args.Length != 1) {
+                    DevConsole.GameConsole.WriteLine("Expected 1 argument");
+                    return;
+                }
+                var list = DevConsole.Selection.SelectAbstractObjects(game, args[0]);
+                for (int i = list.Count() - 1; i >= 0; i--)
+                    Destroy.ReleaseAllGrasps(list.ElementAt(i)?.realizedObject);
+            })
+            .AutoComplete(new string[][]{ DevConsole.Selection.Autocomplete })
+            .Register();
+
             new DevConsole.Commands.CommandBuilder("md_lock")
             .Help("md_lock [selector] [action] [bodychunk?]")
             .RunGame((game, args) => {

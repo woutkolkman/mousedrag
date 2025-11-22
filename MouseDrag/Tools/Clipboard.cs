@@ -22,7 +22,7 @@ namespace MouseDrag
             if (obj is Oracle) {
                 //cannot destroy, or game crashes on paste (result: loitering sprites when cut)
                 obj.RemoveFromRoom();
-                obj.abstractPhysicalObject?.Room?.RemoveEntity(obj.abstractPhysicalObject);
+                obj.abstractPhysicalObject.Room?.RemoveEntity(obj.abstractPhysicalObject);
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace MouseDrag
                 }
             }
 
-            Destroy.DestroyObject(obj);
+            Destroy.DestroyObject(obj.abstractPhysicalObject);
         }
 
 

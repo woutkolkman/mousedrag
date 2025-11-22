@@ -431,7 +431,7 @@ namespace MouseDrag
                     name = "mousedragDestroy",
                     tooltip = "Destroy",
                     actionPO = (game, slot, po) => {
-                        Destroy.DestroyObject(po);
+                        Destroy.DestroyObject(po?.abstractPhysicalObject);
                     },
                     finalize = (game, slot) => {
                         //prevent ghost selections

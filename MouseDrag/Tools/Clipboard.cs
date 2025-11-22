@@ -87,6 +87,7 @@ namespace MouseDrag
 
             //undelete
             if (apo.realizedObject != null) {
+                apo.slatedForDeletion = false;
                 apo.realizedObject.slatedForDeletetion = false;
                 apo.realizedObject.room = room;
             }

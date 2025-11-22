@@ -3,7 +3,7 @@
   "name": "FreeCam",
   "version": "1.0.1",
   "authors": "Maxi Mol",
-  "description": "Navigate in and to rooms with your mouse by clicking on pipes.\nDefault KeyBind is the \"Home\" key.\nSupports SBCameraScroll, SplitScreen Co-op, and more camera mods.",
+  "description": "Navigate in and to rooms with your mouse by clicking on pipes.\nDefault KeyBind is the \"Home\" key.\nSupports SBCameraScroll, SplitScreen Co-op, and more camera mods.\nAlso adds a Mouse Drag slot and Dev Console command.",
   "requirements": [],
   "requirements_names": [],
   "tags": ["Tools"],

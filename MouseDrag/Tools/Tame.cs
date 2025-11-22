@@ -82,7 +82,7 @@ namespace MouseDrag
                         fi.SetValue(lbp, fi.GetValue((ai as LizardAI).lizard.lizardParams));
 
                     //apply the changes that will prevent this lizard from attempting bites while tamed
-                    lbp.attemptBiteRadius = 0f;
+                    lbp.attemptBiteRadius = 0f; //NOTE: also affects behavior towards other creatures
                     (ai as LizardAI).lizard.lizardParams = lbp;
 
                     if (Options.logDebug?.Value != false)

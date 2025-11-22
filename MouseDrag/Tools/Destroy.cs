@@ -33,48 +33,51 @@
             }
 
             //remove this entity from trackers of other creatures, so they essentially forget the existence of the destroyed object
-            for (int i = 0; i < obj.abstractPhysicalObject?.Room?.entities?.Count; i++) {
-                if (!(obj.abstractPhysicalObject.Room.entities[i] is AbstractCreature))
-                    continue;
-                var ac = obj.abstractPhysicalObject.Room.entities[i] as AbstractCreature;
-                var ai = ac.abstractAI;
-                if (ai?.RealAI?.modules == null)
-                    continue;
+            for (int q = 0; q < obj.abstractPhysicalObject?.Room?.world?.abstractRooms?.Length; q++) {
+                var ar = obj.abstractPhysicalObject.Room.world.abstractRooms[q];
+                for (int i = 0; i < ar?.entities?.Count; i++) {
+                    if (!(ar.entities[i] is AbstractCreature))
+                        continue;
+                    var ai = (ar.entities[i] as AbstractCreature).abstractAI;
+                    if (ai?.RealAI?.modules == null)
+                        continue;
 
-                foreach (AIModule aim in ai.RealAI.modules) {
-                    if (aim is Tracker && obj.abstractPhysicalObject is AbstractCreature)
-                        (aim as Tracker).ForgetCreature(obj.abstractPhysicalObject as AbstractCreature);
-                    if (aim is AgressionTracker && obj.abstractPhysicalObject is AbstractCreature)
-                        (aim as AgressionTracker).ForgetCreature(obj.abstractPhysicalObject as AbstractCreature);
-                    if (aim is ObstacleTracker)
-                        (aim as ObstacleTracker).EraseObstacleObject(obj);
-                    if (aim is PreyTracker && obj.abstractPhysicalObject is AbstractCreature)
-                        (aim as PreyTracker).ForgetPrey(obj.abstractPhysicalObject as AbstractCreature);
-                    if (aim is BigSpiderAI.SpiderSpitModule && obj.abstractPhysicalObject is AbstractCreature) {
-                        if ((aim as BigSpiderAI.SpiderSpitModule).spitAtCrit?.representedCreature == obj.abstractPhysicalObject)
-                            (aim as BigSpiderAI.SpiderSpitModule).spitAtCrit.Destroy();
-                        if ((aim as BigSpiderAI.SpiderSpitModule).taggedCreature?.representedCreature == obj.abstractPhysicalObject)
-                            (aim as BigSpiderAI.SpiderSpitModule).taggedCreature.Destroy();
-                    }
-                    if (aim is ThreatTracker && obj.abstractPhysicalObject is AbstractCreature)
-                        (aim as ThreatTracker).RemoveThreatCreature(obj.abstractPhysicalObject as AbstractCreature);
-                    if (aim is Watcher.BigMothAI.ChildTrackerModule) {
-                        for (int j = ((aim as Watcher.BigMothAI.ChildTrackerModule).children?.Count ?? 0) - 1; j >= 0; j--) {
-                            var tc = (aim as Watcher.BigMothAI.ChildTrackerModule).children[j];
-                            if (tc?.critRep?.representedCreature == obj.abstractPhysicalObject)
-                                (aim as Watcher.BigMothAI.ChildTrackerModule).children.Remove(tc);
+                    //for every AIModule of every creature in the current region
+                    foreach (AIModule aim in ai.RealAI.modules) {
+                        if (aim is Tracker && obj.abstractPhysicalObject is AbstractCreature)
+                            (aim as Tracker).ForgetCreature(obj.abstractPhysicalObject as AbstractCreature);
+                        if (aim is AgressionTracker && obj.abstractPhysicalObject is AbstractCreature)
+                            (aim as AgressionTracker).ForgetCreature(obj.abstractPhysicalObject as AbstractCreature);
+                        if (aim is ObstacleTracker)
+                            (aim as ObstacleTracker).EraseObstacleObject(obj);
+                        if (aim is PreyTracker && obj.abstractPhysicalObject is AbstractCreature)
+                            (aim as PreyTracker).ForgetPrey(obj.abstractPhysicalObject as AbstractCreature);
+                        if (aim is BigSpiderAI.SpiderSpitModule && obj.abstractPhysicalObject is AbstractCreature) {
+                            if ((aim as BigSpiderAI.SpiderSpitModule).spitAtCrit?.representedCreature == obj.abstractPhysicalObject)
+                                (aim as BigSpiderAI.SpiderSpitModule).spitAtCrit.Destroy();
+                            if ((aim as BigSpiderAI.SpiderSpitModule).taggedCreature?.representedCreature == obj.abstractPhysicalObject)
+                                (aim as BigSpiderAI.SpiderSpitModule).taggedCreature.Destroy();
                         }
-                    }
-                    if (aim is ItemTracker) {
-                        for (int j = ((aim as ItemTracker).items?.Count ?? 0) - 1; j >= 0; j--) {
-                            var ir = (aim as ItemTracker).items[j];
-                            if (ir?.representedItem == obj.abstractPhysicalObject)
-                                ir.Destroy();
+                        if (aim is ThreatTracker && obj.abstractPhysicalObject is AbstractCreature)
+                            (aim as ThreatTracker).RemoveThreatCreature(obj.abstractPhysicalObject as AbstractCreature);
+                        if (aim is Watcher.BigMothAI.ChildTrackerModule) {
+                            for (int j = ((aim as Watcher.BigMothAI.ChildTrackerModule).children?.Count ?? 0) - 1; j >= 0; j--) {
+                                var tc = (aim as Watcher.BigMothAI.ChildTrackerModule).children[j];
+                                if (tc?.critRep?.representedCreature == obj.abstractPhysicalObject)
+                                    (aim as Watcher.BigMothAI.ChildTrackerModule).children.Remove(tc);
+                            }
                         }
+                        if (aim is ItemTracker) {
+                            for (int j = ((aim as ItemTracker).items?.Count ?? 0) - 1; j >= 0; j--) {
+                                var ir = (aim as ItemTracker).items[j];
+                                if (ir?.representedItem == obj.abstractPhysicalObject)
+                                    ir.Destroy();
+                            }
+                        }
+                        //TODO, skipped: RelationshipTracker (check with Clipboard tool), RelationshipTracker.DynamicRelationship (check with Clipboard tool), 
+                        //FriendTracker (check with Clipboard tool), DropBugAI.CeilingSitModule, ScavengerAI.CommunicationModule, ScavengerOutpost.PlayerTracker, 
+                        //DeerAI.SporeTracker, OverseerCommunicationModule, OverseerTutorialBehavior, YellowAI (for Lizard)
                     }
-                    //TODO, skipped: RelationshipTracker (check with Clipboard tool), RelationshipTracker.DynamicRelationship (check with Clipboard tool), 
-                    //FriendTracker (check with Clipboard tool), DropBugAI.CeilingSitModule, ScavengerAI.CommunicationModule, ScavengerOutpost.PlayerTracker, 
-                    //DeerAI.SporeTracker, OverseerCommunicationModule, OverseerTutorialBehavior, YellowAI (for Lizard)
                 }
             }
         }

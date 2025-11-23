@@ -23,6 +23,9 @@ Mouse Drag
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 - Check if it's desired to block right mouse button opening radialmenu inside of the Dev Tools H menu? Already blocked with RegionKit integration enabled
 === Forget list ===:
+- Create new slots that can remove all applied forcefields or remove all bodychunk locks
+- Fix naming inconsistency Forcefield ForceField between sprite and code?
+- Create new remix menu options for the default visibility of lock and forcefield sprites on-screen
 - Make clipboard cut/paste CTRL + C/V keybinds repeated, give visual indication of an action?
 - Fix possible bug with actions on selected objects inside pipes, for example: multi select everything in the room, delete when one of the selected objects is in a pipe leading to the same room, the creature in the pipe won't be deleted (double check if this bug exists)
 - Fix possible bug in destroyRoomCreatures tool improperly deleting creatures and causing lag after ~500-800 spawns/deletions <-- tried to find any improper destroy but none found

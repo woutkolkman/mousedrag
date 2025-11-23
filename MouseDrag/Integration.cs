@@ -410,6 +410,13 @@ namespace MouseDrag
             })
             .Register();
 
+            new DevConsole.Commands.CommandBuilder("md_forcefield_show")
+            .Run((args) => {
+                Forcefield.showSprites = !Forcefield.showSprites;
+                DevConsole.GameConsole.WriteLine("Forcefield sprites " + (Forcefield.showSprites ? "visible" : "hidden") + ".");
+            })
+            .Register();
+
             new DevConsole.Commands.CommandBuilder("md_tame")
             .Help("md_tame [selector]")
             .RunGame((game, args) => {

@@ -311,6 +311,9 @@ namespace MouseDrag
                         slot.name = forcefield ? "mousedragForceFieldOff" : "mousedragForceFieldOn";
                         slot.tooltip = forcefield ? "Disable forcefield" : "Enable forcefield";
                     },
+                    update = (game, slot, chunk) => {
+                        Forcefield.hoversOverSlot = slot.hover;
+                    },
                     actionBC = (game, slot, chunk) => {
                         Forcefield.SetForcefield(chunk, toggle: true, apply: true);
                     }

@@ -6,6 +6,7 @@ namespace MouseDrag
     public static class Forcefield
     {
         public static List<BodyChunk> forcefieldChunks = new List<BodyChunk>();
+        public static bool hoversOverSlot = false, showSprites = false;
 
 
         public static void UpdateForcefield(BodyChunk bodyChunk)
@@ -121,7 +122,9 @@ namespace MouseDrag
                     room.AddObject(this);
                     curPos = followChunk.pos; //prevent sprite shooting across screen
                 }
-                visible = followChunk.owner?.room != null && Drag.MouseCamera(room?.game)?.room == room;
+                visible = (showSprites || hoversOverSlot) 
+                    && followChunk.owner?.room != null 
+                    && Drag.MouseCamera(room?.game)?.room == room;
                 prevPos = curPos;
                 if (!Drag.ShouldRelease(followChunk?.owner))
                     curPos = followChunk.pos + followChunk.vel;

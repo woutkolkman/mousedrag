@@ -599,7 +599,7 @@ namespace MouseDrag
 
             OpLabel label = new OpLabel(pos.x + 40f, pos.y + 2f, option.info.Tags[0] as string)
             {
-                description = option.info.description,
+                //description = option.info.description, //disabling this line fixes description overlapping over other components
                 color = (Color)c
             };
 
@@ -658,7 +658,7 @@ namespace MouseDrag
 
             OpLabel label = new OpLabel(pos + offset, box.size, option.info.Tags[0] as string)
             {
-                description = option.info.description
+                //description = option.info.description //disabling this line fixes description overlapping over other components
             };
             label.alignment = alH;
             label.verticalAlignment = OpLabel.LabelVAlignment.Center;
@@ -681,7 +681,7 @@ namespace MouseDrag
 
             OpLabel label = new OpLabel(pos.x + width + 18f, pos.y + 2f, option.info.Tags[0] as string)
             {
-                description = option.info.description
+                //description = option.info.description //disabling this line fixes description overlapping over other components
             };
 
             Tabs[curTab].AddItems(new UIelement[]

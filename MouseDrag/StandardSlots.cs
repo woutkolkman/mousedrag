@@ -517,6 +517,9 @@ namespace MouseDrag
                         slot.name = unlocked ? "mousedragLocked" : "mousedragUnlocked";
                         slot.tooltip = unlocked ? "Lock position" : "Unlock position";
                     },
+                    update = (game, slot, chunk) => {
+                        Lock.hoversOverSlot = slot.hover;
+                    },
                     actionBC = (game, slot, chunk) => {
                         Lock.SetLock(chunk, toggle: true, apply: true);
                     }

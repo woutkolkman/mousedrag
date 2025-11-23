@@ -93,6 +93,10 @@ namespace MouseDrag
 
         public class ForcefieldSprite : UpdatableAndDeletable, IDrawable
         {
+            //NOTE: this object requires that the previous room of the bodychunk stays loaded after the followed bodychunk 
+            //moved to a new room, so this object is able to move itself to the new room when this object is updated
+
+
             public Vector2 curPos, prevPos;
             public BodyChunk followChunk;
             private bool visible;
@@ -101,8 +105,8 @@ namespace MouseDrag
             public ForcefieldSprite(BodyChunk bc)
             {
                 room = bc?.owner?.room;
-                prevPos = bc?.pos + bc?.vel ?? new Vector2();
-                curPos = bc?.pos + bc?.vel ?? new Vector2();
+                prevPos = bc?.pos ?? new Vector2();
+                curPos = bc?.pos ?? new Vector2();
                 followChunk = bc;
             }
             ~ForcefieldSprite() { Destroy(); }
@@ -127,7 +131,7 @@ namespace MouseDrag
                     && Drag.MouseCamera(room?.game)?.room == room;
                 prevPos = curPos;
                 if (!Drag.ShouldRelease(followChunk?.owner))
-                    curPos = followChunk.pos + followChunk.vel;
+                    curPos = followChunk.pos;
             }
 
 

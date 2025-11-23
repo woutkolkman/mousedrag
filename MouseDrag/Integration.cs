@@ -558,6 +558,13 @@ namespace MouseDrag
             })
             .Register();
 
+            new DevConsole.Commands.CommandBuilder("md_lock_show")
+            .Run((args) => {
+                Lock.showSprites = !Lock.showSprites;
+                DevConsole.GameConsole.WriteLine("Lock sprites " + (Lock.showSprites ? "visible" : "hidden") + ".");
+            })
+            .Register();
+
             new DevConsole.Commands.CommandBuilder("md_gravity")
             .Help("md_gravity [type?]")
             .Run((args) => {

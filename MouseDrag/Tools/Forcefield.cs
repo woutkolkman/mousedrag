@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace MouseDrag
 {
@@ -71,9 +72,13 @@ namespace MouseDrag
             if (contains)
                 if (toggle || (!toggle && !apply))
                     forcefieldChunks.Remove(bodyChunk);
-            if (!contains)
-                if (toggle || (!toggle && apply))
+            if (!contains) {
+                if (toggle || (!toggle && apply)) {
                     forcefieldChunks.Add(bodyChunk);
+                    ForcefieldSprite ffs = new ForcefieldSprite(bodyChunk);
+                    bodyChunk.owner.room?.AddObject(ffs);
+                }
+            }
         }
 
 
@@ -82,6 +87,91 @@ namespace MouseDrag
             forcefieldChunks.Clear();
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ClearForcefields");
+        }
+
+
+        public class ForcefieldSprite : UpdatableAndDeletable, IDrawable
+        {
+            public Vector2 curPos, prevPos;
+            public BodyChunk followChunk;
+            private bool visible;
+
+
+            public ForcefieldSprite(BodyChunk bc)
+            {
+                room = bc?.owner?.room;
+                prevPos = bc?.pos + bc?.vel ?? new Vector2();
+                curPos = bc?.pos + bc?.vel ?? new Vector2();
+                followChunk = bc;
+            }
+            ~ForcefieldSprite() { Destroy(); }
+
+
+            public override void Update(bool eu)
+            {
+                base.Update(eu);
+                if (!HasForcefield(followChunk) || followChunk?.owner?.slatedForDeletetion != false) {
+                    followChunk = null;
+                    Destroy();
+                    return;
+                }
+                if (followChunk.owner?.room != null && followChunk.owner.room != room) {
+                    RemoveFromRoom();
+                    room = followChunk.owner.room;
+                    room.AddObject(this);
+                    curPos = followChunk.pos; //prevent sprite shooting across screen
+                }
+                visible = followChunk.owner?.room != null && Drag.MouseCamera(room?.game)?.room == room;
+                prevPos = curPos;
+                if (!Drag.ShouldRelease(followChunk?.owner))
+                    curPos = followChunk.pos + followChunk.vel;
+            }
+
+
+            public void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+            {
+                sLeaser.RemoveAllSpritesFromContainer();
+                sLeaser.sprites = new FSprite[1];
+                sLeaser.sprites[0] = new FSprite("mousedragForceFieldOn", true);
+                this.AddToContainer(sLeaser, rCam, null);
+            }
+
+
+            public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+            {
+                if (slatedForDeletetion) {
+                    sLeaser?.CleanSpritesAndRemove();
+                    return;
+                }
+                Vector2 tsPos = Vector2.Lerp(prevPos, curPos, timeStacker) - camPos;
+
+                if (Integration.sBCameraScrollEnabled) {
+                    try {
+                        tsPos -= Integration.SBCameraScrollExtraOffset(rCam, tsPos, out float scale) / (1f / scale);
+                    } catch {
+                        Plugin.Logger.LogError("Forcefield.ForcefieldSprite.DrawSprites exception while reading SBCameraScroll, integration is now disabled");
+                        Integration.sBCameraScrollEnabled = false;
+                        throw; //throw original exception while preserving stack trace
+                    }
+                }
+
+                sLeaser.sprites[0].x = tsPos.x;
+                sLeaser.sprites[0].y = tsPos.y;
+                sLeaser.sprites[0].isVisible = visible;
+            }
+
+
+            public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+            {
+                if (newContainer == null)
+                    newContainer = rCam.ReturnFContainer("HUD");
+                newContainer.AddChild(sLeaser.sprites[0]);
+            }
+
+
+            public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+            {
+            }
         }
     }
 }

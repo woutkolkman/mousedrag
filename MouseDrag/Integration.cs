@@ -363,7 +363,9 @@ namespace MouseDrag
                     if (list.ElementAt(i)?.realizedObject?.bodyChunks == null)
                         continue;
                     BodyChunk[] bcs = null;
-                    if (args.Length < 3 || args[2] == "main") {
+                    if (args.Length < 3 && args[1] == "off") { //removing all forcefields prevents confusion when only using 2 arguments
+                        bcs = list.ElementAt(i).realizedObject.bodyChunks;
+                    } else if (args.Length < 3 || args[2] == "main") { //default
                         bcs = new BodyChunk[] { list.ElementAt(i).realizedObject.firstChunk };
                         if (list.ElementAt(i).realizedObject is Creature && 
                             (list.ElementAt(i).realizedObject as Creature).mainBodyChunk != null)

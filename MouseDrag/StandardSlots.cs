@@ -309,7 +309,7 @@ namespace MouseDrag
                     reload = (game, slot, chunk) => {
                         bool forceField = ForceField.HasForceField(chunk);
                         slot.name = forceField ? "mousedragForceFieldOff" : "mousedragForceFieldOn";
-                        slot.tooltip = forceField ? "Disable forcefield" : "Enable forcefield";
+                        slot.tooltip = forceField ? "Disable ForceField" : "Enable ForceField";
                     },
                     update = (game, slot, chunk) => {
                         ForceField.hoversOverSlot = slot.hover;

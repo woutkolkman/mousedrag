@@ -43,7 +43,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> killOneKey, killRoomKey, reviveOneKey, reviveRoomKey;
         public static Configurable<KeyCode> duplicateOneKey, tpCreaturesKey, tpItemsKey, controlKey;
 
-        public static Configurable<KeyCode> forcefieldKey;
+        public static Configurable<KeyCode> forceFieldKey;
         public static Configurable<KeyCode> tameOneKey, tameRoomKey, clearRelOneKey, clearRelRoomKey;
         public static Configurable<KeyCode> stunOneKey, stunRoomKey, unstunAllKey, stunAllKey;
         public static Configurable<KeyCode> destroyOneKey, destroyRoomCreaturesKey, destroyRoomItemsKey;
@@ -60,7 +60,7 @@ namespace MouseDrag
         public static Configurable<bool> clipboardMenu, clipboardCtrlXCV;
         public static Configurable<bool> tpWaypointBgMenu, tpWaypointCrMenu, controlMenu;
 
-        public static Configurable<bool> forcefieldMenu;
+        public static Configurable<bool> forceFieldMenu;
         public static Configurable<bool> tameOneMenu, tameRoomMenu, clearRelOneMenu, clearRelRoomMenu;
         public static Configurable<bool> stunOneMenu, stunRoomMenu, unstunAllMenu, stunAllMenu;
         public static Configurable<bool> destroyOneMenu, destroyRoomCreaturesMenu, destroyRoomItemsMenu, destroyRoomObjectsMenu;
@@ -77,7 +77,7 @@ namespace MouseDrag
         public static Configurable<int> clipboardOneIdx, clipboardRoomIdx;
         public static Configurable<int> tpWaypointBgIdx, tpWaypointCrIdx, controlIdx;
 
-        public static Configurable<int> forcefieldIdx;
+        public static Configurable<int> forceFieldIdx;
         public static Configurable<int> tameOneIdx, tameRoomIdx, clearRelOneIdx, clearRelRoomIdx;
         public static Configurable<int> stunOneIdx, stunRoomIdx, unstunAllIdx, stunAllIdx;
         public static Configurable<int> destroyOneIdx, destroyRoomCreaturesIdx, destroyRoomItemsIdx, destroyRoomObjectsIdx;
@@ -89,8 +89,8 @@ namespace MouseDrag
 
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask, healLimbs;
         public static Configurable<bool> adjustableLocks;
-        public static Configurable<bool> forcefieldImmunityPlayers, forcefieldImmunityItems;
-        public static Configurable<float> forcefieldRadius;
+        public static Configurable<bool> forceFieldImmunityPlayers, forceFieldImmunityItems;
+        public static Configurable<float> forceFieldRadius;
         public static Configurable<int> infoDepth;
 
         public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, cheatTameLizards;
@@ -173,7 +173,7 @@ namespace MouseDrag
             tpItemsKey = config.Bind(nameof(tpItemsKey), KeyCode.None, new ConfigurableInfo("KeyBind to teleport all items in current room to the mouse position.", null, "", "Teleport items\nin room"));
             controlKey = config.Bind(nameof(controlKey), KeyCode.None, new ConfigurableInfo("KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.", null, "", "Safari-control"));
 
-            forcefieldKey = config.Bind(nameof(forcefieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.\nA forcefield will push away objects within the configured radius.", null, "", "Forcefield"));
+            forceFieldKey = config.Bind(nameof(forceFieldKey), KeyCode.None, new ConfigurableInfo("KeyBind to toggle ForceField on the selected BodyChunks. ForceField is lost if BodyChunk is reloaded.\nA ForceField will push away objects within the configured radius.", null, "", "ForceField"));
             tameOneKey = config.Bind(nameof(tameOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame the selected creatures.", null, "", "Tame"));
             tameRoomKey = config.Bind(nameof(tameRoomKey), KeyCode.None, new ConfigurableInfo("KeyBind to tame all creatures in current room.", null, "", "Tame in room"));
             clearRelOneKey = config.Bind(nameof(clearRelOneKey), KeyCode.None, new ConfigurableInfo("KeyBind to clear all relationships of the selected creatures.", null, "", "Clear relationships"));
@@ -212,7 +212,7 @@ namespace MouseDrag
             tpWaypointCrMenu = config.Bind(nameof(tpWaypointCrMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.\nSame as above, but on a BodyChunk.", null, "", ""));
             controlMenu = config.Bind(nameof(controlMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
 
-            forcefieldMenu = config.Bind(nameof(forcefieldMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
+            forceFieldMenu = config.Bind(nameof(forceFieldMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameOneMenu = config.Bind(nameof(tameOneMenu), defaultValue: true, new ConfigurableInfo("Add action to menu.", null, "", ""));
             tameRoomMenu = config.Bind(nameof(tameRoomMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
             clearRelOneMenu = config.Bind(nameof(clearRelOneMenu), defaultValue: false, new ConfigurableInfo("Add action to menu.", null, "", ""));
@@ -253,7 +253,7 @@ namespace MouseDrag
             tpWaypointCrIdx = config.Bind(nameof(tpWaypointCrIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             controlIdx = config.Bind(nameof(controlIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
 
-            forcefieldIdx = config.Bind(nameof(forcefieldIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
+            forceFieldIdx = config.Bind(nameof(forceFieldIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             tameOneIdx = config.Bind(nameof(tameOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             tameRoomIdx = config.Bind(nameof(tameRoomIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
             clearRelOneIdx = config.Bind(nameof(clearRelOneIdx), defaultValue: -1, new ConfigurableInfo(idxText, null, "", ""));
@@ -281,9 +281,9 @@ namespace MouseDrag
             killReleasesMask = config.Bind(nameof(killReleasesMask), defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
             healLimbs = config.Bind(nameof(healLimbs), defaultValue: true, new ConfigurableInfo("Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.", null, "", "Heal limbs"));
             adjustableLocks = config.Bind(nameof(adjustableLocks), defaultValue: true, new ConfigurableInfo("BodyChunks can be adjusted while locked in-place.", null, "", "Adjustable locks"));
-            forcefieldImmunityPlayers = config.Bind(nameof(forcefieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by forcefields.", null, "", "Forcefield immunity players"));
-            forcefieldImmunityItems = config.Bind(nameof(forcefieldImmunityItems), defaultValue: false, new ConfigurableInfo("Items (except thrown weapons) are unaffected by forcefields.", null, "", "Forcefield immunity items"));
-            forcefieldRadius = config.Bind(nameof(forcefieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "Forcefield radius"));
+            forceFieldImmunityPlayers = config.Bind(nameof(forceFieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by ForceFields.", null, "", "ForceField immunity players"));
+            forceFieldImmunityItems = config.Bind(nameof(forceFieldImmunityItems), defaultValue: false, new ConfigurableInfo("Items (except thrown weapons) are unaffected by ForceFields.", null, "", "ForceField immunity items"));
+            forceFieldRadius = config.Bind(nameof(forceFieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "ForceField radius"));
             infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.\nKeep this value low to avoid copying 'the whole game' to your clipboard.", null, "", "Info depth"));
 
             copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
@@ -445,10 +445,10 @@ namespace MouseDrag
 
             x += 310f;
             y = 600f;
-            AddKeyBinder(forcefieldKey, new Vector2(x, y -= sepr));
+            AddKeyBinder(forceFieldKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragForceFieldOn");
-            AddCheckBox(forcefieldMenu, new Vector2(x - 56f, y + 3f));
-            AddDragger(forcefieldIdx, new Vector2(x - 81f, y + 3f));
+            AddCheckBox(forceFieldMenu, new Vector2(x - 56f, y + 3f));
+            AddDragger(forceFieldIdx, new Vector2(x - 81f, y + 3f));
             AddKeyBinder(tameOneKey, new Vector2(x, y -= sepr));
             AddIcon(new Vector2(x - 25f, y + 6f), "mousedragHeart");
             AddCheckBox(tameOneMenu, new Vector2(x - 56f, y + 3f));
@@ -545,9 +545,9 @@ namespace MouseDrag
             AddCheckBox(killReleasesMask, new Vector2(x, y -= sepr));
             AddCheckBox(healLimbs, new Vector2(x, y -= sepr));
             AddCheckBox(adjustableLocks, new Vector2(x, y -= sepr));
-            AddCheckBox(forcefieldImmunityPlayers, new Vector2(x, y -= sepr));
-            AddCheckBox(forcefieldImmunityItems, new Vector2(x, y -= sepr));
-            AddTextBox(forcefieldRadius, new Vector2(x, y -= sepr), 50f);
+            AddCheckBox(forceFieldImmunityPlayers, new Vector2(x, y -= sepr));
+            AddCheckBox(forceFieldImmunityItems, new Vector2(x, y -= sepr));
+            AddTextBox(forceFieldRadius, new Vector2(x, y -= sepr), 50f);
             AddTextBox(infoDepth, new Vector2(x, y -= sepr), 40f);
 
             x += 250f;

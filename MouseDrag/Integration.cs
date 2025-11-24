@@ -393,11 +393,11 @@ namespace MouseDrag
                     }
                     for (int j = 0; j < bcs?.Length; j++) {
                         if (args[1] == "toggle") {
-                            Forcefield.SetForcefield(bcs[j], toggle: true, apply: true);
+                            ForceField.SetForceField(bcs[j], toggle: true, apply: true);
                         } else if (args[1] == "on") {
-                            Forcefield.SetForcefield(bcs[j], toggle: false, apply: true);
+                            ForceField.SetForceField(bcs[j], toggle: false, apply: true);
                         } else if (args[1] == "off") {
-                            Forcefield.SetForcefield(bcs[j], toggle: false, apply: false);
+                            ForceField.SetForceField(bcs[j], toggle: false, apply: false);
                         }
                     }
                 }
@@ -412,8 +412,8 @@ namespace MouseDrag
 
             new DevConsole.Commands.CommandBuilder("md_forcefield_show")
             .Run((args) => {
-                Forcefield.showSprites = !Forcefield.showSprites;
-                DevConsole.GameConsole.WriteLine("Forcefield sprites " + (Forcefield.showSprites ? "visible" : "hidden") + ".");
+                ForceField.showSprites = !ForceField.showSprites;
+                DevConsole.GameConsole.WriteLine("ForceField sprites " + (ForceField.showSprites ? "visible" : "hidden") + ".");
             })
             .Register();
 

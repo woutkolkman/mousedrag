@@ -101,8 +101,8 @@ KeyBind to teleport all items in current room to the mouse position.|按键绑�
 Teleport items<LINE>in room|传送房间中的物品
 KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|按键绑定可在 Safari 中控制选定的生物，或在未选定任何生物的情况下在不同生物间循环。需要 Downpour DLC。被控制的生物不会对地图发现做出贡献。
 Safari-control|野生动物园控制
-KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|按键绑定可在选定的 "BodyChunks "上切换力场。如果重新加载 BodyChunk，力场将丢失。<LINE>力场将推开配置半径内的物体。
-Forcefield|力场
+KeyBind to toggle ForceField on the selected BodyChunks. ForceField is lost if BodyChunk is reloaded.<LINE>A ForceField will push away objects within the configured radius.|按键绑定可在选定的 "BodyChunks "上切换力场。如果重新加载 BodyChunk，力场将丢失。<LINE>力场将推开配置半径内的物体。
+ForceField|力场
 KeyBind to tame the selected creatures.|按键绑定以驯服选中的生物。
 Tame|驯服
 KeyBind to tame all creatures in current room.|按键绑定以驯服当前房间中的所有生物。
@@ -160,11 +160,11 @@ Healing or reviving creatures using tools will also heal their limbs/wings/tenta
 Heal limbs|治疗肢体
 BodyChunks can be adjusted while locked in-place.|在原地锁定时可以调整身体块。
 Adjustable locks|可调节锁定
-Players and SlugNPCs are unaffected by forcefields.|玩家和鼻涕虫 NPC 不受力场影响。
-Forcefield immunity players|玩家不受力场影响
-Items (except thrown weapons) are unaffected by forcefields.|物品（投掷武器除外）不受力场影响。
-Forcefield immunity items|力场免疫物品
-Forcefield radius|力场半径
+Players and SlugNPCs are unaffected by ForceFields.|玩家和鼻涕虫 NPC 不受力场影响。
+ForceField immunity players|玩家不受力场影响
+Items (except thrown weapons) are unaffected by ForceFields.|物品（投掷武器除外）不受力场影响。
+ForceField immunity items|力场免疫物品
+ForceField radius|力场半径
 Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|ObjectDumper 使用信息工具可以达到的最大级别。<LINE>保持较低的此值，以避免将 "整个游戏 "复制到剪贴板。
 Info depth|信息深度
 Creates an exact copy of the previous object when duplicating.|复制时创建前一个对象的精确副本。
@@ -200,8 +200,8 @@ Set teleport position|设置传送位置
 Cancel teleportation|取消传送
 Release all for this player|释放该玩家的所有操作
 Release control|释放控制
-Disable forcefield|关闭力场
-Enable forcefield|启用力场
+Disable ForceField|关闭力场
+Enable ForceField|启用力场
 Unstun|取消击晕
 Unlock position|解锁位置
 Copy selector & open console|复制选择器和打开控制台

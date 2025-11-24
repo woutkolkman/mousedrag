@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace MouseDrag
 {
-    public static class Forcefield
+    public static class ForceField
     {
-        public static List<BodyChunk> forcefieldChunks = new List<BodyChunk>();
+        public static List<BodyChunk> forceFieldChunks = new List<BodyChunk>();
         public static bool hoversOverSlot = false, showSprites = false, scaleSpritesToSize = false, customSprites = false;
         public static readonly string customSpritePath = "sprites" + Path.DirectorySeparatorChar + "mousedragForceField";
 
 
-        public static void UpdateForcefield(BodyChunk bodyChunk)
+        public static void UpdateForceField(BodyChunk bodyChunk)
         {
-            if (bodyChunk?.owner == null || !forcefieldChunks.Contains(bodyChunk))
+            if (bodyChunk?.owner == null || !forceFieldChunks.Contains(bodyChunk))
                 return;
 
             for (int i = 0; i < bodyChunk.owner?.room?.physicalObjects?.Length; i++) {
@@ -23,9 +23,9 @@ namespace MouseDrag
                 foreach (PhysicalObject po in bodyChunk.owner.room.physicalObjects[i]) {
                     if (po == bodyChunk.owner || po == null)
                         continue;
-                    if (Options.forcefieldImmunityPlayers?.Value != false && po is Player)
+                    if (Options.forceFieldImmunityPlayers?.Value != false && po is Player)
                         continue;
-                    if (Options.forcefieldImmunityItems?.Value != false) {
+                    if (Options.forceFieldImmunityItems?.Value != false) {
                         if (po is Weapon) {
                             //not immune when ignited
                             if (po is ScavengerBomb && (po as ScavengerBomb).ignited) {
@@ -53,48 +53,48 @@ namespace MouseDrag
                         //    if (bodyChunk.owner.grabbedBy[j]?.grabbed == po)
                         //        continue;
                     }
-                    po.PushOutOf(bodyChunk.pos, Options.forcefieldRadius?.Value ?? 120f, -1);
+                    po.PushOutOf(bodyChunk.pos, Options.forceFieldRadius?.Value ?? 120f, -1);
                 }
             }
         }
 
 
-        public static bool HasForcefield(BodyChunk bodyChunk)
+        public static bool HasForceField(BodyChunk bodyChunk)
         {
             if (bodyChunk == null)
                 return false;
-            return forcefieldChunks.Contains(bodyChunk);
+            return forceFieldChunks.Contains(bodyChunk);
         }
 
 
-        public static void SetForcefield(BodyChunk bodyChunk, bool toggle, bool apply)
+        public static void SetForceField(BodyChunk bodyChunk, bool toggle, bool apply)
         {
             if (bodyChunk?.owner == null)
                 return;
 
-            bool contains = forcefieldChunks.Contains(bodyChunk);
+            bool contains = forceFieldChunks.Contains(bodyChunk);
             if (contains)
                 if (toggle || (!toggle && !apply))
-                    forcefieldChunks.Remove(bodyChunk);
+                    forceFieldChunks.Remove(bodyChunk);
             if (!contains) {
                 if (toggle || (!toggle && apply)) {
-                    forcefieldChunks.Add(bodyChunk);
-                    ForcefieldSprite ffs = new ForcefieldSprite(bodyChunk);
+                    forceFieldChunks.Add(bodyChunk);
+                    ForceFieldSprite ffs = new ForceFieldSprite(bodyChunk);
                     bodyChunk.owner.room?.AddObject(ffs);
                 }
             }
         }
 
 
-        public static void ClearForcefields()
+        public static void ClearForceFields()
         {
-            forcefieldChunks.Clear();
+            forceFieldChunks.Clear();
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("ClearForcefields");
+                Plugin.Logger.LogDebug("ClearForceFields");
         }
 
 
-        public class ForcefieldSprite : UpdatableAndDeletable, IDrawable
+        public class ForceFieldSprite : UpdatableAndDeletable, IDrawable
         {
             //NOTE: this object requires that the previous room of the bodychunk stays loaded after the followed bodychunk 
             //moved to a new room, so this object is able to move itself to the new room when this object is updated
@@ -105,20 +105,20 @@ namespace MouseDrag
             private bool visible;
 
 
-            public ForcefieldSprite(BodyChunk bc)
+            public ForceFieldSprite(BodyChunk bc)
             {
                 room = bc?.owner?.room;
                 prevPos = bc?.pos ?? new Vector2();
                 curPos = bc?.pos ?? new Vector2();
                 followChunk = bc;
             }
-            ~ForcefieldSprite() { Destroy(); }
+            ~ForceFieldSprite() { Destroy(); }
 
 
             public override void Update(bool eu)
             {
                 base.Update(eu);
-                if (!HasForcefield(followChunk) || followChunk?.owner?.slatedForDeletetion != false) {
+                if (!HasForceField(followChunk) || followChunk?.owner?.slatedForDeletetion != false) {
                     followChunk = null;
                     Destroy();
                     return;
@@ -144,7 +144,7 @@ namespace MouseDrag
                 sLeaser.sprites = new FSprite[1];
                 sLeaser.sprites[0] = new FSprite(customSprites ? customSpritePath : "mousedragForceFieldOn", true);
                 if (scaleSpritesToSize) {
-                    float rad = (Options.forcefieldRadius?.Value ?? 120f) / ((sLeaser.sprites[0].localRect.width + sLeaser.sprites[0].localRect.height) / 4f);
+                    float rad = (Options.forceFieldRadius?.Value ?? 120f) / ((sLeaser.sprites[0].localRect.width + sLeaser.sprites[0].localRect.height) / 4f);
                     sLeaser.sprites[0].ScaleAroundPointRelative(Vector2.zero, rad, rad);
                 }
                 this.AddToContainer(sLeaser, rCam, null);
@@ -163,7 +163,7 @@ namespace MouseDrag
                     try {
                         tsPos -= Integration.SBCameraScrollExtraOffset(rCam, tsPos, out float scale) / (1f / scale);
                     } catch {
-                        Plugin.Logger.LogError("Forcefield.ForcefieldSprite.DrawSprites exception while reading SBCameraScroll, integration is now disabled");
+                        Plugin.Logger.LogError("ForceField.ForceFieldSprite.DrawSprites exception while reading SBCameraScroll, integration is now disabled");
                         Integration.sBCameraScrollEnabled = false;
                         throw; //throw original exception while preserving stack trace
                     }
@@ -194,14 +194,14 @@ namespace MouseDrag
             try {
                 Futile.atlasManager.LoadImage(customSpritePath);
             } catch (Exception ex) {
-                //Plugin.Logger.LogError("Forcefield.LoadSprites exception: " + ex?.ToString());
+                //Plugin.Logger.LogError("ForceField.LoadSprites exception: " + ex?.ToString());
                 //if loading failed, no custom sprite is available
                 return;
             }
             scaleSpritesToSize = true;
             customSprites = true;
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("Forcefield.LoadSprites loaded a custom sprite");
+                Plugin.Logger.LogDebug("ForceField.LoadSprites loaded a custom sprite");
         }
 
 
@@ -212,13 +212,13 @@ namespace MouseDrag
             try {
                 Futile.atlasManager.UnloadImage(customSpritePath);
             } catch (Exception ex) {
-                Plugin.Logger.LogError("Forcefield.UnloadSprites exception: " + ex?.ToString());
+                Plugin.Logger.LogError("ForceField.UnloadSprites exception: " + ex?.ToString());
                 return;
             }
             scaleSpritesToSize = false;
             customSprites = false;
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("Forcefield.UnloadSprites unloaded a custom sprite");
+                Plugin.Logger.LogDebug("ForceField.UnloadSprites unloaded a custom sprite");
         }
     }
 }

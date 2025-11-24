@@ -101,8 +101,8 @@ KeyBind to teleport all items in current room to the mouse position.|Привя�
 Teleport items<LINE>in room|Телепортировать предметы<LINE>в комнату
 KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|Привяжите клавиши, чтобы управлять выбранными существами в сафари или переходить от одного существа к другому, если ничего не выбрано. Требуется DLC "Ливень". Контролируемые существа не участвуют в открытии карты.
 Safari-control|Safari-control
-KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|Привязка клавиш для включения силового поля на выбранных BodyChunks. Силовое поле пропадает при перезагрузке BodyChunk.<LINE>Силовое поле будет отталкивать объекты в пределах заданного радиуса.
-Forcefield|Силовое поле
+KeyBind to toggle ForceField on the selected BodyChunks. ForceField is lost if BodyChunk is reloaded.<LINE>A ForceField will push away objects within the configured radius.|Привязка клавиш для включения силового поля на выбранных BodyChunks. Силовое поле пропадает при перезагрузке BodyChunk.<LINE>Силовое поле будет отталкивать объекты в пределах заданного радиуса.
+ForceField|Силовое поле
 KeyBind to tame the selected creatures.|Привяжите клавишу, чтобы приручить выбранных существ.
 Tame|Приручить
 KeyBind to tame all creatures in current room.|Привяжите клавишу, чтобы приручить всех существ в текущей комнате.
@@ -160,11 +160,11 @@ Healing or reviving creatures using tools will also heal their limbs/wings/tenta
 Heal limbs|Исцеление конечностей
 BodyChunks can be adjusted while locked in-place.|BodyChunks можно регулировать, пока они зафиксированы на месте.
 Adjustable locks|Регулируемые замки
-Players and SlugNPCs are unaffected by forcefields.|Игроки и SlugNPC не подвержены влиянию силовых полей.
-Forcefield immunity players|Игроки с иммунитетом к силовому полю
-Items (except thrown weapons) are unaffected by forcefields.|На предметы (кроме метательного оружия) силовые поля не действуют.
-Forcefield immunity items|Элементы иммунитета к силовому полю
-Forcefield radius|Радиус силового поля
+Players and SlugNPCs are unaffected by ForceFields.|Игроки и SlugNPC не подвержены влиянию силовых полей.
+ForceField immunity players|Игроки с иммунитетом к силовому полю
+Items (except thrown weapons) are unaffected by ForceFields.|На предметы (кроме метательного оружия) силовые поля не действуют.
+ForceField immunity items|Элементы иммунитета к силовому полю
+ForceField radius|Радиус силового поля
 Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|Максимальный уровень, которого может достичь ObjectDumper с помощью информационного инструмента.<LINE>Оставьте это значение низким, чтобы избежать копирования "всей игры" в буфер обмена.
 Info depth|Глубина информации
 Creates an exact copy of the previous object when duplicating.|При дублировании создается точная копия предыдущего объекта.
@@ -200,8 +200,8 @@ Set teleport position|Установить позицию телепорта
 Cancel teleportation|Отменить телепортацию
 Release all for this player|Выпустить все для этого игрока
 Release control|Контроль выпуска
-Disable forcefield|Отключить силовое поле
-Enable forcefield|Включить силовое поле
+Disable ForceField|Отключить силовое поле
+Enable ForceField|Включить силовое поле
 Unstun|Unstun
 Unlock position|Положение разблокировки
 Copy selector & open console|Копирование селектора и открытая консоль

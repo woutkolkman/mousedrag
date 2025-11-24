@@ -101,8 +101,8 @@ KeyBind to teleport all items in current room to the mouse position.|현재 방�
 Teleport items<LINE>in room|방에 있는 아이템 텔레포트
 KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|키 바인딩하여 선택한 생물을 사파리로 제어하거나, 아무것도 선택하지 않은 경우 생물 사이를 순환합니다. 다운푸어 DLC가 필요합니다. 제어된 생물은 지도 검색에 기여하지 않습니다.
 Safari-control|사파리 제어
-KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|키바인딩하여 선택한 바디청크의 포스필드를 토글합니다. 바디청크를 다시 로드하면 포스필드가 손실됩니다.<LINE>포스필드는 구성된 반경 내의 오브젝트를 밀어냅니다.
-Forcefield|포스필드
+KeyBind to toggle ForceField on the selected BodyChunks. ForceField is lost if BodyChunk is reloaded.<LINE>A ForceField will push away objects within the configured radius.|키바인딩하여 선택한 바디청크의 포스필드를 토글합니다. 바디청크를 다시 로드하면 포스필드가 손실됩니다.<LINE>포스필드는 구성된 반경 내의 오브젝트를 밀어냅니다.
+ForceField|포스필드
 KeyBind to tame the selected creatures.|키바인딩하여 선택한 생물을 길들이세요.
 Tame|길들이기
 KeyBind to tame all creatures in current room.|현재 방에 있는 모든 생물을 길들이려면 키바인딩하세요.
@@ -160,11 +160,11 @@ Healing or reviving creatures using tools will also heal their limbs/wings/tenta
 Heal limbs|사지 치유
 BodyChunks can be adjusted while locked in-place.|바디청크는 제자리에 고정된 상태에서 조정할 수 있습니다.
 Adjustable locks|조절 가능한 잠금 장치
-Players and SlugNPCs are unaffected by forcefields.|플레이어와 슬러그NPC는 역장의 영향을 받지 않습니다.
-Forcefield immunity players|포스필드 면역 플레이어
-Items (except thrown weapons) are unaffected by forcefields.|아이템(투척 무기 제외)은 역장의 영향을 받지 않습니다.
-Forcefield immunity items|포스필드 면역 아이템
-Forcefield radius|포스필드 반경
+Players and SlugNPCs are unaffected by ForceFields.|플레이어와 슬러그NPC는 역장의 영향을 받지 않습니다.
+ForceField immunity players|포스필드 면역 플레이어
+Items (except thrown weapons) are unaffected by ForceFields.|아이템(투척 무기 제외)은 역장의 영향을 받지 않습니다.
+ForceField immunity items|포스필드 면역 아이템
+ForceField radius|포스필드 반경
 Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|오브젝트 덤퍼가 정보 도구를 사용하여 도달할 수 있는 최대 레벨입니다.<LINE>'전체 게임'을 클립보드에 복사하지 않으려면 이 값을 낮게 유지합니다.
 Info depth|정보 깊이
 Creates an exact copy of the previous object when duplicating.|복제할 때 이전 개체의 정확한 복사본을 만듭니다.
@@ -200,8 +200,8 @@ Set teleport position|텔레포트 위치 설정
 Cancel teleportation|순간이동 취소
 Release all for this player|이 플레이어에 대해 모두 해제
 Release control|릴리스 제어
-Disable forcefield|포스필드 비활성화
-Enable forcefield|포스필드 활성화
+Disable ForceField|포스필드 비활성화
+Enable ForceField|포스필드 활성화
 Unstun|언스턴
 Unlock position|위치 잠금 해제
 Copy selector & open console|복사 선택기 및 콘솔 열기

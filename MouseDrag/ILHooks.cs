@@ -161,7 +161,7 @@ namespace MouseDrag
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Action<BodyChunk>>((self) =>
             {
-                Forcefield.UpdateForcefield(self);
+                ForceField.UpdateForceField(self);
                 Lock.UpdatePosition(self);
             });
             if (Options.logDebug?.Value != false)

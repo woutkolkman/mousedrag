@@ -63,7 +63,7 @@ namespace MouseDrag
             Plugin.Logger.LogDebug("RainWorldOnModsInitHook, first time initializing options interface and sprites");
             MachineConnector.SetRegisteredOI(Plugin.GUID, new Options());
             MenuManager.LoadSprites();
-            Forcefield.LoadSprites();
+            ForceField.LoadSprites();
         }
 
 
@@ -106,7 +106,7 @@ namespace MouseDrag
                 Plugin.Logger.LogDebug("RainWorldGameShutDownProcessHook, resetting values");
             Pause.UnpauseAll();
             Stun.UnstunAll();
-            Forcefield.ClearForcefields();
+            ForceField.ClearForceFields();
             Control.ReleaseControlAll();
             Gravity.gravityType = Gravity.GravityTypes.None;
             Lock.bodyChunks.Clear();

@@ -101,8 +101,8 @@ KeyBind to teleport all items in current room to the mouse position.|キーバ�
 Teleport items<LINE>in room|部屋内のアイテム<LINE>をテレポート
 KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|キーバインドで選択したクリーチャーをサファリコントロールしたり、何も選択されていない場合はクリーチャー間を循環させることができる。Downpour DLCが必要。コントロールされているクリーチャーはマップ発見には貢献しない。
 Safari-control|サファリコントロール
-KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|選択されたBodyChunksのフォースフィールドを切り替えるキーバインド。フォースフィールドはBodyChunkがリロードされると失われます。<LINE>フォースフィールドは設定された半径内のオブジェクトを押しのけます。
-Forcefield|フォースフィールド
+KeyBind to toggle ForceField on the selected BodyChunks. ForceField is lost if BodyChunk is reloaded.<LINE>A ForceField will push away objects within the configured radius.|選択されたBodyChunksのフォースフィールドを切り替えるキーバインド。フォースフィールドはBodyChunkがリロードされると失われます。<LINE>フォースフィールドは設定された半径内のオブジェクトを押しのけます。
+ForceField|フォースフィールド
 KeyBind to tame the selected creatures.|キーバインドで選択したクリーチャーを手なずける。
 Tame|テイム
 KeyBind to tame all creatures in current room.|キーバインドで現在の部屋にいるすべてのクリーチャーを手なずける。
@@ -160,11 +160,11 @@ Healing or reviving creatures using tools will also heal their limbs/wings/tenta
 Heal limbs|手足を治す
 BodyChunks can be adjusted while locked in-place.|BodyChunksは所定の位置に固定された状態で調整できる。
 Adjustable locks|調整可能なロック
-Players and SlugNPCs are unaffected by forcefields.|プレイヤーとSlugNPCはフォースフィールドの影響を受けない。
-Forcefield immunity players|フォースフィールド免疫選手
-Items (except thrown weapons) are unaffected by forcefields.|アイテム（投擲武器を除く）はフォースフィールドの影響を受けない。
-Forcefield immunity items|フォースフィールド免疫アイテム
-Forcefield radius|フォースフィールド半径
+Players and SlugNPCs are unaffected by ForceFields.|プレイヤーとSlugNPCはフォースフィールドの影響を受けない。
+ForceField immunity players|フォースフィールド免疫選手
+Items (except thrown weapons) are unaffected by ForceFields.|アイテム（投擲武器を除く）はフォースフィールドの影響を受けない。
+ForceField immunity items|フォースフィールド免疫アイテム
+ForceField radius|フォースフィールド半径
 Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|<LINE>クリップボードに「ゲーム全体」がコピーされるのを避けるために、この値を低く保ってください。
 Info depth|情報深度
 Creates an exact copy of the previous object when duplicating.|複製時に、前のオブジェクトの完全なコピーを作成します。
@@ -200,8 +200,8 @@ Set teleport position|テレポート位置の設定
 Cancel teleportation|テレポートのキャンセル
 Release all for this player|この選手のすべてを解放する
 Release control|リリースコントロール
-Disable forcefield|フォースフィールドを無効にする
-Enable forcefield|力場を有効にする
+Disable ForceField|フォースフィールドを無効にする
+Enable ForceField|力場を有効にする
 Unstun|アンスタン
 Unlock position|ロック解除位置
 Copy selector & open console|セレクタをコピーしてコンソールを開く

@@ -301,21 +301,21 @@ namespace MouseDrag
                     });
                 }
             }
-            idx = MenuManager.registeredSlots.FindIndex(slot => slot.slotID == nameof(Options.forcefieldMenu));
-            MenuManager.registeredSlots.RemoveAll(slot => slot.slotID == nameof(Options.forcefieldMenu));
-            if (Options.forcefieldMenu?.Value != false)
-                MenuManager.registeredSlots.Insert(validIdx(idx, Options.forcefieldIdx?.Value), new RadialMenu.Slot(nameof(Options.forcefieldMenu)) {
+            idx = MenuManager.registeredSlots.FindIndex(slot => slot.slotID == nameof(Options.forceFieldMenu));
+            MenuManager.registeredSlots.RemoveAll(slot => slot.slotID == nameof(Options.forceFieldMenu));
+            if (Options.forceFieldMenu?.Value != false)
+                MenuManager.registeredSlots.Insert(validIdx(idx, Options.forceFieldIdx?.Value), new RadialMenu.Slot(nameof(Options.forceFieldMenu)) {
                     requiresBodyChunk = true,
                     reload = (game, slot, chunk) => {
-                        bool forcefield = Forcefield.HasForcefield(chunk);
-                        slot.name = forcefield ? "mousedragForceFieldOff" : "mousedragForceFieldOn";
-                        slot.tooltip = forcefield ? "Disable forcefield" : "Enable forcefield";
+                        bool forceField = ForceField.HasForceField(chunk);
+                        slot.name = forceField ? "mousedragForceFieldOff" : "mousedragForceFieldOn";
+                        slot.tooltip = forceField ? "Disable forcefield" : "Enable forcefield";
                     },
                     update = (game, slot, chunk) => {
-                        Forcefield.hoversOverSlot = slot.hover;
+                        ForceField.hoversOverSlot = slot.hover;
                     },
                     actionBC = (game, slot, chunk) => {
-                        Forcefield.SetForcefield(chunk, toggle: true, apply: true);
+                        ForceField.SetForceField(chunk, toggle: true, apply: true);
                     }
                 });
             idx = MenuManager.registeredSlots.FindIndex(slot => slot.slotID == nameof(Options.tameOneMenu));

@@ -101,8 +101,8 @@ KeyBind to teleport all items in current room to the mouse position.|KeyBind par
 Teleport items<LINE>in room|Teletransportar objectos<LINE>na sala
 KeyBind to safari-control the selected creatures, or to cycle between creatures if nothing is selected. Requires Downpour DLC. Controlled creatures do not contribute to map discovery.|KeyBind para controlar as criaturas selecionadas, ou para alternar entre criaturas se nada estiver selecionado. Requer o DLC Downpour. As criaturas controladas não contribuem para a descoberta do mapa.
 Safari-control|Controlo do Safari
-KeyBind to toggle forcefield on the selected BodyChunks. Forcefield is lost if BodyChunk is reloaded.<LINE>A forcefield will push away objects within the configured radius.|KeyBind para ativar o campo de força nos BodyChunks selecionados. O campo de força é perdido se o BodyChunk for recarregado.<LINE>Um campo de força afastará objetos dentro do raio configurado.
-Forcefield|Campo de força
+KeyBind to toggle ForceField on the selected BodyChunks. ForceField is lost if BodyChunk is reloaded.<LINE>A ForceField will push away objects within the configured radius.|KeyBind para ativar o campo de força nos BodyChunks selecionados. O campo de força é perdido se o BodyChunk for recarregado.<LINE>Um campo de força afastará objetos dentro do raio configurado.
+ForceField|Campo de força
 KeyBind to tame the selected creatures.|KeyBind para domar as criaturas selecionadas.
 Tame|Domar
 KeyBind to tame all creatures in current room.|KeyBind para domar todas as criaturas na sala atual.
@@ -160,11 +160,11 @@ Healing or reviving creatures using tools will also heal their limbs/wings/tenta
 Heal limbs|Curar membros
 BodyChunks can be adjusted while locked in-place.|Os BodyChunks podem ser ajustados enquanto estão bloqueados no local.
 Adjustable locks|Fechos reguláveis
-Players and SlugNPCs are unaffected by forcefields.|Os jogadores e os SlugNPCs não são afectados pelos campos de forças.
-Forcefield immunity players|Jogadores com imunidade de campo de forças
-Items (except thrown weapons) are unaffected by forcefields.|Os objectos (exceto armas de arremesso) não são afectados por campos de forças.
-Forcefield immunity items|Itens de imunidade ao campo de força
-Forcefield radius|Raio do campo de forças
+Players and SlugNPCs are unaffected by ForceFields.|Os jogadores e os SlugNPCs não são afectados pelos campos de forças.
+ForceField immunity players|Jogadores com imunidade de campo de forças
+Items (except thrown weapons) are unaffected by ForceFields.|Os objectos (exceto armas de arremesso) não são afectados por campos de forças.
+ForceField immunity items|Itens de imunidade ao campo de força
+ForceField radius|Raio do campo de forças
 Max level that the ObjectDumper can reach using the info tool.<LINE>Keep this value low to avoid copying 'the whole game' to your clipboard.|Nível máximo que o ObjectDumper pode atingir usando a ferramenta de informações.<LINE>Mantenha este valor baixo para evitar copiar 'o jogo inteiro' para a área de transferência.
 Info depth|Profundidade da informação
 Creates an exact copy of the previous object when duplicating.|Cria uma cópia exacta do objeto anterior ao duplicar.
@@ -200,8 +200,8 @@ Set teleport position|Definir a posição do teletransporte
 Cancel teleportation|Cancelar o teletransporte
 Release all for this player|Libertar tudo para este jogador
 Release control|Controlo de libertação
-Disable forcefield|Desativar o campo de forças
-Enable forcefield|Ativar o campo de forças
+Disable ForceField|Desativar o campo de forças
+Enable ForceField|Ativar o campo de forças
 Unstun|Desencadear
 Unlock position|Posição de desbloqueio
 Copy selector & open console|Copiar seletor e abrir consola

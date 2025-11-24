@@ -103,9 +103,9 @@ namespace MouseDrag
                 }
             }
 
-            if (Options.forcefieldKey?.Value != null && Input.GetKeyDown(Options.forcefieldKey.Value))
+            if (Options.forceFieldKey?.Value != null && Input.GetKeyDown(Options.forceFieldKey.Value))
                 foreach (var bc in Select.selectedChunks)
-                    Forcefield.SetForcefield(bc, toggle: true, apply: true);
+                    ForceField.SetForceField(bc, toggle: true, apply: true);
 
             if (Options.tameOneKey?.Value != null && Input.GetKeyDown(Options.tameOneKey.Value))
                 foreach (var obj in Select.selectedObjects)

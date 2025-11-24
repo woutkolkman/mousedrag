@@ -354,7 +354,7 @@ namespace MouseDrag
                 Plugin.Logger.LogError("MenuManager.LoadSprites exception: " + ex?.ToString());
             }
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("LoadSprites called");
+                Plugin.Logger.LogDebug("MenuManager.LoadSprites called");
         }
 
 
@@ -366,7 +366,7 @@ namespace MouseDrag
                 Plugin.Logger.LogError("MenuManager.UnloadSprites exception: " + ex?.ToString());
             }
             if (Options.logDebug?.Value != false)
-                Plugin.Logger.LogDebug("UnloadSprites called");
+                Plugin.Logger.LogDebug("MenuManager.UnloadSprites called");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace MouseDrag
@@ -6,7 +8,8 @@ namespace MouseDrag
     public static class Forcefield
     {
         public static List<BodyChunk> forcefieldChunks = new List<BodyChunk>();
-        public static bool hoversOverSlot = false, showSprites = false;
+        public static bool hoversOverSlot = false, showSprites = false, scaleSpritesToSize = false, customSprites = false;
+        public static readonly string customSpritePath = "sprites" + Path.DirectorySeparatorChar + "mousedragForceField";
 
 
         public static void UpdateForcefield(BodyChunk bodyChunk)
@@ -139,7 +142,11 @@ namespace MouseDrag
             {
                 sLeaser.RemoveAllSpritesFromContainer();
                 sLeaser.sprites = new FSprite[1];
-                sLeaser.sprites[0] = new FSprite("mousedragForceFieldOn", true);
+                sLeaser.sprites[0] = new FSprite(customSprites ? customSpritePath : "mousedragForceFieldOn", true);
+                if (scaleSpritesToSize) {
+                    float rad = (Options.forcefieldRadius?.Value ?? 120f) / ((sLeaser.sprites[0].localRect.width + sLeaser.sprites[0].localRect.height) / 4f);
+                    sLeaser.sprites[0].ScaleAroundPointRelative(Vector2.zero, rad, rad);
+                }
                 this.AddToContainer(sLeaser, rCam, null);
             }
 
@@ -179,6 +186,39 @@ namespace MouseDrag
             public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
             {
             }
+        }
+
+
+        internal static void LoadSprites()
+        {
+            try {
+                Futile.atlasManager.LoadImage(customSpritePath);
+            } catch (Exception ex) {
+                //Plugin.Logger.LogError("Forcefield.LoadSprites exception: " + ex?.ToString());
+                //if loading failed, no custom sprite is available
+                return;
+            }
+            scaleSpritesToSize = true;
+            customSprites = true;
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Forcefield.LoadSprites loaded a custom sprite");
+        }
+
+
+        internal static void UnloadSprites()
+        {
+            if (!Futile.atlasManager.DoesContainElementWithName(customSpritePath))
+                return;
+            try {
+                Futile.atlasManager.UnloadImage(customSpritePath);
+            } catch (Exception ex) {
+                Plugin.Logger.LogError("Forcefield.UnloadSprites exception: " + ex?.ToString());
+                return;
+            }
+            scaleSpritesToSize = false;
+            customSprites = false;
+            if (Options.logDebug?.Value != false)
+                Plugin.Logger.LogDebug("Forcefield.UnloadSprites unloaded a custom sprite");
         }
     }
 }

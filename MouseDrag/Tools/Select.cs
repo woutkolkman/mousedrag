@@ -381,8 +381,10 @@ namespace MouseDrag
         public class Rectangle
         {
             public TriangleMesh rect;
+            public FSprite[] border;
             public Vector2 start, end, prevStart, prevEnd;
-            public Color color = new Color(0f, 0f, 0f, 0.2f);
+            public Color backgroundColor = new Color(0f, 0f, 0f, 0.2f);
+            public Color borderColor = new Color(1f, 1f, 1f);
 
 
             public Rectangle() { }
@@ -398,6 +400,14 @@ namespace MouseDrag
 
             public void InitiateSprites(FContainer container)
             {
+                for (int i = 0; i < border?.Length; i++)
+                    border[i].RemoveFromContainer();
+                border = new FSprite[4];
+                for (int i = 0; i < border.Length; i++) {
+                    border[i] = new FSprite("pixel", true);
+                    container.AddChild(border[i]);
+                    border[i].isVisible = true;
+                }
                 List<TriangleMesh.Triangle> list = new List<TriangleMesh.Triangle>();
                 list.Add(new TriangleMesh.Triangle(0, 1, 2));
                 list.Add(new TriangleMesh.Triangle(1, 2, 3));
@@ -411,17 +421,32 @@ namespace MouseDrag
             {
                 Vector2 tsStart = Vector2.Lerp(prevStart, start, timeStacker);
                 Vector2 tsEnd = Vector2.Lerp(prevEnd, end, timeStacker);
+                float halfX = (tsStart.x + tsEnd.x) / 2f;
+                float halfY = (tsStart.y + tsEnd.y) / 2f;
+                border[0].SetPosition(new Vector2(halfX, tsStart.y));
+                border[1].SetPosition(new Vector2(tsStart.x, halfY));
+                border[2].SetPosition(new Vector2(halfX, tsEnd.y));
+                border[3].SetPosition(new Vector2(tsEnd.x, halfY));
+                border[0].scaleX = Mathf.Abs(tsStart.x - tsEnd.x);
+                border[1].scaleY = Mathf.Abs(tsStart.y - tsEnd.y);
+                border[2].scaleX = border[0].scaleX;
+                border[3].scaleY = border[1].scaleY;
+                for (int i = 0; i < border.Length; i++)
+                    border[i].color = borderColor;
                 rect.vertices[0] = tsStart;
                 rect.vertices[1] = new Vector2(tsStart.x, tsEnd.y);
                 rect.vertices[2] = new Vector2(tsEnd.x, tsStart.y);
                 rect.vertices[3] = tsEnd;
-                rect.color = color;
+                rect.color = backgroundColor;
                 rect.Redraw(shouldForceDirty: true, shouldUpdateDepth: false);
             }
 
 
             public void Destroy()
             {
+                for (int i = 0; i < border?.Length; i++)
+                    border[i].RemoveFromContainer();
+                border = null;
                 rect?.RemoveFromContainer();
                 rect = null;
             }

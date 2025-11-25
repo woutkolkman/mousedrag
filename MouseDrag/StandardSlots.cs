@@ -310,6 +310,7 @@ namespace MouseDrag
                         bool forceField = ForceField.HasForceField(chunk);
                         slot.name = forceField ? "mousedragForceFieldOff" : "mousedragForceFieldOn";
                         slot.tooltip = forceField ? "Disable ForceField" : "Enable ForceField";
+                        ForceField.radMSelectsAForceField = forceField;
                     },
                     update = (game, slot, chunk) => {
                         ForceField.hoversOverSlot = slot.hover;
@@ -516,6 +517,7 @@ namespace MouseDrag
                         bool unlocked = Lock.ListContains(chunk) == null;
                         slot.name = unlocked ? "mousedragLocked" : "mousedragUnlocked";
                         slot.tooltip = unlocked ? "Lock position" : "Unlock position";
+                        Lock.radMSelectsALock = !unlocked;
                     },
                     update = (game, slot, chunk) => {
                         Lock.hoversOverSlot = slot.hover;

@@ -6,7 +6,7 @@ namespace MouseDrag
     public static class Lock
     {
         public static List<KeyValuePair<BodyChunk, Vector2>> bodyChunks = new List<KeyValuePair<BodyChunk, Vector2>>();
-        public static bool hoversOverSlot = false, showSprites = false;
+        public static bool hoversOverSlot = false, showSprites = false, radMSelectsALock = false;
 
 
         public static KeyValuePair<BodyChunk, Vector2>? ListContains(BodyChunk bc)
@@ -109,7 +109,8 @@ namespace MouseDrag
                     room.AddObject(this);
                     curPos = followChunk.pos; //prevent sprite shooting across screen
                 }
-                visible = (showSprites || hoversOverSlot)
+                radMSelectsALock &= MenuManager.menu?.followChunk != null;
+                visible = (showSprites || hoversOverSlot || radMSelectsALock)
                     && followChunk.owner?.room != null
                     && Drag.MouseCamera(room?.game)?.room == room;
                 prevPos = curPos;

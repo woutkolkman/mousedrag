@@ -8,7 +8,8 @@ namespace MouseDrag
     public static class ForceField
     {
         public static List<BodyChunk> forceFieldChunks = new List<BodyChunk>();
-        public static bool hoversOverSlot = false, showSprites = false, scaleSpritesToSize = false, customSprites = false;
+        public static bool hoversOverSlot = false, showSprites = false, radMSelectsAForceField = false;
+        public static bool spritesBehindCreatures = false, scaleSpritesToSize = false, customSprites = false;
         public static readonly string customSpritePath = "sprites" + Path.DirectorySeparatorChar + "mousedragForceField";
 
 
@@ -129,7 +130,8 @@ namespace MouseDrag
                     room.AddObject(this);
                     curPos = followChunk.pos; //prevent sprite shooting across screen
                 }
-                visible = (showSprites || hoversOverSlot) 
+                radMSelectsAForceField &= MenuManager.menu?.followChunk != null;
+                visible = (showSprites || hoversOverSlot || radMSelectsAForceField) 
                     && followChunk.owner?.room != null 
                     && Drag.MouseCamera(room?.game)?.room == room;
                 prevPos = curPos;
@@ -177,8 +179,13 @@ namespace MouseDrag
 
             public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
             {
-                if (newContainer == null)
-                    newContainer = rCam.ReturnFContainer("HUD");
+                if (newContainer == null) {
+                    if (spritesBehindCreatures) {
+                        newContainer = rCam.ReturnFContainer("Background");
+                    } else {
+                        newContainer = rCam.ReturnFContainer("HUD");
+                    }
+                }
                 newContainer.AddChild(sLeaser.sprites[0]);
             }
 
@@ -200,6 +207,8 @@ namespace MouseDrag
             }
             scaleSpritesToSize = true;
             customSprites = true;
+            showSprites = true; //constantly show forcefield sprites for players messing around
+            spritesBehindCreatures = true;
             if (Options.logDebug?.Value != false)
                 Plugin.Logger.LogDebug("ForceField.LoadSprites loaded a custom sprite");
         }

@@ -1,5 +1,4 @@
 Mouse Drag
-- Add selection method for multi-select bodychunks in selection rectangle: center of bodychunk, edge of bodychunk, full bodychunk
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
 - Add deadband tolerance thing to the mouse visibility initial movement change
@@ -13,7 +12,7 @@ Mouse Drag
 - Fix info tool stability in edge cases, also supporting obsolete properties
 - Configurable drag/radialmenu selection radius to select moving creatures more easily?
 - Also add safari-control camera change option to background radialmenu (instead of keybind only) | Add safari control icon to global/background radial menu, so you can switch cams between creatures using the radial menu? Might be confusing
-- Add a unlock all bodychunks option to the radialmenu
+- Add an unlock all bodychunks option and a clear forcefields option to the radialmenu
 - Add an option that, when an object is paused, also pauses the graphics using an IL-hook | Optionally pause graphical update when objects are paused
 - Add a button that drags all players in the room to the cursor (or the camera position?), just like Dev Tools?
 - Option to enable just the player drag tool (V (& W?)) from Dev Tools?
@@ -22,6 +21,7 @@ Mouse Drag
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 - Check if it's desired to block right mouse button opening radialmenu inside of the Dev Tools H menu? Already blocked with RegionKit integration enabled
 === Forget list ===:
+- Add ctrl+a keybind which multi-selects every object in the room, depending on the selection settings for items/creatures
 - Check if it is easier when a multi-selection is active and the menu is on the background, to make the menu show tools for the multi-selection instead of the background tools?
 - Create new slots that can remove all applied forcefields or remove all bodychunk locks
 - Create new remix menu options for the default visibility of lock and forcefield sprites on-screen
@@ -43,7 +43,6 @@ Mouse Drag
 - Add cooldown for radialmenu actions (and after opening/moving), like 5 ticks so you can't easily accidentally do an action twice?
 - Dev Console command md_select, add parameter for AND / OR / NOT / REPLACE options which have an effect on the already selected objects?
 - Implement for fun: creatures reacting/looking at the cursor if it moves fast, or getting scared while being dragged, or throwing spears at the cursor
-- Add ctrl+a keybind which multi-selects every object in the room, depending on the selection settings for items/creatures
 - Add ctrl+z keybind to undo the last action? Mouse Drag code currently is not really structured to track actions well..
 - Add alternative multi-select rectangle which is freeform and can be activated with left alt instead of left control (by default)
 - If multi-select is active and objects are copied to the clipboard, when pasting these objects, paste the whole group at the same time (with original offsets?)? Current clipboard list will become a list of lists

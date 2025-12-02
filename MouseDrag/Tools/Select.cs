@@ -261,6 +261,18 @@ namespace MouseDrag
         }
 
 
+        public static bool IntersectsRect(BodyChunk bc, Vector2 start, Vector2 end)
+        {
+            if (bc == null)
+                return false;
+            Vector2 closestInRect = new Vector2(
+                Mathf.Clamp(bc.pos.x, Mathf.Min(start.x, end.x), Mathf.Max(start.x, end.x)),
+                Mathf.Clamp(bc.pos.y, Mathf.Min(start.y, end.y), Mathf.Max(start.y, end.y))
+            );
+            return Vector2.Distance(bc.pos, closestInRect) <= bc.rad;
+        }
+
+
         public static bool CenterIsWithinRect(BodyChunk bc, Vector2 start, Vector2 end)
         {
             if (bc == null)

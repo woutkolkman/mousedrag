@@ -88,13 +88,15 @@ namespace MouseDrag
         public static Configurable<int> gravityRoomIdx, infoIdx;
 
         public static Configurable<bool> releaseGraspsPaused, lineageKill, killReleasesMask, healLimbs;
-        public static Configurable<bool> adjustableLocks;
+        public static Configurable<bool> exitGameOverMode, copyID;
+        public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
+
         public static Configurable<bool> forceFieldImmunityPlayers, forceFieldImmunityItems;
         public static Configurable<float> forceFieldRadius;
+        public static Configurable<bool> tameIncreasesRep, cheatTameLizards, adjustableLocks;
         public static Configurable<int> infoDepth;
+        public static Configurable<bool> exceptSlugNPC;
 
-        public static Configurable<bool> copyID, exitGameOverMode, exceptSlugNPC, tameIncreasesRep, cheatTameLizards;
-        public static Configurable<bool> controlChangesCamera, controlOnlyOne, controlNoInput, controlStunsPlayers;
         public int curTab;
 
         public enum ActivateTypes
@@ -280,21 +282,21 @@ namespace MouseDrag
             lineageKill = config.Bind(nameof(lineageKill), defaultValue: false, new ConfigurableInfo("When killing creatures using tools, set killTag to first player so creatures can lineage.\nDestroying creatures without killing them does not result in lineage.", null, "", "Lineage when killed"));
             killReleasesMask = config.Bind(nameof(killReleasesMask), defaultValue: true, new ConfigurableInfo("Killing elite scavengers or vultures with this tool will release their masks.", null, "", "Kill releases mask"));
             healLimbs = config.Bind(nameof(healLimbs), defaultValue: true, new ConfigurableInfo("Healing or reviving creatures using tools will also heal their limbs/wings/tentacles.", null, "", "Heal limbs"));
-            adjustableLocks = config.Bind(nameof(adjustableLocks), defaultValue: true, new ConfigurableInfo("BodyChunks can be adjusted while locked in-place.", null, "", "Adjustable locks"));
-            forceFieldImmunityPlayers = config.Bind(nameof(forceFieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by ForceFields.", null, "", "ForceField immunity players"));
-            forceFieldImmunityItems = config.Bind(nameof(forceFieldImmunityItems), defaultValue: false, new ConfigurableInfo("Items (except thrown weapons) are unaffected by ForceFields.", null, "", "ForceField immunity items"));
-            forceFieldRadius = config.Bind(nameof(forceFieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "ForceField radius"));
-            infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.\nKeep this value low to avoid copying 'the whole game' to your clipboard.", null, "", "Info depth"));
-
-            copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             exitGameOverMode = config.Bind(nameof(exitGameOverMode), defaultValue: true, new ConfigurableInfo("Try to exit game over mode when reviving player. Might be incompatible with some other mods.", null, "", "Exit game over mode"));
-            exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
-            tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
-            cheatTameLizards = config.Bind(nameof(cheatTameLizards), defaultValue: true, new ConfigurableInfo("Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.\nWARNING: Using this option might have unintended side-effects.", null, "", "Prevent tamed lizard bites"));
+            copyID = config.Bind(nameof(copyID), defaultValue: true, new ConfigurableInfo("Creates an exact copy of the previous object when duplicating.", null, "", "Copy ID duplicate"));
             controlChangesCamera = config.Bind(nameof(controlChangesCamera), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will change which creature the camera follows. Might not work well with other camera/multiplayer mods. Does not work in safari because of the overseer (unless deleted).", null, "", "Safari-control changes camera"));
             controlOnlyOne = config.Bind(nameof(controlOnlyOne), defaultValue: false, new ConfigurableInfo("Safari-controlling another creature (while already controlling a creature) will remove control from the first one, so you will only control one creature at a time.", null, "", "Safari-control only one creature"));
             controlNoInput = config.Bind(nameof(controlNoInput), defaultValue: false, new ConfigurableInfo("While safari-controlling creatures, only the creature which a camera is following will move. Unused if \"Safari-control changes camera\" is unchecked.", null, "", "Reset other safari-control input"));
             controlStunsPlayers = config.Bind(nameof(controlStunsPlayers), defaultValue: true, new ConfigurableInfo("Safari-controlling creatures will stun the (last dragged) player, as this player will now control the creature.", null, "", "Safari-control stuns players"));
+
+            forceFieldImmunityPlayers = config.Bind(nameof(forceFieldImmunityPlayers), defaultValue: true, new ConfigurableInfo("Players and SlugNPCs are unaffected by ForceFields.", null, "", "ForceField immunity players"));
+            forceFieldImmunityItems = config.Bind(nameof(forceFieldImmunityItems), defaultValue: false, new ConfigurableInfo("Items (except thrown weapons) are unaffected by ForceFields.", null, "", "ForceField immunity items"));
+            forceFieldRadius = config.Bind(nameof(forceFieldRadius), defaultValue: 120f, new ConfigurableInfo(null, null, "", "ForceField radius"));
+            tameIncreasesRep = config.Bind(nameof(tameIncreasesRep), defaultValue: false, new ConfigurableInfo("Taming creatures using this tool also increases global reputation.", null, "", "Taming global +rep"));
+            cheatTameLizards = config.Bind(nameof(cheatTameLizards), defaultValue: true, new ConfigurableInfo("Taming a lizard will change its LizardBreedParams.attemptBiteRadius to 0f so you're never close enough for the lizard to attempt a bite.\nWARNING: Using this option might have unintended side-effects.", null, "", "Prevent tamed lizard bites"));
+            adjustableLocks = config.Bind(nameof(adjustableLocks), defaultValue: true, new ConfigurableInfo("BodyChunks can be adjusted while locked in-place.", null, "", "Adjustable locks"));
+            infoDepth = config.Bind(nameof(infoDepth), defaultValue: 3, new ConfigurableInfo("Max level that the ObjectDumper can reach using the info tool.\nKeep this value low to avoid copying 'the whole game' to your clipboard.", null, "", "Info depth"));
+            exceptSlugNPC = config.Bind(nameof(exceptSlugNPC), defaultValue: true, new ConfigurableInfo("If checked, do not pause/destroy/kill slugpups when pausing/destroying/killing all creatures.", null, "", "Except SlugNPC"));
 
             //refresh activated mods when config changes
             var onConfigChanged = typeof(OptionInterface).GetEvent("OnConfigChanged");
@@ -544,23 +546,23 @@ namespace MouseDrag
             AddCheckBox(lineageKill, new Vector2(x, y -= sepr));
             AddCheckBox(killReleasesMask, new Vector2(x, y -= sepr));
             AddCheckBox(healLimbs, new Vector2(x, y -= sepr));
-            AddCheckBox(adjustableLocks, new Vector2(x, y -= sepr));
-            AddCheckBox(forceFieldImmunityPlayers, new Vector2(x, y -= sepr));
-            AddCheckBox(forceFieldImmunityItems, new Vector2(x, y -= sepr));
-            AddTextBox(forceFieldRadius, new Vector2(x, y -= sepr), 50f);
-            AddTextBox(infoDepth, new Vector2(x, y -= sepr), 40f);
-
-            x += 250f;
-            y = 595f;
-            AddCheckBox(copyID, new Vector2(x, y -= sepr));
             AddCheckBox(exitGameOverMode, new Vector2(x, y -= sepr));
-            AddCheckBox(exceptSlugNPC, new Vector2(x, y -= sepr));
-            AddCheckBox(tameIncreasesRep, new Vector2(x, y -= sepr));
-            AddCheckBox(cheatTameLizards, new Vector2(x, y -= sepr));
+            AddCheckBox(copyID, new Vector2(x, y -= sepr));
             AddCheckBox(controlChangesCamera, new Vector2(x, y -= sepr));
             AddCheckBox(controlOnlyOne, new Vector2(x, y -= sepr));
             AddCheckBox(controlNoInput, new Vector2(x, y -= sepr));
             AddCheckBox(controlStunsPlayers, new Vector2(x, y -= sepr));
+
+            x += 250f;
+            y = 595f;
+            AddCheckBox(forceFieldImmunityPlayers, new Vector2(x, y -= sepr));
+            AddCheckBox(forceFieldImmunityItems, new Vector2(x, y -= sepr));
+            AddTextBox(forceFieldRadius, new Vector2(x, y -= sepr), 50f);
+            AddCheckBox(tameIncreasesRep, new Vector2(x, y -= sepr));
+            AddCheckBox(cheatTameLizards, new Vector2(x, y -= sepr));
+            AddCheckBox(adjustableLocks, new Vector2(x, y -= sepr));
+            AddTextBox(infoDepth, new Vector2(x, y -= sepr), 40f);
+            AddCheckBox(exceptSlugNPC, new Vector2(x, y -= sepr));
         }
 
 

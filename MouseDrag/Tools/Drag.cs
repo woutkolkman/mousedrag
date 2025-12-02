@@ -277,7 +277,8 @@ namespace MouseDrag
 
 
         //search all objects for closest chunk
-        public static BodyChunk GetClosestChunk(Room room, Vector2 pos, ref Vector2 offset)
+        public static float minimumChunkRad_GetClosestChunk = 20f; //same value as RadialMenu.inRad
+        public static BodyChunk GetClosestChunk(Room room, Vector2 pos, ref Vector2 offset, float extraRad = 0f)
         {
             if (room == null)
                 return null;
@@ -301,7 +302,7 @@ namespace MouseDrag
 
                 for (int k = 0; k < obj.bodyChunks.Length; k++)
                 {
-                    float rad = Mathf.Max(obj.bodyChunks[k].rad, 20f); //same value as RadialMenu.inRad
+                    float rad = Mathf.Max(obj.bodyChunks[k].rad + extraRad, minimumChunkRad_GetClosestChunk);
                     if (!Custom.DistLess(pos, obj.bodyChunks[k].pos, Mathf.Min(rad, closest)))
                         continue;
                     closest = Vector2.Distance(pos, obj.bodyChunks[k].pos);

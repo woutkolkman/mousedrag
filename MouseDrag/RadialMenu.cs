@@ -11,7 +11,7 @@ namespace MouseDrag
         public Vector2 menuPos, displayPos, prevDisplayPos; //menuPos in room, displayPos on screen
         private Vector2 prevCamPos; //only used to compensate stationary position with screen scrolling mods
         public float outRad = 60f;
-        public float inRad = 20f; //same value as Drag.GetClosestChunk rad
+        public float inRad = 20f; //same value as Drag.minimumChunkRad_GetClosestChunk
         private bool mousePressed = false; //LMB presseddown signal from RawUpdate for Update
         public bool mouseIsWithinMenu { get; private set; }
         public bool mouseIsOnMenuBG { get; private set; }
@@ -43,7 +43,7 @@ namespace MouseDrag
             prevRCam = rcam;
             if (game != null) {
                 menuPos = Drag.MousePos(game);
-                followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset);
+                followChunk = Drag.GetClosestChunk(rcam?.room, menuPos, ref followOffset, inRad);
                 displayPos = menuPos - rcam?.pos ?? new Vector2();
                 prevDisplayPos = displayPos;
             }
@@ -219,7 +219,7 @@ namespace MouseDrag
                 mousePressed = true;
             if (menuOpenButtonPressed()) {
                 Vector2 mousePos = Drag.MousePos(game);
-                followChunk = Drag.GetClosestChunk(Drag.MouseCamera(game)?.room, mousePos, ref followOffset);
+                followChunk = Drag.GetClosestChunk(Drag.MouseCamera(game)?.room, mousePos, ref followOffset, inRad);
                 if (followChunk == null)
                     menuPos = mousePos;
             }

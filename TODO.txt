@@ -22,6 +22,7 @@ Mouse Drag
 - Add a tool that can revive/respawn a specific player (by number), optionally make the slot visible only when an original player was deleted in a pit or similar ways
 - Check if it's desired to block right mouse button opening radialmenu inside of the Dev Tools H menu? Already blocked with RegionKit integration enabled
 === Forget list ===:
+- Check if it is easier when a multi-selection is active and the menu is on the background, to make the menu show tools for the multi-selection instead of the background tools?
 - Create new slots that can remove all applied forcefields or remove all bodychunk locks
 - Create new remix menu options for the default visibility of lock and forcefield sprites on-screen
 - Make clipboard cut/paste CTRL + C/V keybinds repeated, give visual indication of an action?

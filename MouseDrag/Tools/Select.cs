@@ -261,12 +261,21 @@ namespace MouseDrag
         }
 
 
-        public static bool IsWithinRect(BodyChunk bc, Vector2 start, Vector2 end)
+        public static bool CenterIsWithinRect(BodyChunk bc, Vector2 start, Vector2 end)
         {
             if (bc == null)
                 return false;
             return bc.pos.x >= Mathf.Min(start.x, end.x) && bc.pos.x <= Mathf.Max(start.x, end.x) &&
                 bc.pos.y >= Mathf.Min(start.y, end.y) && bc.pos.y <= Mathf.Max(start.y, end.y);
+        }
+
+
+        public static bool IsFullyWithinRect(BodyChunk bc, Vector2 start, Vector2 end)
+        {
+            if (bc == null)
+                return false;
+            return bc.pos.x - bc.rad >= Mathf.Min(start.x, end.x) && bc.pos.x + bc.rad <= Mathf.Max(start.x, end.x) &&
+                bc.pos.y - bc.rad >= Mathf.Min(start.y, end.y) && bc.pos.y + bc.rad <= Mathf.Max(start.y, end.y);
         }
 
 
@@ -276,7 +285,7 @@ namespace MouseDrag
                 return false;
             if (Vector2.Distance(start, end) < 10f)
                 return false;
-            if (!IsWithinRect(bc, start, end))
+            if (!CenterIsWithinRect(bc, start, end))
                 return false;
 
             //only select creatures or items

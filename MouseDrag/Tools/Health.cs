@@ -41,21 +41,22 @@ namespace MouseDrag
 
         public static void ReviveCreature(PhysicalObject obj)
         {
-            if (!(obj is Creature))
+            if (!(obj is Creature rc))
                 return;
 
-            AbstractCreature ac = (obj as Creature).abstractCreature;
+            AbstractCreature ac = rc.abstractCreature;
             if (ac?.state == null)
                 return;
 
-            if (ac.state is HealthState && (ac.state as HealthState).health < 1f)
-                (ac.state as HealthState).health = 1f;
+            if (ac.state is HealthState hs && hs.health < 1f)
+                hs.health = 1f;
             ac.state.alive = true;
-            (obj as Creature).dead = false;
-            (obj as Creature).stun = 0; //makes player immediately controllable
-            (obj as Creature).Hypothermia = 0f;
-            (obj as Creature).HypothermiaExposure = 0f;
-            (obj as Creature).injectedPoison = 0f;
+            rc.dead = false;
+            rc.stun = 0; //makes player immediately controllable
+            rc.Hypothermia = 0f;
+            rc.HypothermiaExposure = 0f;
+            rc.injectedPoison = 0f;
+            rc.leechedOut = false;
 
             //heal limbs/tentacles/wings
             if (Options.healLimbs?.Value != false) {
@@ -86,10 +87,10 @@ namespace MouseDrag
             //reset destination so creature does not start running immediately
             (obj.abstractPhysicalObject as AbstractCreature)?.abstractAI?.SetDestination(obj.abstractPhysicalObject.pos);
 
-            if (obj is Hazer) {
-                (obj as Hazer).inkLeft = 1f;
-                (obj as Hazer).hasSprayed = false;
-                (obj as Hazer).clds = 0;
+            if (obj is Hazer hz) {
+                hz.inkLeft = 1f;
+                hz.hasSprayed = false;
+                hz.clds = 0;
             }
 
             if ((obj as MoreSlugcats.StowawayBug)?.AI is MoreSlugcats.StowawayBugAI) {
@@ -97,9 +98,9 @@ namespace MouseDrag
                 (obj as MoreSlugcats.StowawayBug).AI.behavior = MoreSlugcats.StowawayBugAI.Behavior.Idle;
             }
 
-            if (obj is Player) {
+            if (obj is Player p) {
                 //try to exit game over mode
-                if (Options.exitGameOverMode?.Value != false && !(obj as Player).isNPC) {
+                if (Options.exitGameOverMode?.Value != false && !p.isNPC) {
                     //campaign
                     for (int i = 0; i < obj.room?.game?.cameras?.Length; i++)
                         if (obj.room.game.cameras[i]?.hud?.textPrompt != null)
@@ -110,23 +111,23 @@ namespace MouseDrag
                         obj.room.game.arenaOverlay.ShutDownProcess();
                         obj.room.game.manager?.sideProcesses?.Remove(obj.room.game.arenaOverlay);
                         obj.room.game.arenaOverlay = null;
-                        if (obj.room.game.session is ArenaGameSession) {
-                            (obj.room.game.session as ArenaGameSession).sessionEnded = false;
-                            (obj.room.game.session as ArenaGameSession).challengeCompleted = false;
-                            (obj.room.game.session as ArenaGameSession).endSessionCounter = -1;
+                        if (obj.room.game.session is ArenaGameSession ags) {
+                            ags.sessionEnded = false;
+                            ags.challengeCompleted = false;
+                            ags.endSessionCounter = -1;
                         }
                     }
                 }
 
-                (obj as Player).exhausted = false;
-                (obj as Player).lungsExhausted = false;
-                (obj as Player).airInLungs = 1f;
-                (obj as Player).aerobicLevel = 0f;
-                if ((obj as Player).playerState != null) {
-                    (obj as Player).playerState.permaDead = false;
-                    (obj as Player).playerState.permanentDamageTracking = 0.0; //prevents sickness/waterdrips from revived pups
+                p.exhausted = false;
+                p.lungsExhausted = false;
+                p.airInLungs = 1f;
+                p.aerobicLevel = 0f;
+                if (p.playerState != null) {
+                    p.playerState.permaDead = false;
+                    p.playerState.permanentDamageTracking = 0.0; //prevents sickness/waterdrips from revived pups
                 }
-                (obj as Player).animation = Player.AnimationIndex.None; //prevents lie-down slide
+                p.animation = Player.AnimationIndex.None; //prevents lie-down slide
             }
         }
 
@@ -252,24 +253,24 @@ namespace MouseDrag
             if (obj is Creature || obj == null)
                 return;
 
-            if (obj is SeedCob && (obj as SeedCob).AbstractCob != null) {
-                (obj as SeedCob).open = 0f;
-                (obj as SeedCob).canBeHitByWeapons = true;
-                (obj as SeedCob).freezingCounter = 0f;
-                (obj as SeedCob).seedPopCounter = -1;
-                (obj as SeedCob).seedsPopped = new bool[(obj as SeedCob).seedPositions.Length];
-                (obj as SeedCob).AbstractCob.dead = false;
-                (obj as SeedCob).AbstractCob.opened = false;
-                (obj as SeedCob).AbstractCob.spawnedUtility = false;
+            if (obj is SeedCob sc && sc.AbstractCob != null) {
+                sc.open = 0f;
+                sc.canBeHitByWeapons = true;
+                sc.freezingCounter = 0f;
+                sc.seedPopCounter = -1;
+                sc.seedsPopped = new bool[sc.seedPositions.Length];
+                sc.AbstractCob.dead = false;
+                sc.AbstractCob.opened = false;
+                sc.AbstractCob.spawnedUtility = false;
 
                 //makes seedcob return next cycle
-                (obj as SeedCob).AbstractCob.isConsumed = false;
-                if ((obj as SeedCob).AbstractCob.world?.game?.session is StoryGameSession) {
-                    ((obj as SeedCob).AbstractCob.world.game.session as StoryGameSession).saveState?.ReportConsumedItem(
-                        (obj as SeedCob).AbstractCob.world,
+                sc.AbstractCob.isConsumed = false;
+                if (sc.AbstractCob.world?.game?.session is StoryGameSession) {
+                    (sc.AbstractCob.world.game.session as StoryGameSession).saveState?.ReportConsumedItem(
+                        sc.AbstractCob.world,
                         false,
-                        (obj as SeedCob).AbstractCob.originRoom,
-                        (obj as SeedCob).AbstractCob.placedObjectIndex,
+                        sc.AbstractCob.originRoom,
+                        sc.AbstractCob.placedObjectIndex,
                         0
                     );
                 }
@@ -326,53 +327,53 @@ namespace MouseDrag
             if (obj is MoreSlugcats.LillyPuck && (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck != null)
                 (obj as MoreSlugcats.LillyPuck).AbstrLillyPuck.bites = 3;
 
-            if (obj is Pomegranate) {
-                (obj as Pomegranate).refreshSprites = true;
-                (obj as Pomegranate).smashed = false;
-//                (obj as Pomegranate).disconnected = false;
-//                (obj as Pomegranate).spearmasterStabbed = false;
-                if ((obj as Pomegranate).AbstrPomegranate != null) {
-                    (obj as Pomegranate).AbstrPomegranate.smashed = false;
-//                    (obj as Pomegranate).AbstrPomegranate.disconnected = false;
-//                    (obj as Pomegranate).AbstrPomegranate.spearmasterStabbed = false;
+            if (obj is Pomegranate pg) {
+                pg.refreshSprites = true;
+                pg.smashed = false;
+//                pg.disconnected = false;
+//                pg.spearmasterStabbed = false;
+                if (pg.AbstrPomegranate != null) {
+                    pg.AbstrPomegranate.smashed = false;
+//                    pg.AbstrPomegranate.disconnected = false;
+//                    pg.AbstrPomegranate.spearmasterStabbed = false;
                 }
                 //TODO reset ReportConsumedItem
             }
 
-            if (obj is Watcher.UrbanToys.SpinToy) {
-                (obj as Watcher.UrbanToys.SpinToy).randomOffset = 0f;
-                (obj as Watcher.UrbanToys.SpinToy).backForth = 0f;
-                (obj as Watcher.UrbanToys.SpinToy).leftRight = 0f;
-                (obj as Watcher.UrbanToys.SpinToy).unstable = 0f;
-                (obj as Watcher.UrbanToys.SpinToy).spin = 0f;
-                (obj as Watcher.UrbanToys.SpinToy).topBottom = 0f;
-                (obj as Watcher.UrbanToys.SpinToy).spinTimer?.SetToMin();
+            if (obj is Watcher.UrbanToys.SpinToy st) {
+                st.randomOffset = 0f;
+                st.backForth = 0f;
+                st.leftRight = 0f;
+                st.unstable = 0f;
+                st.spin = 0f;
+                st.topBottom = 0f;
+                st.spinTimer?.SetToMin();
             }
 
-            if (obj is Oracle)
+            if (obj is Oracle o)
             {
                 if (obj.room?.game?.GetStorySession?.saveState?.deathPersistentSaveData != null) {
-                    if ((obj as Oracle).ID == Oracle.OracleID.SS || 
-                        (obj as Oracle).ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.CL)
+                    if (o.ID == Oracle.OracleID.SS ||
+                        o.ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.CL)
                         obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripPebbles = false;
-                    if ((obj as Oracle).ID == Oracle.OracleID.SL) {
+                    if (o.ID == Oracle.OracleID.SL) {
                         obj.room.game.GetStorySession.saveState.deathPersistentSaveData.ripMoon = false;
                         if (obj.room.game.GetStorySession.saveState.miscWorldSaveData?.SLOracleState?.neuronsLeft <= 0)
                             obj.room.game.GetStorySession.saveState.miscWorldSaveData.SLOracleState.neuronsLeft++;
                     }
                 }
-                if ((obj as Oracle).ID != MoreSlugcats.MoreSlugcatsEnums.OracleID.ST) {
-                    (obj as Oracle).health = 1f;
-                    (obj as Oracle).stun = 0;
+                if (o.ID != MoreSlugcats.MoreSlugcatsEnums.OracleID.ST) {
+                    o.health = 1f;
+                    o.stun = 0;
                 }
-                if ((obj as Oracle).ID == Oracle.OracleID.SL &&
-                    (obj as Oracle).mySwarmers?.Count <= 0)
-                    (obj as Oracle).SetUpSwarmers();
+                if (o.ID == Oracle.OracleID.SL &&
+                    o.mySwarmers?.Count <= 0)
+                    o.SetUpSwarmers();
 
-                /*//reset challenge #70
-                if ((obj as Oracle).ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.ST && 
-                    (obj as Oracle).oracleBehavior is MoreSlugcats.STOracleBehavior) {
-                    ((obj as Oracle).oracleBehavior as MoreSlugcats.STOracleBehavior).curPhase = MoreSlugcats.STOracleBehavior.Phase.Inactive;
+                //reset challenge #70
+                /*if (o.ID == MoreSlugcats.MoreSlugcatsEnums.OracleID.ST && 
+                    o.oracleBehavior is MoreSlugcats.STOracleBehavior stob) {
+                    stob.curPhase = MoreSlugcats.STOracleBehavior.Phase.Inactive;
                 }*/ //TODO?, bugs, or just restart the challenge
             }
         }

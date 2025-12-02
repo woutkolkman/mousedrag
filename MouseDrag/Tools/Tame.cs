@@ -20,7 +20,7 @@ namespace MouseDrag
         //code from Pokéballs
         public static void TameCreature(RainWorldGame game, PhysicalObject obj)
         {
-            if (!(obj is Creature) || game.world == null)
+            if (!(obj is Creature) || game?.world == null)
                 return;
 
             AbstractCreature player = game?.FirstAlivePlayer;
@@ -91,7 +91,8 @@ namespace MouseDrag
             }
 
             //remove trackers for this creature (if they are not removed automatically already)
-            foreach (AIModule module in ai.modules) {
+            for (int i = 0; i < ai?.modules?.Count; i++) {
+                AIModule module = ai.modules[i];
                 if (module is ThreatTracker) {
                     foreach (ThreatTracker.ThreatCreature t in (module as ThreatTracker).threatCreatures.Where(c => c?.creature?.representedCreature == player)) {
                         if (t.creature.deleteMeNextFrame)

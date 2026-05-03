@@ -1,4 +1,5 @@
 Mouse Drag
+- Gif creator tool that automatically makes a gif creation program window move and center on a selected bodychunk (via windows API)
 - Fix destroying poleplants, they are reportedly still kind of climable afterwards
 - Make sure that the tame tool on scavengers update their reputation towards player 1 (or the first alive player?)
 - After reviving noodleflies, reset their scream (if it isn't reset)

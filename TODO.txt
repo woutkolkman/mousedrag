@@ -1,4 +1,16 @@
 Mouse Drag
+- Fix destroying poleplants, they are reportedly still kind of climable afterwards
+- Make sure that the tame tool on scavengers update their reputation towards player 1 (or the first alive player?)
+- After reviving noodleflies, reset their scream (if it isn't reset)
+- Check if deleting loaches throws a nullrefexception, and fix this
+- Add tool that can make any creature immortal
+- Add tool that creates a bond between bodychunks, even from separate objects, with variable distance. This bond should also force objects to travel with eachother through pipes. Maybe another tool for tamed creatures/lizards to prevent them from falling into pits, acid, icewater or transformers.
+- Add tool that forces bodychunks to be within one of the roomcameras, and prevent objects from falling out of the room
+- Check if an object with the destroy tool needs an extra last update cycle after slatedfordeletion is set high?
+- If grabbing items from scavengers with the cursor is considered stealing by player 1(?) and have a negative effect on reputation --> create a remix menu option that enables/disables this feature if that's the case
+- Rework selection circle animations
+- Create add-on mod "Individual Gravity Module" that modifies each object separately and controls their gravity per specific object (is hardcoded), implement this via a separate mod because it has a higher chance of breaking things
+- Implement method to view a creatures' personality values via the radialmenu
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
 - Add deadband tolerance thing to the mouse visibility initial movement change
@@ -93,6 +105,15 @@ Mouse Drag
 - Add option to drag players with or without maximum velocity with the velocity drag mode
 - Add tool that will make all creatures in the room agro/target a specific creature. Might be available already using Dev Tools (destination position)?
 - Biography mod support which allows copying ID in-game?
+
+Mouse Drag known issues/bugs
+- Pausing a deer while you're on it will make you slide off. You need to jump to be able to move again.
+- When cut/pasting a player in/to arena, if there's a creature in their stomach (Hazer), it is deleted. This happens because of limitations when deserializing a creature.
+- When cut/pasting objects, many objects will ignore the new position and spawn back on their old position in a new room. This is determined by how the object is programmed.
+- Cut/pasting Oracles (iterator puppets) has a VERY HIGH chance of crashing the game. Also, their sprites will not be removed immediately.
+- Pasting Garbage Worms in rooms where they cannot be might crash the game.
+- If Jolly Co-op is enabled in story-mode, you cannot safari-control slugpups or follow slugpups with the RoomCamera.
+- After returning from a safari-controlled creature and the player room was reloaded, you cannot open your map. Jolly Co-op will keep the player's room loaded and prevent this from happening.
 
 FreeCam
 - Update integration with Mouse Drag

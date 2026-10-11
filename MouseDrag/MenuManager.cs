@@ -318,12 +318,24 @@ namespace MouseDrag
                 }
             }
 
+            //if critters is enabled and opened, don't use right mouse button
+            bool crittersOpened = false;
+            if (Integration.crittersEnabled) {
+                try {
+                    crittersOpened = Integration.CrittersUsesRMB(game);
+                } catch {
+                    Plugin.Logger.LogError("MenuManager.RawUpdate exception while reading Critters state, integration is now disabled");
+                    Integration.crittersEnabled = false;
+                    throw; //throw original exception while preserving stack trace
+                }
+            }
+
             //if regionkit is enabled and dev tools menu is opened, don't use right mouse button (because of Iggy)
             bool devToolsOpened = Integration.regionKitEnabled && game.devUI != null;
 
-            if (RadialMenu.menuOpenButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened || devToolsOpened)) {
+            if (RadialMenu.menuOpenButtonPressed(noRMB: inSandboxAndEditing || beastMasterOpened || crittersOpened || devToolsOpened)) {
                 shouldOpen = true;
-            } else if (beastMasterOpened && RadialMenu.menuOpenButtonPressed()) {
+            } else if ((beastMasterOpened || crittersOpened) && RadialMenu.menuOpenButtonPressed()) {
                 menu?.Destroy();
                 menu = null;
             }

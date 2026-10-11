@@ -31,7 +31,7 @@ namespace MouseDrag
         public static Configurable<KeyCode> menuOpen;
         public static Configurable<bool> menuSelectLMB, menuSelectMMB;
         public static Configurable<KeyCode> menuSelect;
-        public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration;
+        public static Configurable<bool> beastMasterIntegration, splitScreenCoopIntegration, crittersIntegration;
 
         public static Configurable<bool> showLabel, showTooltips;
         public static Configurable<int> maxOnPage;
@@ -151,6 +151,7 @@ namespace MouseDrag
             menuSelect = config.Bind(nameof(menuSelect), KeyCode.None, new ConfigurableInfo("KeyBind selects actions in menu, as an alternative to left mouse button.", null, "", "Select in menu"));
             beastMasterIntegration = config.Bind(nameof(beastMasterIntegration), defaultValue: true, new ConfigurableInfo("If BeastMaster is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "BeastMaster integration"));
             splitScreenCoopIntegration = config.Bind(nameof(splitScreenCoopIntegration), defaultValue: true, new ConfigurableInfo("If SplitScreen Co-op is enabled, dragging on other cameras is supported.", null, "", "SplitScreen Co-op integration"));
+            crittersIntegration = config.Bind(nameof(crittersIntegration), defaultValue: true, new ConfigurableInfo("If Critters is enabled, right-clicking on its menu will not open this mod's menu.", null, "", "Critters integration"));
 
             showLabel = config.Bind(nameof(showLabel), defaultValue: true, new ConfigurableInfo("Show label above menu with name of selected object, and other text.", null, "", "Show label"));
             showTooltips = config.Bind(nameof(showTooltips), defaultValue: true, new ConfigurableInfo("The label above menu will also show information about the selected tool or action. Disable this if it is too distracting.", null, "", "Show tooltips"));
@@ -367,6 +368,7 @@ namespace MouseDrag
             y = -19f; //from bottom up
             AddCheckBox(beastMasterIntegration, new Vector2(x, y += sepr));
             AddCheckBox(splitScreenCoopIntegration, new Vector2(x, y += sepr));
+            AddCheckBox(crittersIntegration, new Vector2(x, y += sepr));
 
             x += 250f;
             y = 595f;

@@ -200,7 +200,7 @@ namespace MouseDrag
         {
             try {
                 Futile.atlasManager.LoadImage(customSpritePath);
-            } catch (Exception ex) {
+            } catch { //(Exception ex) {
                 //Plugin.Logger.LogError("ForceField.LoadSprites exception: " + ex?.ToString());
                 //if loading failed, no custom sprite is available
                 return;

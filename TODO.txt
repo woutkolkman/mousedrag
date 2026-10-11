@@ -1,4 +1,7 @@
 Mouse Drag
+- Add easily accessible boolean that blocks usage of the right mouse button for opening the radialmenu
+- Add selection counter for the current amount of multi-selected objects or bodychunks, also visible with selection rectangle
+- Create a tool that sets a creature health to very low without killing the creature, or a configurable health selection feature
 - Gif creator tool that automatically makes a gif creation program window move and center on a selected bodychunk (via windows API)
 - Fix destroying poleplants, they are reportedly still kind of climable afterwards
 - Make sure that the tame tool on scavengers update their reputation towards player 1 (or the first alive player?)
@@ -11,7 +14,7 @@ Mouse Drag
 - If grabbing items from scavengers with the cursor is considered stealing by player 1(?) and have a negative effect on reputation --> create a remix menu option that enables/disables this feature if that's the case
 - Rework selection circle animations
 - Create add-on mod "Individual Gravity Module" that modifies each object separately and controls their gravity per specific object (is hardcoded), implement this via a separate mod because it has a higher chance of breaking things
-- Implement method to view a creatures' personality values via the radialmenu
+- Implement method to view a creatures' personality values/statistics via the radialmenu, for example for scavengers & slugpups
 - Implement actual API with static functions, which makes it easier to maintain internal functionality without breaking addon mods, one function for slots, one for submenus
 - Add hold mouse button to repeat with all tools in the radial menu (instead of only duplicate keybind)
 - Add deadband tolerance thing to the mouse visibility initial movement change

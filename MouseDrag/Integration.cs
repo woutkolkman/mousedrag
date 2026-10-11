@@ -15,6 +15,7 @@ namespace MouseDrag
         public static bool sBCameraScrollEnabled = false;
         public static bool regionKitEnabled = false;
         public static bool devConsoleEnabled = false;
+        public static bool crittersEnabled = false;
 
 
         public static void RefreshActiveMods() //is called via Options EventHandler
@@ -34,6 +35,8 @@ namespace MouseDrag
                     regionKitEnabled = Options.regionKitIntegration?.Value ?? true;
                 if (ModManager.ActiveMods[i].id == "slime-cubed.devconsole")
                     devConsoleEnabled = Options.devConsoleIntegration?.Value ?? true;
+                if (ModManager.ActiveMods[i].id == "critter")
+                    crittersEnabled = Options.crittersIntegration?.Value ?? true;
             }
         }
 
@@ -101,7 +104,8 @@ namespace MouseDrag
 
 
         //use in try/catch so missing assembly does not crash the game
-        public static bool BeastMasterUsesRMB(RainWorldGame game) {
+        public static bool BeastMasterUsesRMB(RainWorldGame game)
+        {
             if (BeastMaster.BeastMaster.BMSInstance?.isMenuOpen != true)
                 return false;
 
@@ -113,6 +117,15 @@ namespace MouseDrag
 
             //return true if mouse is inside menu + extra depth around it
             return magnitude > 50f && magnitude < (float)(50 + 50 * (2 + BeastMaster.BeastMaster.BMSInstance.currentDepth));
+        }
+
+
+        //use in try/catch so missing assembly does not crash the game
+        public static bool CrittersUsesRMB(RainWorldGame game)
+        {
+            if (Critter.CritterPlugin.Instance?._isMenuOpen != true)
+                return false;
+            return true; //TODO check edges of Critters menu and allow radialmenu outside of these edges, Critters menu is more complex than beastmaster menu
         }
 
 

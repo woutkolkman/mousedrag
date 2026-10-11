@@ -13,6 +13,7 @@ Add references to files as described in the guide above:
 - [SplitScreen Co-op.dll](https://github.com/henpemaz/RemixMods)
 - [SBCameraScroll.dll](https://github.com/SchuhBaum/SBCameraScroll)
 - [DevConsole.dll](https://github.com/SlimeCubed/DevConsole)
+- [Critter.dll](https://steamcommunity.com/sharedfiles/filedetails/?id=3816577371)
 - BepInEx.dll
 - HOOKS-Assembly-CSharp.dll
 - Mono.Cecil.dll
